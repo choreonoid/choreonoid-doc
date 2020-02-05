@@ -124,7 +124,7 @@ ChoreonoidのビルドにおいてCMakeのオプションを設定したい場�
 
 設定したオプションを解除したい場合は ::
 
- catking config --no-cmake-args
+ catkin config --no-cmake-args
 
 を実行します。
 
