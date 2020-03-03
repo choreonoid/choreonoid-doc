@@ -263,7 +263,7 @@ GUIで設定する方法
 
 また、上述した "QT_STYLE_OVERRIDE" については、このツールと競合してしまうようで、設定をクリアしておく必要があります。既に設定されている場合は ::
 
- unset QT_STYLE_EXPORT
+ unset QT_STYLE_OVERRIDE
 
 でクリアできますが、 .profile に記述している場合はそちらも除去するようにします。
 
