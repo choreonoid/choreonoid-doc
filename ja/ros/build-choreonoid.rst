@@ -24,6 +24,8 @@ Choreonoid用のCatkinワークスペースを作成します。
 
 .. note:: ここではワークスペースの初期化に "catkin init" というコマンドを使っていますが、同様の操作を行うコマンドとして "catkin_init_workspace" というコマンドもあります。前者はCatkinの新しいコマンド体系である `Catkin Command Line Tools <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ に含まれるコマンドで、後者はCatkinの古い形式のコマンドです。両者はパッケージのビルドに使用するコマンドも異なっており、それぞれ "catkin build" と "catkin_make" になります。ChoreonoidのROS連携は Catkin Command Line Tools の使用を前提としていますので、古い形式のCatkinコマンド（catkin_make等）は使用しないでください。
 
+.. _ros_choreonoid_add_package_sources:
+
 パッケージソースの追加
 ----------------------
 
