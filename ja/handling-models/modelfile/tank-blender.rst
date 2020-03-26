@@ -10,6 +10,8 @@
    
 .. highlight:: YAML
 
+.. _tank_model:
+
 Tankモデル
 ----------
 

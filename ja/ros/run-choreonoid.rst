@@ -23,11 +23,21 @@ Choreonoidノードを起動するコマンドはchoreonoid_rosパッケージ�
 
  rosrun choreonoid_ros choreonoid
 
-とすることでChoreonoidをROSノードとして起動できます。
+とすることでChoreonoidをROSノードとして起動できます。（これを実行する端末も別途用意しておきます。）
+
+起動に成功すると、Choreonoidのメインウィンドウが表示されます。これはChoreonoidを通常の方法で起動した場合と基本的には同じもので、操作方法も同じです。
+
+.. note:: このようにROSノードとしてChoreonoidを起動することで、Choreonoid内部でROS関係の初期化なども行われるようになり、Choreonoid上でROSの機能を使用することが可能となります。通常の起動方法として、choreonoidの実行ファイルをそのまま実行する場合は、そのようなROS関連の初期化は行われず、ROSの機能を使用することはできなくなりますので、ご注意ください。
 
 ノード起動時には、他のROSノードと同様に、ROSのリマップに関するオプションを付与することができます。
 
 また、Choreonoid本体のオプションも付与することが可能です。
+
+なお、ROSマスターが起動していない場合は、ROS関連の初期化ができないため、以下のエラーメッセージをコンソールに表示して停止します。 ::
+
+ Choreonoid's ROS node cannot be invoked because the ROS master is not found.
+
+この場合はまずROSマスターを起動するようにしてください。
 
 
 サンプルプロジェクトの実行
