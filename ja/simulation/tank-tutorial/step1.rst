@@ -134,6 +134,8 @@ tankアイテムと同様に、
 
 .. note:: Choreonoidソースの "sample/tutorial/Tank" 以下には、本チュートリアルのステップごとのプロジェクト内容を保存したファイル step1.cnoid 〜 step6.cnoid が収録されています。
 
+.. _tank-tutorial-step1-start-simulation:
+
 シミュレーションの実行
 ----------------------
 

@@ -8,6 +8,8 @@ Choreonoid関連パッケージのビルド
 .. contents::
    :local:
 
+.. _ros_make_catkin_workspace:
+
 Catkinワークスペースの作成
 --------------------------
 
@@ -151,6 +153,7 @@ catkin においては ::
 
  catkin config --cmake-args -DENABLE_PYTHON=OFF -DBUILD_PYTHON_PLUGIN=OFF -DBUILD_PYTHON_SIM_SCRIPT_PLUGIN=OFF
 
+.. _ros_catkin_build_command:
 
 ビルド
 ------
@@ -169,6 +172,7 @@ catkin においては ::
 
 .. note:: Emacsでは "M-x compile" コマンドでビルドを行うことが可能ですが、Catkin環境でもこの機能を利用することができます。ただしCatkinの出力は通常色付けされるのですが、Emacs上ではその制御コードが表示されてしまい、そのままでは表示が見にくくなってしまいます。これを回避するため、 "M-x compile" 実行時にビルド用のコマンドとして "catkin build --no-color" を入力するとよいです。"--no-color" を入れることで、Cakin出力の色付け用の制御コードが無効化され、表示の乱れがなくなります。また、"-v" オプションを追加して "catkin build -v --no-color" とすることで、ビルド時に実際のコマンド（コンパイルオプションなど）を確認することもできます。
 
+.. _ros_catkin_cmake_build_type:
 
 ビルドタイプの設定
 ------------------
