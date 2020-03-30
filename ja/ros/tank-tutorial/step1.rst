@@ -1,7 +1,7 @@
 ステップ1: JoyトピックのSubscribeによるTankモデルの制御
 =======================================================
 
-ステップ1では、ロボットへの指令をROSを用いた通信によってロボットのコントローラに伝え、それに基づいてロボットの制御を行う方法について説明します。具体的には、ジョイスティックの状態をJoyトピックとして送信し、これをコントローラ側で受信することで、ジョイスティックによるTankモデルの操作を行えるようにします。
+ステップ1では、ロボットへの指令をROSを用いた通信によってロボットのコントローラに伝え、それに基づいてロボットの制御を行う方法について説明します。具体的には、ジョイスティックの状態をJoyトピックとして送信し、これをコントローラ側で受信することで、ジョイスティックによるTankロボットの操作を行えるようにします。
 
 .. contents::
    :local:
@@ -25,21 +25,17 @@ Choreonoidノードの起動
 シミュレーション用プロジェクトの作成
 ------------------------------------
 
-Choreonoid上にシミュレーション対象となるモデルを読み込んで、プロジェクトを構築しましょう。このチュートリアルではロボットに該当するモデルとして戦車風の :ref:`tank_model` を使用します。Choreonoidを起動したら、以下の手順でこのモデルを対象とした :doc:`../../simulation/simulation-project` を行ってください。
+Choreonoid上にシミュレーション対象となるモデルを読み込んで、プロジェクトを構築しましょう。本チュートリアルではロボットに該当するモデルとして戦車風の :ref:`tank_model` を使用します。Choreonoidを起動したら、以下の手順でこのモデルを対象とした :doc:`../../simulation/simulation-project` を行ってください。
 
 1. ワールドアイテムを作成する
 2. ワールドアイテムの小アイテムとしてTankモデルを読み込む
-3. ワールドアイテムの小アイテムとして環境モデルを読み込む
+3. ワールドアイテムの小アイテムとして適当な環境モデルを読み込む
 4. ワールドアイテムの小アイテムとしてAISTシミュレータアイテムを作成する
+5. AISTシミュレータのプロパティを設定する（「自己干渉検出」をtrueにする）
 
-この作業は基本的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` と同様です。
+この作業は基本的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` と同じになりますので、そちらを参照して作業を進めてください。
 
-ただし、ここではROS環境でChoreonoidを動かしているため、
-
-
-、これを用いたプロジェクトの作成については、 :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` でも行っていますので、そちらを参照の上まずは同じプロジェクトを構築してください。
-
-そこでは環境モデルとしてシンプルな床のモデルを使用していますが、同じチュートリアルの :ref:`tank_tutorial_use_labo_model` で使用しているプラントモデルを使用してもかまいません。そちらの方が、本チュートリアルの後半でカメラ画像の通信を行う際に、よりそれらしい画像を得ることができます。（ただしモデルは重くなりますので、PC環境によってはシンプルな床のモデルの方が扱いやすいかもしれません。）Githubに公開している本チュートリアルのリポジトリでは、プラントモデルを使用しています。
+そこでは環境モデルとしてシンプルな床のモデルを使用していますが、その後 :ref:`tank_tutorial_use_labo_model` で使用しているプラントモデルを使用してもかまいません。そちらの方が、本チュートリアルの後半でカメラ画像の通信を行う際に、よりそれらしい画像を得ることができます。（ただしモデルは重くなりますので、PC環境によってはシンプルな床のモデルの方が扱いやすいかもしれません。）Githubに公開している本チュートリアルのリポジトリでは、プラントモデルを使用しています。
 
 プロジェクトが構築できたら、メインメニューの「ファイル」-「名前を付けてプロジェクトを保存」を使用して、プロジェクトファイルに保存してください。保存先は本チュートリアル用に作成したディレクトリ内にさらに "project" というサブディレクトリを作成し、そこに "step1.cnoid" という名前で格納するようにしましょう。
 
@@ -63,15 +59,15 @@ Choreonoid終了後に再度プロジェクトを読み込む場合は、:ref:`r
 
 以下で :ref:`ros_tank_tutorial_introduce_launch_file` を行うまでは、この方法でchoreonoidの起動とプロジェクトの読み込みを行うとよいかと思います。
 
-プロジェクトを構築できたら、シミュレーションを開始してみてください。すると、:doc:`../../simulation/tank-tutorial/index` の :ref:`tank-tutorial-step1-start-simulation` でも説明しているように、砲身部分は重力で落下してしまいますし、車体も特に動くことはありません。これはTankがただ存在するだけで、それを制御するためのコントローラが導入されていないからで、当然と言えば当然の結果です。
+プロジェクトを構築できたら、:doc:`../../simulation/tank-tutorial/index` の :ref:`tank-tutorial-step1-start-simulation` と同様に、シミュレーションを開始してください。そこでも説明しているように、砲身部分は重力で落下してしまいますし、車体も特に動くことはありません。これはTankがただ存在するだけで、それを制御するためのコントローラが導入されていないからで、当然と言えば当然の結果です。
 
-Step1では、このTankモデルを自由に操作できるようにすることを目標とします。
+Step1では、このTankロボットを自由に操作できるようにすることを目標とします。
 
 
 ゲームパッドの準備
 ------------------
 
-Tankを自由に操作する手段として、本チュートリアルではジョイスティックと呼ばれる入力デバイスを使用することにします。ジョイスティックにはいろいろなタイプのものがありますが、この手のロボットの操作には、ゲームパッドと呼ばれるものがよいでしょう。チュートリアルを進めるために、適当なゲームパッドを用意してください。USBで接続するタイプのものであれば、大抵のものは使えるかと思います。ただし後ほど説明する :ref:`ros_tank_tutorial_use_choreonoid_joy` と共に、これに対応したゲームパッドを使用することで、ロボットの操作をスムーズに行うことができます。対応しているゲームパッドについては、 :doc:`../../simulation/tank-tutorial/index` の :ref:`simulation-tank-tutorial-gamepad` を参照してください。
+Tankロボットを自由に操作する手段として、本チュートリアルではジョイスティックと呼ばれる入力デバイスを使用することにします。ジョイスティックにはいろいろなタイプのものがありますが、この手のロボットの操作には、ゲームパッドと呼ばれるものがよいでしょう。チュートリアルを進めるために、適当なゲームパッドを用意してください。USBで接続するタイプのものであれば、大抵のものは使えるかと思います。ただし後ほど説明する :ref:`ros_tank_tutorial_choreonoid_joy` と共に、これに対応したゲームパッドを使用することで、ロボットの操作をスムーズに行うことができます。対応しているゲームパッドについては、 :doc:`../../simulation/tank-tutorial/index` の :ref:`simulation-tank-tutorial-gamepad` を参照してください。
 
 ゲームパッドを用意できたら、予めPCに接続しておきます。
 
@@ -88,7 +84,7 @@ ROSでは様々なデータを「メッセージ」として定義して、そ�
 
 本チュートリアルでは、ゲームパッドの状態をROSトピックとしてPublishし、それをロボットのコントローラからSubscribeします。これを実現するために、まずゲームパッドの状態をPublishするプログラムが必要となります。そのようなプログラムは「ROSノード」と呼ばれます。実はゲームパッド（ジョイスティック）の状態をPublishするROSノードとして、「Joyノード」というものがROSの標準パッケージとして用意されていますので、まずはそれを試してみることにします。
 
-以下ではJoyノードの起動方法とともに、ROSのトピックやメッセージが具体的にどのようなものかについて理解していただけるよう説明します。ROSの基本的な事柄を既に習得されている方は、以下は読み飛ばして次の :ref:`ros_tank_tutorial_use_choreonoid_joy` まで進んでいただいて結構です。
+以下ではJoyノードの起動方法とともに、ROSのトピックやメッセージが具体的にどのようなものかについて理解していただけるよう説明します。ROSの基本的な事柄を既に習得されている方は、以下は読み飛ばして次の :ref:`ros_tank_tutorial_choreonoid_joy` まで進んでいただいて結構です。
 
 Joyノードのインストールと起動
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,6 +102,8 @@ Joyパッケージのインストールに成功していれば、以下のコ�
  rosrun joy joy_node
 
 ただしこれを実行する前にジョイスティックをPCに接続しておいてください。ジョイスティックは一般的なUSB接続のものでしたら使用できるかと思います。
+
+.. _ros_tank_tutorial_check_joy_topic:
 
 Joyトピックの確認
 ~~~~~~~~~~~~~~~~~
@@ -175,10 +173,10 @@ Joyノードが起動しジョイスティックの検出に成功すると、�
 
 このコマンドを終了させるのは、Ctrl + C を押してください。もし上記のような表示が出ない場合は、ゲームパッドが正しく接続されていない可能性があります。本チュートリアルを進めるためには、まずこれが正常に動作するようにしてください。
 
-.. _ros_tank_tutorial_use_choreonoid_joy:
+.. _ros_tank_tutorial_choreonoid_joy:
 
-Choreonoid版Joyノードの利用
----------------------------
+Choreonoid版Joyノード
+---------------------
 
 前節で紹介したJoyノードによってゲームパッドの状態をPublishできますが、本チュートリアルではこれに代わって「Choreonoid版Joyノード」を使用したいと思います。これは :ref:`ros_tank_tutorial_package_setup` で導入した "choreonoid_joy" パッケージが対応しており、以下のコマンドで起動できます。 ::
 
@@ -198,7 +196,9 @@ Choreonoid版Joyノードの利用
 コントローラのビルド
 --------------------
 
-ゲームパッドの状態がPublishされるようになったので、これを用いて、ゲームパッドによるTankモデルの操作を可能とするためのコントローラを導入したいと思います。以下で行うことは、本質的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` と同様です。ただし、本チュートリアルではROSのcatkin環境においてコントローラをビルドし、使用できるようにしなければなりません。まずはそのビルド方法について説明します。
+ゲームパッドの状態がPublishされるようになったので、これを用いて、ゲームパッドによるTankロボットの操作を可能とするためのコントローラを導入したいと思います。以下で行うことは、本質的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` で実施しているビルド作業と同様です。ただし、本チュートリアルではROSのcatkin環境においてコントローラをビルドし、使用できるようにしなければなりませんので、具体的なビルドの方法や記述は異なってきます。ここではまずそのビルド方法について説明します。
+
+.. _ros_tank_tutorial_step1_source:
 
 コントローラのソースコード
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -206,7 +206,7 @@ Choreonoid版Joyノードの利用
 .. highlight:: c++
    :linenothreshold: 7
 
-まずはコントローラのソースコードを掲載します。このコントローラは :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` と同様に、SimpleControllerを継承したものとなっています。SimpleController自体はROSとは独立したものですが、そこに単純にROSのコードを加えることで、ROSの機能を活用できるようになります。 ::
+まずはコントローラのソースコードを掲載します。このコントローラは :doc:`../../simulation/tank-tutorial/index` で作成したコントローラと同様に、SimpleControllerを継承したものとなっています。SimpleController自体はROSとは独立したものですが、そこに単純にROSのコードを加えることで、ROSの機能を活用できるようになります。 ::
 
  #include <cnoid/SimpleController>
  #include <cnoid/Joystick>
@@ -494,29 +494,154 @@ add_cnoid_simple_controller は、find_packageでchoreonoidを検出すると利
 
 追加する場所は、project関数によるプロジェクト名の設定の直後が適切です。この記述をしておけば、CatkinでCMakeのビルドタイプを設定しておかなくても、最適化の効いたReleaseビルドが適用されます。
 
+catkin build 実行後にコンソールに以下のような出力があればビルドに成功しています。
+
+.. code-block:: none
+
+ ...
+ Starting  >>> choreonoid_ros_tank_tutorial
+ Finished  <<< choreonoid_ros_tank_tutorial                [ 3.0 seconds ]
+ ...
+ [build] Summary: All ? packages succeeded!                                  
+ ...
+
+ビルドに失敗した場合はコンパイルエラーなどが出力されますので、その内容に従ってソースコードやCMakeLists.txtを修正するようにしてください。
+
+
 コントローラの導入
 ------------------
 
+コントローラのビルドに成功したら、それをシミュレーションプロジェクトに導入しましょう。
 
-ノード接続状況の可視化
-----------------------
+導入は :doc:`../../simulation/tank-tutorial/index` の :ref:`simulation-tank-tutorial-introduce-controller` と同じ手順で行います。今回作成するコントローラの名前は "JoyInputController" になりますので、アイテムもこれと同じ名前にするとよいでしょう。また、 :ref:`simulation-tank-tutorial-set-controller` については、今回のビルドによって生成された "JoyInputController.so" を選択するようにしてください。このファイルは標準のコントローラディレクトリに生成されているはずですが、もし見当たらない場合はビルドに失敗していますので、これまでの手順を確認してください。
 
+ここまでの作業で、アイテムツリーは以下のような構成になっているかと思います。
+
+.. code-block:: none
+
+ + World
+   + Tank
+     + JoyInputController
+   + Labo1
+   + AISTSimulator
+
+"Labo1"のところは、Floorや他の環境モデルでも結構です。
+
+これでStep1のシミュレーションプロジェクトは完成です。プロジェクトの上書き保存を行っておきましょう。
+
+シミュレーションの実行とゲームパッドによるTankロボットの操作
+------------------------------------------------------------
+
+シミュレーションを実行しましょう。
+
+あわせて :ref:`ros_tank_tutorial_choreonoid_joy` の起動ができていれば、接続しているゲームパッドで、Tankロボットの操作ができるはずです。これはJoyノードがJoyトピックとしてPublishしているゲームパッドの状態を、コントローラ側でSubscribeすることで実現しています。
+
+Choreonoidが対応している標準的なゲームパッドであれば、左側のアナログスティックで車体（クローラ）の前進、後進、左右の旋回を操作することができます。また、右側のアナログスティックで砲塔・砲身の回転の操作をできます。
+
+Joyトピック接続状況の確認
+-------------------------
+
+.. highlight:: sh
+
+シミュレーションを動作させている状態で、Joyトピックの接続状況を確認してみましょう。
+
+まずは :ref:`ros_tank_tutorial_check_joy_topic` で試した以下のコマンドを再度実行してみましょう。 ::
+
+ rostopic info /joy
+
+すると先程は"None"だったSubscribersの項目が、以下のように表示されているかと思います。
+
+.. code-block:: none
+
+ Subscribers: 
+  * /choreonoid (http://host:37373/)
+
+Subscribersとして /choreonoid が追加されています。これはこのトピックを購読しているノードを表しています。実際に購読しているオブジェクトはJoyInputControllerになるのですが、ここではchoreonoidと表示されています。これはROSのノードがOSのプロセス単位で生成されているからで、Choreonoidのプロセス内で動作しているものは全てchoreonoidノードとなります。シンプルコントローラもChoreonoidのプロセス内で動作するものなので、ノードとしてはchoreonoidになるというわけです。
+
+次に接続状況をグラフで可視化してみましょう。ROSにはこれを行う"rqt_graph"というツールがありますので、まずこれを起動します。 ::
+
+ rosrun rqt_graph rqt_graph
+
+すると以下のように表示されます。
+
+.. image:: images/step1-node-graph.png
+    :scale: 70%
+
+実際の表示内容はrqt_graphの設定によって変わります。rqt_graphの左上のコンボボックスやその下の領域にあるチェックボックスを、上の図と同じに設定すれば、同じようなグラフが表示されるかと思います。
+
+いずれにしても、このグラフ表示によって、choreonoid_joyノードがPublishしているjoyトピックがchoreonoidノードでSubscribeされており、両ノード間の接続があることが分かります。
+
+今回のように制御用の通信にROSを使用すると、単に通信を行うだけでなく、このようにROSのツールを連携させることができます。ROSでは有益なツールが多数利用可能となっており、それらを活用できるというのは、ROSを導入する際の大きなメリットとなります。
 
 .. _ros_tank_tutorial_introduce_launch_file:
 
 Launchファイルの導入
 --------------------
 
+ステップ1ではここまで以下のROSノードを稼働させてきました。
+
+* choreonoid本体 (step1.cnoidのプロジェクト）
+* choreonoid_joy
+* rqt_graph
+
+それぞれ端末から対応するコマンドを入力して起動してきましたが、同じことを再度実行する際に、コマンドを3つ分入力するのは面倒ですし、それぞれ覚えていられるかも分かりません。ROSに備わっているroslaunchというコマンドを使用することで、これらの操作をまとめて実行できるようになります。
+
+.. highlight:: xml
+
+どのノードをどのように起動するかは、Launchファイルと呼ばれるXMLファイルで記述します。今回の3つのノードを起動するためには、以下のLaunchファイルを作成します。 ::
+
+ <launch>
+   <node pkg="choreonoid_joy" name="choreonoid_joy" type="node" />
+   <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
+         args="$(find choreonoid_ros_tank_tutorial)/project/step1.cnoid --start-simulation" />
+   <node pkg="rqt_graph" name="rqt_graph" type="rqt_graph" />
+ </launch>
+
+Lauchファイルの詳細はROSのマニュアルを参照してください。基本的にはlaunchタグの中にROSノードを起動するためのnodeタグを必要な数だけ記述します。ここではそれぞれ以下の処理を行っています。 ::
+
+ <node pkg="choreonoid_joy" name="choreonoid_joy" type="node" />
+
+choreonoid_joyパッケージのchoreonoid_joyノードを起動するnodeコマンドを実行します。 ::
+
+ <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
+       args="$(find choreonoid_ros_tank_tutorial)/project/step1.cnoid --start-simulation" />
+
+choreonoid_rosパッケージのchoreonoidノードを起動するchoreonoidコマンドを実行します。これによりChoreonodi本体が起動されます。
+
+args以下はchoreonoidコマンドに与える引数になっています。引数としてはまずプロジェクトファイルを指定しています。 ::
+
+ $(find choreonoid_ros_tank_tutorial)
+
+によってchoreonoid_ros_tank_tutorialパッケージのディレクトリが返されます。その中のprojectディレクトリに存在するstep1.cnoidというプロジェクトファイルを指定しています。また、 ::
+
+ --start-simulation
+
+はプロジェクト読み込み後にシミュレーションを自動で開始するオプションです。これをつけておくと、このLaunchファイルを実行するだけでシミュレーションも開始するようになります。
+
+最後に ::
+
+ <node pkg="rqt_graph" name="rqt_graph" type="rqt_graph" />
+
+によってrqt_graphも実行するようにしています。
+
+.. highlight:: sh
+
+このLaunchファイルは choreonoid_ros_tank_tutorialパッケージの "launch" ディレクトリに保存するようにしてください。そのようにしておくと、端末上から以下のコマンドを入力することでこのLaunchファイルを実行できます。 ::
+
+ roslaunch choreonoid_ros_tank_tutorial step1.launch
+
+このLaunchファイルを実行することで、ステップ1で行ってきたことを再度実行できることになります。
+
+ROSでは多数のノードを組み合わせてシステムを構築することも多く、そのような場合にはこのroslaunchの活用が欠かせなくなります。
 
 ソースコードの解説
 ------------------
 
+最後に :ref:`ros_tank_tutorial_step1_source` について解説します。このコントローラにおける関節制御の部分は :doc:`../../simulation/tank-tutorial/index` の
 
-補足：ChoreonoidのROS連携機能の現状とroscppの活用について
----------------------------------------------------------
+* :doc:`../../simulation/tank-tutorial/step2`
+* :doc:`../../simulation/tank-tutorial/step3`
 
-.. 自前のコーディングで大抵のことは対応可能
-
-
+で作成しているものとほぼ同じです。本コントローラでは、制御の指令値をJoyトピックのSubscribeで取得するところが異なっていますので、以下ではその部分を中心に解説します。
 
 
