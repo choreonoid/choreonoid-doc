@@ -1,6 +1,9 @@
 ROS環境におけるChoreonoidの実行
 ===============================
 
+.. contents::
+   :local:
+
 .. highlight:: sh
 
 .. _choreonoid_ros_run_ros_master:
@@ -33,7 +36,9 @@ Choreonoidノードを起動するコマンドはchoreonoid_rosパッケージ�
 
 また、Choreonoid本体のオプションも付与することが可能です。
 
-なお、ROSマスターが起動していない場合は、ROS関連の初期化ができないため、以下のエラーメッセージをコンソールに表示して停止します。 ::
+なお、ROSマスターが起動していない場合は、ROS関連の初期化ができないため、以下のエラーメッセージをコンソールに表示して停止します。
+
+.. code-block:: none
 
  Choreonoid's ROS node cannot be invoked because the ROS master is not found.
 
@@ -57,7 +62,9 @@ choreonoid_ros_samplesパッケージがインストールされていれば、�
 補足: roslaunch の実行に失敗する場合の対処方法
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-上記のroslaunchコマンドを実行しようとすると ::
+上記のroslaunchコマンドを実行しようとすると
+
+.. code-block:: none
 
  RLException: [tank.launch] is neither a launch file in package [choreonoid_ros_samples] nor is [choreonoid_ros_samples] a launch file name
  The traceback for the exception was written to the log file
@@ -89,9 +96,9 @@ choreonoid_ros_samplesパッケージがインストールされていれば、�
 roslaunchの実行内容
 ~~~~~~~~~~~~~~~~~~~
 
-.. highlight:: xml
+このサンプルはroslaunchを用いて複数のROSノードを起動することで実現しています。launchファイルは以下のようになっています。
 
-このサンプルはroslaunchを用いて複数のROSノードを起動することで実現しています。launchファイルは以下のようになっています。 ::
+.. code-block:: xml
 
  <launch>
    <node pkg="choreonoid_joy" name="choreonoid_joy" type="node" />

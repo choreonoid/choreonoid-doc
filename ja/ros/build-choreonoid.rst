@@ -8,6 +8,8 @@ Choreonoid関連パッケージのビルド
 .. contents::
    :local:
 
+.. highlight:: sh
+
 .. _ros_make_catkin_workspace:
 
 Catkinワークスペースの作成
@@ -118,7 +120,9 @@ ChoreonoidのビルドにおいてCMakeのオプションを設定したい場�
 
  catkin config
 
-を実行すると、ワークスペースの設定が表示されます。そこに ::
+を実行すると、ワークスペースの設定が表示されます。そこに
+
+.. code-block:: none
 
  Additional CMake Args:  -DBUILD_MEDIA_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON
 
@@ -164,7 +168,9 @@ catkin においては ::
 
 ビルド方法の詳細については `Catkin Command Line Tools のマニュアル <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ を参照してください。
 
-ビルドに成功すると、 ::
+ビルドに成功すると、
+
+.. code-block:: none
 
  [build] Summary: All 4 packages succeeded!
 
@@ -200,7 +206,6 @@ Catkin上でビルドする際にこれらのビルドタイプを指定した�
 Choreonoid関連のROSパッケージはデフォルトでReleaseが設定されるようにしてありますが、パッケージによってはデフォルトでビルドタイプをReleaseに設定しないものもありますし、自前のパッケージでそこまで設定していないこともあるかもしれません。その場合最適化が適用されず、ビルドされたプログラムの実行速度が大幅に落ちることになってしまいますので、そのようなパッケージをビルドする可能性がある場合は、上記の方法でReleaseビルドを指定しておくとよいです。
 
 なお、Catkin Command Line Tools の Profile機能を使えば、設定ごとに予めプロファイルとして登録しておき、ビルドの際にプロファイルを指定することで切り替えることもできます。この使い方については、 `Catkin Command Line Tools のマニュアル <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ の `Profile Cookbook <https://catkin-tools.readthedocs.io/en/latest/cheat_sheet.html#profile-cookbook>`_ を参考にしてください。
-
 
 .. _loading_catkin_workspace_setup_script:
 

@@ -1,6 +1,9 @@
 ROSプラグイン
 =============
 
+.. contents::
+   :local:
+
 .. highlight:: sh
 
 ROSプラグインとは
@@ -37,7 +40,9 @@ ROSプラグインは chorenoid_ros パッケージに含まれています。RO
 
 このメッセージが出力されていない場合、ROSプラグインは読み込まれておらず、Choreonoid上でROSの機能を利用することはできませんので、ご注意ください。（ROSとは独立してインストールしたChoreonoidを通常の方法で起動した場合は、そのようになります。）
 
-なお、Choreonoidノード起動時に、メッセージビューに ::
+なお、Choreonoidノード起動時に、メッセージビューに
+
+.. code-block:: none
 
  Warning: The ROS master is not found.
 
@@ -48,7 +53,9 @@ ROSプラグインは chorenoid_ros パッケージに含まれています。RO
 ROSプラグインによるroscppの初期化
 ---------------------------------
 
-ROSプラグインが読み込まれると、プラグインの初期化関数にて、以下のコードに相当する処理が実行されます。 ::
+ROSプラグインが読み込まれると、プラグインの初期化関数にて、以下のコードに相当する処理が実行されます。
+
+.. code-block:: c++
 
  ros::init(argc, argv, "choreonoid", ros::init_options::NoSigintHandler
  auto spinner = new ros::AsyncSpinner(0);

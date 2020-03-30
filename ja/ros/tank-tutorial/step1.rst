@@ -11,6 +11,8 @@
 Choreonoidノードの起動
 ----------------------
 
+.. highlight:: sh
+
 前節で説明した準備が完了しましたら、Choreonoidを起動してください。
 
 この際にChoreonoidをROSのノードとして起動する必要があることにご注意ください。 :doc:`../run-choreonoid` で説明しているように、以下のコマンドでROSのChoreonoidノードを起動できます。 ::
@@ -20,16 +22,30 @@ Choreonoidノードの起動
 起動に成功すると、Choreonoidのメインウィンドウが表示されます。
 
 
-シミュレーション用プロジェクトの構築
+シミュレーション用プロジェクトの作成
 ------------------------------------
 
-Choreonoid上にシミュレーション対象となるモデルを読み込んで、プロジェクトを構築しましょう。このチュートリアルではロボットに該当するモデルとして戦車風の :ref:`tank_model` を使用します。これを用いたプロジェクトの作成については、 :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` でも行っていますので、そちらを参照の上まずは同じプロジェクトを構築してください。
+Choreonoid上にシミュレーション対象となるモデルを読み込んで、プロジェクトを構築しましょう。このチュートリアルではロボットに該当するモデルとして戦車風の :ref:`tank_model` を使用します。Choreonoidを起動したら、以下の手順でこのモデルを対象とした :doc:`../../simulation/simulation-project` を行ってください。
+
+1. ワールドアイテムを作成する
+2. ワールドアイテムの小アイテムとしてTankモデルを読み込む
+3. ワールドアイテムの小アイテムとして環境モデルを読み込む
+4. ワールドアイテムの小アイテムとしてAISTシミュレータアイテムを作成する
+
+この作業は基本的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` と同様です。
+
+ただし、ここではROS環境でChoreonoidを動かしているため、
+
+
+、これを用いたプロジェクトの作成については、 :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` でも行っていますので、そちらを参照の上まずは同じプロジェクトを構築してください。
 
 そこでは環境モデルとしてシンプルな床のモデルを使用していますが、同じチュートリアルの :ref:`tank_tutorial_use_labo_model` で使用しているプラントモデルを使用してもかまいません。そちらの方が、本チュートリアルの後半でカメラ画像の通信を行う際に、よりそれらしい画像を得ることができます。（ただしモデルは重くなりますので、PC環境によってはシンプルな床のモデルの方が扱いやすいかもしれません。）Githubに公開している本チュートリアルのリポジトリでは、プラントモデルを使用しています。
 
 プロジェクトが構築できたら、メインメニューの「ファイル」-「名前を付けてプロジェクトを保存」を使用して、プロジェクトファイルに保存してください。保存先は本チュートリアル用に作成したディレクトリ内にさらに "project" というサブディレクトリを作成し、そこに "step1.cnoid" という名前で格納するようにしましょう。
 
-これにより、本チュートリアル用パッケージにおいて以下のようにディレクトリとファイルが追加されることになります。 ::
+これにより、本チュートリアル用パッケージにおいて以下のようにディレクトリとファイルが追加されることになります。
+
+.. code-block:: none
 
  + choreonoid_ros_tank_tutorial
    + project
@@ -108,7 +124,9 @@ Joyノードが起動しジョイスティックの検出に成功すると、�
 
  rostopic info /joy
 
-これにより、/joyに対応するトピックの情報が表示されます。これは以下のようになるかと思います。 ::
+これにより、/joyに対応するトピックの情報が表示されます。これは以下のようになるかと思います。
+
+.. code-block:: none
 
  Type: sensor_msgs/Joy
  
@@ -123,7 +141,9 @@ Joyノードが起動しジョイスティックの検出に成功すると、�
 
  rosmsg show sensor_msgs/Joy
 
-すると以下のように表示されるかと思います。 ::
+すると以下のように表示されるかと思います。
+
+.. code-block:: none
 
  std_msgs/Header header
    uint32 seq
@@ -138,7 +158,9 @@ Joyノードが起動しジョイスティックの検出に成功すると、�
 
  rostopic echo /joy
 
-これは指定したトピックの内容をテキストにしてコンソールに表示してくれるコマンドです。これを実行後に、ゲームパッドの軸を操作したり、ボタンを押したりしてみてください。するとコンソールに以下のような出力がされるはずです。 ::
+これは指定したトピックの内容をテキストにしてコンソールに表示してくれるコマンドです。これを実行後に、ゲームパッドの軸を操作したり、ボタンを押したりしてみてください。するとコンソールに以下のような出力がされるはずです。
+
+.. code-block:: none
 
  header: 
    seq: 1
@@ -181,6 +203,9 @@ Choreonoid版Joyノードの利用
 コントローラのソースコード
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. highlight:: c++
+   :linenothreshold: 7
+
 まずはコントローラのソースコードを掲載します。このコントローラは :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` と同様に、SimpleControllerを継承したものとなっています。SimpleController自体はROSとは独立したものですが、そこに単純にROSのコードを加えることで、ROSの機能を活用できるようになります。 ::
 
  #include <cnoid/SimpleController>
@@ -214,11 +239,6 @@ Choreonoid版Joyノードの利用
  public:
      virtual bool configure(SimpleControllerConfig* config)
      {
-         if(!ros::isInitialized()){
-             config->os() << config->controllerName()
-                          << " cannot be configured because ROS is not initialized." << endl;
-             return false;
-         }
          node.reset(new ros::NodeHandle);
          return true;
      }
@@ -308,7 +328,9 @@ Choreonoid版Joyノードの利用
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(JoyInputController)
 
 
-このソースコードは、パッケージディレクトリに "src" というサブディレクトリを作成し、そこに "JoyInputController.cpp" というファイル名で保存してください。すると、これまで追加したファイルの構成は以下のようになるかと思います。 ::
+このソースコードは、パッケージディレクトリに "src" というサブディレクトリを作成し、そこに "JoyInputController.cpp" というファイル名で保存してください。すると、これまで追加したファイルの構成は以下のようになるかと思います。
+
+.. code-block:: none
 
  + choreonoid_ros_tank_tutorial
    + project
@@ -322,6 +344,8 @@ Choreonoid版Joyノードの利用
 
 CMakeLists.txtの編集
 ~~~~~~~~~~~~~~~~~~~~
+
+.. highlight:: cmake
 
 :ref:`ros_tank_tutorial_edit_package_xml` では、Catkinのパッケージを構築するためにこのXMLファイルが必要なことを説明しました。実はパッケージの構築に必要なファイルとして、他に "CMakeLists.txt" というファイルもあります。これはビルドシステムのひとつであるCMakeのファイルで、パッケージにC++のソースコードが含まれる場合など、何らかのビルド処理が必要な場合に使用されます。
 
@@ -385,7 +409,7 @@ CMakeLists.txtの雛形となるものは、 :ref:`ros_tank_tutorial_make_packag
 依存パッケージの検出を行います。ここでは以下のパッケージを依存対象としています。
 
 * roscpp: ROSのC++ライブラリ
-* std_msgs: ROSの標準的なメッセージ
+v* std_msgs: ROSの標準的なメッセージ
 * sensor_msgs: センサ関連のメッセージ
 * image_transport: 画像転送のためのライブラリ
 * choreonoid: Choreonoid本体
@@ -426,8 +450,8 @@ find_packageでchoreonoidを指定すると、CHOREONOID_CXX_STANDARDという�
 
 本チュートリアルでは、C++で記述されるコントローラのソースファイルを別途 "src" ディレクトリに格納するようにしています。この構造にあわせて、各ソースファイルに直接対応する記述はsrcディレクトリのCMakeLists.txtにて行うものとし、ここではそのファイルを取り込むようにしています。
 
-CMakeLists.txtの追加
-~~~~~~~~~~~~~~~~~~~~
+srcディレクトリへのCMakeLists.txtの追加
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 上記の「srcディレクトリのCMakeLists.txt」については、以下の内容で作成して追加します。 ::
 
@@ -444,16 +468,23 @@ add_cnoid_simple_controller は、find_packageでchoreonoidを検出すると利
 コントローラのビルド
 ~~~~~~~~~~~~~~~~~~~~
 
+.. highlight:: sh
+
 コントローラのソースコードとCMakeLists.txtの記述ができたら、ビルドの準備は整ったことになります。ビルドはCatkinの以下のコマンドで行います。 ::
 
  catkin build
 
 このコマンドは、Catkinのワークスペース内であればどこのディレクトリで実行してもOKです。ビルドの方法については :doc:`../build-choreonoid` における :ref:`ros_catkin_build_command` の節も参考にしてください。
 
-ビルドの際には、 :ref:`ros_catkin_cmake_build_type` も行っておくとよいです。通常はビルドタイプを "Release" にしておきます。そうすることで、コンパイルの最適化が有効となり、より効率的なバイナリを生成することができます。特に設定しなければ最適化は有効になりませんので、注意が必要です。
+ビルドの際には、 :ref:`ros_catkin_cmake_build_type` も行っておくとよいです。通常はビルドタイプを "Release" にしておきます。これは以下のコマンドで設定できます。 ::
 
-なお、CMakeLists.txtに記述を追加することで、パッケージ側でデフォルトのビルドタイプを指定することもできます。その場合は以下のような記述をメインのCMakeLists.txtに追加します。 ::
+ catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
 
+この設定をしてからビルドを行うことで、コンパイルにおける最適化が有効となり、より効率的なバイナリを生成することができます。特に設定しなければ最適化は有効になりませんので、注意が必要です。
+
+なお、CMakeLists.txtに記述を追加することで、パッケージ側でデフォルトのビルドタイプを指定することもできます。その場合は以下のような記述をメインのCMakeLists.txtに追加します。
+
+.. code-block:: cmake
 
  if(NOT CMAKE_BUILD_TYPE)
    set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -462,7 +493,6 @@ add_cnoid_simple_controller は、find_packageでchoreonoidを検出すると利
  endif()
 
 追加する場所は、project関数によるプロジェクト名の設定の直後が適切です。この記述をしておけば、CatkinでCMakeのビルドタイプを設定しておかなくても、最適化の効いたReleaseビルドが適用されます。
-
 
 コントローラの導入
 ------------------
@@ -482,8 +512,8 @@ Launchファイルの導入
 ------------------
 
 
-補足：ChoreonoidのROS連携機能の現状
------------------------------------
+補足：ChoreonoidのROS連携機能の現状とroscppの活用について
+---------------------------------------------------------
 
 .. 自前のコーディングで大抵のことは対応可能
 
