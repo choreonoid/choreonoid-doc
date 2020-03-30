@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Choreonoidマニュアル
-=========================
+====================
 
 .. toctree::
    :maxdepth: 2
@@ -22,6 +22,7 @@ Choreonoidマニュアル
    reference/index
    plugin-development/index
    tips/index
+   update/index
 
 ..   python/index
 ..   plugins/index

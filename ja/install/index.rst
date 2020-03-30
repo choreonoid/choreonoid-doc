@@ -1,8 +1,7 @@
 インストール
 ============
 
-Choreonoidを利用するためにはまずPCへインストールすることが必要です。
-本ドキュメントではインストール方法について解説します。
+本節ではChoreonoidのインストール方法について解説します。
 
 .. toctree::
    :maxdepth: 2
@@ -11,6 +10,7 @@ Choreonoidを利用するためにはまずPCへインストールすること�
    build-ubuntu
    build-windows
    setup-gpu
+   setup-qt
    high-dpi-displays
    directories
    options
