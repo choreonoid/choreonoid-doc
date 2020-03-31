@@ -119,9 +119,9 @@ CMakeLists.txtの記述
 
 .. code-block:: cmake
 
- add_cnoid_simple_controller(TankTutorial_TurretController1 TurretController1.cpp)
+ choreonoid_add_simple_controller(TankTutorial_TurretController1 TurretController1.cpp)
 
-ここで用いている "add_cnoid_simple_controller" という関数は、Choreonoid本体のCMake記述にて予め定義された関数です。この関数に、生成されるコントローラの名前とソースファイルを与えるだけで、コントローラのコンパイルを行うことができます。
+ここで用いている "choreonoid_add_simple_controller" という関数は、Choreonoid本体のCMake記述にて予め定義された関数です。この関数に、生成されるコントローラの名前とソースファイルを与えるだけで、コントローラのコンパイルを行うことができます。
 
 今回コントローラ名に "TankTutorial" というプレフィックスをつけています。これは必須というわけではありませんが、今後他のプロジェクトで開発したコントローラと区別しやすくするためにつけています。
 

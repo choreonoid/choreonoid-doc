@@ -333,9 +333,8 @@ notifyKinematicStateChange関数が実行されると、最終的にBodyItemク�
 まず、 :ref:`hello-world-build-together` 場合は、CMakeLists.txtに以下のように記述します。 ::
 
   set(target CnoidSample1Plugin)
-  add_cnoid_plugin(${target} SHARED Sample1Plugin.cpp)
+  choreonoid_add_plugin(${target} Sample1Plugin.cpp)
   target_link_libraries(${target} CnoidBodyPlugin)
-  apply_common_setting_for_plugin(${target})
 
 記述内容はHelloWorldサンプルの場合とほぼ同様ですが、target_link_librariesの内容が少し異なります。今回のプラグインはBodyプラグインに依存しているため、依存ライブラリとしてCnoidBaseではなく、CnoidBodyPluginを指定するようにします。プラグインである以上、今回もCnoiBaseに依存はしているのですが、それは明示的に記述する必要はありません。これは、CnoidBodyPluginもCnoidBaseに依存しており、CnoidBodyPluginへの依存によってCnoidBaseにも依存することをCMakeが把握しているからです。
 

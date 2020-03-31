@@ -1,4 +1,3 @@
-
 ステップ5: ライトの制御
 =======================
 
@@ -94,14 +93,14 @@ Tankモデル、Labo1モデルのライトによる影を有効にしたシー�
      bool prevButtonState;
  
  public:
-     virtual bool initialize(SimpleControllerIO* io)
+     virtual bool initialize(SimpleControllerIO* io) override
      {
          light = io->body()->findDevice<SpotLight>("Light");
          prevButtonState = false;
          return true;
      }
  
-     virtual bool control()
+     virtual bool control() override
      {
          static const int buttonID[] = { 0, 2, 3 };
         
@@ -138,7 +137,7 @@ Tankモデル、Labo1モデルのライトによる影を有効にしたシー�
 
 CMakeLists.txt に ::
 
- add_cnoid_simple_controller(TankTutorial_LightController LightController.cpp)
+ choreonoid_add_simple_controller(TankTutorial_LightController LightController.cpp)
 
 を追加して、コンパイルを行って下さい。
 

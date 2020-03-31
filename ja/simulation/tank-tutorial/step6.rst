@@ -1,4 +1,3 @@
-
 ステップ6: カメラ画像のシミュレーションと取得
 =============================================
 
@@ -89,7 +88,7 @@ GLビジョンシミュレータアイテムの導入によりカメラ画像を
      std::ostream* os;
      
  public:
-     virtual bool initialize(SimpleControllerIO* io)
+     virtual bool initialize(SimpleControllerIO* io) override
      {
          camera = io->body()->findDevice<Camera>("Camera");
          io->enableInput(camera);
@@ -98,7 +97,7 @@ GLビジョンシミュレータアイテムの導入によりカメラ画像を
          return true;
      }
  
-     virtual bool control()
+     virtual bool control() override
      {
          joystick.readCurrentState();
  
@@ -125,7 +124,7 @@ GLビジョンシミュレータアイテムの導入によりカメラ画像を
 
 CMakeLists.txt に ::
 
- add_cnoid_simple_controller(TankTutorial_CameraController CameraController.cpp)
+ choreonoid_add_simple_controller(TankTutorial_CameraController CameraController.cpp)
 
 を追加して、コンパイルを行って下さい。
 

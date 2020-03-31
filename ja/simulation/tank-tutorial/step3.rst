@@ -1,4 +1,3 @@
-
 ステップ3: ゲームパッドによる砲塔の制御
 =======================================
 
@@ -229,7 +228,7 @@ Program Filesフォルダへの書き込みは管理者権限が必要ですの�
 
 .. code-block:: cmake
 
- add_cnoid_simple_controller(TankTutorial_TurretController2 TurretController2.cpp)
+ choreonoid_add_simple_controller(TankTutorial_TurretController2 TurretController2.cpp)
 
 これでChoreonoid本体のコンパイル操作を行うと、このコントローラも同時にコンパイルされ、コントローラディレクトリ内に "TankTutorial_TurretController2.so" というファイルが生成されます。
 

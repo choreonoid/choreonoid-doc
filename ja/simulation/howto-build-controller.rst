@@ -1,4 +1,3 @@
-
 コントローラのビルド
 ====================
 
@@ -28,9 +27,9 @@ Choreonoid本体と一緒にビルドを行う方法
 
 この方法では、サンプルのコントローラと同様に、Choreonoid本体のビルド時に自前のコントローラも一緒にビルドすることになります。逆に言えば、自前のコントローラをビルドする際にも、Choreonoid本体をビルドするコマンドを使用して、Choreonoidの一部としてコントローラをビルドするということになります。Choreonoidをソースコードからビルドしてお使いの場合は、この方法が一番手軽かと思われます。
 
-Choreonoid本体はCMakeを用いてビルドの記述が行われており、本手法はその中に自前のコントローラのビルド記述も含めてしまうというものです。CMakeにおいてビルドの記述には通常 "CMakeLists.txt" という名前のファイルを用いることになっているため、本手法ではコントローラについてもこのファイルにてビルドの記述を行います。この際、Choreonoid本体で定義されている "add_cnoid_simple_controller" というCMakeの関数を用いることで、シンプルコントローラのビルド記述を簡潔に行うことができます。この関数に与える引数は以下のようになっています。 ::
+Choreonoid本体はCMakeを用いてビルドの記述が行われており、本手法はその中に自前のコントローラのビルド記述も含めてしまうというものです。CMakeにおいてビルドの記述には通常 "CMakeLists.txt" という名前のファイルを用いることになっているため、本手法ではコントローラについてもこのファイルにてビルドの記述を行います。この際、Choreonoid本体で定義されている "choreonoid_add_simple_controller" というCMakeの関数を用いることで、シンプルコントローラのビルド記述を簡潔に行うことができます。この関数に与える引数は以下のようになっています。 ::
 
- add_cnoid_simple_controller(コントローラ名 ソースファイル ...)
+ choreonoid_add_simple_controller(コントローラ名 ソースファイル ...)
 
 ソースファイルは１つでも結構ですし、複数記述することも可能です。
 
@@ -40,7 +39,7 @@ Choreonoid本体はCMakeを用いてビルドの記述が行われており、�
 
 そして、以下の内容を記述したCMakeLists.txtを作成し、同じディレクトリに保存してください。 ::
 
- add_cnoid_simple_controller(MyController MyController.cpp)
+ choreonoid_add_simple_controller(MyController MyController.cpp)
 
 .. highlight:: text
 
@@ -58,7 +57,7 @@ Choreonoid本体はCMakeを用いてビルドの記述が行われており、�
 
 .. note:: ext以外のディレクトリに配置したソースディレクトリを取り込むこともできます。その場合は、Choreonoid本体のCMakeにおいて **ADDITIONAL_EXT_DIRECTORIES** に取り込みたいソースディレクトリへのパスを設定してください。セミコロンで区切ることで、複数設定することも可能です。
 
-.. note:: コントローラが外部のライブラリをリンクして使う場合など、コントローラの構成が複雑になってくると、add_cnoid_simple_controller以外にもCMakeLists.txtの記述が必要になる場合があります。その場合は、CMakeのマニュアルやadd_cnoid_simple_controller関数の定義などを参照して、適切な記述を行うようにしてください。（add_cnoid_simple_controller関数はChoreonoidソースのsrc/Body/CMakeListst.txt内にて定義されています。）
+.. note:: コントローラが外部のライブラリをリンクして使う場合など、コントローラの構成が複雑になってくると、choreonoid_add_simple_controller以外にもCMakeLists.txtの記述が必要になる場合があります。その場合は、CMakeのマニュアルやchoreonoid_add_simple_controller関数の定義などを参照して、適切な記述を行うようにしてください。（choreonoid_add_simple_controller関数はChoreonoidソースのsrc/Body/ChoreonoidBodyBuildFunctions.cmakeにて定義されています。）
 
 Choreonoid本体とは別にビルドを行う方法
 --------------------------------------

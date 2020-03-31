@@ -1,4 +1,3 @@
-
 HelloWorld サンプルの解説
 =========================
 
@@ -309,9 +308,8 @@ HelloWorldプラグインの場合、以下のような構成でファイルを�
 そして、CMakeLists.txtには以下のように記述します。 ::
 
  set(target CnoidHelloWorldPlugin)
- add_cnoid_plugin(${target} SHARED HelloWorldPlugin.cpp)
+ choreonoid_add_plugin(${target} HelloWorldPlugin.cpp)
  target_link_libraries(${target} CnoidBase)
- apply_common_setting_for_plugin(${target})
 
 ここではまず ::
 
@@ -319,19 +317,15 @@ HelloWorldプラグインの場合、以下のような構成でファイルを�
 
 で、プラグイン名を設定しています。プラグインの名前は、このように "Cnoid" で始め、"Plugin" で終わるようにします。ここではこの名前をtargetという変数に設定し、以下に続くコマンドで使用できるようにしています。必ずしも変数に設定する必要はありませんが、このようにすることで、プラグイン名の設定を一元化しています。 ::
 
- add_cnoid_plugin(${target} SHARED HelloWorldPlugin.cpp)
+ choreonoid_add_plugin(${target} HelloWorldPlugin.cpp)
 
-これがプラグインを実際にビルドするための記述です。"add_cnoid_plugin" はChoreonoid本体のCMakeファイルで定義されているコマンドで、ここにプラグイン名やソースファイル名を指定することで、プラグインのビルドすることができます。このコマンドはChoreonoidソースのトップディレクトリにあるCMakeLists.txtにて記述されていますので、詳細を知りたい方はそちらをご確認ください。基本的にはCMakeでライブラリを作成する際に使用する "add_library" コマンドをプラグイン用にカスタマイズしたものとなっており、add_libraryコマンドと同様に使用します。 ::
+これがプラグインを実際にビルドするための記述です。"choreonoid_add_plugin" はChoreonoid本体のCMakeファイルで定義されているコマンドで、ここにプラグイン名やソースファイル名を指定することで、プラグインのビルドすることができます。このコマンドはChoreonoidソースのトップディレクトリにあるCMakeLists.txtにて記述されていますので、詳細を知りたい方はそちらをご確認ください。基本的にはCMakeでライブラリを作成する際に使用する "add_library" コマンドをプラグイン用にカスタマイズしたものとなっており、add_libraryコマンドと同様に使用します。 ::
 
  target_link_libraries(${target} CnoidBase)
 
 これはプラグインが依存するライブラリを明示するための記述で、ここではChoreonoid本体に含まれる "CnoidBase" ライブラリを指定しています。CnoidBaseはChoreonoidのGUIのベースとなる部分を実装しているライブラリで、本サンプルで使用するメッセージビューの実装もここに含まれています。Choreonoidのプラグインであれば必ずリンクすることが必要なライブラリです。この記述により、HelloWorldプラグインにCnoidBaseライブラリがリンクされるようになります。
 
-なお、CMakeでは、同一のプロジェクトで定義されているライブラリをtarget_link_librariesで指定すると、そのライブラリが依存している全てのライブラリへのリンクも行われるようになります。例えば、CnoidBaseはQtのライブラリにも依存しているため、上記の記述でHelloWorldプラグインにもQtのライブラリがリンクされるようになります。このように、本手法ではリンクすべきライブラリについてあまり細かい部分まで気にせずに完結に記述することができます。 ::
-
- apply_common_setting_for_plugin(${target})
-
-プラグインに対して共通で適用すべき設定をしてくれるコマンドです。このコマンドもトップディレクトリのCMakeLists.txtにて定義されています。プラグインには通常この記述もしておきます。これにより、例えば "make install" によってプラグインもインストールすれるようになります。
+なお、CMakeでは、同一のプロジェクトで定義されているライブラリをtarget_link_librariesで指定すると、そのライブラリが依存している全てのライブラリへのリンクも行われるようになります。例えば、CnoidBaseはQtのライブラリにも依存しているため、上記の記述でHelloWorldプラグインにもQtのライブラリがリンクされるようになります。このように、本手法ではリンクすべきライブラリについてあまり細かい部分まで気にせずに完結に記述することができます。
 
 CMakeLists.txt の記述方法の詳細は `CMakeのマニュアル <http://www.cmake.org/cmake/help/help.html>`_ を参照してください。また、Choreonoidに含まれるライブラリや他のプラグイン、サンプルのCMakeLists.txtを読むことで、おおよその書き方が分かってくるかと思います。
 
@@ -439,7 +433,7 @@ CMakeのプロジェクトを設定します。今回は単体でビルドする
 
 プラグインは共有ライブラリになりますので、CMake標準のadd_libraryコマンドでビルドを行うことができます。
 
-:ref:`hello-world-build-together` では、add_libraryを拡張したadd_cnoid_pluginというコマンドでプラグインをビルドしましたが、プラグインを単体でビルドする場合は直接add_libaryを使用するようにします。 ::
+:ref:`hello-world-build-together` では、add_libraryを拡張したchoreonoid_add_pluginというコマンドでプラグインをビルドしましたが、プラグインを単体でビルドする場合は直接add_libaryを使用するようにします。 ::
 
  target_link_libraries(${target} ${CHOREONOID_BASE_LIBRARIES})
 

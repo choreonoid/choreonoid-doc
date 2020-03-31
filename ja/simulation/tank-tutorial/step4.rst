@@ -1,4 +1,3 @@
-
 ステップ4: クローラの制御
 =========================
 
@@ -74,7 +73,7 @@ Tankモデルでは、左クローラに対応するリンクが "TRACK_L"、右
 
 これまでと同様に、上記のソースコードを "TrackController.cpp" というファイル名でプロジェクトディレクトリに保存し、同ディレクトリ内のCMakeLists.txtに ::
 
- add_cnoid_simple_controller(TankTutorial_TrackController TrackController.cpp)   
+ choreonoid_add_simple_controller(TankTutorial_TrackController TrackController.cpp)   
 
 という記述を追加し、コンパイルを行って下さい。
  
