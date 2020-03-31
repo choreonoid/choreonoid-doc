@@ -214,7 +214,6 @@ Choreonoid版Joyノード
  #include <sensor_msgs/Joy.h>
  #include <mutex>
  
- using namespace std;
  using namespace cnoid;
  
  namespace {
@@ -224,7 +223,7 @@ Choreonoid版Joyノード
  
  class JoyInputController : public SimpleController
  {
-     unique_ptr<ros::NodeHandle> node;
+     std::unique_ptr<ros::NodeHandle> node;
      ros::Subscriber joystickSubscriber;
      sensor_msgs::Joy latestJoystickState;
      std::mutex joystickMutex;
@@ -237,7 +236,7 @@ Choreonoid版Joyノード
      double dt;
  
  public:
-     virtual bool configure(SimpleControllerConfig* config)
+     virtual bool configure(SimpleControllerConfig* config) override
      {
          node.reset(new ros::NodeHandle);
          return true;
@@ -245,7 +244,7 @@ Choreonoid版Joyノード
  
      virtual bool initialize(SimpleControllerIO* io) override
      {
-         ostream& os = io->os();
+         std::ostream& os = io->os();
          Body* body = io->body();
          dt = io->timeStep();
  
@@ -282,9 +281,9 @@ Choreonoid版Joyノード
          {
              std::lock_guard<std::mutex> lock(joystickMutex);
              joystick = latestJoystickState;
-             joystick.axes.resize(10, 0.0f);
-             joystick.buttons.resize(10, 0);
          }
+         joystick.axes.resize(Joystick::NUM_STD_AXES, 0.0f);
+         joystick.buttons.resize(Joystick::NUM_STD_BUTTONS, 0);
              
          double pos[2];
          for(int i=0; i < 2; ++i){
@@ -639,9 +638,119 @@ ROSでは多数のノードを組み合わせてシステムを構築するこ�
 
 最後に :ref:`ros_tank_tutorial_step1_source` について解説します。このコントローラにおける関節制御の部分は :doc:`../../simulation/tank-tutorial/index` の
 
-* :doc:`../../simulation/tank-tutorial/step2`
-* :doc:`../../simulation/tank-tutorial/step3`
+* :doc:`../../simulation/tank-tutorial/step2` ( :ref:`tank_tutorial_step2_implementation` )
+* :doc:`../../simulation/tank-tutorial/step3` ( :ref:`simulation-tank-tutorial-step3-implementation` )
 
 で作成しているものとほぼ同じです。本コントローラでは、制御の指令値をJoyトピックのSubscribeで取得するところが異なっていますので、以下ではその部分を中心に解説します。
 
+.. highlight:: c++
 
+まずC++用ROSライブラリであるroscppの以下のヘッダをインクルードしています。 ::
+
+ #include <ros/node_handle.h>
+ #include <sensor_msgs/Joy.h>
+
+<ros/node_handle.h>をインクルードすることで、roscppのNodeHandleクラスを使用できるようになります。これはROSのノードに対応するもので、このクラスのオブジェクトを介してトピックをPublishしたりSubscribeしたりすることが可能となります。
+
+また、<sensor_msgs/Joy.h>はJoyメッセ−ジに対応するヘッダです。これをインクルードすることで、C++においてJoyメッセージにアクセスすることが可能となります。 ::
+
+ #include <mutex>
+
+標準C++ライブラリのmutexクラスを使用できるようにします。トピックの通信は非同期通信となりますが、そこで取得された状態を制御ループに渡す際に排他制御が必要となります。これを行うためにmutexが必要となります。
+
+JoyトピックのSubscribeに関わる変数について解説します。まず ::
+
+ std::unique_ptr<ros::NodeHandle> node;
+
+はROSノードに対応する変数です。正確にはROSノードはプロセスごとに割り当てられるもので、こちらはノードのハンドルにあたるもので、プロセス内で複数生成して使用することができます。ここではstd::unique_ptrを用いてポインタとして管理しており、実際にオブジェクトを生成するのは以下で述べる初期化関数で行っています。 ::
+
+ ros::Subscriber joystickSubscriber;
+
+トピックをSubscribeするためには、Subscriberを作成する必要があります。こちらは作成したSubscriberを格納するための変数となります。 ::
+
+ sensor_msgs::Joy latestJoystickState;
+
+Joy型のメッセージを格納する変数です。<sensor_msgs/Joy.h>で定義されているものです。 ::
+
+ std::mutex joystickMutex;
+
+Joyメッセージのやりとりにおいて排他制御を行うためのmutexです。
+
+ROSのNodeHandleは以下の関数で生成しています。 ::
+
+ virtual bool configure(SimpleControllerConfig* config) override
+ {
+     node.reset(new ros::NodeHandle);
+     return true;
+ }
+
+ここで生成したNodeHandleは、使用を終えたらdeleteする必要があります。これを自動で行うため、std::unique_ptrのスマートポインタを使用しています。
+
+ここで実装しているconfigure関数は、SimpleControllerクラスで定義されている初期化関数のひとつです。virtual関数として定義されており、これをオーバライドすることで初期化処理を実装することができます。実はSimpleControllerでは初期化を行うためのvirtual関数が3つ用意されており、それぞれ以下のタイミングで呼ばれるようになっています。
+
+* configure: コントローラがプロジェクトに導入された時点で呼ばれる
+* initialize: シミュレーション開始の直前に呼ばれる
+* start: シミュレーションの初期化が完了した後、コントローラが稼働開始する際に呼ばれる
+
+通常はinitialize関数で初期化を行えばよいのですが、それはシミュレーション開始時に初めて処理されるものなので、シミュレーション開始前に行っておきたい初期化は、configure関数で記述する必要があります。ROSの場合ノード間の接続が重要になりますが、これをシミュレーション開始前に確認したり、全て完了しておきたいといったことがあります。これを実現するためにはNodeHandleもシミュレーション開始前に生成されている必要があるため、それをconfigure関数で行うようにしています。
+
+通常の初期化処理はinitialize関数に実装しています。その大部分はクローラと砲塔・砲身軸の制御のための準備で、詳細は :doc:`../../simulation/tank-tutorial/index` で解説しておりますので、ここでは詳細を省きます。ROSと関連する部分としては、以下の処理を記述しています。 ::
+
+ joystickSubscriber = node->subscribe("joy", 1, &JoyInputController::joystickCallback, this);
+
+この記述により、joyトピックをSubscribeするための初期化を行っています。NodeHandleのsubscribe関数に対象のトピック名を指定してSubscriberを生成します。生成したSubscriberはSubscriber型の変数に格納します。これはSubscriberの実態へのリファレンスとなっていて、これによってSubscriberの生存管理を行います。
+
+2番目の引数はトピックの受信に使用するキューのサイズを指定しています。この値を増やすことで、受信するメッセージの取りこぼしを少なくすることができるようです。ただし本サンプルでは最新のジョイスティックの状態を取得できればよいので、途中の取りこぼしは気にしないこととし、キューサイズとして1を指定しています。
+
+3、4番目の引数で、Subscribe時のコールバック関数を指定しています。コールバック関数の指定の仕方はいくつかあるのですが、ここではメンバ関数を対象としたものを使用していて、JoyInputControllerのjoystickCallbak関数を指定しています。
+
+以上の記述により、joyトピックがPublishされると、それがChoreonoidのROSノードで受信され、受信されたJoyメッセージがjoystickCallback関数に渡されるようになります。この受信処理は非同期に行われ、コールバック関数はコントローラの制御関数とは異なるスレッドから呼ばれることになるので、その点注意が必要です。
+
+コールバック関数は以下のように実装されています。 ::
+
+ void joystickCallback(const sensor_msgs::Joy& msg)
+ {
+     std::lock_guard<std::mutex> lock(joystickMutex);
+     latestJoystickState = msg;
+ }
+
+コールバック関数の引数は、対象としているトピックのメッセージ型になります。ここではsensor_msgs::Joy型のメッセージが引数として渡されます。
+
+ここでやりたいことは、このメッセージの内容（ゲームパッドの状態）を、シンプルコントローラの制御コードに渡すことです。そのための変数として、同じメッセージ型の "latestJoystickState" という変数を使用していて、受信したメッセージの内容をこの変数にコピーしています。この変数を制御関数でも参照することで、ゲームパッドの状態を制御に反映します。
+
+ただし、上述したようにこのコールバック関数はコントローラの制御関数とは異なるスレッドから任意のタイミングでコールされます。その場合、この関数によるlatestJoystickStateの上書きと、制御関数による同変数の参照が、タイミング的に競合してしまう可能性があります。これを避けるため、変数のアクセスに対して排他制御をかける必要があります。これをjoystickMutexによって実現しています。
+
+制御関数においてこの変数を参照する部分は以下になります。 ::
+
+ virtual bool control() override
+ {
+     sensor_msgs::Joy joystick;
+     {
+         std::lock_guard<std::mutex> lock(joystickMutex);
+         joystick = latestJoystickState;
+     }
+     joystick.axes.resize(Joystick::NUM_STD_AXES, 0.0f);
+     joystick.buttons.resize(Joystick::NUM_STD_BUTTONS, 0);
+     ....
+
+ここでは同じJoy型の変数joystickを用意し、latestJoystickStateの内容を一旦その変数にコピーしようとしています。この部分にてもjoystickMutexによる排他制御をかけることで、コールバック関数との間で変数latestJoystickStateに関する競合が生じないようにしています。
+
+排他制御をかける範囲をなるべく少なくするため、あえてjoystickという変数を導入し、この変数へのコピーだけに排他制御をかければ済むようにしています。今回のサンプルではcontrol関数の実装はとてもシンプルなものであり、実行に時間がかかるというものでもないため、control関数全体に排他制御をかけてlatestJoystickStateを直接参照したとしても、特に問題はないかと思います。ただ制御がより複雑になり実行時間もかかるようになってくると、このサンプルのようになるべく排他制御をかける範囲（時間）を少なくするのが望ましいです。
+
+なお、 ::
+
+ joystick.axes.resize(Joystick::NUM_STD_AXES, 0.0f);
+ joystick.buttons.resize(Joystick::NUM_STD_BUTTONS, 0);
+
+の部分は、choreonoid_joyノードを使用する場合は必要ありません。ROS標準のjoyノードを使用する場合は、接続するジョイスティックによって軸やボタンの数が変わってくるので、それが想定以下とならないように、念の為この処理を入れています。
+
+後はここでコピーしたjoystick変数からゲームパッドの現在の状態を取得して、そこから指令値を算出し、それをもとにクローラの駆動速度指令や砲塔・砲身軸のPD制御を行っています。具体的な制御内容はやはり :doc:`../../simulation/tank-tutorial/index` で解説しているものと同じなので、ここでは詳細を省きます。
+
+最後に、 ::
+
+ virtual void stop() override
+ {
+     joystickSubscriber.shutdown();
+ }
+
+でコントローラ停止時の処理を記述しています。コントローラが停止すればもうjoyトピックをSubscribeする必要はなくなるので、joystickSubscriberのshutdown関数によってSubscribeの処理を終了しています。
