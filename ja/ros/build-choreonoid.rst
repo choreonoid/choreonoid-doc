@@ -106,15 +106,21 @@ Choreonoidのソースディレクトリに移動し、 ::
 CMakeオプションの設定
 ---------------------
 
-ChoreonoidのビルドにおいてCMakeのオプションを設定したい場合は、catkin の config コマンドを使用します。
+ChoreonoidのビルドにおいてCMakeのオプションを設定したい場合は、catkin の config コマンドの "--cmake-args" オプションを使用します。
 
-例えばメディアプラグインをビルドしたい場合は、以下のようにします。 ::
+まず、 ::
+
+ catkin config --cmake-args -DBUILD_CHOREONOID_EXECUTABLE=OFF
+
+によって、Choreonoidの通常の実行ファイルの生成を禁止しておくとよいです。ROSでは通常の実行ファイルの代わりに「ノード」と呼ばれる形態でプログラムを起動するようになっており、Choreonoid用のノード実行ファイルはchoreonoid_rosパッケージに含まれています。Choreonoidの通常の実行ファイルとノード版の実行ファイルの両方があると混乱してしまう可能性がありますが、上記のオプションによりこれを回避することができます。
+
+Choreonoidのオプションのプラグインを有効にすることも可能です。例えばChoreonoid上で動画や音声のファイルを再生するための「メディアプラグイン」を利用したい場合は、以下のようにします。 ::
 
  catkin config --cmake-args -DBUILD_MEDIA_PLUGIN=ON
 
-複数のオプションを設定したい場合、オプションを列挙すればOKです。例えば以下のコマンドでメディアプラグインとシーンエフェクトプラグインの両方をONにできます。 ::
+複数のオプションを設定したい場合、オプションを列挙すればOKです。例えば以下のコマンドで通常の実行ファイルの生成禁止とメディアプラグインのビルドを両方設定できます。 ::
 
- catkin config --cmake-args -DBUILD_MEDIA_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON
+ catkin config --cmake-args -DBUILD_CHOREONOID_EXECUTABLE=OFF -DBUILD_MEDIA_PLUGIN=ON
 
 設定後 ::
 
@@ -124,7 +130,7 @@ ChoreonoidのビルドにおいてCMakeのオプションを設定したい場�
 
 .. code-block:: none
 
- Additional CMake Args:  -DBUILD_MEDIA_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON
+ Additional CMake Args: -DBUILD_CHOREONOID_EXECUTABLE=OFF -DBUILD_MEDIA_PLUGIN=ON
 
 といった表示があればOKです。
 
