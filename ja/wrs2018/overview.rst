@@ -40,11 +40,11 @@
 本競技で使用するシミュレータの情報を以下にまとめます。
 
 * シミュレータ:ソフトウェア: Choreonoid
-* Choreonoidバージョン: 開発版を使用。実際に使用されたバージョンには `wrs2018のタグをつけています <https://github.com/s-nakaoka/choreonoid/tree/wrs2018>`_ 。
+* Choreonoidバージョン: 開発版を使用。実際に使用されたバージョンには `wrs2018のタグをつけています <https://github.com/choreonoid/choreonoid/tree/wrs2018>`_ 。
 * OS: Ubuntu Linux 16.04 64bit版
 * 商用物理エンジン "AGX Dynamics" を利用
 
-Choreonoidの開発版は `github上のChoreonoidリポジトリ <https://github.com/s-nakaoka/choreonoid>`_ から取得可能です。
+Choreonoidの開発版は `github上のChoreonoidリポジトリ <https://github.com/choreonoid/choreonoid>`_ から取得可能です。
 
 OSはUbntu Linuxを使用します。バージョンは16.04の64ビット版を前提とします。
 

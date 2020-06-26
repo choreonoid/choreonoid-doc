@@ -31,7 +31,7 @@ Choreonoidのリリース版のソースコードは、 `ダウンロード <htt
 
 Choreonoid開発版も利用可能です。これは `git <http://git-scm.com/>`_ リポジトリとして管理されており、 `github <https://github.com/>`_ の以下のアドレスにて公開されています。
 
-- https://github.com/s-nakaoka/choreonoid
+- https://github.com/choreonoid/choreonoid
 
 リポジトリの利用にあたってはgitコマンドが必要です。Ubuntuでは以下のコマンドでgitをインストールできます。 ::
 
@@ -39,7 +39,7 @@ Choreonoid開発版も利用可能です。これは `git <http://git-scm.com/>`
 
 Choreonoidのリポジトリは以下のコマンドを実行することで取得できます。 ::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
 
 これによってリポジトリを格納した "choreonoid" というディレクトリが生成されます。このディレクトリ内で ::
 

@@ -39,7 +39,7 @@ ROS上で新たに作成／開発して使用するデータやプログラム�
 なお、本チュートリアルのパッケージは、Githubにてソースを公開しています。そのリポジトリをクローンすることで、ソースコードの入力を行わずに本チュートリアルを試すことも可能です。この場合、上記のコマンドの代わりに、以下を実行します。 ::
 
  cd ~/catkin_ws/src
- git clone https://github.com/s-nakaoka/choreonoid_ros_tank_tutorial.git
+ git clone https://github.com/choreonoid/choreonoid_ros_tank_tutorial.git
 
 これで、パッケージを作成した上で、本チュートリアルで必要な全てのファイルを作成したのと同じ状況になります。
 
@@ -67,7 +67,7 @@ package.xmlの内容は、 パッケージ生成コマンドを実行する際�
    <license>MIT</license>
    <author email="nakaoka@choreonoid.co.jp">Shin'ichiro Nakaoka</author>
    <url type="website">http://choreonoid.org</url>
-   <url type="repository">https://github.com/s-nakaoka/choreonoid_ros_tank_tutorial.git</url>
+   <url type="repository">https://github.com/choreonoid/choreonoid_ros_tank_tutorial.git</url>
    <buildtool_depend>catkin</buildtool_depend>
    <depend>choreonoid</depend>
    <depend>choreonoid_ros</depend>

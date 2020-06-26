@@ -36,23 +36,23 @@ Choreonoid用のCatkinワークスペースを作成します。
 作成したワークスペースの "src" ディレクトリ内に、Choreonoid本体とROSプラグインのソースコードリポジトリをクローンします。 ::
 
  cd src
- git clone https://github.com/s-nakaoka/choreonoid.git
- git clone https://github.com/s-nakaoka/choreonoid_ros.git
+ git clone https://github.com/choreonoid/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid_ros.git
 
 それぞれ以下のGithubリポジトリに対応しています。
 
-* `choreonoid <https://github.com/s-nakaoka/choreonoid>`_ : Choreonoid本体
-* `choreonoid_ros <https://github.com/s-nakaoka/choreonoid_ros>`_ : ChoreonoidでROSの機能を使用するためのROSパッケージ
+* `choreonoid <https://github.com/choreonoid/choreonoid>`_ : Choreonoid本体
+* `choreonoid_ros <https://github.com/choreonoid/choreonoid_ros>`_ : ChoreonoidでROSの機能を使用するためのROSパッケージ
 
 また、次節以降の解説を参照する場合は、そこで使用するサンプルもクローンしておきましょう。 ::
 
- git clone https://github.com/s-nakaoka/choreonoid_ros_samples.git
- git clone https://github.com/s-nakaoka/choreonoid_joy.git
+ git clone https://github.com/choreonoid/choreonoid_ros_samples.git
+ git clone https://github.com/choreonoid/choreonoid_joy.git
 
 それぞれ以下のGithubリポジトリに対応しています。
 
-* `choreonoid_ros_samples <https://github.com/s-nakaoka/choreonoid_ros_samples>`_ : ChoreonoidでROSを使用するサンプル
-* `choreonoid_joy <https://github.com/s-nakaoka/choreonoid_joy>`_ : ジョイスティック（ゲームパッド）をChoreonoidのマッピングで使うためのROSノード
+* `choreonoid_ros_samples <https://github.com/choreonoid/choreonoid_ros_samples>`_ : ChoreonoidでROSを使用するサンプル
+* `choreonoid_joy <https://github.com/choreonoid/choreonoid_joy>`_ : ジョイスティック（ゲームパッド）をChoreonoidのマッピングで使うためのROSノード
 
 各リポジトリの内容はなるべく最新に保つようにしてください。
 
@@ -239,7 +239,7 @@ ROS環境のセットアップスクリプトがシステムに読み込まれ�
 
 これを避けるためには、上記の :ref:`loading_catkin_workspace_setup_script` や :doc:`install-ros` で述べたsetup.bashスクリプトの取り込みについて、ROSとは独立したソフトウェアを使用する際には無効にしておくのが無難です。.bashrc の該当部分をコメントアウトするなどしてから、OSや端末を起動し直すことで、無効にすることができます。
 
-なお、Choreonoidに関しては、実行ファイルや共有ライブリファイルの中に埋め込まれたRPATHという情報により、他の環境でビルドされたライブラリと混ざらないように実行することが可能となっています。この機能はビルドディレクトリ内に生成される実行ファイルやライブラリに関してはデフォルトで有効になります。（ただし比較的新しいUbuntuのバージョンに関しては `この更新 <https://github.com/s-nakaoka/choreonoid/commit/7f7900c3ec945f9da97b0e2ee484c1ddfe63d978>`_  以降であることが必要。）また、CMakeのENABLE_INSTALL_RPATHをONにすることで、"make install" によってインストールされるファイルに関してもこれが有効になります。
+なお、Choreonoidに関しては、実行ファイルや共有ライブリファイルの中に埋め込まれたRPATHという情報により、他の環境でビルドされたライブラリと混ざらないように実行することが可能となっています。この機能はビルドディレクトリ内に生成される実行ファイルやライブラリに関してはデフォルトで有効になります。（ただし比較的新しいUbuntuのバージョンに関しては `この更新 <https://github.com/choreonoid/choreonoid/commit/7f7900c3ec945f9da97b0e2ee484c1ddfe63d978>`_  以降であることが必要。）また、CMakeのENABLE_INSTALL_RPATHをONにすることで、"make install" によってインストールされるファイルに関してもこれが有効になります。
 
 上記の更新以降では、CMakeのオプションで ENABLE_NEW_DTAGS というオプションが追加されています。これはデフォルトではOFFですが、ONにするとRPATHよりもLD_LIBRARY_PATHの情報が優先されるようになり、混ざってしまう危険性が高くなります。このオプションは特に必要が無い場合はOFFのままとしてください。
 

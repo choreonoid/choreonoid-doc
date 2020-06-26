@@ -57,7 +57,7 @@ Choreonoidのインストール
 
 まずGitリポジトリからChoreonoidのソースコードを取得します。 ::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
 
 取得したソースコードのディレクトリに移動します。 ::
 

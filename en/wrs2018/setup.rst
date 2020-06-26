@@ -58,7 +58,7 @@ Refer to the above document for more details about the installation and run the 
 
 First, get the Choreonoid source code from the Git repository. ::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
 
 Move to the directory where the source code is saved. ::
 

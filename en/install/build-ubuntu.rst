@@ -29,7 +29,7 @@ Development version
 
 You can also use the development version of Choreonoid. This version is managed as a `git <http://git-scm.com/>`_ repository. You can find it at the following `GitHub <https://github.com/>`_ address.
 
-- https://github.com/s-nakaoka/choreonoid
+- https://github.com/choreonoid/choreonoid
 
 You need to run git commands to use this repository. In Ubuntu, you can install git using the following command. ::
 
@@ -37,7 +37,7 @@ You need to run git commands to use this repository. In Ubuntu, you can install 
 
 You can check out the Choreonoid repository by executing the following command. ::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
 
 This creates a "choreonoid" directory that holds the repository. In this directory, you can use commands such as ::
 

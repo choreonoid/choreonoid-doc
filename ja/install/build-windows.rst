@@ -133,7 +133,7 @@ Choreonoidのリリース版のソースコードは、 `ダウンロード <htt
 
 Choreonoid開発版も利用可能です。これは `git <http://git-scm.com/>`_ リポジトリとして管理されており、 `github <https://github.com/>`_ の以下のアドレスにて公開されています。
 
-- https://github.com/s-nakaoka/choreonoid
+- https://github.com/choreonoid/choreonoid
 
 ここからソースを取得するには2つの方法があります。
 
@@ -183,7 +183,7 @@ git for windows を使用する
 
 インストールが終了したら、コマンドプロンプトを開いて、choreonoidのソースを保存したいディレクトリに移動して、以下のコマンドを実行します。::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
 
 これによってリポジトリを格納した "choreonoid" というディレクトリが生成されます。以降はこのディレクトリ内で ::
 
@@ -197,7 +197,7 @@ git for windows を使用する
 Zipファイルで取得する
 ^^^^^^^^^^^^^^^^^^^^^
 
-ウェブブラウザを使用して `Choreonoidのリポジトリ <https://github.com/s-nakaoka/choreonoid/>`_ を開き、赤四角で示した緑の **Clone or download** ボタンをクリックすると、次のように表示されます。
+ウェブブラウザを使用して `Choreonoidのリポジトリ <https://github.com/choreonoid/choreonoid/>`_ を開き、赤四角で示した緑の **Clone or download** ボタンをクリックすると、次のように表示されます。
 
 .. figure:: images/downloadZip.png
    :width: 600px

@@ -170,7 +170,7 @@ Development version
 
 You can also use the Choreonoid development version if you wish. It is managed as a `Git <http://git-scm.com/>`_  repository, and it is published at the following `github <https://github.com/>`_ address.
 
-- https://github.com/s-nakaoka/choreonoid
+- https://github.com/choreonoid/choreonoid
 
 There are two ways to get the source code from here.
 
@@ -218,7 +218,7 @@ Download the file from `Git for Windows <https://git-for-windows.github.io/>`_ a
 
 When the installation is complete, launch the Command Prompt, go to the directory which contains the Choreonoid source you want to save, and execute the following command.: ::
 
- git clone https://github.com/s-nakaoka/choreonoid.git
+ git clone https://github.com/choreonoid/choreonoid.git
  
 This will create a “choreonoid” directory containing the repository. You can then use the following command: ::
  
@@ -231,7 +231,7 @@ The above will allow you to get the source code, but for detailed usage of Git y
 Getting it as a Zip file
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Open the `Choreonoid repository <https://github.com/s-nakaoka/choreonoid/>`_  using a web browser, click on the green Clone or download button outlined by the red rectangle, and it will be displayed as follows.
+Open the `Choreonoid repository <https://github.com/choreonoid/choreonoid/>`_  using a web browser, click on the green Clone or download button outlined by the red rectangle, and it will be displayed as follows.
 
 
 .. figure:: images/downloadZip.png
