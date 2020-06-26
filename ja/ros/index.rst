@@ -11,3 +11,4 @@ ROSとの連携
    run-choreonoid
    rosplugin
    tank-tutorial/index
+   ros-control/index
