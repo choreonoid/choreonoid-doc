@@ -403,93 +403,8 @@ Assimpのインストールが出来ましたら、再びCMakeを起動して、
 
 後は、choreonoidのビルド手順を行ってください。
 
-.. _build_windows_openrtm_plugin:
-
-OpenRTMプラグイン
-~~~~~~~~~~~~~~~~~
-
-コレオノイド上でRTコンポーネントによるシミュレーションを行うためのプラグインです。このプラグインを利用するためには、OpenRTM-aist 1.1.2 と、Pythonをインストールしておく必要があります。
-
-なお、OpenRTM-aist 1.1.2が対応するのはVC++2015となりますので、このプラグインを使用する場合はVC++2015を使うようにしてください。
-
-.. note:: OpenRTM 1.2.0 については、プラグインのビルドはできるようなのですが、まだ正常に動作しない部分があるようですので、現状では使用を控えるようにしてください。
-
-Pythonのインストール
-^^^^^^^^^^^^^^^^^^^^
-
-OpenRTM-aist 1.1.2のインストールには、Python2が必要ですので、まず、 **Python2** をインストールします。 
-
-`Python <http://www.python.org/>`_ のサイトにアクセスします。
-
-.. figure:: images/python2_1.png
-   :width: 500px
-
-**Downloads** にカーソルを合わせるとプルダウンメニューが表示されるので、 **Windows** を選択します。
-
-.. figure:: images/python2_2.png
-   :width: 500px
-
-最新バージョンの **Latest Python 2 Release-Python 2.7.15** をクリックします。
-
-.. figure:: images/python2_3.png
-   :width: 500px
-
-Windows 64bit 用のインストーラをクリックすると、ダウンロードできます。ファイルを実行すると、インストールが開始されますので、表示される指示に従ってください。
-
-.. figure:: images/python2_4.png
-   :width: 500px
-   
-途中、図のように表示されたら、**Add python.exe to Path** を **Will be installed on local hard drive** に変更して続けてください。
-
-OpenRTMのインストール
-^^^^^^^^^^^^^^^^^^^^^
-
-次に、OpenRTM-aist-1.1.2をインストールします。OpenRTM-aist-1.1.2は、`公式サイト <http://openrtm.org/>`_ よりダウンロード出来ます。なお、このサイトは、セキュリティアップデートのため、臨時に公開されているサイトになります。
-
-Windows 64bit用のインストーラをダウンロードします。
-
-.. figure:: images/openRTM1.png
-   :width: 500px
-
-このファイルを実行すると、インストールが開始されます。途中、図のような画面になったら、標準を選択してください。
-
-.. figure:: images/openRTM2.png
-
-.. _build-windows-setenv:
-
-インストールが終了したら、環境変数の確認と設定を行います。以下にWindows10での方法を説明します。
-
-タスクバーの「ここに入力して検索」と表示されているところに **コントロールパネル** と入力し、表示されたコントロールパネルをクリックして開きます。
-
-.. figure:: images/windowsSet1.png
-   :width: 300px
-
-**システムとセキュリティ** - **システム** - **システムの詳細設定** とクリックして、 **システムプロパティ** を開きます。
- 
-.. figure:: images/windowsSet2.png
-   :width: 900px
-
-**環境変数** ボタンを押すと、環境変数が表示されます。下の段のシステム環境変数に、**OMNI_ROOT** , **RTM_BASE** などの変数があることを確認してください。
-
-これらの変数がない場合、Windowsを再起動してください。
-
-.. figure:: images/windowsSet3.png
-   :width: 900px
-
-インストール直後は、変数 **RTM_VC_VERSION** がvc12になっていると思います。この欄をダブルクリックすると、編集用ダイアログが開くので **vc14** （VC++2015の意味です。）に変更してください。**OK** ボタンを押して、全てのダイアログを閉じます。
-
-
-他に、:doc:`../openrtm/install` で説明していることについても適用しておきます。 :ref:`openrtmplugin_patch_for_version112` として、OutPort.h の更新も必ず行ってください。上記方法でOpenRTMをインストールすると、OpenRTMのヘッダファイルは "\\windows\\Program Files\\OpenRTM-aist\\1.1.2\\rtm" といったディレクトリに格納されていますので、ダウンロードした OutPort.h をこのディレクトリにコピーして上書きするようにします。
-
-ビルド設定
-^^^^^^^^^^
-
-OpenRTM-aistがインストール出来ましたら、再びCMakeを起動して、Choreonoidのソースとビルドのディレクトリを指定します。 **ENABLE_CORBA** 、**BUILD_CORBA_PLUGIN** 、 **BUILD_OPENRTM_PLUGIN** をオンにして **Configure** を押します。OpenRTMプラグインはCorbaプラグインに依存していますので、これら全てをオンにしておく必要があります。また、 **BUILD_OPENRTM_SAMPLES** をオンにするとRTコンポーネントを用いたシミュレーションのサンプルもビルドされますので、最初はこちらもオンにしてサンプルを試してみてください。
-
-上記のOpenRTM-aistインストーラでインストールした場合、デフォルトでは c:\\Program Files\\OpenRTM-aist\\1.1.2 といったディレクトリにインストールされ、自動で検出されるはずです。OpenRTM-aistが見つからないというエラーが出た場合は、 **OPENRTM_DIR** にOpenRTM-aistをインストールしたディレクトリを設定してください。
-
 Mediaプラグイン
-~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 メディアファイルの再生を行うプラグインです。CMake上で **BUILD_MEDIA_PLUGIN** をONにしてください。
 
@@ -497,7 +412,7 @@ MPEG-4ファイルなどメディアファイルの形式によっては、再�
 
 
 ODEプラグイン
-~~~~~~~~
+~~~~~~~~~~~~~
 
 オープンソースーの動力学計算ライブラリである"Open Dynamics Engine (ODE)"を、コレオノイドのシミュレーション機能の計算エンジンとして利用できるよにするプラグインです。
 
@@ -540,7 +455,7 @@ VS2015（またはVS2017)を起動して、このファイルを開くと、ソ�
 
 
 Bulletプラグイン
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 オープンソースの動力学計算ライブラリである"Bullet Physics ライブラリ"を、コレオノイドのシミュレーション機能の計算エンジンとして利用できるようにするプラグインです。
 
@@ -571,16 +486,13 @@ Visual Studioでのコンパイル、インストール操作も同じように�
 Bulletのインストールが出来ましたら、再びCMakeを起動し、コレオノイドのビルドに関するCMakeの設定で、 **BUILD_BULLET_PLUGIN** という項目を "ON" にし、**BULLET_DIR** にBulletライブラリのインストール先を指定してください。
 
 Pythonプラグイン
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+
 Pythonスクリプトの読み込み・実行や、コレオノイド上で動作するPythonコンソール等の機能を使用するためのプラグインです。
 
-本プラグインをビルドして利用するためには、Pythonのインストールが必要です。動作確認しているバージョンは2.7.15と3.6.3になります。
+本プラグインをビルドして利用するためには、Pythonのインストールが必要です。動作確認しているバージョンは2.7.15と3.6.3になります。ここではPython3のインストール方法について説明します。
 
-OpenRTMプラグインを使用している方は、OpenRTMのインストールと同時にバージョン2.7.15のPythonがインストールされています。そのPythonを使用する場合は、CCMakeの設定で **USE_PYTHON3** を"OFF"に設定してください。
-
-Python3を使用したい場合は、Python3をインストールします。
-
-OpenRTMプラグインでの説明と同様に、`Python <http://www.python.org/>`_ のサイトから、Python3のダウンロードページに移動します。 **Windows x86-64 executable installer** をダウンロードし、実行します。
+`Python <http://www.python.org/>`_ のサイトから、Python3のダウンロードページに移動します。 **Windows x86-64 executable installer** をダウンロードし、実行します。
 
 .. figure:: images/Python3install1.png
    :width: 600px
@@ -610,6 +522,6 @@ Numpyは、Choreonoidから使用するPythonに対してインストールし�
 
 
 プラグインのアンインストール
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **BUILD_XXX_PLUGIN** のオプションをオンにしてインストールしたプラグインは、その後オプションをオフにしてインストールしても削除されません。プラグインを追加して動作が不安定になった場合など、プラグインを削除したい場合は、手動でファイルを削除してください。プラグインは(コレオノイドのインストール先)/lib/choreonoid-1.7にCnoid***Plugin.dllとしてインストールされています。

@@ -3,22 +3,22 @@ ROSのインストール
 
 .. highlight:: sh
 
-ROSがまだインストールされていない場合h、 `ROS.org <http://wiki.ros.org>`_ - `ROS/Installation <http://wiki.ros.org/ROS/Installation>`_ の記述に従ってインストールを行ってください。
+ROSがまだインストールされていない場合は、 `ROS.org <http://wiki.ros.org>`_ - `ROS/Installation <http://wiki.ros.org/ROS/Installation>`_ の記述に従ってインストールを行ってください。
 
-ROSのバージョンについては、Kinetic Kame (Ubuntu 16.04)、Melodic Morenia (Ubuntu 18.04) での動作を確認をしています。
+ROSのバージョンについては、Noetic Ninjemys (Ubuntu 20.04)、Melodic Morenia (Ubuntu 18.04)、Kinetic Kame (Ubuntu 16.04)での動作を確認をしています。
 
 それぞれ以下のコマンド操作でROS環境をインストールできます。
 
-Ubuntu 16.04 (ROS Kinetic Kame) の場合 ::
+.. http://wiki.ros.org/noetic/Installation/Ubuntu
 
- sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
- sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
- sudo apt-get update
- sudo apt-get install ros-kinetic-desktop-full
- sudo rosdep init
- rosdep update
- echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
- source ~/.bashrc
+Ubuntu 20.04 (ROS Noetic Ninjemys) の場合 ::
+
+  sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+  sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+  sudo apt update
+  sudo apt install ros-noetic-desktop-full
+  echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+  source ~/.bashrc
 
 Ubuntu 18.04 (ROS Melodic Morenia) の場合 ::
 
@@ -31,6 +31,18 @@ Ubuntu 18.04 (ROS Melodic Morenia) の場合 ::
  rosdep update
  echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
  source ~/.bashrc
+
+Ubuntu 16.04 (ROS Kinetic Kame) の場合 ::
+
+ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+ sudo apt-get update
+ sudo apt-get install ros-kinetic-desktop-full
+ sudo rosdep init
+ rosdep update
+ echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+ source ~/.bashrc
+
 
 .. note:: 最後の source コマンドは、setup.bash の内容を現在のシェルに反映させるためのもので、インストール（上記設定）直後に続けて同じシェルで作業する場合に必要となるものです。インストール後にあらためてシェルを起動する場合は、上記の設定によりsetup.bashの内容が反映されますので、このコマンドは必要ありません。
 

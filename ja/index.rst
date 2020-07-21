@@ -15,7 +15,6 @@ Choreonoidマニュアル
    simulation/index
    ros/index
    agxdynamics/index
-   openrtm/index
    multicopter/index
    trafficcontrol/index
    wrs2018/index

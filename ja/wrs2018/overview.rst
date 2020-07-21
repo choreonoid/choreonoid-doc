@@ -18,9 +18,6 @@
 * 参加形態: 参加希望者がチームを構成して書類応募。参加費は無料。書類審査を通過すると参加が可能となる。
 * 参加チーム数：全8チーム
 * `賞金 <http://worldrobotsummit.org/download/guideline/prize_money_for_the_wrc2018_ja.pdf>`_ ： 1位:1000万円、2位:300万円、3位:100万円
-* 公式サイト案内ページ: http://worldrobotsummit.org/wrc2018/disaster/
-
-.. note:: WRSの競技会は2020年にも開催される予定です。その際にも本競技と同様のシミュレーションによる競技が開催される見込みで、あらためて参加チームを募ることになりますので、興味のある方はその機会での参加もご検討ください。
 
 .. _wrs2018_overview_rules:
 
@@ -29,8 +26,8 @@
 
 競技のルールは以下のドキュメントにまとめられています。
 
-* `公式英語版 <http://worldrobotsummit.org/download/rulebook-en/rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`_ 
-* `日本語参考版 <http://worldrobotsummit.org/download/detailed-rules/detailed-rules-tunnel-disaster-response-and-recovery-challenge-ja.pdf>`_
+* :download:`公式英語版 <rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`
+* :download:`日本語参考版 <detailed-rules-tunnel-disaster-response-and-recovery-challenge-ja.pdf>`
 
 .. _wrs2018_overview_simulator:
 
@@ -43,6 +40,8 @@
 * Choreonoidバージョン: 開発版を使用。実際に使用されたバージョンには `wrs2018のタグをつけています <https://github.com/choreonoid/choreonoid/tree/wrs2018>`_ 。
 * OS: Ubuntu Linux 16.04 64bit版
 * 商用物理エンジン "AGX Dynamics" を利用
+
+.. note:: ここでは競技会開催時の情報を掲載しています。WRS2018のサンプル自体はUbuntu 18.04 や 20.04 の環境でも動作させることが可能です。
 
 Choreonoidの開発版は `github上のChoreonoidリポジトリ <https://github.com/choreonoid/choreonoid>`_ から取得可能です。
 

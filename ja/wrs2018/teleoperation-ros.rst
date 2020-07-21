@@ -1,7 +1,7 @@
 ROSによる遠隔操作サンプル
 =========================
 
-ここではROSを用いて遠隔操作を行うサンプルについて紹介します。 :doc:`teleoperation-rtm` と同様、 :doc:`simulation-samples` を遠隔操作化するものとなっています。
+ここではROSを用いて遠隔操作を行うサンプルについて紹介します。
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ ROS環境のセットアップ方法について :doc:`../ros/index` にまと�
 
 これと :ref:`note_on_ros_python_version` で説明している Pythonバージョン2への切り替え（USE_PYTHON3オプションの無効化）を合わせて、catkin config で以下のオプション設定をしておきます。 ::
 
- catkin config --cmake-args -DBUILD_WRS2018=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON -DBUILD_COMPETITION_PLUGIN=ON -DUSE_PYTHON3=OFF
+ catkin config --cmake-args -DBUILD_WRS2018=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON -DUSE_PYTHON3=OFF
 
 .. _teleoperation_ros_build_packages:
 
@@ -71,9 +71,7 @@ DoubleArmV7のサンプルも同様に実行することができます。Double
 PC2台を用いた遠隔通信
 ---------------------
 
-ROSの場合でも当然シミュレーション側と操作側を別々のPCとすることが可能です。
-
-その場合、シミュレーション用のPCでChoreonoidのシミュレーションプロジェクトを起動し、遠隔操作用のPCでchoreonoid_joyノードとrqt_image_viewを起動します。
+シミュレーション側と操作側を別々のPCとする場合、シミュレーション用のPCでChoreonoidのシミュレーションプロジェクトを起動し、遠隔操作用のPCでchoreonoid_joyノードとrqt_image_viewを起動します。
 
 2つのPC間でROSノードが通信できるようにするため、共通のROSマスターを使用する必要があります。
 
