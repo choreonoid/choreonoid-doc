@@ -1,6 +1,12 @@
 更新履歴
 ========
 
+* 2020/07/22
+ * `Choreonoid-OpenRTM <https://github.com/OpenRTM/choreonoid-openrtm>`_ の分離に伴い、OpenRTMに関するページを削除
+
+* 2020/06/26
+ * :doc:`../ros/ros-control/index` を追加
+   
 * 2020/03/31
  * :doc:`../ros/tank-tutorial/index` を追加（ステップ1まで）
 
