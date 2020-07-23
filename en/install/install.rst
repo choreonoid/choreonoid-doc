@@ -11,7 +11,7 @@ This document describes how to install Choreonoid.
    platform
    build-ubuntu
    build-windows
-   installer-windows
-   setup-renderer
    directories
    options
+
+.. setup-renderer

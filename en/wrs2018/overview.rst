@@ -18,9 +18,6 @@ The details of the event were as follows.
 * Participation format: applicants form teams and submit application documents. Participation is free of charge. Participation is possible once application documents have been approved.
 * Number of participating teams: 8
 * `Prize money: <http://worldrobotsummit.org/download/guideline/prize_money_for_the_wrc2018_en.pdf>`_ : 1st = 10 million yen; 2nd = 3 million yen; 3rd = 1 million yen
-* Official website information page: http://worldrobotsummit.org/en/wrc2018/disaster/
-
-.. note:: WRS competitions are scheduled to also be held in 2020. It is expected that the same simulation competition will be held as in the 2018 event, and applications will once again be accepted for participating teams. So, if you are interested, please consider taking his opportunity to take part.
 
 .. _wrs2018_overview_rules:
 
@@ -29,8 +26,7 @@ Competition rules
 
 The rules of the competition are summarized in the document below.
 
-* `Official English version <http://worldrobotsummit.org/download/rulebook-en/rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`_ 
-* `Japanese version for reference <http://worldrobotsummit.org/download/detailed-rules/detailed-rules-tunnel-disaster-response-and-recovery-challenge-ja.pdf>`_
+* :download:`Rule book of the tunnel disaster response and recovery challenge <rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`
 
 .. _wrs2018_overview_simulator:
 
@@ -50,8 +46,6 @@ Uses the Ubuntu Linux OS. It is assumed to be the 16.04 64-bit version.
 
 In this competition, the `AGX Dynamics <http://www.vmc-motion.com/14416057938792>`_  physics engine is used. AGX Dynamics is a commercial physics engine and its use requires a license, but licensing for taking part in this event is provided free of charge for registered participants. If you have a license, you can use it on Choreonoid via the :doc:`../agxdynamics/index` included with Choreonoid.
 
-.. note:: Even if you do not participate in the event, you can try out the competition simulation by purchasing the `AGX Dynamics license for Choreonoid <http://www.vmc-motion.com/15135605209828>`_ sold by `VMC, Inc <http://www.vmc-motion.com/14400340495009>`_ . (You can of course also use it in simulations other than the competition.) Alternatively, even if you don’t have AGX Dynamics, you can try out elements of the competition by using the standard physics engine in Choreonoid. However, in that case, the robot and task simulations will not be fully functional and the simulation will be somewhat slower.
-
 The simulation PC used at the competition venue is prepared by the event management. The specs of the PC are as follows.
 
 * CPU: Intel Core i7 8700K (6 cores, 12 threads, processor base frequency 3.7GHz)
@@ -66,7 +60,7 @@ Participants must do any development and testing for taking part in the competit
 
 Naturally, the simulation speed and frame rate will vary depending on the CPU, GPU and other specs. And even if the specs are lower than those above, the simulation will run slower but will not necessarily fail to work.
 
-Note that GPUs made by AMD (Radeon, etc.) may not have a powerful enough driver for Linux, so you should avoid using them.
+Please avoid using AMD GPUs (such as Radeon) because their drivers for Linux may not be mature enough.
 
 .. _wrs2018_overview_robots:
 
@@ -91,7 +85,7 @@ The elements of each robot are shown below.
 
  A robot jointly developed by Aizu University and IZAK Co., Ltd. It is a crawler-type robot, and in addition to the main tracks, it has auxiliary tracks called flippers in the front and back. It is also equipped with a working arm. Robots of this type are increasingly being used for disaster response in recent years and have a lot of potential for investigative and operational work at disaster sites. This robot comes in three variations with regard to the arm: no arm, single arm, and double arm. Considering the tasks involved in WRS, the double-arm configuration is the most practical.
 
-WAREC-1 and Double-Arm Robot are official WRS `platform robots  <http://worldrobotsummit.org/download/201707/WRS_Disaster_Robotics_Category_A_standard_robot_platform_for_for_Simulation_Challenge_of_Tunnel_Disaster_Response_and_Recovery_Challenge-doc_en.pdf>`_ . Regarding Aizu Spider, while it is not an official WRS robot, it was originally provided as a sample model of Choreonoid, so it can also be used in this event. Actual working versions of all of these robots have been developed and are in operation.
+WAREC-1 and Double-Arm Robot are official WRS :download:`platform robots <platformrobots.pdf>` . Regarding Aizu Spider, while it is not an official WRS robot, it was originally provided as a sample model of Choreonoid, so it can also be used in this event. Actual working versions of all of these robots have been developed and are in operation.
 
 The multicopter (drone) can also be used in this competition. For the multicopter model, we have prepared a sample model of the quadrotor type developed by the Japan Atomic Energy Agency (JAEA).
 

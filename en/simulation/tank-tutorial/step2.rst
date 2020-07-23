@@ -15,11 +15,11 @@ In Step 1, there was no controller, so we were unable to maintain the orientatio
 Controller format
 --------------------------
 
-Generally speaking, there are many different ways in which controllers can be implemented. Typically, this is done by way of formats set by specific robot systems and simulators, or through generic middleware formats such as OpenRTM and ROS.
+Generally speaking, there are many different ways in which controllers can be implemented. Typically, this is done by way of formats set by specific robot systems and simulators, or through a form of a robot middleware such as ROS.
 
-In this tutorial, we use Choreonoid’s proprietary SimpleController format. The SimpleController makes use of C++ and Choreonoid’s internal data structure to implement itself. Compared to OpenRTM or ROS, there is not much syntax to remember, and the code is comparatively simple.
+In this tutorial, we will implement controllers in Choreonoid's original "Simple Controller" format. The Simple Controller makes use of C++ and Choreonoid’s internal data structure to implement itself. Compared to using middleware such as ROS, it has the advantage that you do not have to learn much and the code is relatively simple.
 
-Note that this is a format proprietary to Choreonoid and therefore is less ubiquitous or versatile than OpenRTM or ROS. Furthermore, it does not include the communications features that OpenRTM and ROS do. Choreonoid does have functionality to integrate with OpenRTM and ROS, so you can make use of that as needed. You will find details on OpenRTM in the section on  :doc:`../../openrtm/index` .
+Note that this is Choreonoid's original format, and therefore is less ubiquitous or versatile than general middlewares such as ROS. Furthermore, it does not include the communication features that middlware such as ROS provides. In fact Choreonoid can be integrated with ROS by using the `choreonoid_ros package <https://github.com/choreonoid/choreonoid_ros>`_ , and make use of it if necessary.
 
 Implementing the “TurretController1” controller
 ------------------------------------------------------

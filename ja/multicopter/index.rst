@@ -32,6 +32,7 @@ Bodyモデルの設定
 
 MulticopterTargetBodyの設定
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 MulticopterTargetBodyは、これを記述しているBodyモデルがマルチコプタシミュレーションの対象Bodyモデルであることを表すノードです。
 本ノードを記述することで、対象Bodyモデルに記述したMulticopterTargetLinkノードおよびRotorDeviceノードが有効となります。
 
@@ -67,6 +68,7 @@ MulticopterTargetBodyの記述例） ::
 
 MulticopterTargetLinkの設定
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 MulticopterTargetLinkは、これを記述しているリンクがマルチコプタシミュレーションの対象リンクであることを表すノードです。
 本ノードを記述したリンクは、シミュレーション実行中に浮力、付加質量、付加慣性モーメント、表面力を計算し、外力として与えられます。なお、本ノードを記述しない場合は、
 計算されません。
@@ -143,6 +145,7 @@ RotorDeviceの記述例） ::
 
 RotorDeviceの入出力
 -------------------
+
 Bodyモデルに設定したRotorDeviceへの入出力を行うには、コントローラのプログラムに以下のヘッダをインクルードしてください。 ::
 
  #include <cnoid/RotorDevice>
@@ -189,6 +192,7 @@ MulticopterSimulatorItemの設定例） ::
 
 MulticopterSimulatorの設定項目
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 マルチコプタシミュレーションを行うには、MulticopterSimulatorItemのプロパティの設定が必要です。各プロパティの内容を以下に示します。
 
 .. csv-table::
@@ -206,6 +210,7 @@ MulticopterSimulatorの設定項目
 
 AirDefinitionFileの概要
 ^^^^^^^^^^^^^^^^^^^^^^^
+
 マルチコプタシミュレーションでは、MulticopterSimulatorItemのプロパティでAirDefinitionFileを指定することで、シミュレーション空間内の任意の領域に空気の密度、空気の粘性、定常流速を与えることができます。以下の例のAirDefinitionFileでは、X方向に1[m/s]の定常流速を与えます。 ::
 
  AirEnvironment,1.0.0
@@ -237,6 +242,7 @@ AirDefinitionFileの概要
 
 サンプルプロジェクト
 ^^^^^^^^^^^^^^^^^^^^
+
 マルチコプタのサンプルプロジェクトがchoreonoid/samples/Multicopterにあります。CMakeで BUILD_MULTICOPTER_SAMPLESをONにすると関連ファイルのビルドが行われてサンプルを利用できるようになります。
 
 クアッドコプタモデルとシンプルコントローラを用いたサンプルとして、

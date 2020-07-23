@@ -223,14 +223,13 @@ The multicopter simulation allows you to apply air density, air viscosity and re
 
 Sample project for Multicopter Simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-There is a sample project using MulticopterPlugin in Choreonoid directory  /samples/MulticopterRTM. You can run it to see the performance. As this sample uses OpenRTM for input of RotorDevice, enable the option below by configuration of CMake whien if Choreonoid is built from source cord.
 
-* BUILD_CORBA_PLUGIN ON
-* BUILD_MULTICOPTER_RTM ON
-* BUILD_OPENRTM_PLUGIN ON
-* BUILD_OPENRTM_SAMPLES ON
-* BUILD_VISION_SENSOR_RTM_SAMPLE ON
-* ENABLE_CORBA ON
+There is a sample project using MulticopterPlugin in Choreonoid directory "samples/Multicopter".
+To make it available, turn on the following CMake option when building Choreonnoid and MulticopterPlugin.
+
+* BUILD_MULTICOPTER_SAMPLES
+
+The file of the sample project is QuadcopterJoystick.cnoid, which uses the quadcopter model and simple controller.
 
 Key assignment for operating of the sample multicopter of this sample is set as below, in the case of operating with DUAL SHOCK4 of PS4.
 

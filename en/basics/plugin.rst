@@ -34,14 +34,10 @@ The following table lists some of the plugins provided by Choreonoid as standard
    - Plugin that is a collection of functions for robot motion choreography by keyframing.
  * - BalancerPlguin
    - Plugin that adds an automatic balance correction function for biped robots to motion choreography by PoseSeqPlugin.
- * - SimpleControllerPlugin
-   - Plugin that defines a unique controller form for robot simulation. The plugin provides a simple controller form in which the DLL of the controller is directly loaded and direct connection is made. It is also used in the sample simulation.
- * - CorbaPlugin
-   - Plugin that provides basic functions related to the communication middleware CORBA.
- * - OpenRTMPlugin
-   - Plugin for using OpenRTM in Choreonoid. It enables simulation with an RT-component as a controller and other operations. 
  * - PythonPlugin
    - Plugin to execute Python scripts in Choreonoid. Python scripts can automate Choreonoid operations.
+ * - PythonSimScriptPlugin
+   - Plugin to synchronize the execution of Python scripts with simulations
  * - MediaPlugin
    - Plugin to play audio and video files in Choreonoid.
 
@@ -53,7 +49,7 @@ Some plugins require functions of other plugins. In this case, there are depende
 
 .. figure:: images/plugin-dependencies.png
 
-The directions of the arrows in the figure indicate the directions of dependence. For example, PoseSeqPlugin is dependent on BodyPlugin, and thus BodyPlugin must also be loaded to use PoseSeqPlugin. BalancerPlugin is dependent on PoseSeqPlugin, and thus PoseSeqPlugin and BodyPlugin are required to use BalancerPlugin. On the other hand, BodyPlugin, CorbaPlugin, and PythonPlugin themselves can be loaded without requiring other plugins.
+The directions of the arrows in the figure indicate the directions of dependence. For example, PoseSeqPlugin is dependent on BodyPlugin, and thus BodyPlugin must also be loaded to use PoseSeqPlugin. BalancerPlugin is dependent on PoseSeqPlugin, and thus PoseSeqPlugin and BodyPlugin are required to use BalancerPlugin. On the other hand, BodyPlugin, PythonPlugin and MediaPlugin themselves can be loaded without requiring other plugins.
 
 Users do not need to pay particular attention to plugin dependencies because, normally, dependent plugins are also built when a plugin is built. However, being aware of these dependencies may be useful because it may be possible that a dependent plugin has not been installed correctly, when a plugin cannot be loaded normally.
 

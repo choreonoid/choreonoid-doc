@@ -14,10 +14,22 @@
    height="1052.3622"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="plugin-dependency.svg">
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3395">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3397" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop3399" />
+    </linearGradient>
     <marker
        inkscape:stockid="TriangleOutL"
        orient="auto"
@@ -32,6 +44,39 @@
          transform="scale(0.8,0.8)"
          inkscape:connector-curvature="0" />
     </marker>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3395"
+       id="linearGradient3393"
+       x1="349"
+       y1="346.36218"
+       x2="375"
+       y2="338.36218"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       gradientTransform="translate(106.15459,74.783888)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient3395"
+       id="linearGradient3393-3"
+       x1="349"
+       y1="346.36218"
+       x2="375"
+       y2="338.36218"
+       gradientUnits="userSpaceOnUse" />
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-5"
+       style="overflow:visible">
+      <path
+         id="path4002-3"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.8,0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -41,13 +86,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="531.16406"
-     inkscape:cy="846.82492"
+     inkscape:cx="555.29743"
+     inkscape:cy="762.82492"
      inkscape:document-units="px"
-     inkscape:current-layer="g3848"
+     inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1388"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1">
@@ -67,7 +112,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -75,83 +120,54 @@
      inkscape:label="レイヤー 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <g
-       id="g3825"
-       transform="translate(9,33)"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+    <rect
+       y="263.22418"
+       x="34.953815"
+       height="44.276009"
+       width="281.71988"
+       id="rect3778-3"
+       style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.88234591;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <g
-         transform="translate(-2.71875,99.649414)"
-         id="g3812">
-        <text
-           xml:space="preserve"
-           style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-           x="42.71875"
-           y="162.71277"
-           id="text3805"
-           sodipodi:linespacing="125%"><tspan
-             sodipodi:role="line"
-             id="tspan3807"
-             x="42.71875"
-             y="162.71277">BalancerPlugin</tspan></text>
-        <rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.85726333;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           id="rect3803"
-           width="265.85928"
-           height="44.287884"
-           x="36.213211"
-           y="128.57539" />
-      </g>
-    </g>
-    <g
-       id="g3831"
-       transform="translate(166,174)">
-      <g
-         id="g3833"
-         transform="translate(-2.71875,99.649414)">
-        <g
-           transform="translate(-11.424805,-50)"
-           id="g3848">
-          <rect
-             style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:1.31949341;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-             id="rect3835"
-             width="298.89703"
-             height="93.325653"
-             x="36.444324"
-             y="128.80652"
-             inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
-             inkscape:export-xdpi="48.950001"
-             inkscape:export-ydpi="48.950001" />
-          <text
-             xml:space="preserve"
-             style="font-size:36px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-             x="185.14355"
-             y="163.71277"
-             id="text3837"
-             sodipodi:linespacing="125%"
-             inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
-             inkscape:export-xdpi="48.950001"
-             inkscape:export-ydpi="48.950001"><tspan
-               sodipodi:role="line"
-               id="tspan3839"
-               x="185.14355"
-               y="163.71277">SimpleController</tspan><tspan
-               sodipodi:role="line"
-               x="185.14355"
-               y="208.71277"
-               id="tspan3846">Plugin</tspan></text>
-        </g>
-      </g>
-    </g>
+       inkscape:export-ydpi="48.950001" />
+    <rect
+       inkscape:export-ydpi="48.950001"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       y="352.47104"
+       x="342.31589"
+       height="93.295395"
+       width="312.86676"
+       id="rect3835"
+       style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:1.34975743;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       inkscape:export-ydpi="48.950001"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       id="text3837"
+       y="389.66617"
+       x="495.33252"
+       style="font-style:normal;font-weight:normal;font-size:12.03971195px;line-height:0%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.00330937"
+       xml:space="preserve"
+       transform="scale(1.0033563,0.99665494)"><tspan
+         style="font-size:36.11913681px;line-height:1.25;font-family:sans-serif;stroke-width:1.00330937"
+         y="389.66617"
+         x="495.33252"
+         id="tspan3839"
+         sodipodi:role="line">PythonSimScript</tspan><tspan
+         style="font-size:36.11913681px;line-height:1.25;font-family:sans-serif;stroke-width:1.00330937"
+         id="tspan3846"
+         y="434.81509"
+         x="495.33252"
+         sodipodi:role="line">Plugin</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
-       d="m 340,352.36218 0,-225"
+       style="display:inline;fill:url(#linearGradient3393);fill-opacity:1;stroke:#000000;stroke-width:1.48059618;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)"
+       d="M 489,349.36218 340,127.14568"
        id="path4308"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
        inkscape:export-ydpi="48.950001" />
     <path
@@ -160,8 +176,8 @@
        inkscape:connector-type="polyline"
        id="path4492"
        d="m 174,165.36218 85,-45"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
        inkscape:export-ydpi="48.950001" />
     <path
@@ -169,201 +185,146 @@
        inkscape:connector-curvature="0"
        inkscape:connector-type="polyline"
        id="path4494"
-       d="m 173,257.36218 0,-45"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+       d="m 172,263.36218 v -45"
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL)"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
        inkscape:export-ydpi="48.950001" />
     <g
        transform="translate(275.28125,48.649414)"
        id="g4496" />
-    <g
-       id="g4526"
-       transform="matrix(1,0,0,1.0292642,363.28125,-60.112245)"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
-       inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <rect
-         style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.78912061;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect4512"
-         width="224.92743"
-         height="44.356026"
-         x="36.179138"
-         y="128.54132" />
-      <text
-         xml:space="preserve"
-         style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="42.71875"
-         y="162.71277"
-         id="text4514"
-         sodipodi:linespacing="125%"><tspan
-           sodipodi:role="line"
-           id="tspan4516"
-           x="42.71875"
-           y="162.71277">CorbaPlugin</tspan></text>
-    </g>
-    <g
-       id="g4558"
-       transform="translate(93.505859,-4.9999999)"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
-       inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <g
-         transform="translate(292.28125,-39.350586)"
-         id="g4531">
-        <rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:1.05203938;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           id="rect4518"
-           width="194.66451"
-           height="91.093102"
-           x="25.310598"
-           y="230.67278" />
-        <text
-           xml:space="preserve"
-           style="font-size:36px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-           x="119.21289"
-           y="266.71277"
-           id="text4520"
-           sodipodi:linespacing="125%"><tspan
-             sodipodi:role="line"
-             id="tspan4522"
-             x="119.21289"
-             y="266.71277">OpenRTM</tspan><tspan
-             sodipodi:role="line"
-             x="119.21289"
-             y="311.71277"
-             id="tspan4524">Plugin</tspan></text>
-      </g>
-    </g>
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       inkscape:connector-type="polyline"
-       id="path4537"
-       d="m 509,187.36218 0,-60"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+    <rect
+       y="72.197716"
+       x="687.46735"
+       height="45.640102"
+       width="232.91347"
+       id="rect4512"
+       style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.8145476;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
        inkscape:export-ydpi="48.950001" />
+    <text
+       id="text4514"
+       y="105.82491"
+       x="704.08148"
+       style="font-style:normal;font-weight:normal;font-size:12.17431927px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.01452661"
+       xml:space="preserve"
+       transform="scale(0.98568141,1.0145266)"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001"><tspan
+         style="font-size:36.52295685px;line-height:1.25;font-family:sans-serif;stroke-width:1.01452661"
+         y="105.82491"
+         x="704.08148"
+         id="tspan4516"
+         sodipodi:role="line">MediaPlugin</tspan></text>
     <g
-       transform="translate(871.28125,-52.350586)"
+       transform="translate(637.28125,-52.350586)"
        id="g4565"
        inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <g
-         id="g4573"
-         transform="translate(-262,-3)">
-        <rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.81304812;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           id="rect4567"
-           width="238.9035"
-           height="44.3321"
-           x="36.191101"
-           y="128.55328" />
-        <text
-           xml:space="preserve"
-           style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-           x="42.71875"
-           y="162.71277"
-           id="text4569"
-           sodipodi:linespacing="125%"><tspan
-             sodipodi:role="line"
-             id="tspan4571"
-             x="42.71875"
-             y="162.71277">PythonPlugin</tspan></text>
-      </g>
-    </g>
-    <g
-       id="g4578"
-       transform="translate(712.28125,61.649414)"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-ydpi="48.950001" />
+    <rect
+       y="166.22995"
+       x="32.515488"
+       height="44.277584"
+       width="282.33313"
+       id="rect3778"
+       style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.88332134;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <g
-         transform="translate(-262,-3)"
-         id="g4580">
-        <rect
-           y="128.55328"
-           x="198.1911"
-           height="44.3321"
-           width="238.9035"
-           id="rect4582"
-           style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.81304812;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-        <text
-           sodipodi:linespacing="125%"
-           id="text4584"
-           y="163.71277"
-           x="214.71875"
-           style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-           xml:space="preserve"><tspan
-             y="163.71277"
-             x="214.71875"
-             id="tspan4586"
-             sodipodi:role="line">MediaPlugin</tspan></text>
-      </g>
-    </g>
+       inkscape:export-ydpi="48.950001" />
+    <text
+       id="text3792"
+       y="198.36218"
+       x="43"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001"><tspan
+         style="font-size:36px;line-height:1.25;font-family:sans-serif"
+         y="198.36218"
+         x="43"
+         id="tspan3794"
+         sodipodi:role="line">PoseSeqPlugin</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="39"
+       y="297.86218"
+       id="text4588"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001"><tspan
+         style="font-size:36px;line-height:1.25;font-family:sans-serif"
+         sodipodi:role="line"
+         id="tspan4590"
+         x="39"
+         y="297.86218">BalancerPlugin</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.76994109;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2989"
+       width="213.94644"
+       height="44.393383"
+       x="164.46007"
+       y="73.172058"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001" />
+    <flowRoot
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot2991"
+       transform="translate(135.84375,50.236206)"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001"><flowRegion
+         style="font-family:sans-serif"
+         id="flowRegion2993"><use
+           transform="translate(-133.28125,-49.649414)"
+           style="font-family:sans-serif"
+           x="0"
+           y="0"
+           xlink:href="#rect2989"
+           id="use2995"
+           width="744.09448"
+           height="1052.3622" /></flowRegion><flowPara
+         style="font-size:36px;line-height:1.25;font-family:sans-serif"
+         id="flowPara2997">BodyPlugin</flowPara></flowRoot>    <path
+       style="display:inline;fill:url(#linearGradient3393-3);fill-opacity:1;stroke:#000000;stroke-width:1.48059618;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL-5)"
+       d="m 491.15459,351.14607 40,-226.2165"
+       id="path4308-5"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
+       inkscape:export-xdpi="48.950001"
+       inkscape:export-ydpi="48.950001" />
     <g
-       transform="translate(1.28125,142.64941)"
-       id="g3796"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
+       id="g4526-5"
+       transform="matrix(1,0,0,1.0292642,378.35715,-62.767832)"
+       inkscape:export-filename="/home/nakaoka/shared/choreonoid-doc/ja/basics/images/plugin-dependencies.png"
        inkscape:export-xdpi="48.950001"
        inkscape:export-ydpi="48.950001">
       <rect
-         style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.85326815;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3778"
-         width="263.36328"
-         height="44.291878"
-         x="41.211212"
-         y="23.573395" />
+         style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.83954656;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect4512-6"
+         width="254.87779"
+         height="44.306335"
+         x="36.203953"
+         y="128.56616" />
       <text
          xml:space="preserve"
-         style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="47.71875"
-         y="57.712769"
-         id="text3792"
-         sodipodi:linespacing="125%"><tspan
+         style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="42.71875"
+         y="162.71277"
+         id="text4514-1"><tspan
            sodipodi:role="line"
-           id="tspan3794"
-           x="47.71875"
-           y="57.712769">PoseSeqPlugin</tspan></text>
-      <text
-         sodipodi:linespacing="125%"
-         id="text4588"
-         y="153.21277"
-         x="48.71875"
-         style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><tspan
-           y="153.21277"
-           x="48.71875"
-           id="tspan4590"
-           sodipodi:role="line">BalancerPlugin</tspan></text>
+           id="tspan4516-1"
+           x="42.71875"
+           y="162.71277"
+           style="font-size:36px;line-height:1.25;font-family:sans-serif">PythonPlugin</tspan></text>
     </g>
-    <g
-       id="g3769"
-       transform="translate(133.28125,49.649414)"
-       inkscape:export-filename="/home/nakaoka/choreonoid/doc/ja/basics/images/plugin-dependencies.png"
-       inkscape:export-xdpi="48.950001"
-       inkscape:export-ydpi="48.950001">
-      <rect
-         y="23.522642"
-         x="41.160461"
-         height="44.393383"
-         width="203.9648"
-         id="rect2989"
-         style="fill:#ffffff;fill-opacity:1;stroke:#441650;stroke-width:0.75176585;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <flowRoot
-         transform="translate(6.5625,-5.413208)"
-         id="flowRoot2991"
-         style="font-size:36px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         xml:space="preserve"><flowRegion
-           id="flowRegion2993"><use
-             height="1052.3622"
-             width="744.09448"
-             id="use2995"
-             xlink:href="#rect2989"
-             y="0"
-             x="0" /></flowRegion><flowPara
-           id="flowPara2997">BodyPlugin</flowPara></flowRoot>    </g>
   </g>
 </svg>

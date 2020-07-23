@@ -6,7 +6,7 @@ Supported Platforms
 
 We have confirmed that Choreonoid's development version works on the following platforms.
 
-* Ubuntu Linux 14.04, 16.04 (x64 architecture)
+* Ubuntu Linux 16.04, 18.04 and 20.04 (x64 architecture)
 
 * Windows 10 (x64 architecture)
 

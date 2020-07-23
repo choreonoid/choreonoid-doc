@@ -67,22 +67,22 @@ Selection of Controller Item Type
 
 In Choreonoid, controllers are introduced by "Controller Item". A controller item is an abstract item type that defines the base of outputs and inputs. Actually, an item type that inherits this is used. Generally speaking, the controller itself is implemented separately from the controller item. So we have to prepare it as well.
 
-This mechanism allows the controller itself to have any implementation format. In fact, there are various controller formats for robot. Some of them are unique to each robot and others are created according to the specification of middleware such as OpenRTM and ROS. A controller item works as a mediator between its respective implementation format and the virtual robot on Choreonoid. By employing a controller item that can support the controller itself that you want to use, the controller itself is introduced.
+This mechanism allows the controller itself to have any implementation format. In fact, there are various controller formats for robot. Some of them are unique to each robot and others are created according to the specification of middleware such as ROS and OpenRTM. A controller item works as a mediator between its respective implementation format and the virtual robot on Choreonoid. By employing a controller item that can support the controller itself that you want to use, the controller itself is introduced.
 
 For this purpose, it is necessary to have the controller items that can support the controller format to be used. Currently, the following types of controller items are included in the main part of Choreonoid:
 
-* **Simple Controller Item**
+* **SimpleController Item**
 
  It is a controller item that supports "Simple Controller" format, which is a unique controller implementation format. This format is designed focusing on the simplicity of the controller implementation for the purpose to implement mainly samples. However, the versatility is not well focused and is not assumed to be applied to an actual robot system. Simple controller items are available with "SimpleController-Plugin", which is introduced by default.
 
-* **Body RTC Item**
+* **BodyROS Item**
 
- A Body RTC item is a controller item that enables co-operating with "OpenRTM", which is middleware for robot. By using this, it becomes possible to control a virtual robot using "RT-Component", which is a component of OpenRTM. BodyRTC items are available by introducing "OpenRTM-Plugin".
+ It is a controller item that allows the access to the robot sensor data using ROS, which is a kind of robot infrastructure software system. BodyROS items are made available by the `choreonoid_ros <https://github.com/choreonoid/choreonoid_ros>`_ package.
 
-* **OpenHRP Controller Item**
+* **BodyIoRTC Item**
 
- An OpenHRP controller item is a controller item that supports the controller format of "OpenHRP", which is a robot simulator. In fact, there is "OpenHRP3.0 controller item" that supports OpenHRP version 3.0 and "OpenHRP3.1 controller item" that supports "OpenHRP3.1 controller item". By introducing the respective version of OpenHRP-Plugin", they become available respectively. These controller items are prepared to support OpenHRP assets. You need not use controller of this format now.
- 
+ A BodyIoRTC item is a controller item that enables co-operating with "OpenRTM", which is middleware for robot. By using this, it becomes possible to control a virtual robot using "RT-Component", which is a component of OpenRTM. BodyIoRTC items are available by the OpenRTM plugin provided by `Choreonoid-OpenRTM <https://github.com/OpenRTM/choreonoid-openrtm>`_ .
+
 To use a controller that no existing controller item can support, it will be necessary to develop a new Choreonoid plugin that can provide such a controller item.
 
 As for ROS, which have been used a lot recently, the development of the controller items that can support ROS are ongoing.

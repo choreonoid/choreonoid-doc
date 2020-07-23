@@ -1,2 +1,0 @@
-TankJoystick tutorial: vision sensors
-=====================================

@@ -2,9 +2,6 @@
 Build and install from source code (Windows version)
 ====================================================
 
-.. sectionauthor:: 中岡 慎一郎 <s.nakaoka@aist.go.jp>
-
-
 .. contents:: 目次
    :local:
 
@@ -16,13 +13,13 @@ To build Choreonoid from source code and install, you will need to prepare in ad
 
 * Required tools
 
-  * Visual C++ 2015 or Visual C++ 2017 (The build cannot be done with older versions. Also, version 1.1.2 of OpenRTM has no library for 2017. Anyone using OpenRTM should use 2015.)
+  * Visual C++ 2015, 2017, or 2019
   * `CMake <http://www.cmake.org/>`_ (3.12.0)
 
 - Required libraries
 
   * `Boost <http://www.boost.org/>`_ (1.67.0)
-  * `Qt <http://www.qt.io/>`_ (5.11 Requires 5.10 or later)
+  * `Qt <http://www.qt.io/>`_ (5.10 or later)
   * `Eigen <http://eigen.tuxfamily.org/>`_ (3.3.5)
 
 
@@ -34,35 +31,10 @@ Additional information about installing each tool and library is provided below.
 
 .. _install_visualc++:
 
-Visual C++ 2015
-~~~~~~~~~~~~~~~
+Visual C++
+~~~~~~~~~~
 
-You can use Microsoft’s Visual C++ for compiling Choreonoid. The commercial version is fine, or the free version can also be used.
-The free version of Visual Studio Community 2015 can be downloaded from `this page <https://visualstudio.microsoft.com/vs/older-downloads/>`_ . 
-
-.. figure:: images/VC2015Install1.png
-
-Click the Download button in the Visual Studio 2015 section. On the following screen, login using your Microsoft account when asked to do so. If you are already logged in, you will be taken directly to the download page. If you don’t have an account, you will need to create a new one. You can create one free of charge.
-
-.. figure:: images/VC2015Install2.png
-
-In the “Visual Studio Community 2015 with Update 3” section, select **x64**, **English** and **EXE**, and click the **Download** button. When you run the downloaded file, the installation will begin. So, follow the displayed instructions.
-
-.. figure:: images/VC2015Install3.png
-
-When selecting which components to install as shown in the screenshot, select the **Common Tools for Visual C++ 2015**.
-
-Visual C++ 2017
-~~~~~~~~~~~~~~~
-The free version of Visual Studio Community 2017 can be downloaded from `this page <https://visualstudio.microsoft.com/downloads/>`_ .
-
-.. figure:: images/VC2017Install0.png
-
-Click the Free Download button. When you run the downloaded file, the installation will begin. So, follow the displayed instructions.
-
-.. figure:: images/VC2017Install1.png
-
-If the screen appears as in the screenshot above, click the checkbox for **Desktop Development with C++**, click the Language Pack tab and select English. If you want to change the installation location, set that here. Once you have finished with the settings, click the **Install** button.
+Install Visual C++. It is recommended to user the latest version of Visual C++. The free version of Visual C++ can be used to build Choreonoid.
 
 CMake
 ~~~~~
@@ -100,7 +72,8 @@ Download either
 Run the file to begin the installation process. By default, the installation location is the “C:\\local\\boost_1_67_0” folder. If you don’t change this, CMake will automatically detect Boost in a later step. If you do change it, remember that you will need to specify the folder manually.
 
 Qt
-~~
+~~~
+
 Qt is a comprehensive framework library that includes a GUI, and Choreonoid also uses it as the basis for its GUI.
 
 You can get the Qt installer from the `Qt download page <https://www.qt.io/download>`_ . On that page, you can select the Commercial version or the Open Source version, as shown in the screenshot below. The Open Source version is fine, so select that.
@@ -422,73 +395,6 @@ If the automatic detection fails, set **ENABLE_ASSIMP** to **ON** and enter the 
 
 Next, you will build Choreonoid.
 
-.. _build_windows_openrtm_plugin:
-
-OpenRTM plugin
-~~~~~~~~~~~~~~
-This plugin is used to perform simulations using RT-Components in Choreonoid. Use of this plugin requires that OpenRTM-aist 1.1.2 and Python are installed. (There is no Visual C++ 2017 library for OpenRTM-aist 1.1.2, so this plugin cannot be built with 2017.)
-
-First install **Python2**, as this is required in order to install OpenRTM-aist 1.1.2. 
-
-Access the `Python <http://www.python.org/>`_  website.
-
-.. figure:: images/python2_1.png
-   :width: 500px
-
-Hover your cursor over **Downloads** and select **Windows** from the dropdown menu that appears.
-
-.. figure:: images/python2_2.png
-   :width: 500px
-
-Click **Latest Python 2 Release - Python 2.7.15**.
-
-.. figure:: images/python2_3.png
-   :width: 500px
-
-Click the Windows 64-bit installer to download it. When you run the downloaded file, the installation will begin. So, follow the displayed instructions.
-
-.. figure:: images/python2_4.png
-   :width: 500px
-   
-If the screen above appears, change **Add python.exe to Path** to **Will be installed on local hard drive** and continue.
-
-Next, install OpenRTM-aist 1.1.2. You can download OpenRTM-aist 1.1.2 from the `official website <http://openrtm.org/>`_ . Note that this is a temporary site while a security update is carried out.
-
-Download the Windows 64-bit installer.
-
-.. figure:: images/openRTM1.png
-   :width: 500px
-
-Launch this file to begin the installation. If the screen appears as shown below, select Typical.
-
-.. figure:: images/openRTM2.png
-
-.. _build-windows-setenv:
-
-When the installation is complete, confirm and set the environment variables. Below, we will explain the process for Windows 10.
-
-Enter **Control Panel** where “Type here to search” is displayed in the taskbar, and click on the displayed control panel to open it.
-
-.. figure:: images/windowsSet1.png
-   :width: 300px
-
-Click **System and Security** - **System** - **Advanced System Settings** and open **System Properties**.
-
-.. figure:: images/windowsSet2.png
-   :width: 900px
-
-Click the **Environment Variables button** to display them. Confirm that **OMNI_ROOT**, **RTM_BASE** and others are among the system environment variables in the lower section.
-
-If these variables are not present, reboot Windows.
-
-.. figure:: images/windowsSet3.png
-   :width: 900px
-
-Immediately after installation, the **RTM_VC_VERSION** variable should be vc12. Double-clicking on this column opens the dialog box for editing, so change it to **vc14** (meaning VC ++ 2015). Click the **OK** button and close all the dialog boxes.
-
-Once you have installed OpenRTM-aist, re-launch CMake and specify the source and build directory of Choreonoid. Set **ENABLE_CORBA**, **BUILD_CORBA_PLUGIN**, and **BUILD_OPENRTM_PLUGIN** to **ON** and click **Configure**. The OpenRTM plugin depends on the Corba plugin, so you need to turn on all of them. Also, if **BUILD_OPENRTM_SAMPLES** is toggled on, a simulation sample using the RT component will also be built, so turn it on here first and try out the sample.
-
-If you installed using the above OpenRTM-aist installer, by default it should be installed in the directory named c:\Program Files\OpenRTM-aist\1.1.2 and should be detected automatically. If you get an error message saying that OpenRTM-aist cannot be found, set **OPENRTM_DIR** to the directory where you installed OpenRTM-aist.
 
 Media plugin
 ~~~~~~~~~~~~
@@ -535,45 +441,13 @@ Using the converted solutions file, you will now perform a build. Select **Relea
 
 Next, in the CMake build settings for Choreonoid, set **BUILD_ODE_PLUGIN** to ON and specify the ODE lib root directory for **ODE_DIR**.
 
-Bullet plugin
-~~~~~~~~~~~~~
-This plugin lets you make use of the Bullet Physics Library, an open-source dynamics computation library, as a computation engine for simulations in Choreonoid.
-
-In order to build and use this plugin, you will need to build the Bullet Physics Library from source. You can get the source from `bulletphysics on github <https://github.com/bulletphysics/bullet3>`_ . We have tested version bullet-2.83.7 as working. We cannot confirm the operability of any later versions.
-
-In the same way as described for the Assimp plugin, open the page in your browser, select the version, and download the ZIP file.
-
-You can use CMake, in the same way as explained previously, to create a Visual Studio project file. Change the following options to ON.
-
-* **BUILD_EXTRAS**
-* **INSTALL_EXTRA_LIBS**
-* **INSTALL_LIBS**
-* **USE_DOUBLE_PRECISION**
-* **USE_MSVC_RUNTIME_LIBRARY_DLL**
-
-Setting the following options to OFF is also the safest approach.
-
-* **All of BUILD_XXX_DEMOS** 
-* **BUILD_BULLET3**
-* **BUILD_UNIT_TESTS**
-
-Set the installation destination with **CMAKE_INSTALL_PREFIX**.
-
-Compile and install in Visual Studio in the same way.
-
-When Bullet has been installed, re-launch CMake. In the CMake build settings for Choreonoid, set the **BUILD_BULLET PLUGIN** flag to ON and specify the directory in which the Bullet library is installed with **BULLET_DIR**.
-
 Python plugin
 ~~~~~~~~~~~~~
 This plugin is used to import and execute Python scripts and to use the features of the Python console used in Choreonoid.
 
 In order to build this plugin and use it, you must first install Python. We have tested versions 2.7.15 and 3.6.3 as working.
 
-If you use the OpenRTM plugin, version 2.7.15 of Python was installed at the same time as OpenRTM. To use that Python version, set **USE_PYTHON3** to OFF in the CMake settings.
-
-Install Python 3 if you prefer to use it.
-
-As described for the OpenRTM plugin, go to the Python 3 download page on the `Python <http://www.python.org/>`_  website. Download and run **Windows x86-64 executable installer**.
+When you use Python 3, go to the Python 3 download page on the `Python <http://www.python.org/>`_  website. Download and run **Windows x86-64 executable installer**.
 
 .. figure:: images/Python3install1.png
    :width: 600px
@@ -604,9 +478,3 @@ When the installation is complete, open CMake for Choreonoid again and set the f
 Uninstalling plugins
 ~~~~~~~~~~~~~~~~~~~~
 Plugins installed by enabling the **BUILD_XXX_PLUGIN** option will not be deleted even if you turn the option off later. If you add a plugin and want to later delete it due to unstable performance or other issues, you must delete the file manually. Plugins are installed to (Choreonoid installation destination)/lib/choreonoid-1.7 in the format of Cnoid***Plugin.dll.
-
-
-
-
-
-

@@ -3,7 +3,7 @@
 
 .. sectionauthor:: 中岡 慎一郎 <s.nakaoka@aist.go.jp>
 
-Linuxには様々なディストリビューションがありますが、現在のところChoreonoidが公式にサポートしているディストリビューションは Ubuntu Linux になります。Choreonoidの最新の開発版では、Ubuntuバージョン16.04 と 18.04について、x64アーキテクチャ(64ビット）でのビルドと動作を確認しています。本ドキュメントでは、Ubuntu Linux におけるChoreonoidのソースコードからのビルド方法について説明します。
+Linuxには様々なディストリビューションがありますが、現在のところChoreonoidが公式にサポートしているディストリビューションは Ubuntu Linux になります。Choreonoidの最新の開発版では、Ubuntuバージョン 16.04, 18.04, 20.04 について、x64アーキテクチャ(64ビット）でのビルドと動作を確認しています。本ドキュメントでは、Ubuntu Linux におけるChoreonoidのソースコードからのビルド方法について説明します。
 
 .. contents::
    :local:

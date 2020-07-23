@@ -32,13 +32,9 @@ This section describes the main optional functions that can be selected for the 
 
  It builds Balancer plug-in, which provides the auto-balance correction for the choreographic function. When choreographing a biped robot, you can make it not fall down (logically) by using this function.
 
-* **BUILD_SIMPLE_CONTROLLER_PLUGIN**
-
- It builds SimpleController plug-in. This plug-in makes available the format that is directly connected in the Choreonoid process regarding the controller programme of the robot in the simulation. Currently, it is positioned as a sample of this format and only the minimal set of functions is implemented. It is turned ON as default.
-
 * **BUILD_SIMPLE_CONTROLLER_SAMPLES**
 
- It builds the controller that supports SimpleController plug-in and a simulation sample.
+ It builds sample projects using controllers implemented as a SimpleController
 
 * **BUILD_ODE_PLUGIN**
 
@@ -48,13 +44,6 @@ This section describes the main optional functions that can be selected for the 
 
  Builds the Bullet plugin. This plugin lets you make use of the Bullet Physics Library, a dynamics computation library, as a computation engine for simulations in Choreonoid. For more details about Bullet, refer to the `Bullet Physics Library <http://bulletphysics.org>`_ . For the build process, refer to the section on  :doc:`build-bulletPlugin` 
 
-* **BUILD_ROKI_PLUGIN**
-
- Builds the RoKi plugin. This plugin lets you make use of RoKi, a dynamics computation library, as a computation engine for simulations in Choreonoid. For more details about RoKi, refer to the `Roki website <http://www.mi.ams.eng.osaka-u.ac.jp/open-e.html>`_ . For the build process, refer to the section on  :doc:`build-rokiPlugin` .
- 
-* **BUILD_SPRINGHEAD_PLUGIN**
-
- Builds the Springhead plugin. This plugin lets you make use of Springhead, a dynamics computation library, as a computation engine for simulations in Choreonoid. For more details about Springhead, refer to the  `Springhead website <http://springhead.info/wiki/index.php?top%28en%29>`_ . For the build process, refer to the section on  :doc:`build-springheadPlugin` .
 
 * **BUILD_PhysX_PLUGIN**
 
@@ -68,33 +57,6 @@ This section describes the main optional functions that can be selected for the 
 
  This plug-in provides CORBA-related functions. EMABLE_CORBA must be enabled, too.
 
-* **BUILD_OPENRTM_PLUGIN**
-
- It builds OpenRTM plug-in. With this plug-in, RT component (RTC), which is an RT middleware component can be used for simulation. To use this, it is necessary to install `OpenRTM-aist <http://openrtm.org/>`_ 1.1. It is also necessary to build the above-mentioned CORBA plug-in.
-
-* **BUILD_OPENRTM_SAMPLES**
-
- It builds simulation samples using RT component.
-
-* **BUILD_OPENHRP_PLUGIN**
-
- It builds OpenHRP plug-in. With OpenHRP plug-in, it will become possible to use the robot simulation using the control programme developed for OpenHRP3 and the on-line viewer. It is also necessary to build CORBA plug-in.
-
-* **BUILD_OPENHRP_PLUGIN_FOR_3_0**
-
- OpenHRP plug-in and the sample controller simulation of OpenHRP support API (IDL) of OpenHRP version 3.1 as default. By turning on this option, it supports OpenHRP version 3.0, too.
-
-* **BUILD_OPENHRP_SAMPLES**
-
- It builds the controller simulation samples compliant with IDL of OpenHRP3. This sample is wrapped with IDL of OpenHRP3 of SimpleController sample.
-
 * **BUILD_MEDIA_PLUGIN**
 
  It builds Media plug-in that replays a media file. Some platforms require different libraries to handle media files.
-
-* **BUILD_GROBOT_PLUGIN**
-
- It builds GRobot plug-in. With this plug-in, it will become possible to synchronise the motions of the production version of the biped robot "G-Robots GR001" to the motions produced using Choreonoid.
- 
-
-

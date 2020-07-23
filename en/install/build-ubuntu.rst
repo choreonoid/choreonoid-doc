@@ -6,7 +6,7 @@ Building and Installing from Source (Ubuntu Linux)
 
 There are many different Linux distributions. For now, Choreonoid is officially supported in Ubuntu Linux. This document explains how to build Choreonoid from source in Ubuntu Linux. You may be able to build Choreonoid on other distributions by following these instructions, so we encourage you to try and do so if necessary.
 
-We have confirmed that the latest development version of Choreonoid can be built on, and works normally in, Ubuntu versions 14.04 and 16.04, on x64 architecture (64-bit systems).
+We have confirmed that the latest development version of Choreonoid can be built on, and works normally in, Ubuntu versions 16.04, 18.04 and 20.04 on x64 architecture (64-bit systems).
 
 .. contents::
    :local:
@@ -20,7 +20,7 @@ Release version
 
 You can download the source code for the release version of Choreonoid from the `download <http://choreonoid.org/ja/download.html>`_ page. Go there to download the source package that corresponds to your version of Ubuntu Linux. The source package comes as a ZIP file. Open it in the appropriate directory, for example: ::
 
- unzip choreonoid-1.6.0.zip
+ unzip choreonoid-1.7.0.zip
 
 When you open the ZIP file, a directory called choreonoid-1.6.0 will be created. This directory holds the complete source code. From now on, this manual will refer to this directory as the **“source directory.”**
 
@@ -77,10 +77,7 @@ If you want to build optional functionality, you also need the following softwar
 
 * `Python <https://www.python.org/>`_ : You need this if you want to use the “Python plugin” to run Choreonoid using the programming language Python. Normally Python is installed by default, but you will need a development library to build plugins.
 * `Numpy <http://www.numpy.org/>`_ : A Python library for doing various kinds of scientific computing. You will also need Numpy for the Python plugin.
-* `omniORB <http://omniorb.sourceforge.net/>`_ : An open source CORBA implementation. You need this to use the CORBA, OpenRTM, and OpenHRP plugins.
-* `OpenRTM-aist <http://openrtm.org/>`_ : An implementation of RT-middleware by AIST. You need this to use the OpenRTM plugin.
 * `Open Dynamics Engine (ODE) <http://www.ode.org/>`_ : A physics calculations library. You need this to use the “ODE plugin” that generates simulations using these physics calculations.
-* `Bullet Physics Library <http://bulletphysics.org>`_ : A physics calculations library. You need this to use the “Bullet plugin” that generates simulations using these physics calculations.
 * `GStreamer <http://gstreamer.freedesktop.org/>`_ : A library for handling media files. You need this to use the “Media plugin” that plays audio or video files in Choreonoid.
 * `PulseAudio <http://www.freedesktop.org/wiki/Software/PulseAudio/>`_ : A system for generating audio output. It comes standard with Ubuntu, but you need a separate development library to build the Media plugin.
 * `libsndfile <http://www.mega-nerd.com/libsndfile/>`_ : A library for reading audio files. You need this to use the Media plugin.
@@ -92,30 +89,11 @@ Installing dependent packages
   
 In Ubuntu, you can easily install most of the software above by running the script “install-requisites-ubuntu-x.x.sh” under “misc/script.” x.x should be your version of Ubuntu. For example, if you have Ubuntu 16.04, execute ::
 
- misc/script/install-requisites-ubuntu-16.04.sh
+ misc/script/install-requisites-ubuntu-18.04.sh
 
 You will be prompted to enter your sudo password. After you do so, the necessary packages will be automatically installed via the package management system.
 
-This script will install all the software above except for OpenRTM-aist and the Bullet Physics Library.
-
-OpenRTM-aist it is currently not in any default Ubuntu package repositories. You need to install the package from an additional repository provided by the developer or build it from source. Check the OpenRTM-aist documentation for details. If you do not need the OpenRTM plugin, there is no need to install it.
-
-While Bullet is included as a package in an official Ubuntu repository, a required file seems to be missing, which will prevent you from building the Bullet plugin. If you want to build the Bullet plugin, you need to obtain the source code from Bullet, then build it from source and install it. As with the OpenRTM plugin, there is no need to install the Bullet plugin if you do not need it. When building Bullet, set **BUILD_SHARED_LIBS** and **USE_DOUBLE_PRECISION** to "ON" in the CMake settings.
-
-Qt is available in version 4 and version 5. Version 4 is used by default in Ubuntu. If you want to use version 5, first install the packages related to Qt5 as follows. ::
-
- sudo apt-get install qt5-default libqt5x11extras5-dev qt5-style-plugins
-
-Also set **USE_QT5** in CMake to ON.
-
-.. note:: When testing with Qt5 in Ubuntu 14.04, we found that text was garbled and Choreonoid did not work properly. We were unable to find a solution. While these issues also seem to be related to settings, we believe that Qt5 is not fully supported in Ubuntu 14.04. We recommend using Qt4. In Ubuntu 16.04, Qt5 works normally. We recommended using Qt5 in Ubuntu 16.04 because Qt4 seems to slow down the launch of Choreonoid for some reason.
-
-.. note:: If you are using Qt5, you may notice problems with font size depending on your environment. When we tested Choreonoid on the Ubuntu Mate desktop environment with Ubuntu 16.04, for example, fonts looked far too large. We were able to fix this by resetting the resolution (dots per inch) via “Details” in the “Fonts” tab that can be found under “Appearance” in the control center.
-
-.. note:: We recommend using Qt4 in Ubuntu 14.04. However, Choreonoid may become inoperable in this environment in some rare instances. For example, the mouse’s left-click function may stop working. Using Qt5 solves this particular problem. However, using Qt5 will cause Japanese characters in the Choreonoid interface to appear garbled. We do not have a solution for this problem yet.
- For now, you can execute the following command to display the English version of the interface instead. ::
-
-  export LANG=C
+As for Qt, version 5 is supported. Qt version 4 was supported up to Choreonoid 1.7, but the latest version does not support it.
 
 .. _build-ubuntu-cmake:
 	  
@@ -165,9 +143,9 @@ to build Choreonoid.
 
 If you have a multi-core CPU, you can shorten the build time by using the “-j” option to do a parallel build. For example, ::
 
- make -j4
+ make -j8
 
-will cause up to four build processes to run simultaneously. For parallel building, you can probably get the most out of your CPU if you set the number of processes at the number of logical cores plus one or two.
+will cause up to eight build processes to run simultaneously. For parallel building, you can probably get the most out of your CPU if you set the number of processes at the number of logical cores plus one or two.
 
 Also, when you use make with a makefile generated by CMake, the details of the commands you execute will not be shown. The output of the build process will be shown in a clear and uncluttered fashion. While this makes it very easy to see the progress of a build, it does not allow you to check things such as detailed GCC compilation options. If you need to see these options, execute make with the VERBOSE variable turned on, as follows: ::
 
@@ -199,68 +177,3 @@ On Linux, the default install location is “/usr/local.” You will usually nee
 You can also change the install location by changing CMake's **CMAKE_INSTALL_PREFIX** setting. If there is no need for multiple accounts to have access to Choreonoid, you can install it anywhere in the Home directory. In that case, you also will not need sudo to install the program.
 
 Normally, you would need have a common library path pointing to the lib directory of the install location. If you set **ENABLE_INSTALL_RPATH** to "ON," you can use the program even without that common library path.
-
-.. _build_ubuntu_gpu_driver:
-
-Implement the proprietary driver for GPU
-----------------------------------------
-   
-..
-   NVIDIAのGeForce、Quadroや、AMDのRadeonといったGPUを搭載しているPCの場合、デフォルトでインストールされるドライバでは3D描画のハードウェアアクセラレーションが十分に機能せず、描画が遅くなる場合があります。これについては、各メーカーが開発しているドライバ（プロプライエタリ・ドライバ）をインストールすることにより、パフォーマンスがよくなります。
-   
-   プロプライエタリ・ドライバの確認や導入は、Ubuntuの「ソフトウェアとアップデート」ツールを用いて行うことができます。このツールの「追加のドライバー」というタブにこの設定があります。
-   
-   利用可能なドライバがある場合は「追加のドライバー」に選択肢が表示されます。例えばNVIDIAのGPUの場合、
-   
-   * NVIDIA binary driver - version 375.29をnvidia-375から使用します（プロプライエタリ,検証済み）
-   
-   といった表示が出ますので、これをクリックして選択し、「変更の適用」を押すことで、このドライバを使えるようになります。
-   
-   特にNVIDIA製のGPUをお使いの場合、この設定は必須と言ってよいかと思います。一方で、Intel製CPUに内蔵のGPUについては、Ubuntu上で利用可能なプロプライエタリ・ドライバはありません。しかしIntelのGPUはオープンソースドライバでのサポートがよく、デフォルトのドライバでGPUの性能を十分に引き出せるようになっているようです。
-   
-   .. note:: :ref:`basics_sceneview_sceneview` の :ref:`basics_sceneview_config_dialog` にある「テスト」というボタンを押すと、シーンを360度回転させるアニメーションを行なって、これにかかるフレームレートを表示します。この機能により描画速度が分かりますので、ドライバ更新前と後でこのテストを行なって、描画が速くなっていることを確認できるとよいかと思います。テストは何らかのプロジェクトを読み込んでモデルが表示されている状態で行うとよいでしょう。
-
-.. _build_ubuntu_qt_style:
-
-Improving rendering speed by changing the Qt style
---------------------------------------------------
-
-Qt, the GUI library used by Choreonoid, has a “style” functionality that you can use to customize the appearance of various components of the GUI such as buttons. When Ubuntu is in its default state, the Qt style is set to match the appearance of “Linux GTK+,” the standard GUI library used by Linux. GTK+ has its own functions for customizing the appearance of a GUI, and Qt's GTK+ style will dynamically reflect any customizations made in GTK+.
-
-This is very useful for giving your desktop a uniform appearance, but it seems that having Qt dynamically reflect GTK+ style settings comes with a cost. In this default state, Qt becomes very slow at rendering GUI components. This is not a serious problem for most applications. Choreonoid, however, has GUI functions such as displaying and changing a robot’s joint angle. When this is combined with movement, the program needs to render many GUI elements smoothly. If Qt's style is the default GTK+ style, GUI rendering in Choreonoid will not be smooth.
-
-We recommend that you change the Qt style to a style that is not GTK+ to solve this problem. The way to do this is different in Qt4 and Qt5. Each method is explained below.
-
-For Qt4
-~~~~~~~
-
-In Qt4, it is easiest to use the “qtconfig-qt4” GUI tool shown below. (Run this tool by executing “qtconfig-qt4” from the command line or by choosing “Qt4 Settings” from the application menu.)
-
-In this tool, make the necessary changes to “GUI style” in the “Appearance” tab. For example, change the GUI style to the “Cleanlooks” style.
-
-.. image:: images/qtconfig-qt4-1.png
-
-Next, go to the “Fonts” tab and change “Style” to “Regular.” If you fail to do this, fonts will be displayed in bold.
-
-.. image:: images/qtconfig-qt4-2.png
-
-If you change the Qt style to “Cleanlooks,” tooltips in Choreonoid will not be displayed properly. To fix this, go to “Palette Adjustment” in the “Appearance” tab, choose “Tooltips Text,” and change the font color to black. Tooltips will now be displayed properly.
-
-.. image:: images/qtconfig-qt4-3.png
-
-Finally, go to “File” in the menu and click “Save” to implement these settings.
-   
-For Qt5
-~~~~~~~
-
-Qt5 does not seem to have anything like Qt4’s GUI tool. For Qt5, you can change the style with the environment variable “QT_STYLE_OVERRIDE.” Set a style name as follows: ::
-
- export QT_STYLE_OVERRIDE=style name
-
-Fusion, Windows, and GTK+ seem to be available for use as styles. In Ubuntu, GTK+ is probably the default, and Choreonoid’s appearance will match that of GTK+. However, as we described above, this will have an impact on the program’s performance. In Ubuntu 16.04, you can install a package called qt5-style-plugins to get access to the styles Cleanlooks, Motif, and Plastique. We recommended Cleanlooks.
-
-If you launch the Qt application after setting the style with the environment variable, Qt will use the style you set. For example, if you specify ::
-
- export QT_SYTLE_OVERRIDE=Cleanlooks
-
-in the .profile file, this style will be used even if you do not specify it every time the OS is started.

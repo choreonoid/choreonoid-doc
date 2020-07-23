@@ -1,8 +1,6 @@
 
 Controller implementation
-=================================
-
-.. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
+=========================
 
 .. contents:: 
    :local:
@@ -10,7 +8,7 @@ Controller implementation
 .. highlight:: cpp
 
 Controller implementation
----------------------------------
+-------------------------
 
 Here we describe the basics of implementing a controller in your workflow.
 
@@ -30,7 +28,7 @@ When developing your own controller, you can refer to this sample and its core f
 
 
 Sample controller source code
-----------------------------------
+-----------------------------
 
 Below you will find the SR1MinimumController source code. You will find this source code in the file SR1MinimumController, located in the /sample/SimpleController/ path of the Choreonoid source directory. ::
 
@@ -98,8 +96,8 @@ This controller is provided as a sample with Choreonoid; by default, it is confi
 
 For instructions on how to separately implement the SimpleController in a standalone fashion from the sample, please refer to the section on :doc:`howto-build-controller` .
 
-The SimpleController Class
---------------------------------
+SimpleController class
+----------------------
 
 Controllers in the SimpleController format are implemented by inheriting the SimpleController class. This class can be used per the below: ::
 
@@ -135,7 +133,7 @@ This allows the common library files (dynamic links) compiled from source to be 
 .. _simulator-simple-controller-io:
 
 IO objects
---------------
+----------
 
 The SimpleControllerIO object passed as an io argument to the above initialize function is an object that contains the requisite information for I/O between the controller and robot. Below, we refer to this object as an “IO object.”
 
@@ -168,13 +166,13 @@ This class inherits the ControllerIO class. Some of the functions defined in the
 .. _simulator-io-by-body-object:
 
 Input/output using body objects
------------------------------------------
+-------------------------------
 
 The SimpleController allows for input and output via Body objects. The Body object is a Choreonoid internal expression for :doc:`../handling-models/bodymodel` and an instance of the Body class defined in C++. The Body class is a data structure used to store the robot model and its state, so it can be used to store values like joint angle, torque, sensor status, and other data implicated in input/output. This is why the SimpleController allows for input and output via Body objects. These Body objects can be obtained via the body function of the IO object.
 
 
 Link objects
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Body objects are expressed as a Link class object representing the individual components (rigid bodies) making up the model. These objects contain information pertaining to joints. (See :ref:`model_structure` ）. Link objects can be obtained via the Body class functions below.
 
@@ -213,10 +211,10 @@ However, which value is treated as an actuator command value and which is read a
 
 .. _simulation-implement-controller-actuation-mode:
 
-ActuationMode
-~~~~~~~~~~~~~~~~~~~~~~~~
+Actuation mode
+~~~~~~~~~~~~~~
 
-ActuationMode is the basic concept implicated in joint output. It is used to determine which state variable to use as a command value when driving joints. The below symbols are defined in the Link class for this mode.
+The actuation mode is the basic concept implicated in joint output. It is used to determine which state variable to use as a command value when driving joints. The below symbols are defined in the Link class for this mode.
 
 .. list-table:: **Link::ActuationMode enumeration symbols**
  :widths: 20,60,20
@@ -250,18 +248,18 @@ ActuationMode is the basic concept implicated in joint output. It is used to det
    - A command value for relative velocity on the intersection of the link surface and environment. This is used for simplified crawler and conveyor belt simulations. For details, see the section on :doc:`pseudo-continuous-track` .
    - Link::dq()
 
-ActuationMode references and configures the following Link class functions.
+The following functions of the Link class can be used to read and write the actuation mode.
 
 * **ActuationMode actuationMode() const**
 
- Returns the currently set ActuationMode.
+ Returns the currently set actuation mode.
 
 * **void setActuationMode(ActuationMode mode)**
 
- Configures the ActuationMode.
+ Sets the actuation mode.
 
 Enabling I/O
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 IO objects are used to configure which state variables to use as input/output to/from the controller. To do so, the SimpleControllerIO class defines the following functions.
 
@@ -345,8 +343,8 @@ However, using enableInput to pass a stateTypes parameter lets you freely input 
 
 .. note:: You can also use the **LINK_POSITION** symbol against direct input/output on the position and orientation of a link in 3D space. We go into this in later detail in the section on  :ref:`simulation-implement-controller-link-position` .
 
-The initialization process
---------------------------------
+Initialization process
+----------------------
 
 The initialize function inherits the SimpleController class and is used to initialize the controller.
 
@@ -399,7 +397,7 @@ is used to initialize the qold variable to the same value as qref. This variable
 Returning “true” as the return value against the initialize function conveys to the simulator that the initialization succeeded.
 
 Control loops
--------------------
+-------------
 
 Next, we give the class inheriting SimpleController a control loop in its control function.
 
@@ -441,10 +439,10 @@ Lastly, when the control function returns true, this conveys to the simulator th
 .. _simulation-device:
 
 Device I/O
-----------------------
+----------
 
 Devices explained
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 Thus far, we have handled input/output of status quantity implicated in joints, such as with joint angle and torque. By contrast, there are also input/output elements that are separate from joints. These are defined as “devices” in Choreonoid and form constituent elements of Body models.
 
@@ -473,7 +471,7 @@ When developing actual controllers, input and output must be handled with respec
 .. _simulation-device-object:
 
 Device objects
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 Choreonoid’s Body models express device information in the form of Device objects. These are instances that inherit the properties of Device classes; Device objects are defined for each device type. The default devices available include: ::
 
@@ -524,7 +522,7 @@ The Device objects used by the SR1 model we reference in this section are as fol
 
 
 Polling device objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 Device objects are polled by using the below functions against Body objects.
 
@@ -577,26 +575,24 @@ Using the findDevice function lets you specify a device type and name and poll i
 .. _simulation-implement-controller-device-io:
 
 I/O methods
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 Input and output via a Device object is done as follows:
 
 * **Input**
 
- Invoke the below function against the SimpleController IO object:
+ For the IO object of SimpleController, enable the input to the device by using the following function:
 
  * **void enableInput(Device\* device)**
 
- This lets you enable input to the device. You can then use member variables for the corresponding Device object to poll values.
+ You can then use the corresponding member functions to obtain the input values.
 
 * **Output**
 
- After using the member function for the corresponding Device object, set a value and then invoke the following function for the Device object:
+ After using the device's setter function corresponding to the sensor data to output, notify the simulator of the device update by using the following function:
 
  * **void notifyStateChange()**
 
- This will update the device status on the simulator.
- 
 To do the above, you must know the class definitions used by the device in question. For example, AccelerationSensor, an accelerometer class, includes the dv() member function used to access its state. This returns a three-dimensional vector result for the acceleration.
 
 Accelerometer input on the SR1 model functions as follows. In the initialize function for the controller, use the below: ::
@@ -620,7 +616,7 @@ For output to a device, see the sample for TankJoystickLight.cnoid, which handle
 .. _simulation-implement-controller-link-position:
 
 Input/output of link position and orientation
------------------------------------------------------
+---------------------------------------------
 
 Other targets of controller input/output are link position and orientation. This refers not to the joint angle, but rather to the position and orientation of the link itself as a rigid body in the global coordinate system. This value ordinarily cannot carry out input/output against a robot device. For robots not fixed to a point in the space, obtaining the exact position and orientation of a specific link (provided you are not using super accurate motion capture) is difficult. Furthermore, it is physically impossible to directly change this position and orientation of a link through controller output. However, the above can be achieved in a simulation, so the system includes input/output of this value for such use.
 
@@ -667,6 +663,6 @@ would obtain the root link position and orientation.
 A simulator supporting output of link position and orientation is needed here, which is a special use case. For example, the AIST simulator item allows for changing the dynamics mode to kinematics, with no dynamics calculations performed in the simulation; instead, only the position and orientation given are reproduced. In this case, outputting the position and orientation of the robot’s root link will navigate the root link to that point. If you output the joint angle, it will reproduce the orientation based on the forward kinematics from the root link.
 
 Other samples
---------------------
+-------------
  
 Choreonoid includes a variety of other controllers besides the SR1MinimumController. You can find :ref:`basics_sample_project` that make use of these, so please have a look.

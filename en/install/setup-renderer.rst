@@ -52,9 +52,6 @@ If this is stated in .profile in the home directory, it doesn’t need to be set
 On Windows
 ~~~~~~~~~~
 
-On Windows, you should be able to use the command prompt to switch in the same way as described above.
+On Windows, you can use the command prompt to switch in the same way as described above.
 
 But since the command prompt is not widely used on Windows, it is normally done using system settings.
-
-For details on how to set environment variables on Windows, refer to the explanation about the :ref:`build_windows_openrtm_plugin` in  :doc:`build-windows`. 
-

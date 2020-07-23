@@ -13,5 +13,4 @@ This document is a summary of the technical information required for participati
    robot-models
    simulation-samples
    sample-controllers
-   teleoperation-rtm
    teleoperation-ros

@@ -14,7 +14,6 @@ Choreonoid Operation Manual
    handling-models/index
    simulation/index
    agxdynamics/index
-   openrtm/index
    multicopter/index
    trafficcontrol/index
    wrs2018/index

@@ -13,7 +13,7 @@
 
 まずはシミュレーション用のPCを用意して、Choreonoidをインストールします。
 
-実際の競技会ではOSとしてUbuntu 16.04を使用しましたが、サンプルを動かすのであれば最新の環境でも動作するかと思います。以下ではUbuntu 20.04の使用を想定して説明します。
+実際の競技会ではOSとしてUbuntu 16.04を使用しましたが、サンプルを動かすのであれば最新の環境でも動作するかと思います。以下ではUbuntu 18.04の使用を想定して説明します。
 
 なお、Ubuntuはネイティブインストールされたものを使用してください。仮想マシンでも動かないことはありませんが、シミュレーションが遅くなったり、一部不具合が生じる可能性があります。
 
@@ -29,7 +29,7 @@ Gitのインストール
 AGX Dynamicsのインストール
 --------------------------
 
-AGX Dynamicsのライセンスをお持ちの場合は、あらかじめ AGX Dynamics をインストールしておきます。販売元より提示されたAGX Dynamicsのダウンロードサイトから、対応するUbuntuバージョン（通常はx64、Ubuntu 16.04）用のパッケージをダウンロードします。また、USBドングルの提供を受けている場合は、それをPCに挿しておくようにしてください。
+AGX Dynamicsのライセンスをお持ちの場合は、あらかじめ AGX Dynamics をインストールしておきます。販売元より提示されたAGX Dynamicsのダウンロードサイトから、対応するUbuntuバージョン用のパッケージをダウンロードします。また、USBドングルの提供を受けている場合は、それをPCに挿しておくようにしてください。
 
 パッケージがダウンロードできたら、:doc:`../agxdynamics/install/install-agx-ubuntu` の説明に従ってインストールを行います。
 
@@ -42,7 +42,7 @@ Choreonoidのインストール
 
 `Choreonoid最新版（開発版）マニュアル <../index.html>`_ の `ソースコードからのビルドとインストール (Ubuntu Linux編) <../install/build-ubuntu.html>`_　に従って、Choreonoidの最新の `開発版 <../install/build-ubuntu.html#id4>`_ をインストールします。
 
-インストールの詳細は上記ドキュメントを参照いただくとして、Ubuntu 16.04においては、以下のコマンドを実行していきます。
+インストールの詳細は上記ドキュメントを参照いただくとして、Ubuntu 18.04においては、以下のコマンドを実行していきます。
 
 まずGitリポジトリからChoreonoidのソースコードを取得します。 ::
 
@@ -54,9 +54,7 @@ Choreonoidのインストール
 
 依存パッケージのインストールを行います。 ::
 
- misc/script/install-requisites-ubuntu-20.04.sh
-
-(Ubuntu 18.04 の場合は、install-requisites-ubuntu-18.04.sh を実行します。）
+ misc/script/install-requisites-ubuntu-18.04.sh
 
 CMakeによるビルドの設定を行います。Choreonoidのデフォルトの機能だけ利用するのであれば、 ::
 
@@ -92,7 +90,7 @@ CMakeによるビルドの設定を行います。Choreonoidのデフォルト�
 
  cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON
 
-AGX DynamicsやOpenRTMをインストールしていない場合は、それぞれに対応するオプションを上記のコマンドライン引数から除去して実行してください。
+AGX Dynamicsをインストールしていない場合は、対応するオプションを上記のコマンドライン引数から除去して実行してください。
 
 次に、makeコマンドでビルドを行います。 ::
 
@@ -108,9 +106,6 @@ AGX DynamicsやOpenRTMをインストールしていない場合は、それぞ�
 
  git pull
  make -j 8
-
-今回は、競技会の開催が近づくまで当面Choreonoidの開発が続くことを予めご了承ください。これを踏まえて、随時最新版に更新しながら準備を進めていただければと思います。何か不具合が生じましたら、 :doc:`support` までご相談ください。
-
 
 グラフィックス環境のセットアップ
 --------------------------------
