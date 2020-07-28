@@ -18,7 +18,7 @@ Tankモデルはライト（光源）を搭載しています。ステップ5で
 グラフィックス環境の確認
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-ライトの効果が正しく描画されるようにするためには、 :doc:`../../install/setup-gpu` が適切に行われている必要があります。なるべく :ref:`setup_gpu_recommended_gpus` を使用するようにし、Ubuntu使用時は :ref:`setup_gpu_ubuntu_gpu_driver` を行い、デフォルトの :ref:`setup_gpu_3d_rendering_engine` である新描画エンジンを用いるようにしてください。
+ライトの効果が正しく描画されるようにするためには、 :doc:`../../install/setup-gpu` が適切に行われている必要があります。Ubuntu Linux使用時は :ref:`setup_gpu_ubuntu_gpu_driver` についても確認してください。
 
 .. _tank_tutorial_use_labo_model:
 

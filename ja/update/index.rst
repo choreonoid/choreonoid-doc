@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/07/28
+ * :doc:`../install/setup-gpu` を更新
+
 * 2020/07/22
  * `Choreonoid-OpenRTM <https://github.com/OpenRTM/choreonoid-openrtm>`_ の分離に伴い、OpenRTMに関するページを削除
 
