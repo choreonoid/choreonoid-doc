@@ -13,5 +13,3 @@ This document describes how to install Choreonoid.
    build-windows
    directories
    options
-
-.. setup-renderer
