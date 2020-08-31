@@ -48,9 +48,13 @@ Ubuntu 16.04 (ROS Kinetic Kame) の場合 ::
 
 .. note:: apt-keyコマンドで取得する鍵には通常有効期限が設定されていて、期限が切れるとリポジトリへのアクセスなどができなくなってしまうようです。その場合は上記のapt-keyコマンドを再度実行し鍵を更新することで、リポジトリへアクセスできるようになります。
 
-ChoreonoidをROSで使う場合、ビルドツールCatkinの新しいバージョン ( `Catkin Command Line Tools <https://catkin-tools.readthedocs.io/en/latest/index.html>`_）を使用します。これは ::
+ChoreonoidをROSで使う場合、ビルドツールCatkinの新しいバージョン ( `Catkin Command Line Tools <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ 、通称Catkin Tools）を使用します。
+
+Ubuntu 20.04の場合、以下のようにして必要なパッケージをインストールすることでCatkin Toolsを使えるようになります。 ::
+
+ sudo apt install python3-osrf-pycommon python3-catkin-tools
+
+
+Ubuntu 18.04、16.04の場合はPythonの環境が異なるため、インストールは以下のコマンドで行うことになります ::
 
  sudo apt install python-catkin-tools
-
-でインストールすることができます。
-

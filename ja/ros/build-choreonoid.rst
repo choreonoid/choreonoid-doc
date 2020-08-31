@@ -44,6 +44,8 @@ Choreonoid用のCatkinワークスペースを作成します。
 * `choreonoid <https://github.com/choreonoid/choreonoid>`_ : Choreonoid本体
 * `choreonoid_ros <https://github.com/choreonoid/choreonoid_ros>`_ : ChoreonoidでROSの機能を使用するためのROSパッケージ
 
+.. note:: ChoreonoidのROS連携機能は現状ではChoreonoid開発版を対象としています。上記リポジトリのクローンにより最新の開発版を使用することができます。
+
 また、次節以降の解説を参照する場合は、そこで使用するサンプルもクローンしておきましょう。 ::
 
  git clone https://github.com/choreonoid/choreonoid_ros_samples.git
@@ -89,15 +91,18 @@ Choreonoid用のCatkinワークスペースを作成します。
 
 Choreonoidのビルド・実行に必要となる依存パッケージをインストールしておきます。
 
-Choreonoidのソースディレクトリに移動し、 ::
+Choreonoidのソースディレクトリに移動し対応するスクリプトを実行します。Ubuntu 20.04であれば、 ::
 
- misc/script/install-requisites-ubuntu-16.04.sh
+ misc/script/install-requisites-ubuntu-20.04.sh
 
-もしくは ::
+を実行します。
 
- misc/script/install-requisites-ubuntu-18.04.sh
+Ubuntu 18.04、16.04の場合はそれぞれ
 
-を実行します。(使用しているUbuntuのバージョンに合うものを実行してください。）
+* misc/script/install-requisites-ubuntu-18.04.sh
+* misc/script/install-requisites-ubuntu-16.04.sh
+
+を実行してください。
 
 この処理は本来Catkin用の依存パッケージ情報で解決すべきなのですが、Choreonoidについてはそこがまだ完全でない部分があり、インストールを確実にするため、この作業を行っておく必要があります。
 
@@ -136,6 +141,8 @@ Choreonoidのオプションのプラグインを有効にすることも可能�
 
 .. note:: このように設定すると、ワークスペースの全てのパッケージに対してこれらのオプションが有効になってしまい、他のパッケージで意図しないオプションが有効になってしまうこともあり得ます。しかしCatkinではパッケージごとに個別にCMakeのオプションを設定する機能が無い（ `要望はあるものの見送られている <https://github.com/catkin/catkin_tools/issues/205>`_ ）ようですので、やむを得ずこのようにしています。
 
+.. note:: 上記のBUILD_MEDIA_PLUGINオプションはあくまで説明のための例として挙げたもので、ChoreonoidとROSを使用する際に必ずしも必要なものではありません。動画などのメディアファイルをChoreonoid上で再生する必要がなければ、このオプションはONにしなくて結構です。
+
 設定したオプションを解除したい場合は ::
 
  catkin config --no-cmake-args
@@ -149,9 +156,11 @@ Choreonoidのオプションのプラグインを有効にすることも可能�
 Pythonバージョンの設定
 ^^^^^^^^^^^^^^^^^^^^^^
 
-ChoreonoidではデフォルトでPythonプラグインとPython用ラッパライブラリがビルドされますが、そこで使用するPythonのバージョンには注意が必要です。本解説が対象としているROSのKineticやMelodicを含めて、ROS1で使用するPythonのバージョンは基本的に2.7となるようです。一方でChoreonoidではデフォルトでPython3を使用するようになっており、そのままではPythonのバージョン2と3が競合してしまい、いろいろと不具合が出る可能性が高いです。
+ChoreonoidではデフォルトでPythonプラグインとPython用ラッパライブラリがビルドされますが、そこで使用するPythonのバージョンには注意が必要です。ChoreonoidではデフォルトでPython3を使用するようになっていますが、ROSの従来のバージョン、具体的にはUbuntu 18.04用のMelodic Morenicaまでは、Python2（バージョン2.7）が使用されています。そのようなROSのバージョンを使用する場合、そのままではChoreonoidのPython3とROSのPython2が競合してしまい、不具合が生じることになります。
 
-そこで、ChoreonoidのPython機能を使用する場合は、CMake の USE_PYTHON3 というオプションを OFF に設定します。そのようにするとChoreonoidでもPythonバージョン2が使用されるようになります。
+.. note:: Ubuntu 20.04に対応するROSのNoetic NinjemysからはPython3が使用されるようになった模様で、デフォルトの設定で不具合は生じないものと思われます。Ubuntu 20.04の場合は以下の説明は読み飛ばしてください。
+
+Python2を使用する従来のROSバージョンにおいては、ChoreonoidでもPython2を使用するように設定しておきます。これはChoreonoidビルド時のCMakeでUSE_PYTHON3 というオプションをOFFにすればOKです。そのようにするとChoreonoidでもPythonバージョン2が使用されるようになります。
 
 catkin においては ::
 

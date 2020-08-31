@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/08/31
+ * :doc:`../ros/index` にUbuntu 18.04用のROS Noetic Ninjemysの使用に関する変更点を反映
+
 * 2020/07/28
  * :doc:`../install/setup-gpu` を更新
 
