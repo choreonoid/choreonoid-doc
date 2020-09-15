@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/09/15
+ * :doc:`../ros/install-ros` にrosdepに関する記述を追加
+
 * 2020/08/31
  * :doc:`../ros/index` にUbuntu 18.04用のROS Noetic Ninjemysの使用に関する変更点を反映
 
