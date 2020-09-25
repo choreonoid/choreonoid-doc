@@ -83,11 +83,21 @@ Bulk material
     - Pa
     - double
     - Young's modulus that represents the hardness of link(rigid body). Smaller value may cause penetration between links.
+  * - viscosity
+    - 0.5
+    - \-
+    - double
+    - viscous restitution.The pair of viscous restitution becomes restitution coefficient.
+  * - spookDamping
+    - 0.075
+    - s
+    - double
+    - spook damping. Relax the penetration of links(rigid bodies).
   * - poissonRatio
     - 0.3
     - \-
     - double
-    - Poisson's ratio
+    - Poisson's ratio (deprecated since AGX 2.27.0.0)
 
 Surface material
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,16 +111,6 @@ Surface material
     - unit
     - data type
     - explanation
-  * - viscosity
-    - 0.0
-    - \-
-    - double
-    - viscous restitution.The pair of viscous restitution becomes restitution coefficient.
-  * - spookDamping
-    - 0.075
-    - s
-    - double
-    - spook damping. Relax the penetration of links(rigid bodies).
   * - roughness
     - 0.5
     - \-

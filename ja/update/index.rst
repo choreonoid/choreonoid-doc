@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/09/25
+ * :doc:`../agxdynamicsagx-material` のviscosityのデフォルト値を訂正
+
 * 2020/09/15
  * :doc:`../ros/install-ros` にrosdepに関する記述を追加
 
