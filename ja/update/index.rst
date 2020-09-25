@@ -3,6 +3,7 @@
 
 * 2020/09/25
  * :doc:`../agxdynamics/agx-material` のviscosityのデフォルト値を訂正
+ * :doc:`../wrs2018/teleoperation-ros` に最新の環境で必要なビルドオプションの設定を追記
  * :doc:`../tips/howto-check-backtrace` に注釈を追加
 
 * 2020/09/15
