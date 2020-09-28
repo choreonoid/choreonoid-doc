@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2020/09/28
+ * :doc:`../ros/index` の :doc:`../ros/install-ros` , :doc:`../ros/build-choreonoid` を修正
+ * :doc:`../wrs2018/index` の :doc:`../wrs2018/setup` , :doc:`../wrs2018/teleoperation-ros` を修正
+
 * 2020/09/25
  * :doc:`../agxdynamics/agx-material` のviscosityのデフォルト値を訂正
  * :doc:`../wrs2018/teleoperation-ros` に最新の環境で必要なビルドオプションの設定を追記

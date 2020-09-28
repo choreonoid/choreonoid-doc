@@ -172,10 +172,43 @@ catkin においては ::
 
  catkin config --cmake-args -DENABLE_PYTHON=OFF -DBUILD_PYTHON_PLUGIN=OFF -DBUILD_PYTHON_SIM_SCRIPT_PLUGIN=OFF
 
+.. _ros_catkin_build_type:
+
+ビルドタイプの設定
+------------------
+
+一般的に、C/C++のプログラムをビルドする際には、"Release" や "Debug" といったビルドのタイプを指定することができます。Release（リリースモード）の場合は最適化が適用されて実行速度が速くなりますし、Debug（デバッグモード）の場合はデバッグ情報が付与されてデバッガによるデバッグがしやすくなります。
+
+Catkin上でビルドする際にこれらのビルドタイプを指定したい場合は、やはり --cmake-args オプションを使用します。
+
+例えば ::
+
+ catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+とすればリリースモードでビルドすることができますし、 ::
+
+ catkin config --cmake-args -DCMAKE_BUILD_TYPE=Debug
+
+とすればデバッグモードになります。
+
+これらは :ref:`ros_build_choreonoid_cmake_options` で指定するオプションに追加して指定するようにしてください。
+
+Choreonoid関連のROSパッケージはデフォルトでReleaseが設定されるようにしてありますが、パッケージによってはデフォルトでビルドタイプをReleaseに設定しないものもありますし、自前のパッケージでそこまで設定していないこともあるかもしれません。その場合最適化が適用されず、ビルドされたプログラムの実行速度が大幅に落ちることになってしまいますので、そのようなパッケージをビルドする可能性がある場合は、上記の方法でReleaseビルドを指定しておくとよいです。
+
 .. _ros_catkin_build_command:
 
 ビルド
 ------
+
+ここまで :ref:`ros_build_choreonoid_cmake_options` や :ref:`ros_catkin_build_type` について説明しましたが、細かいオプションについてよく分からない場合はとりあえず以下の設定としておきましょう。
+
+**Ubuntu 20.04 (ROS Noetic Ninjemys) の場合** ::
+
+ catkin config --cmake-args -DBUILD_CHOREONOID_EXECUTABLE=OFF -DCMAKE_BUILD_TYPE=Release
+
+**Ubuntu 18.04 (ROS Melodic Morenia) 以前の環境の場合** ::
+
+ catkin config --cmake-args -DBUILD_CHOREONOID_EXECUTABLE=OFF -DUSE_PYTHON3=OFF -DCMAKE_BUILD_TYPE=Release
 
 設定が完了したら、ビルドを行いましょう。ワークスペース内のディレクトリであれば、以下のコマンドでビルドできます。 ::
 
@@ -195,32 +228,14 @@ catkin においては ::
 
 .. _ros_catkin_cmake_build_type:
 
-ビルドタイプの設定
-------------------
 
-一般的に、C/C++のプログラムをビルドする際には、"Release" や "Debug" といったビルドのタイプを指定することができます。Release（リリースモード）の場合は最適化が適用されて実行速度が速くなりますし、Debug（デバッグモード）の場合はデバッグ情報が付与されてデバッガによるデバッグがしやすくなります。
-
-Catkin上でビルドする際にこれらのビルドタイプを指定したい場合は、やはり --cmake-args オプションを使用します。
-
-例えば ::
-
- catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
-
-とすればリリースモードでビルドすることができますし、 ::
-
- catkin config --cmake-args -DCMAKE_BUILD_TYPE=Debug
-
-とすればデバッグモードになります。
-
---cmake-argsオプションは catkin build にも付与できますので、 ::
+なお、 :ref:`ros_catkin_build_command` は、catkin build に付与する --cmake-argsオプションによって設定することもできます。例えば ::
 
  catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
 
-などとすることで、ビルドごとにビルドタイプを指定することも可能です。
+とすることで、このビルドについてはReleaseモードでのビルドとなります。このようにすることで、ビルドごとにビルドタイプのみを切り替えることが可能です。
 
-Choreonoid関連のROSパッケージはデフォルトでReleaseが設定されるようにしてありますが、パッケージによってはデフォルトでビルドタイプをReleaseに設定しないものもありますし、自前のパッケージでそこまで設定していないこともあるかもしれません。その場合最適化が適用されず、ビルドされたプログラムの実行速度が大幅に落ちることになってしまいますので、そのようなパッケージをビルドする可能性がある場合は、上記の方法でReleaseビルドを指定しておくとよいです。
-
-なお、Catkin Command Line Tools の Profile機能を使えば、設定ごとに予めプロファイルとして登録しておき、ビルドの際にプロファイルを指定することで切り替えることもできます。この使い方については、 `Catkin Command Line Tools のマニュアル <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ の `Profile Cookbook <https://catkin-tools.readthedocs.io/en/latest/cheat_sheet.html#profile-cookbook>`_ を参考にしてください。
+さらに、Catkin Command Line Tools の Profile機能を使えば、設定ごとに予めプロファイルとして登録しておき、ビルドの際にプロファイルを指定することで、オプションの組み合わせを丸ごと切り替えることもできます。この使い方については、 `Catkin Command Line Tools のマニュアル <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ の `Profile Cookbook <https://catkin-tools.readthedocs.io/en/latest/cheat_sheet.html#profile-cookbook>`_ を参考にしてください。
 
 .. _loading_catkin_workspace_setup_script:
 

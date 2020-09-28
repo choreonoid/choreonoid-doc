@@ -35,7 +35,7 @@ AGX Dynamicsのライセンスをお持ちの場合は、あらかじめ AGX Dyn
 
 AGX Dynamicsのラインセンスをお持ちでない場合、この作業はスキップしてください。
 
-.. _wrs2018_install_openrtm:
+.. _wrs2018_install_choreonoid:
 
 Choreonoidのインストール
 ------------------------
@@ -68,6 +68,10 @@ CMakeによるビルドの設定を行います。Choreonoidのデフォルト�
 
  * BUILD_WRS2018
 
+* 競技支援機能プラグイン
+
+ * BUILD_COMPETITION_PLUGIN
+
 * AGX Dynamics を利用する場合
 
  * BUILD_AGX_DYNAMICS_PLUGIN
@@ -82,13 +86,9 @@ CMakeによるビルドの設定を行います。Choreonoidのデフォルト�
  * BUILD_MULTICOPTER_PLUGIN
  * BUILD_MULTICOPTER_SAMPLES
 
-これらのオプションの設定はccmakeコマンドを使ってインタラクティブに行うこともできますが、cmakeコマンドに-Dオプションを与えることも可能です。例えば、BUILD_SCENE_EFFECTS_PLUGINをONにするには、以下のように入力します。 ::
+これらのオプションの設定はccmakeコマンドを使ってインタラクティブに行うこともできますが、cmakeコマンドに-Dオプションを与えることも可能です。例えば、上記のオプション全てを有効にする場合は、以下のように入力します。 ::
 
- cmake -DBUILD_SCENE_EFFECTS_PLUGIN=ON
-
-このオプションは複数つけることができます。上記のオプション全てを有効にする場合は、以下のように入力してください。 ::
-
- cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON
+ cmake -DBUILD_WRS2018=ON -DBUILD_COMPETITION_PLUGIN=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON
 
 AGX Dynamicsをインストールしていない場合は、対応するオプションを上記のコマンドライン引数から除去して実行してください。
 
