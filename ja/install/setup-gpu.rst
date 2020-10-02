@@ -104,7 +104,7 @@ AMD製のGPUでもオープンソース版とプロプライエタリ版が利�
 
 Ubuntuをインストールすると標準でオープンソース版が利用可能となっています。これに対して、プロプライエタリ版のAMDGPU-PROはマニュアルでインストールする必要があります。ドライバはAMD公式サイトの「ドライバーとサポート」のページから検索して取得することが可能です。
 
-2020年10月2日現在利用可能なUbuntu用の最新ドライバは、以下になります。
+2020年10月2日現在、当方で動作確認済みのUbuntu用ドライバは、以下になります。
 
 * `Radeon Software for Linux 20.30 Release Notes <https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-20-30>`_
 こちらはUbuntu 20.04と18.04 (成果には18.04.4 HWE) に対応しています。これより古いディストリビューション用のものは、 `AMD Drivers and Support <https://www.amd.com/en/support>`_ のページから対象製品を選択し、出てくるページで "Previous Drivers" というリンクを辿って探してください。
