@@ -331,35 +331,35 @@ AGXVehicleContinuousTrackの特徴
     -
       name: Ground
       roughness: 0.5
-      viscosity: 0.0
+      viscosity: 1.0
     -
       name: TankTracks         # クローラベルトのマテリアル
       youngsModulus: 1e10
       roughness: 1.0
-      viscosity: 0.3
+      viscosity: 1.0
     -
       name: TankWheel          # ホイールのマテリアル
       youngsModulus: 1e10
-      roughness: 0.0
-      viscosity: 0.0
+      roughness: 1.0
+      viscosity: 1.0
 
   contactMaterials:
     -
       materials: [ Ground, TankTracks]         # 地面とクローラベルトのコンタクトマテリアル
       youngsModulus: 1e10
-      friction: 0.7
+      friction: 1.0
       secondaryfriction: 0.5
       restitution: 0.0
       surfaceViscosity: 1e-7
       secondarySurfaceViscosity: 1e-5
       primaryDirection: [ 1, 0, 0 ]
-      frictionModel: [ orientedBox, direct ]
+      frictionModel: [ constant_normal_force_oriented_box, direct ]
       referenceBodyName: Tank
       referenceLinkName: CHASSIS
     -
       materials: [ TankWheel, TankTracks ]     # ホイールとクローラベルトのコンタクトマテリアル
       youngsModulus: 1e10
-      friction: 0.0
+      friction: 1.0
       restitution: 0.0
 
 
@@ -368,7 +368,7 @@ AGXVehicleContinuousTrackの特徴
 
   * クローラベルトはホイールに強い力で巻きつけられますので、お互いが侵入しにくくなるようにyoungsModulusは大きめに設定します
   * クローラベルトの粗さ、反発粘性は適当に設定をしてください
-  * ホイールは基本的にクローラベルトとのみ接触します。安定に接触させるために、roughnessとviscosityを0にすると良いでしょう。
+  * ホイールは基本的にクローラベルトとのみ接触します。安定に接触させるためにviscosityを1.0にすると良いでしょう。
   * クローラベルトとsprocket、idlerホイール間は拘束されておりますので、roughnessを0にしても滑るようなことはありません。
 
 3. 地面とクローラベルトは必ず接触するはずですので、そのContactMaterialをマテリアルファイルに定義します
@@ -377,14 +377,16 @@ AGXVehicleContinuousTrackの特徴
   * friction、secondaryFrictionは材質に合わせて設定します
   * surfaceViscosity、secondarySurfaceViscosityをクローラベルトが滑らない程度で大きめに設定します
   * 進行方向としてprimaryDirectionを設定します
-  * 摩擦モデルとしてfrictionModel: [ orientedBox, direct ]を設定します。
+  * 摩擦モデルとしてfrictionModel: [ constant_normal_force_oriented_box, direct ]を設定します。(摩擦モデルに関しては他に "oriented_iterative" も利用可能ですが、挙動が少し異なってきます。）
+  * 摩擦モデルとして "constant_normal_force_oriented_box" を指定した場合、constant_normal_forceに抗力を設定できます。
   * referenceBodyNameにクローラベルトを取り付けるボディ名を設定します
-  * referenceLinkNameにクローラベルトを取り付けるボディの本体のリンク名を設定します。これはメインシャーシや質量が大きいリンクを指定します
+  * referenceLinkNameにクローラベルトを取り付けるボディの本体のリンク名を設定します。これはクローラの方向と常に一致するリンクにします。
+  * **referenceBodyNameとreferenceLinkNameが適切に設定されていないと、（クローラの向きにもよりますが）クローラを思うように動かせなくなりますので、注意が必要です。**
 
 4. ホイールとクローラベルトのContactMaterialを定義します
 
   * youngsModulusはMaterialと同様に大きめに設定します
-  * friction(摩擦係数)とrestitution(反発係数を)を0に設定します
+  * restitution(反発係数を)を0に設定します
 
 5. 最後にマテリアルをボディファイルのリンクに設定します
 
@@ -392,16 +394,11 @@ AGXVehicleContinuousTrackの特徴
   * ホイールマテリアルをリンクホイールに設定します
 
 .. note::
-  | orientedBoxは進行方向とその垂直方向とで接触パラメータを分けて扱うことができる摩擦モデルです。
-  | ソルバとして、directソルバを選択することで摩擦の計算精度を高めます。
-  | referenceBodyNameとreferenceLinkNameはorientedBoxを利用時に有効となります。
-  | 摩擦力の計算に利用する抗力をreferenceLinkから推定し、-mu * Fn < Fp < mu * Fnとなるようにソルバで摩擦力の計算します。
-  | muは摩擦係数、Fnは推定抗力、Fpは摩擦力です。
-  | このようにすることで、十分な摩擦力をだせるようにします。
+  | constant_normal_force_oriented_boxは進行方向とその垂直方向とで接触パラメータを分けて扱うことができる摩擦モデルです。ソルバとして、directソルバを選択することで摩擦の計算精度を高めます。このモデルを利用する際にはreferenceBodyNameとreferenceLinkNameを指定する必要があります。
+  | 摩擦力の計算に利用する抗力をreferenceLinkから推定し、-mu * Fn < Fp < mu * Fnとなるようにソルバで摩擦力の計算します。muは摩擦係数、Fnは推定抗力、Fpは摩擦力です。Fnは constant_normal_force で明示的に設定できます。設定がなければ、モデルの質量から適当に算出されます。このようにすることで、十分な摩擦力をだせるようにします。
 
 .. note::
-  摩擦モデルをorientedBoxとして設定をしているマテリアルは基本的に使いまわしができません。
-  orientedBoxはreferenceBodyNameとreferenceLinkNameをパラメータとして持っており、異なるモデルにこのマテリアルを設定した場合にはreferenceBodyとreferenceLinkが見つからず機能が有効とならないためです。
+  摩擦モデルをconstant_normal_force_oriented_boxとして設定をしているマテリアルは基本的に使いまわしができません。** orientedBoxはreferenceBodyNameとreferenceLinkNameをパラメータとして持っており、異なるモデルにこのマテリアルを設定した場合にはreferenceBodyとreferenceLinkが見つからず機能が有効とならないためです。 **クローラを有するモデルの名前やリンク名を変更する場合、対応するContactMaterialのreferenceBodyNameやreferenceLinkNameもそれに合わせて変更する必要がある点には注意が必要です。**
 
 .. _agx_continous_track_stabilize:
 

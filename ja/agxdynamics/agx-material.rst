@@ -24,14 +24,14 @@ AGXSimulatorでリンク間の摩擦係数、反発係数などは、以下の�
 1. マテリアルファイルにMaterial、ContactMaterialを記述
 2. ボディファイルにマテリアルファイルで定義したMaterialを設定
 
-マテリアルファイルと記述方法
-----------------------------
+.. _agx_material_file:
+   
+マテリアルファイル
+------------------
 
-| マテリアルファイルは摩擦係数や反発係数などの物性を記述したリストファイルです。
-| このファイルは材質(Material)について、同じまたは異なる材質の接触物性(ContactMaterial)を記述することができます。
-| ここで定義した材質名をBodyファイルに記述することで、モデルに材質を設定することができます。
-| マテリアルファイルはワールドアイテムのプロパティに設定することで、読み込まれます。
-| デフォルトでは ``choreonoid/share/default/materials.yaml`` が設定されており、自動的に読み込まれます。
+マテリアルファイルは摩擦係数や反発係数などの物性を記述したリストファイルです。このファイルは材質(Material)について、同じまたは異なる材質の接触物性(ContactMaterial)を記述することができます。ここで定義した材質名をBodyファイルに記述することで、モデルに材質を設定することができます。
+
+マテリアルファイルはワールドアイテムのプロパティに設定することで、読み込まれます。デフォルトでは ``choreonoid/share/default/materials.yaml`` が設定されており、自動的に読み込まれます。
 
 .. code-block:: yaml
 
@@ -54,7 +54,7 @@ AGXSimulatorでリンク間の摩擦係数、反発係数などは、以下の�
       surfaceViscosity: 1.0e-8
       adhesionForce: 100
       adhesivOverlap: 0.2
-      frictionModel: [ cone, direct ]
+      frictionModel: [ iterative, direct ]
       contactReductionMode: reduceGeometry
       contactReductionBinResolution: 3
 
@@ -171,6 +171,8 @@ Materialパラメータの説明
     - double
     - 曲げスプークダンパ
 
+.. _agx_contact_material_parameters:
+
 ContactMaterialパラメータの説明
 -------------------------------
 
@@ -207,7 +209,7 @@ ContactMaterialパラメータの説明
     - -1.0
     - \-
     - double
-    - 副方向摩擦係数。摩擦モデルorientedBox指定時にsecondaryFriction>=0で有効となります。
+    - 副方向摩擦係数。摩擦モデルにoriented_box、oriented_scaled_box、constant_normal_force_oriented_box、oriented_iterativeのいずれかを指定した場合に、secondaryFriction>=0で有効となります。
   * - surfaceViscosity
     - 1.0e-8
     - \-
@@ -217,7 +219,7 @@ ContactMaterialパラメータの説明
     - -1.0
     - \-
     - double
-    - 副方向表面粘性係数。摩擦モデルorientedBox指定時にsecondaryFriction>=0で有効となります。
+    - 副方向表面粘性係数。摩擦モデルにoriented_box、oriented_scaled_box、constant_normal_force_oriented_box、oriented_iterativeのいずれかを指定した場合に、secondaryFriction>=0で有効となります。
   * - adhesionForce
     - 0.0
     - N
@@ -233,8 +235,8 @@ ContactMaterialパラメータの説明
     - \-
     - | string
       | string
-    - | 摩擦モデル: default(cone), cone, box, scaledBox, orientedBox
-      | ソルバ    : default(split), split, direct, iterative, iterativeAndDirect
+    - | 摩擦モデル: default(iterative), iterative, box, scaled_box, oriented_box, oriented_scaled_box, constant_normal_force_oriented_box, oriented_iterative
+      | ソルバ    : default(split), split, direct, iterative, direct_and_iterative
 
   * - contactReductionMode
     - default
@@ -265,6 +267,9 @@ ContactMaterialパラメータの説明
 
 .. note::
   AGXDynamicsは動摩擦係数、静止摩擦係数の区別がありません。実際、値の差は10-20%程度であり、ほとんどの状況では気にしなくて良いとの考えです。
+
+.. note::
+  摩擦モデルについてはChoreonoid 1.7で利用可能なものから追加されています。また、iterative, constant_normal_force_oriented_box については、それぞれ1.7までの cone, orientedBox に対応します。
 
 .. _not_defined_contact_material:
 
