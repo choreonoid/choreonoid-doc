@@ -398,7 +398,7 @@ AGXVehicleContinuousTrackの特徴
   | 摩擦力の計算に利用する抗力をreferenceLinkから推定し、-mu * Fn < Fp < mu * Fnとなるようにソルバで摩擦力の計算します。muは摩擦係数、Fnは推定抗力、Fpは摩擦力です。Fnは constant_normal_force で明示的に設定できます。設定がなければ、モデルの質量から適当に算出されます。このようにすることで、十分な摩擦力をだせるようにします。
 
 .. note::
-  摩擦モデルをconstant_normal_force_oriented_boxとして設定をしているマテリアルは基本的に使いまわしができません。** orientedBoxはreferenceBodyNameとreferenceLinkNameをパラメータとして持っており、異なるモデルにこのマテリアルを設定した場合にはreferenceBodyとreferenceLinkが見つからず機能が有効とならないためです。 **クローラを有するモデルの名前やリンク名を変更する場合、対応するContactMaterialのreferenceBodyNameやreferenceLinkNameもそれに合わせて変更する必要がある点には注意が必要です。**
+  constant_normal_force_oriented_boxをはじめとして、orientedな摩擦モデルを設定をしているマテリアルは基本的に使いまわしができません。それらはreferenceBodyNameとreferenceLinkNameをパラメータとして持っており、異なるモデルにこのマテリアルを設定した場合にはreferenceBodyとreferenceLinkが見つからず機能が有効とならないためです。このため、 **クローラを有するモデルの名前やリンク名を変更する場合、対応するContactMaterialのreferenceBodyNameやreferenceLinkNameもそれに合わせて変更する必要があります。**
 
 .. _agx_continous_track_stabilize:
 
