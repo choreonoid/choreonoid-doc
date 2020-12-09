@@ -235,7 +235,7 @@ Choreonoid関連のROSパッケージはデフォルトでReleaseが設定され
 
 とすることで、このビルドについてはReleaseモードでのビルドとなります。このようにすることで、ビルドごとにビルドタイプのみを切り替えることが可能です。
 
-さらに、Catkin Command Line Tools の Profile機能を使えば、設定ごとに予めプロファイルとして登録しておき、ビルドの際にプロファイルを指定することで、オプションの組み合わせを丸ごと切り替えることもできます。この使い方については、 `Catkin Command Line Tools のマニュアル <https://catkin-tools.readthedocs.io/en/latest/index.html>`_ の `Profile Cookbook <https://catkin-tools.readthedocs.io/en/latest/cheat_sheet.html#profile-cookbook>`_ を参考にしてください。
+さらに、Catkin Command Line Tools の Profile機能を使えば、設定ごとに予めプロファイルとして登録しておき、ビルドの際にプロファイルを指定することで、オプションの組み合わせを丸ごと切り替えることもできます。この方法については、:doc:`catkin-profile` で説明しています。
 
 .. _loading_catkin_workspace_setup_script:
 

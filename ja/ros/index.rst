@@ -9,6 +9,7 @@ ROSとの連携
    install-ros
    build-choreonoid
    run-choreonoid
+   catkin-profile
    rosplugin
    tank-tutorial/index
    ros-control/index

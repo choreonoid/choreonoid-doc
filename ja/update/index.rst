@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/12/09
+ * :doc:`../ros/catkin-profile` を追加
+
 * 2020/10/09
  * :ref:`agx_contact_material_parameters` と :ref:`agx_continous_track_material` を更新
  * :doc:`../wrs2018/index` に :ref:`wrs2018_model_creation_note` を追加
