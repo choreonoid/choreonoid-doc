@@ -2,7 +2,7 @@
 ========
 
 * 2020/12/21
- * :doc:`../simulation/howto-implement-controller` にChoreonoid最新版のAPIを反映。
+ * :doc:`../simulation/howto-implement-controller` と :doc:`../simulation/pseudo-continuous-track` にChoreonoid最新版のAPIを反映。
 
 * 2020/12/09
  * :doc:`../ros/catkin-profile` を追加
