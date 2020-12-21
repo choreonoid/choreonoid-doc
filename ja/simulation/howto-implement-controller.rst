@@ -69,7 +69,7 @@
 
          for(int i=0; i < ioBody->numJoints(); ++i){
              Link* joint = ioBody->joint(i);
-	     joint->setActuationMode(Link::JOINT_TORQUE);
+             joint->setActuationMode(Link::JointTorque);
 	     io->enableIO(joint);
 	     qref.push_back(joint->q());
 	 }
@@ -225,52 +225,97 @@ Bodyオブジェクトでは、モデルを構成する個々のパーツ（剛�
 
 .. _simulation-implement-controller-actuation-mode:
 
-アクチュエーションモード
-~~~~~~~~~~~~~~~~~~~~~~~~
+状態変数シンボル
+~~~~~~~~~~~~~~~~
 
-関節への出力に関わる概念として、「アクチュエーションモード」があります。これは関節駆動時にどの状態変数を指令値として使うかを決めるものであり、モードとして以下のシンボルがLinkクラスに定義されています。
+Choreonoidでは入出力の対象となる状態変数を識別するためのシンボルが定義されており、これを用いて指令値や入力値にどの状態変数を使用するかを指定します。シンボルはLinkクラスにてStateFlagという列挙型の要素として以下のように定義されています。（外部からはLinkクラスのスコープ解決演算子 Link:: を付けてアクセスできます。）
 
-.. list-table:: **Link::ActuationMode列挙型のシンボル**
- :widths: 20,60,20
+.. list-table:: **Link::StateFlag列挙型のシンボル**
+ :widths: 20,50,30
  :header-rows: 1
 
  * - シンボル
    - 内容
+   - 対応する状態変数
+ * - **StateNone**
+   - 該当する状態なし。
+   - 
+ * - **JointEffort**
+   - 関節に加わるトルク（回転関節の場合）または力（直動関節の場合）
+   - Link::u()
+ * - **JointTorque**
+   - JointEffortと同じ。回転関節向けに記述を分かりやすくするために定義されている。
+   - 同上
+ * - **JointForce**
+   - JointEffortと同じ。直動関節向けに記述を分かりやすくするために定義されている。
+   - 同上
+ * - **JointDisplacement**
+   - 関節変位（関節角度や関節並進位置）
+   - Link::q() (現在値）またはLink::q_target() (指令値）
+ * - **JointAngle**
+   - JointDisplacementと同じ。対応する変位が関節角度である場合に記述をより分かりやすくするために定義されている。
+   - 同上
+ * - **JointVelocity**
+   - 関節の速度成分。回転関節の角速度または直動関節の変位速度に該当。
+   - Link::dq() (現在地）またはLink::dq_target() (指令値）
+ * - **JointAcceleration**
+   - 関節の加速度成分。回転関節の角加速度または直動関節の変位加速度に該当。
+   - Link::ddq()
+ * - **LinkPosition**
+   - リンク位置。デカルト空間におけるリンク座標フレームの6自由度の位置・姿勢に該当。
+   - Link::T()
+ * - **LinkTwist**
+   - リンク速度。リンク座標フレームの並進速度・角速度。
+   - Link::v() (並進速度）、Link::w() (角速度）
+
+
+複数の要素を組み合わせることも可能です。その場合は複数シンボルをビット演算子の '|' で列挙します。例えば、 ::
+
+ JointDisplacement | JointVelocity
+
+と指定することで、関節変位と関節速度の両方を指定することができます。
+
+.. note:: Choreonoid 1.7までのシンボルは大文字とアンダースコアを組み合わせた "JOINT_EFFORT" といった形式でしたが、Choreonoid 1.8からは上記の形式のシンボルとなりました。古いシンボルもしばらくは使用できますが、今後は新しいシンボルを使用するようにしてください。
+
+
+アクチュエーションモード
+~~~~~~~~~~~~~~~~~~~~~~
+
+コントローラから各リンク／関節への出力に関わる概念として、「アクチュエーションモード」があります。これはどの状態変数を制御指令値として使用するかを決めるものです。モードの指定には上記のStateFlag列挙型のシンボルを用います。
+
+基本的な関節指令値に対応するモードは以下のようになります。
+
+
+.. list-table:: **基本的なアクチュエーションモード**
+ :widths: 20,60,20
+ :header-rows: 1
+
+ * - モード
+   - 内容
    - 状態変数
- * - **NO_ACTUATION**
+ * - **StateNone**
    - 駆動なし。関節はフリーの状態となる。
    - 
- * - **JOINT_EFFORT**
-   - 関節に与える力やトルクを指令値とする。
+ * - **JointEffort**
+   - 関節を駆動する力／トルクを指令値とする。
    - Link::u()
- * - **JOINT_FORCE**
-   - JOINT_EFFORTと同じ。直動関節用に定義。
-   - Link::u()
- * - **JOINT_TORQUE**
-   - JOINT_EFFORTと同じ。回転関節用に定義。
-   - Link::u()
- * - **JOINT_DISPLACEMENT**
-   - 関節変位（関節角度や関節並進位置）を指令値とする。
+ * - **JointDisplacement**
+   - 関節変位を指令値とする。
    - Link::q_target()
- * - **JOINT_ANGLE**
-   - JOINT_DISPLACEMENTと同じ。回転関節用に定義。
-   - Link::q_target()
- * - **JOINT_VELOCITY**
-   - 関節の角速度やオフセット速度を指令値とする。
-   - Link::dq_target()
- * - **JOINT_SURFACE_VELOCITY**
-   - リンク表面と環境との接触における相対速度を指令値とする。簡易的なクローラやベルトコンベアのシミュレーションで使用する。 :doc:`pseudo-continuous-track` 参照。
+ * - **JointVelocity**
+   - 関節の角速度や変位速度を指令値とする。
    - Link::dq_target()
 
 アクチュエーションモードは、Linkクラスの以下の関数を用いて参照・設定します。
 
-* **ActuationMode actuationMode() const**
+* **void setActuationMode(int mode)**
 
- 現在設定されているアクチュエーションモードを返します。
+ アクチュエーションモードを設定します。モード値modeはLink::StateFlagのシンボルで指定します。複数のシンボルをビット和として組み合わせて指定することも可能です。
 
-* **void setActuationMode(ActuationMode mode)**
+* **int actuationMode() const**
 
- アクチュエーションモードを設定します。
+ 現在設定されているアクチュエーションモードを返します。値は通常Link::StateFlagの要素ひとつとなりますが、複数要素の組み合わせ（ビット集合）の場合もあります。
+
 
 .. _simulation-implement-controller-enable-io:
 
@@ -281,59 +326,27 @@ Bodyオブジェクトでは、モデルを構成する個々のパーツ（剛�
 
 * **void enableInput(Link\* link)**
 
- linkで指定したリンクに関する状態量のコントローラへの入力を有効にします。リンクに対して設定されているアクチュエーションモードに対して適切な状態量が入力対象となります。
+ 指定したリンク（関節）が有する状態量のコントローラへの入力を有効にします。リンクに対して設定されているアクチュエーションモードに対して適切な状態量が入力対象となります。例えばアクチュエーションモードとしてJointEffortが設定されている場合は、関節変位の現在値であるLink::q()が入力対象となります。これはPD制御を行うために必要となるからです。
 
-* **void enableInput(Link\* link, int stateTypes)**
+* **void enableInput(Link\* link, int stateFlags)**
 
- linkで指定したリンクに関して、stateTypesで指定した状態量のコントローラへの入力を有効にします。
+ 指定したリンク（関節）が有する状態量のうちstateFlagsで指定したものをコントローラに入力するようにします。stateFlagsはLink::StateFlagシンボルの論理和で指定します。入力したい値が明確な場合はこの関数を使用するのがよいです。
 
 * **void enableOutput(Link\* link)**
 
- linkで指定したリンクに関する状態量のコントローラからの出力を有効にします。リンクに対して設定されているアクチュエーションモードに対応する状態量が出力対象となります。
+ 指定したリンク(関節）に対する出力を有効にします。リンクに対して設定されているアクチュエーションモードに対応する状態変数が出力対象となります。例えばアクチュエーションモードとしてJointEffortが設定されている場合は、関節トルク／力に対応するLink::u()が出力対象となります。
+
+* **void enableOutput(Link\* link, int stateFlags)**
+
+ 指定したリンク(関節）に対する出力を有効にします。出力する状態変数はstateFlagsにLink::StateFlagのシンボルを指定することで行います。
 
 * **void enableIO(Link\* link)**
 
- linkで指定したリンクに関する状態量の入出力を有効にします。リンクに対して設定されているアクチュエーションモードに対して適切な状態量が入出力対象となります。
+ 指定したリンクの入出力を有効にします。リンクに対して設定されているアクチュエーションモードに対して適切な状態量が入出力対象となります。
 
 .. note:: SimpleControllerIO には setLinkInput、setJointInput、setLinkOutput、setJointOutput といった関数も定義されています。これらはChoroenoid 1.5以前のバージョンで使われていた関数ですが、バージョン1.6以降ではこれらの関数に代わるものとして上記の enableIO、enableInput、enableOutput 関数を導入されており、今後はそちらの関数を使うようにしてください。
 
-enableInput関数のstateTypesに与える値は、SimpleControllerIOにて定義されている以下のシンボルで指定します。
-
-.. list-table::
- :widths: 20,60,20
- :header-rows: 1
-
- * - シンボル
-   - 内容
-   - 状態変数
- * - JOINT_DISPLACEMENT
-   - 関節変位
-   - Link::q()
- * - JOINT_ANGLE
-   - JOINT_DISPLACEMENTと同じ。回転関節用に定義。
-   - Link::q()
- * - JOINT_VELOCITY
-   - 関節速度（角速度）
-   - Link::dq()
- * - JOINT_ACCELERATION
-   - 関節加速度（角加速度）
-   - Link::ddq()
- * - JOINT_EFFORT
-   - 関節並進力または関節トルク
-   - Link::u()
- * - JOINT_TORQUE
-   - JOINT_EFFORTと同じ。回転関節用に定義。
-   - Link::u()
- * - JOINT_FORCE
-   - JOINT_EFFORTと同じ。直動関節用に定義。
-   - Link::u()
    
-複数の要素を指定したい場合は、それらのシンボルをビット演算子の '|' で列挙します。例えば、 ::
-
- JOINT_DISPLACEMENT | JOINT_VELOCITY
-
-と指定することで、関節変位と関節速度の両方を指定することができます。
-
 実際に利用可能なアクチュエーションモードは、シミュレータアイテム（≒物理エンジン）のタイプや設定によって変わってきます。ほとんどのシミュレータアイテムではJOINT_EFFORTに対応しており、これとJOINT_DISPLACEMENTの入力を組み合わせることで、PD制御等を行うことが可能です。
 
 Linkオブジェクトに設定されているアクチュエーションモードに対して、入出力対象は通常以下のようになります。
@@ -345,19 +358,18 @@ Linkオブジェクトに設定されているアクチュエーションモー�
  * - アクチュエーションモード
    - 入力
    - 出力
- * - JOINT_EFFORT
+ * - JointEffort
    - Link::q()
    - Link::u()
- * - JOINT_DISPLACEMENT
+ * - JointDisplacement_DISPLACEMENT
    - なし
    - Link::q_target()
- * - JOINT_VELOCITY
+ * - JointVelocity
    - Link::q()
    - Link::dq_target()
 
-ただし、入力に関しては、enableInputにてstateTypesパラメータを与えることにより、任意の状態量を入力することが可能です。
+.. note:: **LinkPosition** を指定することで、３次元空間中のリンクの位置と姿勢を直接入出力の対象とすることも可能です。これについては後ほど :ref:`simulation-implement-controller-link-position` にて解説します。
 
-.. note:: ３次元空間中のリンクの位置と姿勢を直接入出力の対象とする **LINK_POSITION** というシンボルも利用可能となっています。これについては後ほど :ref:`simulation-implement-controller-link-position` にて解説します。
 
 初期化処理
 ----------
@@ -390,13 +402,13 @@ SimpleController継承クラスのinitialize関数では、コントローラの
 
 そして ::
 
- joint->setActuationMode(Link::JOINT_TORQUE);
+ joint->setActuationMode(Link::JointTorque);
 
-によって、この関節に対してアクチュエーションモードの設定を行っています。ここでは Link::JOINT_TORQUE を指定することで、関節トルクを指令値としています。また、 ::
+によって、この関節に対してアクチュエーションモードの設定を行っています。ここでは Link::JointTorque を指定することで、関節トルクを指令値としています。また、 ::
 
  io->enableIO(joint);
 
-とすることで、この関節に対する入出力を有効化しています。アクチュエーションモードに JOINT_TORQUE が設定されているため、出力は関節トルク、入力は関節角度となります。これによってPD制御を行います。
+とすることで、この関節に対する入出力を有効化しています。アクチュエーションモードに JointTorque が設定されているため、出力は関節トルク、入力は関節角度となります。これによってPD制御を行います。
 
 次に ::
 
@@ -516,8 +528,6 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
 ロボットに搭載されているデバイスの情報は、通常はモデルファイルにおいて記述します。標準形式のモデルファイルでは、 :doc:`../handling-models/modelfile/yaml-reference` の :ref:`body-file-reference-devices` を記述します。
 
 シンプルコントローラでは、Body、Linkオブジェクトと同様に、デバイスに対してもChoreonoidの内部表現であるDeviceオブジェクトをそのまま用いて入出力を行います。
-
-.. note:: 関節角度や関節トルクは
 
 本節で使用しているSR1モデルが有するデバイスオブジェクトは以下のようになっています。
 
@@ -658,15 +668,15 @@ SR1モデルの加速度センサの入力は以下のような流れになり�
 
 コントローラの入出力の対象としては、他にリンクの位置姿勢があります。ここで言う位置姿勢というのは関節角度のことではなく、リンクという剛体そのもののグローバル座標における位置と姿勢を意味します。この値は通常ロボット実機に対して入出力を行うことはできません。空間中に固定されていないロボットに対して、あるリンクの正確な位置と姿勢を知ることは（かなり性能のよいモーションキャプチャでも無ければ）困難ですし、あるリンクの位置姿勢をコントローラからの出力で直接変えることは物理的に不可能です。しかしながら、シミュレーションにおいてはそのようなことも可能となるため、シミュレーション限定での利用を想定してこの値の入出力機能も備えています。
 
-これを行うためには、状態量のシンボルとして **LINK_POSITION** を指定します。出力を行う場合はLinkオブジェクトのsetActuationMode関数に **Link::LINK_POSITION** を指定し、IOオブジェクトのenableIO関数やenableOutput関数を用いて出力を有効化します。入力については、IOオブジェクトのenableInput関数で **SimpleControllerIO::JOINT_POSITION** を指定します。
+これを行うためには、状態量のシンボルとして **LinkPosition** を指定します。出力を行う場合はLinkオブジェクトのsetActuationMode関数に **Link::LinkPosition** を指定し、IOオブジェクトのenableIO関数やenableOutput関数を用いて出力を有効化します。入力についても同様にIOオブジェクトのenableInput関数で **Link::LinkPosition** を指定すればOKです。
 
-Linkオブジェクトにおいて、その位置姿勢はPosition型の値として格納されています。これはChoreonoidの実装に用いているEigenという行列・ベクトルライブラリの"Transform"型をカスタマイズしたもので、基本的には３次元の同次座標変換行列を格納したものとなっています。この値にはLinkクラスの以下のような関数を用いてアクセスできます。
+Linkオブジェクトにおいて、その位置姿勢はIsometry3型の値として格納されています。これはChoreonoidの実装に用いているEigenという行列・ベクトルライブラリの"Transform"型をカスタマイズしたもので、基本的には３次元の同次座標変換行列を格納したものとなっています。この値にはLinkクラスの以下のような関数を用いてアクセスできます。
 
-* **Position& T(), Position& position()**
+* **Isometry3& T(), Isometry3& position()**
 
- 位置姿勢に対応するPosition値への参照を返します。
+ 位置姿勢に対応するIsometry3値への参照を返します。
 
-* **Position::TranslationPart translation()**
+* **Isometry3::TranslationPart translation()**
 
  位置成分に対応する３次元ベクトルを返します。
 
@@ -674,7 +684,7 @@ Linkオブジェクトにおいて、その位置姿勢はPosition型の値と�
    
  位置成分を設定します。引数はEigenの3次元ベクトル相当の型が使えます。
 
-* **Position::LinearPart rotation()**
+* **Isometry3::LinearPart rotation()**
 
  姿勢（回転）成分に対応する3x3行列を返します。
 
@@ -688,7 +698,7 @@ Linkオブジェクトにおいて、その位置姿勢はPosition型の値と�
 
 例として、ルートリンクの位置を入力する場合は、まずコントローラのinitialize関数にて ::
 
- io->enableInput(io->body()->rootLink(), LINK_POSITION);
+ io->enableInput(io->body()->rootLink(), LinkPosition_POSITION);
 
 などとします。そして control 関数にて ::
 
@@ -699,6 +709,9 @@ Linkオブジェクトにおいて、その位置姿勢はPosition型の値と�
 などとすることにより、ルートリンクの位置姿勢を取得できます。
 
 リンク位置姿勢の出力については、これをサポートしたシミュレータが必要で、特殊な利用形態となります。例えばAISTシミュレータアイテムでは、「動力学モード」を「運動学」にすると、シミュレーションにおいて動力学計算を行わず、与えた位置姿勢を再現するだけのモードとなります。この場合、ロボットのルートリンクの位置姿勢を出力することで、ルートリンクがその位置姿勢へ移動します。また、関節角も出力しておけば、ルートリンクからの順運動学の結果となる姿勢が再現されます。
+
+.. note:: Choreonoid 1.7以前のバージョンでは位置姿勢を格納する型名に "Position" を使用していました。この型の内容は上記のIsometry3とほぼ同様で、相互に変換もできますが、今後はIsometry3を使うようにしてください。
+
 
 その他のサンプル
 ----------------
