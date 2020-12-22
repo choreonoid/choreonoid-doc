@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2020/12/22
+ * :doc:`../install/build-windows` について、対応しているVisualC++のバージョンを修正
+
 * 2020/12/21
  * :doc:`../simulation/howto-implement-controller` と :doc:`../simulation/pseudo-continuous-track` にChoreonoid最新版のAPIを反映。
 
