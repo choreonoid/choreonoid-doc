@@ -13,6 +13,7 @@ Choreonoid Operation Manual
    basics/index
    handling-models/index
    simulation/index
+   ros/index
    agxdynamics/index
    multicopter/index
    trafficcontrol/index
