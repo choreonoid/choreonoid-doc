@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2021/4/9
+ * :doc:`../install/build-windows` について、一部内容を最新の状況を踏まえたものに更新
+
 * 2020/12/22
  * :doc:`../install/build-windows` について、対応しているVisualC++のバージョンを修正
 
