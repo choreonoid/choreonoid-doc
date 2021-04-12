@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2021/4/12
+ * :doc:`../ros/tank-tutorial/index` に :doc:`../ros/tank-tutorial/step2` を追加
+
 * 2021/4/9
  * :doc:`../install/build-windows` について、一部内容を最新の状況を踏まえたものに更新
 

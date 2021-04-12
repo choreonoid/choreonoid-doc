@@ -25,6 +25,9 @@ ROSのディストリビューションがまだインストールされてい�
   sudo apt install ros-noetic-desktop-full
   echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
   source ~/.bashrc
+  sudo apt install python3-rosdep
+  sudo rosdep init
+  rosdep update
 
 **Ubuntu 18.04 (ROS Melodic Morenia) の場合** ::
 
@@ -54,6 +57,9 @@ ROSのディストリビューションがまだインストールされてい�
 
 .. note:: apt-keyコマンドで取得する鍵には通常有効期限が設定されていて、期限が切れるとリポジトリへのアクセスなどができなくなってしまうようです。その場合は上記のapt-keyコマンドを再度実行し鍵を更新することで、リポジトリへアクセスできるようになります。
 
+.. note:: Noeticの場合、上記コマンドでインストールしているrosdepのパッケージとして、他に "python3-rosdep2" というものもあるようです。こちらの方が新しいバージョンのようですが、この使用についてはまだ情報が少なく、既存のパッケージとうまく連携できるかよく分からないところがありますので、当面は python3-rosdep の方を使用した方がよいのではないかと思います。
+	  
+
 Catkin Toolsのインストール
 --------------------------
 
@@ -67,19 +73,3 @@ Ubuntu 20.04の場合、以下のようにして必要なパッケージをイ�
 Ubuntu 18.04、16.04の場合はPythonの環境が異なるため、インストールは以下のコマンドで行うことになります ::
 
  sudo apt install python-catkin-tools
-
-Ubuntu 20.04 (ROS Noetic Ninjemys) におけるrosdepのインストール
----------------------------------------------------------------
-
-ROSパッケージの依存関係を解消するツールである "rosdep" について、ROS Melodicまでは公式Wikiの記述でインストールするようになっているのですが、Noeticからは公式Wikiのインストールページからこの記述が省かれています。上記のインストールコマンドも公式Wikiから抜粋したものなので、このままではrosdepはインストールされません。Noeticからrosdepの扱いが変わったのかもしれませんが、詳細は不明です。
-
-これについては、以下のコマンドでrosdepをインストールすることは可能なようです。 ::
-
- sudo apt install python3-rosdep
-
-インストール後は他のディストリビューションと同様に以下を実行しておきます。 ::
-
- sudo rosdep init
- rosdep update
-
-なお、rosdepのパッケージとしては他に "python3-rosdep2" というものもあるようです。こちらの方が新しいバージョンのようですが、この使用についてはまだ情報が少なく、既存のパッケージとうまく連携できるかよく分からないところがありますので、当面は python3-rosdep の方を使用した方がよいのではないかと思います。

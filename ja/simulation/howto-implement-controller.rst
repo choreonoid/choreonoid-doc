@@ -98,6 +98,8 @@
 
 サンプルとは別に新たにシンプルコントローラを実装してビルドする方法については、:doc:`howto-build-controller` をご参照ください。
 
+.. _simulation-implement-controller-simple-controller-class:
+
 SimpleControllerクラス
 ----------------------
 
@@ -114,9 +116,8 @@ SimpleControllerクラス
  public:
      virtual bool initialize(SimpleControllerIO* io) = 0;
      virtual bool control() = 0;
- };
+};
 
-.. ※定義の詳細についてはそのソースコードである"src/SimpleControllerPlugin/library/SimpleController.h" にて確認してください。
 
 このクラスのvirtual関数を継承先のクラスでオーバーライドすることにより、コントローラの処理内容を記述します。各関数の内容は以下のようになっています。
 
@@ -134,7 +135,10 @@ SimpleControllerを継承したクラスを定義したら、そのファクト�
 
 これにより、このソースからコンパイルされた共有（ダイナミックリンク）ライブラリのファイルが、実際のコントローラとしてシンプルコントローラアイテムから利用可能となります。
 
+.. note:: SimpleControllerクラスの詳細については、ソースアーカイブにおいてこのクラスを定義している "src/SimpleControllerPlugin/library/SimpleController.h" をご参照ください。また本節最後の :ref:`simulation-implement-controller-simple-controller-class-supplement` も参考にしてください。
+
 .. _simulator-simple-controller-io:
+.. _simulation-implement-controller-simple-controller-io:
 
 IOオブジェクト
 --------------
@@ -142,6 +146,10 @@ IOオブジェクト
 上記のinitialize関数の引数 io として渡されるSimpleControllerIO型のオブジェクトは、コントローラとロボットの間の入出力に必要な情報を扱うオブジェクトです。以下ではこのオブジェクトを「IOオブジェクト」と呼ぶことにします。
 
 このクラスはControllerIOを継承したものになっています。ControllerIOクラスで定義されている関数としては以下のようなものがあり、コントローラの実装に用いることができます。
+
+* **Body\* controllerName()**
+
+ コントローラの名前を返します。
 
 * **Body\* body()**
 
@@ -168,6 +176,7 @@ IOオブジェクト
  現在時刻を返します。単位は秒で、シミュレーション開始時が時刻 0 となります。
 
 .. _simulator-io-by-body-object:
+.. _simulation-implement-controller-io-by-body-object:
 
 Bodyオブジェクトを介した入出力
 ------------------------------
@@ -711,6 +720,37 @@ Linkオブジェクトにおいて、その位置姿勢はIsometry3型の値と�
 リンク位置姿勢の出力については、これをサポートしたシミュレータが必要で、特殊な利用形態となります。例えばAISTシミュレータアイテムでは、「動力学モード」を「運動学」にすると、シミュレーションにおいて動力学計算を行わず、与えた位置姿勢を再現するだけのモードとなります。この場合、ロボットのルートリンクの位置姿勢を出力することで、ルートリンクがその位置姿勢へ移動します。また、関節角も出力しておけば、ルートリンクからの順運動学の結果となる姿勢が再現されます。
 
 .. note:: Choreonoid 1.7以前のバージョンでは位置姿勢を格納する型名に "Position" を使用していました。この型の内容は上記のIsometry3とほぼ同様で、相互に変換もできますが、今後はIsometry3を使うようにしてください。
+
+.. _simulation-implement-controller-simple-controller-class-supplement:
+
+補足: SimpleControllerクラスの定義について
+------------------------------------------
+
+:ref:`simulation-implement-controller-simple-controller-class` ではこのクラスのvirtual関数として initialize と control の2つを紹介しましたが、SimpleControllerはこれ以外にも以下に示すvirtual関数を備えていて、それぞれオーバーライドして処理を記述できるようになっています。
+
+* **virtual bool configure(SimpleControllerConfig\* config)**
+
+ こちらもコントローラの初期化を行うための関数ですが、initialize関数とは実行のタイミングが異なります。initialize関数はシミュレーションを開始するタイミングで実行されますが、こちらの関数はそれ以前に、コントローラがプロジェクトに導入されて（アイテムツリーに組み込まれて）特定のモデルと関連付けられた時点で実行されます。シミュレーション開始前に実行しておきたい処理がある場合は、こちらに記述するようにします。引数configを通して初期化に関わる情報を取得できます。
+
+* **virtual bool start()**
+
+ こちらもコントローラの初期化を行うための関数ですが、タイミング的にはinitialize関数よりも後に実行される関数です。initialize関数も含めてシミュレーション全体の初期化がひととおり完了し、コントローラが稼働を開始するタイミングで実行されます。
+
+* **virtual void stop()**
+
+ こちらはシミュレーション停止時に実行される関数です。
+
+* **virtual void unconfigure()**
+
+ こちらはconfigureと対をなすもので、コントローラが削除されたり対象モデルから切り離されるなどして、コントローラが無効となるタイミングで実行されます。
+
+configure関数の引数として与えられるconfigオブジェクトは :ref:`simulation-implement-controller-simple-controller-io` と同様のもので、対象モデルの情報を得るための関数
+
+* **Body\* body()**
+
+をはじめとして、IOオブジェクトと同様のメンバを有しています。
+
+ただしconfigから得られるbodyオブジェクトはIOオブジェクトから得られるものとは異なることにご注意ください。IOオブジェクトから得られるものはシミュレーション中のBodyオブジェクトとの入出力を行うもので、シミュレーション実行時に生成されるものです。一方、configから得られるものは、Bodyアイテムが元々有するBodyオブジェクトで、シミュレーションを開始する前から存在するものです。
 
 
 その他のサンプル

@@ -264,7 +264,8 @@ Choreonoid版Joyノード
              io->enableIO(joint);
          }
  
-         joystickSubscriber = node->subscribe("joy", 1, &JoyInputController::joystickCallback, this);
+         joystickSubscriber = node->subscribe(
+             "joy", 1, &JoyInputController::joystickCallback, this);
  
          return true;
      }
@@ -463,7 +464,6 @@ choreonoid_add_simple_controllerは、find_packageでchoreonoidを検出する�
 
 この記述によって、JoyInputController.cppからシンプルコントローラのバイナリが生成され、Choreonoidのシンプルコントローラ用のバイナリ格納ディレクトリに出力されることになります。
 
-
 コントローラのビルド
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -505,6 +505,8 @@ catkin build 実行後にコンソールに以下のような出力があれば�
  ...
 
 ビルドに失敗した場合はコンパイルエラーなどが出力されますので、その内容に従ってソースコードやCMakeLists.txtを修正するようにしてください。
+
+.. _ros_tank_tutorial_step1_introduce_controller:
 
 
 コントローラの導入
@@ -625,7 +627,19 @@ args以下はchoreonoidコマンドに与える引数になっています。引
 
 .. highlight:: sh
 
-このLaunchファイルは choreonoid_ros_tank_tutorialパッケージの "launch" ディレクトリに保存するようにしてください。そのようにしておくと、端末上から以下のコマンドを入力することでこのLaunchファイルを実行できます。 ::
+このLaunchファイルは choreonoid_ros_tank_tutorialパッケージの "launch" ディレクトリに保存するようにしてください。すると本チュートリアル用パッケージは以下のファイル構成になります。
+
+.. code-block:: none
+
+ + choreonoid_ros_tank_tutorial
+   + launch
+     + step1.launch
+   + project
+     + step1.cnoid
+   + src
+     + JoyInputController.cpp
+
+このようにしておくと、端末上から以下のコマンドを入力することでこのLaunchファイルを実行できます。 ::
 
  roslaunch choreonoid_ros_tank_tutorial step1.launch
 
@@ -686,7 +700,7 @@ ROSのNodeHandleは以下の関数で生成しています。 ::
 
 ここで生成したNodeHandleは、使用を終えたらdeleteする必要があります。これを自動で行うため、std::unique_ptrのスマートポインタを使用しています。
 
-ここで実装しているconfigure関数は、SimpleControllerクラスで定義されている初期化関数のひとつです。virtual関数として定義されており、これをオーバライドすることで初期化処理を実装することができます。実はSimpleControllerでは初期化を行うためのvirtual関数が3つ用意されており、それぞれ以下のタイミングで呼ばれるようになっています。
+ここで実装しているconfigure関数は、SimpleControllerクラスで定義されている初期化関数のひとつです（ :ref:`simulation-implement-controller-simple-controller-class-supplement` ）。 virtual関数として定義されており、これをオーバライドすることで初期化処理を実装することができます。実はSimpleControllerでは初期化を行うためのvirtual関数が3つ用意されており、それぞれ以下のタイミングで呼ばれるようになっています。
 
 * configure: コントローラがプロジェクトに導入された時点で呼ばれる
 * initialize: シミュレーション開始の直前に呼ばれる
@@ -708,7 +722,8 @@ ROSのNodeHandleは以下の関数で生成しています。 ::
 
 通常の初期化処理はinitialize関数に実装しています。その大部分はクローラと砲塔・砲身軸の制御のための準備で、詳細は :doc:`../../simulation/tank-tutorial/index` で解説しておりますので、ここでは詳細を省きます。ROSと関連する部分としては、以下の処理を記述しています。 ::
 
- joystickSubscriber = node->subscribe("joy", 1, &JoyInputController::joystickCallback, this);
+ joystickSubscriber = node->subscribe(
+     "joy", 1, &JoyInputController::joystickCallback, this);
 
 この記述により、joyトピックをSubscribeするための初期化を行っています。NodeHandleのsubscribe関数に対象のトピック名を指定してSubscriberを生成します。生成したSubscriberはSubscriber型の変数に格納します。これはSubscriberの実態へのリファレンスとなっていて、これによってSubscriberの生存管理を行います。
 
