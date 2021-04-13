@@ -51,7 +51,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
      {
          ioBody = io->body();
  
-         const int n = ioBody->numJoints();
+         int n = ioBody->numJoints();
          jointState.name.resize(n);
          jointState.position.resize(n);
          jointState.velocity.resize(n);
@@ -65,7 +65,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
  
          time = 0.0;
          timeStep = io->timeStep();
-         const double frequency = 20.0;
+         double frequency = 50.0;
          cycleTime = 1.0 / frequency;
          timeCounter = 0.0;
  
@@ -231,7 +231,7 @@ C++のコードからこのメッセージ型を利用するためには、メ�
 
 まず ::
 
- const int n = ioBody->numJoints();
+ int n = ioBody->numJoints();
  jointState.name.resize(n);
  jointState.position.resize(n);
  jointState.velocity.resize(n);
@@ -255,11 +255,13 @@ C++のコードからこのメッセージ型を利用するためには、メ�
 
  time = 0.0;
  timeStep = io->timeStep();
- const double frequency = 20.0;
+ double frequency = 50.0;
  cycleTime = 1.0 / frequency;
  timeCounter = 0.0;
 
 として時間関係の変数の初期化をしています。ここで設定した値はcontrol関数内で参照します。
+
+frequencyに設定している値はPublishのフレームレートに対応するもので、Publishの頻度を決めるものです。この値を大きくするとより時間分解能の高い状態出力になりますが、その分通信のコストは増えてしまうので、ネットワーク環境やシステム全体の通信量などを踏まえて適切に調整する必要があります。
 
 
 以上で準備は終わりました。あとは上記1〜3の処理をcontrol関数内に記述します。
@@ -487,7 +489,8 @@ Publishされているメッセージの内容も確認してみましょう。�
    <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
          args="$(find choreonoid_ros_tank_tutorial)/project/step2.cnoid --start-simulation" />
    <node pkg="rqt_graph" name="rqt_graph" type="rqt_graph" />
-   <node pkg="rqt_plot" name="rqt_plot" type="rqt_plot" args="/Tank/joint_state/position[0] /Tank/joint_state/position[1]" />
+   <node pkg="rqt_plot" name="rqt_plot" type="rqt_plot"
+         args="/Tank/joint_state/position[0] /Tank/joint_state/position[1]" />
  </launch>
 
 これでlaunchファイルを起動すればrqt_graphによるグラフ表示も行われるようになります。
