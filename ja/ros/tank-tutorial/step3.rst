@@ -312,11 +312,11 @@ configure関数はコントローラがプロジェクトに導入されて対�
 
  auto body = bodyItem->body();
 
-このようにBodyアイテム経由で取得できますが、これはもともとconfigure関数のconfigから ::
+ちなみにこのBodyオブジェクトはconfigure関数のconfigから ::
 
  config->body()
 
-として得られるものと同じオブジェクトです。
+として得られるものと同じです。
 
 次に ::
 
@@ -328,7 +328,37 @@ configure関数はコントローラがプロジェクトに導入されて対�
  int size = std::min(names.size(), positions.size());
  int n = std::min(body->numJoints(), size);
 
+このコードで状態更新の対象となる関節の数を決定しています。もちろん関節の数は同じモデルであれば決まっていて、Tankモデルの場合は砲身を動かすヨー、ピッチの2軸になります。ですのでここでは2という数で固定することも可能なのですが、各データのサイズが想定外のときもクラッシュしないように、各データサイズの最小値の範囲内でアクセスするようにしています。
 
+実際のところ、ROSトピックとして得られるデータの中には何が入っているか分かりません。Publishする側に不具合があるかもしれませんし、使用しているモデルが完全に同じではなかったり、そもそもSubscribeする対象を間違えてしまっている場合もあり得ます。ROSのように複数のコンポーネントをネットワーク通信で接続して構築するシステムにおいては、この点を考慮してなるべくロバストなプログラムとなっていることが望ましいかと思います。 ::
+
+
+ for(int i=0; i < n; ++i){
+     auto joint = body->joint(i);
+     if(joint->jointName() == names[i]){
+         joint->q() = positions[i];
+     }
+ }
+
+上記コードで決定した関節数nの分だけループを回して、各関節の関節角度の現在値をモデルにセットしています。ここで関節の名前も同じであることをチェックしていますが、これもプログラムをなるべくロバストにするための措置です。受信したデータが想定とは異なるモデルを対象としたものである場合、関節角をそのまま適用してもあまり意味はなく、あり得ない姿勢になることも多いためです。 ::
+
+  bodyItem->notifyKinematicStateChange(true);
+
+モデルの状態が更新されたことをChoreonoidのGUIに通知します。これを行うことで、シーン描画を含むChoreonoid上の各種GUIコンポーネントがモデルの更新を反映するようになります。configure関数でBodyItemを取得したのは、この通知を行うためです。第一引数のtrueにより、通知前に順運動学計算も適用されます。これは ::
+
+ body->calcForwardKinematics();
+ bodyItem->notifyKinematicStateChange();
+
+としているのと同じです。 ::
+
+ virtual void unconfigure() override
+ {
+     bodyItem.reset();
+     node.reset();
+     subscriber = ros::Subscriber();
+ }
+
+unconfigure関数はコントローラが対象モデルやプロジェクト全体から切り離されるときに呼ばれます。その場合もうSubscribeする必要はないので、subscriberをクリアし、関連するオブジェクトのポインタもクリアしています。このような後始末の処理はunconfigureに記述します。後始末もきちんと実装しておくことが望ましいかと思います。
 
 
 

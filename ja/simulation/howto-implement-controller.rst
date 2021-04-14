@@ -114,8 +114,8 @@ SimpleControllerクラス
  class SimpleController
  {
  public:
-     virtual bool initialize(SimpleControllerIO* io) = 0;
-     virtual bool control() = 0;
+     virtual bool initialize(SimpleControllerIO* io);
+     virtual bool control();
 };
 
 
