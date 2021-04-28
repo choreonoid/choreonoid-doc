@@ -11,6 +11,5 @@
    build-windows
    setup-gpu
    setup-qt
-   high-dpi-displays
    directories
    options

@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2021/4/28
+ * :doc:`../install/setup-qt` について最新の状況を踏まえた内容に更新（ :doc:`../install/high-dpi-displays` も統合）
+
 * 2021/4/12
  * :doc:`../ros/tank-tutorial/index` に :doc:`../ros/tank-tutorial/step2` を追加
 
