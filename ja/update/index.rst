@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2021/5/10
+ * :doc:`../install/platform` 、 :doc:`../install/options` について最新の状況を踏まえた内容に更新
+ * :doc:`../install/setup-qt` におけるスタイルの設定方法についてコマンドラインオプションを使う方法を追記
+
 * 2021/4/28
  * :doc:`../install/setup-qt` について最新の状況を踏まえた内容に更新（ :doc:`../install/high-dpi-displays` も統合）
 

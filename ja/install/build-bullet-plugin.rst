@@ -1,16 +1,12 @@
-
-BulletPluginのビルド
-==========================
-
-.. sectionauthor:: 中岡 慎一郎 <s.nakaoka@aist.go.jp>
-
+Bulletプラグインのビルド
+========================
 
 .. contents:: 目次
    :local:
 
 
 Bullet Physics Library のインストール
---------------------------------------------------------
+-------------------------------------
 
 BulletPluginを利用するためには、Bullet Physics Library をインストールしておく必要があります。
 
@@ -24,7 +20,7 @@ BulletPluginを利用するためには、Bullet Physics Library をインスト
 展開したディレクトリの中に、README.mdというファイルがあると思います。ここに、インストール方法が記述されていますので、基本的にはそれに従ってください。Bulletのバージョンによって、多少違いがありますが、最近のバージョンではcmakeが使えるようなので、choreonoidのビルドと同様の手順でインストールすることが出来ます。ここでは バージョン2.87 でのインストール方法を紹介します。
 
 Ubuntuの場合
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 cmakeを使います。choreonoidのインストール時に使用していますので既にインストールされていると思います。
 
@@ -45,7 +41,8 @@ build_cmakeというディレクトリが作成されていますので、そこ
 とすると、cmakeが起動するので、**CMAKE_INSTALL_PREFIX** の項目にインストール先を指定してから make install を行ってください。他のオプションもここで変更することが出来ます。 **USE_DOUBLE_PRECISION** は、必ずONにして下さい。
 
 Windowsの場合
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+
 READMEには build_visual_studio_vr_pybullet_double.bat を実行するように書かれていますので、これを使用してもいいですが、ここでは使い慣れているcmakeを使用したいと思います。
 
 はじめに、bulletを展開したディレクトリに移動してbuild_cmakeというディレクトリを作成しておきます。
@@ -79,11 +76,11 @@ build_cmakeの中にVisual Studioのソルーションファイルが作成さ�
 choreonoidの :ref:`build-windows-visualstudio` と同様に 画面の表示が **“Release”**、 **"x64"** となっていることを確認し、 **”ソリューションのビルド”** 、 **"INSTALL"** を実行してください。
 
 プラグインのビルド
----------------------
+------------------
 
 choreonoidのビルドの際にCMakeの設定で、 **BUILD_BULLET_PLUGIN** という項目を "ON" にし、**BULLET_DIR** にBulletライブラリのインストール先を指定してください。
 
 シミュレーションの実行
--------------------------
+----------------------
 
-BulletPluginを用いたシミュレーションは :ref:`他の物理シミュレータ<simulation_creation_and_configuration_of_simulator_item>` を利用する方法と同様です。シミュレータアイテム「Bulletシミュレータ」を生成し、ワールドアイテムの子アイテムとして配置することで実行可能となります。
+Bulletプラグインを用いたシミュレーションは :ref:`他の物理シミュレータ<simulation_creation_and_configuration_of_simulator_item>` を利用する方法と同様です。シミュレータアイテム「Bulletシミュレータ」を生成し、ワールドアイテムの子アイテムとして配置することで実行可能となります。

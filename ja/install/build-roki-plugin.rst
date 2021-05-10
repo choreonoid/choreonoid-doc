@@ -1,23 +1,19 @@
-
-RokiPluginのビルド
-==========================
-
-.. sectionauthor:: 中岡 慎一郎 <s.nakaoka@aist.go.jp>
-
+RoKiプラグインのビルド
+======================
 
 .. contents:: 目次
    :local:
 
 .. highlight:: YAML
 
-Roki のインストール
---------------------------------
+RoKiのインストール
+------------------
 
-RokiPluginを利用するためには、RoKi（ Robot Kinetics library） をインストールしておく必要があります。RoKiは、Linuxのみ対応しています。
+RoKiPluginを利用するためには、RoKi（ Robot Kinetics library） をインストールしておく必要があります。RoKiは、Linuxのみ対応しています。
 
 最初にCUREをインストールします。
 
-`Rokiホームページ <http://www.mi.ams.eng.osaka-u.ac.jp/open-j.html>`_ からCUREのページに移動し、cure-1.0.0-beta5.tgzをダウンロードし展開します。
+`RoKiホームページ <http://www.mi.ams.eng.osaka-u.ac.jp/open-j.html>`_ からCUREのページに移動し、cure-1.0.0-beta5.tgzをダウンロードし展開します。
  
 READMEというファイルがありますので、基本的にはそれに従ってインストールします。
 
@@ -53,19 +49,19 @@ Zeo、Rokiの順に同じようにインストールします。
 プラグインのビルド
 ---------------------
 
-choreonoidのビルドの際にCMakeの設定で、 **BUILD_ROKI_PLUGIN** という項目を "ON" にし、**ROKI_DIR** にRokiのインストール先を指定してください。
+choreonoidのビルドの際にCMakeの設定で、 **BUILD_ROKI_PLUGIN** という項目を "ON" にし、**ROKI_DIR** にRoKiのインストール先を指定してください。
 
 シミュレーションの実行
 -------------------------
 
-RokiPluginを用いたシミュレーションは :ref:`他の物理シミュレータ<simulation_creation_and_configuration_of_simulator_item>` を利用する方法と同様です。シミュレータアイテム「RokiSimulator」を生成し、ワールドアイテムの子アイテムとして配置することで実行可能となります。
+RoKiPluginを用いたシミュレーションは :ref:`他の物理シミュレータ<simulation_creation_and_configuration_of_simulator_item>` を利用する方法と同様です。シミュレータアイテム「RoKiSimulator」を生成し、ワールドアイテムの子アイテムとして配置することで実行可能となります。
 
-RokiSimulatorアイテムのプロパティ
+RoKiSimulatorアイテムのプロパティ
 ---------------------------------
 
-RokiSimulatorアイテムには以下のプロパティがあります。
+RoKiSimulatorアイテムには以下のプロパティがあります。
 
-.. list-table:: RokiPluginプロパティ
+.. list-table:: RoKiPluginプロパティ
  :widths: 15,60
  :header-rows: 1
 
@@ -92,12 +88,12 @@ RokiSimulatorアイテムには以下のプロパティがあります。
  * - contactFileName
    - 接触パラメータの設定ファイル名　useContactFileがtrueのとき有効
 
-パラメータの詳細については、 `Rokiホームページ <http://www.mi.ams.eng.osaka-u.ac.jp/open-j.html>`_ をご参照ください。
+パラメータの詳細については、 `RoKiホームページ <http://www.mi.ams.eng.osaka-u.ac.jp/open-j.html>`_ をご参照ください。
 
 関節ダイナミクスのシミュレーション
 -------------------------------------
 
-Rokiでは、関節ダイナミクスのシミュレーションが可能です。このサンプルプロジェクトは、RokiArm2Dof.cnoidになります。
+RoKiでは、関節ダイナミクスのシミュレーションが可能です。このサンプルプロジェクトは、RokiArm2Dof.cnoidになります。
 
 関節ダイナミクスのパラメータはモデルファイルarm_2dof.bodyに記述されています。このモデルでは、２つの関節に同じパラメータを適用するため、 :ref:`body-file-reference-link-node` の **import** を使用しています。エイリアス機能については :ref:`modelfile_yaml_alias` をご覧ください。関節毎に異なるパラメータを設定する場合は、Linkノードに直接記入します。 ::
 
@@ -161,7 +157,7 @@ Rokiでは、関節ダイナミクスのシミュレーションが可能です�
 破壊のシミュレーション
 -----------------------------
 
-Rokiでは、破断の起こる箇所を関節としてモデルファイルに記述しておくことで、破断のシミュレーションが可能です。このサンプルのプロジェクトは、RokiBreakWall.cnoidになります。
+RoKiでは、破断の起こる箇所を関節としてモデルファイルに記述しておくことで、破断のシミュレーションが可能です。このサンプルのプロジェクトは、RokiBreakWall.cnoidになります。
 
 破断するモデルはbreakWall.bodyに記述されています。破断の起こる箇所を関節として定義し、関節のタイプはfreeとします。そして、 **break** パラメータに破断が起こる力・トルクのノルム閾値を、力、トルクの順に記述します。 ::
 
@@ -195,5 +191,4 @@ Rokiでは、破断の起こる箇所を関節としてモデルファイルに�
       
 破断した後の物体が、お互いにすり抜けてしまわないように、breakWallモデルアイテムの自己干渉検出のプロパティはtrueにする必要があります。しかし、それでは、破断前にも自己干渉がおきてしまいます。これを避けるため、breakWallモデルでは、リンクの幾何形状を、リンク間に僅かな隙間ができるように設定しています。
 
-RokiSimulationaアイテムの全リンク位置姿勢出力のプロパティをtrueにします。
-
+RoKiSimulationaアイテムの全リンク位置姿勢出力のプロパティをtrueにします。
