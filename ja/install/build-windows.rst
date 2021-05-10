@@ -432,38 +432,6 @@ Visual Studioを起動して、このファイルを開くと、ソリューシ�
 
 後はコレオノイドのビルドに関するCMakeの設定で、 **BUILD_ODE_PLUGIN** という項目を "ON" にし、 **ODE_DIR** にODEのlibの上のディレクトリを指定してください。
 
-
-Bulletプラグイン
-~~~~~~~~~~~~~~~~
-
-オープンソースの動力学計算ライブラリである"Bullet Physics ライブラリ"を、コレオノイドのシミュレーション機能の計算エンジンとして利用できるようにするプラグインです。
-
-本プラグインをビルドして利用するためには、Bullet Physics ライブラリのソースからのビルドが必要です。
-`githubのbulletphysics <https://github.com/bulletphysics/bullet3>`_ からソースが取得できます。当方でテストを行ったバージョンはbullet-2.83.7になります。これ以降のバージョンでは動作確認できていません。
-
-Assimpプラグインのところで説明したのと同様の手順で、ブラウザでページを開いて、バージョンを選択してから、ZIPファイルをダウンロードします。
-
-CMakeが使用できますので、いままでの説明と同様にCMakeを操作し、Visual Studio のプロジェクトファイルを作成します。
-以下のオプションはONに切り替えておきます。
-
-* **BUILD_EXTRAS**
-* **INSTALL_EXTRA_LIBS**
-* **INSTALL_LIBS**
-* **USE_DOUBLE_PRECISION**
-* **USE_MSVC_RUNTIME_LIBRARY_DLL**
-
-また、以下のオプションはOFFにしておいた方が無難です。
-
-* **BUILD_XXX_DEMOS** のすべて
-* **BUILD_BULLET3**
-* **BUILD_UNIT_TESTS**
-
-インストール先は  **CMAKE_INSTALL_PREFIX** で設定します。
-
-Visual Studioでのコンパイル、インストール操作も同じように行います。
-
-Bulletのインストールが出来ましたら、再びCMakeを起動し、コレオノイドのビルドに関するCMakeの設定で、 **BUILD_BULLET_PLUGIN** という項目を "ON" にし、**BULLET_DIR** にBulletライブラリのインストール先を指定してください。
-
 Pythonプラグイン
 ~~~~~~~~~~~~~~~~
 
@@ -487,10 +455,8 @@ Pythonプラグインを利用するためには、他に **Numpy** というPyt
 Numpyのインストールが完了したら、再度Choreonoid用のCMakeを開き、
 
 * **ENABLE_PYTHON**
-* **BUILD_PYTHON_PLUGIN**
-* **BUILD_PYTHON_SIM_SCRIPT_PLUGIN** 
 
-の項目をONにしてください。
+をONにしてください。
 
 .. note:: Python3にPATHが通っていない場合、choreonoidの起動時にPATHを通す必要があります。 ::
 

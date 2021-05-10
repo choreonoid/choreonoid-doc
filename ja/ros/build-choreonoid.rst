@@ -170,7 +170,7 @@ catkin においては ::
 
 あるいは、ChoreonoidのPython機能が必要ない場合は、以下のようにしてPython機能自体をオフにしてしまってもよいかと思います。 ::
 
- catkin config --cmake-args -DENABLE_PYTHON=OFF -DBUILD_PYTHON_PLUGIN=OFF -DBUILD_PYTHON_SIM_SCRIPT_PLUGIN=OFF
+ catkin config --cmake-args -DENABLE_PYTHON=OFF
 
 .. _ros_catkin_build_type:
 
