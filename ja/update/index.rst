@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2021/5/20
+ * :doc:`../install/build-ubuntu` の :ref:`build-ubuntu_install` に注釈を追加
+
 * 2021/5/10
  * :doc:`../install/platform` 、 :doc:`../install/options` について最新の状況を踏まえた内容に更新
  * :doc:`../install/setup-qt` におけるスタイルの設定方法についてコマンドラインオプションを使う方法を追記
