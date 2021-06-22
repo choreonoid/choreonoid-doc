@@ -1,6 +1,5 @@
-
-Tips
-====
+補足事項
+========
 
 .. toctree::
   :maxdepth: 2
@@ -13,4 +12,3 @@ Tips
   body-tracking-camera
 
 ..   multi-sceneviews
-   
