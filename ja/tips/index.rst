@@ -10,5 +10,6 @@
   howto-create-movingimage
   howto-use-commands
   body-tracking-camera
+  body-motion
 
 ..   multi-sceneviews

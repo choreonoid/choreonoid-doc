@@ -1,6 +1,9 @@
 更新履歴
 ========
 
+* 2021/7/27
+ * :doc:`../plugin-development/index` を追加
+
 * 2021/5/20
  * :doc:`../install/build-ubuntu` の :ref:`build-ubuntu_install` に注釈を追加
 
