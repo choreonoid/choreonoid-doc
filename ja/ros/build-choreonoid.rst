@@ -172,7 +172,7 @@ catkin においては ::
 
  catkin config --cmake-args -DENABLE_PYTHON=OFF
 
-.. _ros_catkin_build_type:
+.. _ros_catkin_config_cmake_build_type:
 
 ビルドタイプの設定
 ------------------
@@ -225,9 +225,6 @@ Choreonoid関連のROSパッケージはデフォルトでReleaseが設定され
 といった表示がされます。
 
 .. note:: Emacsでは "M-x compile" コマンドでビルドを行うことが可能ですが、Catkin環境でもこの機能を利用することができます。ただしCatkinの出力は通常色付けされるのですが、Emacs上ではその制御コードが表示されてしまい、そのままでは表示が見にくくなってしまいます。これを回避するため、 "M-x compile" 実行時にビルド用のコマンドとして "catkin build --no-color" を入力するとよいです。"--no-color" を入れることで、Cakin出力の色付け用の制御コードが無効化され、表示の乱れがなくなります。また、"-v" オプションを追加して "catkin build -v --no-color" とすることで、ビルド時に実際のコマンド（コンパイルオプションなど）を確認することもできます。
-
-.. _ros_catkin_cmake_build_type:
-
 
 なお、 :ref:`ros_catkin_build_command` は、catkin build に付与する --cmake-argsオプションによって設定することもできます。例えば ::
 

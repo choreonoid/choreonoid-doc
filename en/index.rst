@@ -21,3 +21,4 @@ Choreonoid Operation Manual
    reference/index
    plugin-development/index
    tips/index
+   update/index

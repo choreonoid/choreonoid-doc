@@ -171,7 +171,7 @@ Alternatively, if you do not need the Python feature of Choreonoid, you can turn
 
  catkin config --cmake-args -DENABLE_PYTHON=OFF -DBUILD_PYTHON_PLUGIN=OFF -DBUILD_PYTHON_SIM_SCRIPT_PLUGIN=OFF
 
-.. _ros_catkin_build_type:
+.. _ros_catkin_config_cmake_build_type:
 
 Set the build type
 ------------------
@@ -222,9 +222,6 @@ If the build is successful, you will see the
  [build] Summary: All 4 packages succeeded!
 
 .. note:: In Emacs, you can use the "M-x compile" command to build, and you can also use this feature in the Catkin environment. However, the output of Catkin is usually colored, but the control code is displayed in Emacs, which makes it difficult to see the output as it is. To avoid this, you can enter "catkin build --no-color" as a build command when executing "M-x compile." By including "--no-color", the control code for coloring Cakin output will be disabled and the display will not be distorted. You can also add the "-v" option and use "catkin build -v --no-color" to see the actual commands (compile options, etc.) at build time.
-
-.. _ros_catkin_cmake_build_type:
-
 
 Note that :ref:`ros_catkin_build_command` can also be set by the --cmake-args option to catkin build. For example ::
 

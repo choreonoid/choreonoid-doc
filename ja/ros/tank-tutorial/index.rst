@@ -13,6 +13,6 @@ ROS版Tankチュートリアル
    step1
    step2
    step3
-..   step4
-..   step5
+   step4
+   step5
 ..   step6 リモート通信も説明する

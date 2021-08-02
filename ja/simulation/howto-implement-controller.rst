@@ -568,11 +568,12 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
    - ForceSensor
    - 右足首に搭載された力センサ
 
+.. _simulation-obtain-device-object:
 
 デバイスオブジェクトの取得
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-DeviceオブジェクトはBodyオブジェクトから以下の関数を用いて取得できます。
+DeviceオブジェクトはBodyオブジェクトから以下のメンバ関数を用いて取得できます。
 
 * **int numDevices() const**
 

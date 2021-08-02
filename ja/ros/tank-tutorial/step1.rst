@@ -28,9 +28,9 @@ Choreonoidノードの起動
 Choreonoid上にシミュレーション対象となるモデルを読み込んで、プロジェクトを構築しましょう。本チュートリアルではロボットに該当するモデルとして戦車風の :ref:`tank_model` を使用します。Choreonoidを起動したら、以下の手順でこのモデルを対象とした :doc:`../../simulation/simulation-project` を行ってください。
 
 1. ワールドアイテムを作成する
-2. ワールドアイテムの小アイテムとしてTankモデルを読み込む
-3. ワールドアイテムの小アイテムとして適当な環境モデルを読み込む
-4. ワールドアイテムの小アイテムとしてAISTシミュレータアイテムを作成する
+2. ワールドアイテムの子アイテムとしてTankモデルを読み込む
+3. ワールドアイテムの子アイテムとして適当な環境モデルを読み込む
+4. ワールドアイテムの子アイテムとしてAISTシミュレータアイテムを作成する
 5. AISTシミュレータのプロパティを設定する（「自己干渉検出」をtrueにする）
 
 この作業は基本的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step1` と同じになりますので、そちらを参照して作業を進めてください。
@@ -39,13 +39,15 @@ Choreonoid上にシミュレーション対象となるモデルを読み込ん�
 
 プロジェクトが構築できたら、メインメニューの「ファイル」-「名前を付けてプロジェクトを保存」を使用して、プロジェクトファイルに保存してください。保存先は本チュートリアル用に作成したディレクトリ内にさらに "project" というサブディレクトリを作成し、そこに "step1.cnoid" という名前で格納するようにしましょう。
 
-これにより、本チュートリアル用パッケージにおいて以下のようにディレクトリとファイルが追加されることになります。
+これにより、本チュートリアル用パッケージは以下のディレクトリ／ファイル構成になります。
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + project
-     + step1.cnoid
+     - step1.cnoid
 
 Choreonoid終了後に再度プロジェクトを読み込む場合は、:ref:`ros_tank_tutorial_invoke_choreonoid_node` で用いたコマンドにプロジェクトファイル名をオプションとして付与します。例えば、 ::
 
@@ -72,8 +74,8 @@ Tankロボットを自由に操作する手段として、本チュートリア�
 ゲームパッドを用意できたら、予めPCに接続しておきます。
 
 
-Joyノードによるゲームパッドの状態のPublish
-------------------------------------------
+Joyノードによるゲームパッド状態の送信
+-------------------------------------
 
 本チュートリアルのテーマはROSの活用にありますので、ゲームパッドの状態もROSの機能を用いてやりとりすることにします。そのようにすることで、ROSに対応している様々なデバイスが使用できたり、リモートホスト間の通信によって遠隔操作を行ったりすることが可能となります。ここではまずゲームパッドの状態を送信するための準備を行います。
 
@@ -82,7 +84,7 @@ JoyトピックのPublish
 
 ROSでは様々なデータを「メッセージ」として定義して、それを「トピック」として送信することが可能です。トピックの送信はROSでは「Publish（出版）」と呼ばれ、Publishされたトピックの受信は「Subscribe（購読）」と呼ばれます。これは「Publish-Subscribeモデル」というソフトウェア設計モデルに基づくもので、データは受け手を特定せずにPublishされ、それをどこからでもSubscribeすることができるというものです。この仕組みはROSユーザはご存知かと思いますが、そうでない場合はROSの解説を参照するようにしてください。
 
-本チュートリアルでは、ゲームパッドの状態をROSトピックとしてPublishし、それをロボットのコントローラからSubscribeします。これを実現するために、まずゲームパッドの状態をPublishするプログラムが必要となります。そのようなプログラムは「ROSノード」と呼ばれます。実はゲームパッド（ジョイスティック）の状態をPublishするROSノードとして、「Joyノード」というものがROSの標準パッケージとして用意されていますので、まずはそれを試してみることにします。
+本チュートリアルでは、ゲームパッドの状態をROSトピックとしてPublishし、それをロボットのコントローラからSubscribeします。これを実現するために、まずゲームパッドの状態をPublishするプログラムが必要となります。そのようなROS通信を行うプログラムは「ROSノード」と呼ばれます。実はゲームパッド（ジョイスティック）の状態をPublishするROSノードとして、「Joyノード」というものがROSの標準パッケージとして用意されていますので、まずはそれを試してみることにします。
 
 以下ではJoyノードの起動方法とともに、ROSのトピックやメッセージが具体的にどのようなものかについて理解していただけるよう説明します。ROSの基本的な事柄を既に習得されている方は、以下は読み飛ばして次の :ref:`ros_tank_tutorial_choreonoid_joy` まで進んでいただいて結構です。
 
@@ -150,7 +152,7 @@ Joyノードが起動しジョイスティックの検出に成功すると、�
  float32[] axes
  int32[] buttons
 
-これはメッセージ型 "sensor_msgs/Joy" のデータ構造を表しています。具体的には、"axes" は32ビット浮動小数点型の配列としてジョイスティックの各軸の倒し具合が格納されますし、"buttons" には32ビット整数型で各ボタンの状態（押しているかどうか）が格納されます。他には "header" 以下のこのメッセージのタイムスタンプやID値などが格納されます。これらはROSのコーディングを行う各言語において対応する型（C++の std::vector<float> など） にマッピングされ、アクセスすることが可能となります。
+これはメッセージ型 "sensor_msgs/Joy" のデータ構造を表しています。具体的には、"axes" は32ビット浮動小数点型の配列としてジョイスティックの各軸の倒し具合が格納されますし、"buttons" には32ビット整数型で各ボタンの状態（押しているかどうか）が格納されます。他には "header" 以下のこのメッセージのタイムスタンプやID値などが格納されます。このデータ構造はROSのコーディングを行う各言語において対応する型（C++の std::vector<float> など） にマッピングされ、アクセスすることが可能となります。
 
 実際にPublishされているメッセージの内容を確認してみましょう。まず以下のコマンドを実行してください。 ::
 
@@ -196,7 +198,7 @@ Choreonoid版Joyノード
 コントローラのビルド
 --------------------
 
-ゲームパッドの状態がPublishされるようになったので、これを用いて、ゲームパッドによるTankロボットの操作を可能とするためのコントローラを導入したいと思います。以下で行うことは、本質的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` で実施しているビルド作業と同様です。ただし、本チュートリアルではROSのcatkin環境においてコントローラをビルドし、使用できるようにしなければなりませんので、具体的なビルドの方法や記述は異なってきます。ここではまずそのビルド方法について説明します。
+ゲームパッドの状態がPublishされるようになったので、これを用いて、ゲームパッドによるTankロボットの操作を可能とするためのコントローラを導入したいと思います。以下で行うことは、本質的には :doc:`../../simulation/tank-tutorial/index` の :doc:`../../simulation/tank-tutorial/step2` で実施しているビルド作業と同様です。ただし、本チュートリアルではROSのcatkin環境においてコントローラをビルドし、使用できるようにしなければなりませんので、具体的なビルドの方法や記述は異なってきます。ここではまずコントローラのソースコードとそのビルド方法を提示します。
 
 .. _ros_tank_tutorial_step1_source:
 
@@ -213,131 +215,131 @@ Choreonoid版Joyノード
  #include <ros/node_handle.h>
  #include <sensor_msgs/Joy.h>
  #include <mutex>
- 
+
  using namespace cnoid;
- 
- namespace {
- const int trackAxisID[]  = { Joystick::L_STICK_H_AXIS, Joystick::L_STICK_V_AXIS };
- const int turretAxisID[] = { Joystick::R_STICK_H_AXIS, Joystick::R_STICK_V_AXIS };
- }
- 
- class JoyInputController : public SimpleController
+
+ class RttTankController : public SimpleController
  {
      std::unique_ptr<ros::NodeHandle> node;
      ros::Subscriber subscriber;
      sensor_msgs::Joy latestJoystickState;
      std::mutex joystickMutex;
-     
+
      Link* trackL;
      Link* trackR;
      Link* turretJoint[2];
      double qref[2];
      double qprev[2];
      double dt;
- 
+
  public:
      virtual bool configure(SimpleControllerConfig* config) override
      {
-         node.reset(new ros::NodeHandle);
-         return true;
+	 node.reset(new ros::NodeHandle);
+	 return true;
      }
- 
+
      virtual bool initialize(SimpleControllerIO* io) override
      {
-         std::ostream& os = io->os();
-         Body* body = io->body();
-         dt = io->timeStep();
- 
-         trackL = body->link("TRACK_L");
-         trackR = body->link("TRACK_R");
-         trackL->setActuationMode(Link::JOINT_SURFACE_VELOCITY);
-         trackR->setActuationMode(Link::JOINT_SURFACE_VELOCITY);
-         io->enableOutput(trackL);
-         io->enableOutput(trackR);
- 
-         turretJoint[0] = body->link("TURRET_Y");
-         turretJoint[1] = body->link("TURRET_P");
-         for(int i=0; i < 2; ++i){
-             Link* joint = turretJoint[i];
-             qref[i] = qprev[i] = joint->q();
-             joint->setActuationMode(Link::ActuationMode::JOINT_TORQUE);
-             io->enableIO(joint);
-         }
- 
-         subscriber = node->subscribe(
-             "joy", 1, &JoyInputController::joystickCallback, this);
- 
-         return true;
+	 std::ostream& os = io->os();
+	 Body* body = io->body();
+	 dt = io->timeStep();
+
+	 trackL = body->link("TRACK_L");
+	 trackR = body->link("TRACK_R");
+	 io->enableOutput(trackL, JointVelocity);
+	 io->enableOutput(trackR, JointVelocity);
+
+	 turretJoint[0] = body->link("TURRET_Y");
+	 turretJoint[1] = body->link("TURRET_P");
+	 for(int i=0; i < 2; ++i){
+	     Link* joint = turretJoint[i];
+	     qref[i] = qprev[i] = joint->q();
+	     joint->setActuationMode(JointTorque);
+	     io->enableIO(joint);
+	 }
+
+	 subscriber = node->subscribe(
+	     "joy", 1, &RttTankController::joystickCallback, this);
+
+	 return true;
      }
- 
+
      void joystickCallback(const sensor_msgs::Joy& msg)
      {
-         std::lock_guard<std::mutex> lock(joystickMutex);
-         latestJoystickState = msg;
+	 std::lock_guard<std::mutex> lock(joystickMutex);
+	 latestJoystickState = msg;
      }
- 
+
      virtual bool control() override
      {
-         sensor_msgs::Joy joystick;
-         {
-             std::lock_guard<std::mutex> lock(joystickMutex);
-             joystick = latestJoystickState;
-         }
-         joystick.axes.resize(Joystick::NUM_STD_AXES, 0.0f);
-         joystick.buttons.resize(Joystick::NUM_STD_BUTTONS, 0);
-             
-         double pos[2];
-         for(int i=0; i < 2; ++i){
-             pos[i] = joystick.axes[trackAxisID[i]];
-             if(fabs(pos[i]) < 0.2){
-                 pos[i] = 0.0;
-             }
-         }
-         // set the velocity of each tracks
-         trackL->dq_target() = -2.0 * pos[1] + pos[0];
-         trackR->dq_target() = -2.0 * pos[1] - pos[0];
- 
-         static const double P = 200.0;
-         static const double D = 50.0;
- 
-         for(int i=0; i < 2; ++i){
-             Link* joint = turretJoint[i];
-             double pos = joystick.axes[turretAxisID[i]];
-             if(fabs(pos) < 0.15){
-                 pos = 0.0;
-             }
-             double q = joint->q();
-             double dq = (q - qprev[i]) / dt;
-             double dqref = 0.0;
-             double deltaq = 0.002 * pos;
-             qref[i] += deltaq;
-             dqref = deltaq / dt;
-             joint->u() = P * (qref[i] - q) + D * (dqref - dq);
-             qprev[i] = q;
-         }
- 
-         return true;
+	 sensor_msgs::Joy joystick;
+	 {
+	     std::lock_guard<std::mutex> lock(joystickMutex);
+	     joystick = latestJoystickState;
+	 }
+	 joystick.axes.resize(Joystick::NUM_STD_AXES, 0.0f);
+	 joystick.buttons.resize(Joystick::NUM_STD_BUTTONS, 0);
+
+	 static const int trackAxisID[] =
+	     { Joystick::L_STICK_H_AXIS, Joystick::L_STICK_V_AXIS };
+	 static const int turretAxisID[] =
+	     { Joystick::R_STICK_H_AXIS, Joystick::R_STICK_V_AXIS };
+
+	 double pos[2];
+	 for(int i=0; i < 2; ++i){
+	     pos[i] = joystick.axes[trackAxisID[i]];
+	     if(fabs(pos[i]) < 0.2){
+		 pos[i] = 0.0;
+	     }
+	 }
+	 // set the velocity of each tracks
+	 trackL->dq_target() = -2.0 * pos[1] + pos[0];
+	 trackR->dq_target() = -2.0 * pos[1] - pos[0];
+
+	 static const double P = 200.0;
+	 static const double D = 50.0;
+
+	 for(int i=0; i < 2; ++i){
+	     Link* joint = turretJoint[i];
+	     double pos = joystick.axes[turretAxisID[i]];
+	     if(fabs(pos) < 0.15){
+		 pos = 0.0;
+	     }
+	     double q = joint->q();
+	     double dq = (q - qprev[i]) / dt;
+	     double dqref = 0.0;
+	     double deltaq = 0.002 * pos;
+	     qref[i] += deltaq;
+	     dqref = deltaq / dt;
+	     joint->u() = P * (qref[i] - q) + D * (dqref - dq);
+	     qprev[i] = q;
+	 }
+
+	 return true;
      }
- 
+
      virtual void stop() override
      {
-         subscriber.shutdown();
+	 subscriber.shutdown();
      }
  };
- 
- CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(JoyInputController)
 
+ CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttTankController)
 
-このソースコードは、パッケージディレクトリに "src" というサブディレクトリを作成し、そこに "JoyInputController.cpp" というファイル名で保存してください。すると、これまで追加したファイルの構成は以下のようになるかと思います。
+このソースコードは、パッケージディレクトリに "src" というサブディレクトリを作成し、そこに "RttTankController.cpp" というファイル名で保存してください。すると、パッケージのファイル構成は以下のようになります。
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + project
-     + step1.cnoid
+     - step1.cnoid
    + src
-     + JoyInputController.cpp
+     - RttTankController.cpp
 
+.. note:: コントローラのクラス名やソースファイル名の先頭に付与している "Rtt" は "ROS Tank Tutorial" を略したプレフィックスです。本チュートリアルで作成するクラスには比較的汎用的なものも含まれますので、同様のものを他でも作成／提供されることもあるかもしれません。それらを区別するため、本チュートリアルで作成するクラスやファイルにはこのプレフィックスを付与することにします。
 
 以下ではまずこのソースコードをビルドしてシミュレーションで動かす方法について解説し、その後ソースコードの内容について解説します。
 
@@ -347,16 +349,14 @@ CMakeLists.txtの編集
 
 .. highlight:: cmake
 
-:ref:`ros_tank_tutorial_edit_package_xml` では、Catkinのパッケージを構築するためにこのXMLファイルが必要なことを説明しました。実はパッケージの構築に必要なファイルとして、他に "CMakeLists.txt" というファイルもあります。これはビルドシステムのひとつであるCMakeのファイルで、パッケージにC++のソースコードが含まれる場合など、何らかのビルド処理が必要な場合に使用されます。
+:ref:`ros_tank_tutorial_edit_package_xml` では、Catkinのパッケージを構築するために "package.xml" というXMLファイルが必要なことを説明しました。実はパッケージの構築に必要なファイルとして、他に "CMakeLists.txt" というファイルもあります。これはビルドシステムのひとつであるCMakeのファイルで、パッケージにC++のソースコードが含まれる場合など、何らかのビルド処理が必要な場合に使用されます。
 
-CMakeやCMakeLists.txtの詳細についてはCMakeのマニュアルなどを参照してください。CMakeは非常にポピュラーなツールであり、ROSでもChoreonoidでも元々使用されているものなので、その基本的な事柄は理解されているという前提で説明します。
+CMakeやCMakeLists.txtの詳細についてはCMakeのマニュアルを参照してください。CMakeは非常にポピュラーなツールであり、ROSでもChoreonoidでも元々使用されているものなので、その基本的な事柄は理解されているという前提で説明します。
 
 CMakeLists.txtの雛形となるものは、 :ref:`ros_tank_tutorial_make_package` において自動で生成されており、プロジェクトディレクトリ直下に保存されています。そのファイルを編集して、以下と同じ内容になるようにします。 ::
 
  cmake_minimum_required(VERSION 3.5.0)
  project(choreonoid_ros_tank_tutorial)
- 
- set(CHOREONOID_SKIP_QT_CONFIG true)
 
  find_package(catkin REQUIRED COMPONENTS
    roscpp
@@ -365,21 +365,14 @@ CMakeLists.txtの雛形となるものは、 :ref:`ros_tank_tutorial_make_packag
    image_transport
    choreonoid
    )
- 
+
  catkin_package(SKIP_CMAKE_CONFIG_GENERATION SKIP_PKG_CONFIG_GENERATION)
- 
+
  set(CMAKE_CXX_STANDARD ${CHOREONOID_CXX_STANDARD})
  set(CMAKE_CXX_EXTENSIONS OFF)
 
- set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS ${CHOREONOID_COMPILE_DEFINITIONS})
- include_directories(
-   ${catkin_INCLUDE_DIRS} 
-   ${CHOREONOID_INCLUDE_DIRS}
-   )
- link_directories(
-   ${CHOREONOID_LIBRARY_DIRS}
-   )
- 
+ include_directories(${catkin_INCLUDE_DIRS})
+
  add_subdirectory(src)
 
 この内容について解説します。まず ::
@@ -394,10 +387,6 @@ CMakeLists.txtの雛形となるものは、 :ref:`ros_tank_tutorial_make_packag
 
 で、このパッケージのプロジェクト名を設定しています。これは通常パッケージ名と同じにします。 ::
 
- set(CHOREONOID_SKIP_QT_CONFIG true)
-
-については、必ずしも必要ではないのですが、本チュートリアルでは付与しています。この記述を入れると、次に記述するfind_packageにおいてChoreonoidパッケージが検出・初期化される際に、Qtライブラリの検出を行わなくなります。QtライブラリはChoreonoidのGUIの構築に使用しているライブラリで、Choreonoidのプラグインのビルドには必要となるのですが、今回はコントローラのみのビルドとなるので、この記述を入れることで無駄な処理を省くことができます。なお、この記述を入れなくてもビルドは問題なく実行できます。 ::
-
  find_package(catkin REQUIRED COMPONENTS
    roscpp
    std_msgs
@@ -409,7 +398,7 @@ CMakeLists.txtの雛形となるものは、 :ref:`ros_tank_tutorial_make_packag
 依存パッケージの検出を行います。ここでは以下のパッケージを依存対象としています。
 
 * roscpp: ROSのC++ライブラリ
-v* std_msgs: ROSの標準的なメッセージ
+* std_msgs: ROSの標準的なメッセージ
 * sensor_msgs: センサ関連のメッセージ
 * image_transport: 画像転送のためのライブラリ
 * choreonoid: Choreonoid本体
@@ -429,22 +418,9 @@ find_packageでchoreonoidを指定すると、CHOREONOID_CXX_STANDARDという�
 
 なお、GCCバージョン6以上ではC++14がデフォルトで使用されるようです。Ubuntu 18.04のGCCはバージョン7なので、Ubuntu 18.04であれば特にこの記述を行わなくてもビルドを行うことができます。一方でUbuntu 16.04でインストールされるGCCはそれよりも古いバージョンのものであり、デフォルトではC++11以上のバージョンにならないようですので、この記述がないとコンパイルエラーになります。 ::
 
- set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS ${CHOREONOID_COMPILE_DEFINITIONS})
+ include_directories(${catkin_INCLUDE_DIRS})
 
-この記述により、Choreonoidの関連モジュールをコンパイルする際に必要となるプリプロセッサ定義を取り込みます。変数 CHOREONOID_COMPILE_DEFINITION は、find_package で choreonoid を指定すると設定されます。 ::
-
- include_directories(
-   ${catkin_INCLUDE_DIRS} 
-   ${CHOREONOID_INCLUDE_DIRS}
-   )
-
-追加のインクルードディレクトリを指定しています。変数 catkin_INCLUDE_DIRS には、find_packageで指定した依存パッケージを使用する際に必要なインクルードディレクトリが設定されています。また、Choreoonidのライブラリについては別途 CHOREONOID_INCLUDE_DIRS 変数で対応するインクルードディレクトリを取り込む必要があります。この変数も find_package で choreonoid を指定すると設定されます。 ::
-
- link_directories(
-   ${CHOREONOID_LIBRARY_DIRS}
-   )
-
-依存ライブラリのリンクディレクトリを追加します。CHOREONOID_LIBRARY_DIRS についてもfind_package で choreonoid を指定すると設定されるので、これを利用してChoreonoidのライブラリのディレクトリを取り込みます。 ::
+追加のインクルードディレクトリを指定しています。変数 catkin_INCLUDE_DIRS には、find_packageで指定した依存パッケージを使用する際に必要なインクルードディレクトリが設定されています。上記のように記述することで、それらのパッケージに含まれるヘッダファイルを使用することが可能となります。他にも利用するライブラリがあれば、それに対応するインクルードディレクトリをここに記述しておきます。なお、Choreonoidが提供するライブラリのインクルードディレクトリについては、必ずしもここで明記する必要はありません。それらはChoreonoidのプラグインやコントローラ等をビルドするための命令を記述する際に自動で設定されることになります。 ::
 
  add_subdirectory(src)
 
@@ -455,14 +431,14 @@ srcディレクトリへのCMakeLists.txtの追加
 
 上記の「srcディレクトリのCMakeLists.txt」については、以下の内容で作成して追加します。 ::
 
- choreonoid_add_simple_controller(JoyInputController JoyInputController.cpp)
- target_link_libraries(JoyInputController ${roscpp_LIBRARIES})
+ choreonoid_add_simple_controller(RttTankController RttTankController.cpp)
+ target_link_libraries(RttTankController ${roscpp_LIBRARIES})
 
-choreonoid_add_simple_controllerは、find_packageでchoreonoidを検出すると利用可能になる関数です。これはChoreonoidのシンプルコントローラのバイナリをビルドするための関数で、CMake組み込みのadd_executableやadd_libraryといった関数と同様の記述で利用できます。ここではJoyInputControllerというターゲット名を設定し、ソースコードとしてJoyInputController.cppを指定しています。
+choreonoid_add_simple_controllerは、find_packageでchoreonoidを検出すると利用可能になる関数です。これはChoreonoidのシンプルコントローラのバイナリをビルドするための関数で、CMake組み込みのadd_executableやadd_libraryといった関数と同様の記述で利用できます。ここではRttTankControllerというターゲット名を設定し、ソースファイルとしてRttTankController.cppを指定しています。
 
-また、target_link_librariesで依存ライブラリへのリンクを指定しています。ここで指定しているのは、C++でrosを使用するためのroscppライブラリのリンクです。find_packageでroscppを指定すると、変数roscpp_LIBRARIESにroscppのライブラリが設定されるので、それを使用しています。なお、シンプルコントローラにリンクすべきChoreonoidのライブラリは、choreonoid_add_simple_controllerを実行することで自動的に設定されるので、target_link_librariesに指定する必要はありません。
+また、target_link_librariesで依存ライブラリへのリンクを指定しています。ここで指定しているのは、C++でrosを使用するためのroscppを構成するライブラリへのリンクです。これはfind_packageでroscppを指定すると変数roscpp_LIBRARIESに設定されるので、この変数を用いて指定しています。
 
-この記述によって、JoyInputController.cppからシンプルコントローラのバイナリが生成され、Choreonoidのシンプルコントローラ用のバイナリ格納ディレクトリに出力されることになります。
+なお、シンプルコントローラのビルドにおいては他にChoreonoidのライブラリも必要となりますが、それらの基本的なもの、具体的にはCnoidUtilやCnoidBodyといったライブラリはchoreonoid_add_simple_controllerを実行することで自動的に設定されるので、ここで特に指定する必要はありません。また、それらのライブラリに関るインクルードディレクトリやコンパイルオプションもchoreonoid_add_simple_controllerによって自動で設定されます。
 
 コントローラのビルド
 ~~~~~~~~~~~~~~~~~~~~
@@ -475,7 +451,7 @@ choreonoid_add_simple_controllerは、find_packageでchoreonoidを検出する�
 
 このコマンドは、Catkinのワークスペース内であればどこのディレクトリで実行してもOKです。ビルドの方法については :doc:`../build-choreonoid` における :ref:`ros_catkin_build_command` の節も参考にしてください。
 
-ビルドの際には、 :ref:`ros_catkin_cmake_build_type` も行っておくとよいです。通常はビルドタイプを "Release" にしておきます。これは以下のコマンドで設定できます。 ::
+ビルドの際には、 :ref:`ros_catkin_config_cmake_build_type` も行っておくとよいです。通常はビルドタイプを "Release" にしておきます。これは以下のコマンドで設定できます。 ::
 
  catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
 
@@ -514,7 +490,7 @@ catkin build 実行後にコンソールに以下のような出力があれば�
 
 コントローラのビルドに成功したら、それをシミュレーションプロジェクトに導入しましょう。
 
-導入は :doc:`../../simulation/tank-tutorial/index` の :ref:`simulation-tank-tutorial-introduce-controller` と同じ手順で行います。今回作成するコントローラの名前は "JoyInputController" になりますので、アイテムもこれと同じ名前にするとよいでしょう。また、 :ref:`simulation-tank-tutorial-set-controller` については、今回のビルドによって生成された "JoyInputController.so" を選択するようにしてください。このファイルは標準のコントローラディレクトリに生成されているはずですが、もし見当たらない場合はビルドに失敗していますので、これまでの手順を確認してください。
+導入は :doc:`../../simulation/tank-tutorial/index` の :ref:`simulation-tank-tutorial-introduce-controller` と同じ手順で行います。今回作成するコントローラの名前は "RttTankController" になりますので、アイテムもこれと同じ名前にするとよいでしょう。また、 :ref:`simulation-tank-tutorial-set-controller` については、今回のビルドによって生成された "RttTankController.so" を選択するようにしてください。このファイルは標準のコントローラディレクトリに生成されているはずですが、もし見当たらない場合はビルドに失敗していますので、これまでの手順を確認してください。
 
 ここまでの作業で、アイテムツリーは以下のような構成になっているかと思います。
 
@@ -522,9 +498,9 @@ catkin build 実行後にコンソールに以下のような出力があれば�
 
  + World
    + Tank
-     + JoyInputController
-   + Labo1
-   + AISTSimulator
+     - RttTankController
+   - Labo1
+   - AISTSimulator
 
 "Labo1"のところは、Floorや他の環境モデルでも結構です。
 
@@ -557,7 +533,7 @@ Joyトピック接続状況の確認
  Subscribers: 
   * /choreonoid (http://host:37373/)
 
-Subscribersとして /choreonoid が追加されています。これはこのトピックを購読しているノードを表しています。実際に購読しているオブジェクトはJoyInputControllerになるのですが、ここではchoreonoidと表示されています。これはROSのノードがOSのプロセス単位で生成されているからで、Choreonoidのプロセス内で動作しているものは全てchoreonoidノードとなります。シンプルコントローラもChoreonoidのプロセス内で動作するものなので、ノードとしてはchoreonoidになるというわけです。
+Subscribersとして /choreonoid が追加されています。これはこのトピックを購読しているノードを表しています。実際に購読しているオブジェクトはRttTankControllerになるのですが、ここではchoreonoidと表示されています。これはROSのノードがOSのプロセス単位で生成されているからで、Choreonoidのプロセス内で動作しているものは全てchoreonoidノードとなります。シンプルコントローラもChoreonoidのプロセス内で動作するものなので、ノードとしてはchoreonoidになるというわけです。
 
 次に接続状況をグラフで可視化してみましょう。ROSにはこれを行う"rqt_graph"というツールがありますので、まずこれを起動します。 ::
 
@@ -632,12 +608,15 @@ args以下はchoreonoidコマンドに与える引数になっています。引
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
-     + step1.launch
+     - step1.launch
    + project
-     + step1.cnoid
+     - step1.cnoid
    + src
-     + JoyInputController.cpp
+     - CMakeLists.txt
+     - RttTankController.cpp
 
 このようにしておくと、端末上から以下のコマンドを入力することでこのLaunchファイルを実行できます。 ::
 
@@ -708,28 +687,16 @@ ROSのNodeHandleは以下の関数で生成しています。 ::
 
 通常はinitialize関数で初期化を行えばよいのですが、それはシミュレーション開始時に初めて処理されるものなので、シミュレーション開始前に行っておきたい初期化は、configure関数で記述する必要があります。ROSの場合ノード間の接続が重要になりますが、これをシミュレーション開始前に確認したり、全て完了しておきたいといったことがあります。これを実現するためにはNodeHandleもシミュレーション開始前に生成されている必要があるため、それをconfigure関数で行うようにしています。
 
-.. note:: ノードハンドルの生成を行うためには、roscppが初期化されていなければなりません。これはchoreonoidノード起動時に処理されるので、choreonoidノードを使用する場合は特に気にする必要はありません。しかしながら、roscppの初期化がされていない環境でこのコードを実行してしまう可能性があります。Choreonoidの起動をROSのchoreonoidノードとして行うのではなく、通常の実行ファイルで起動するとそのような環境となりますが、シンプルコントローラはROSとは独立したものなので、そのような環境でも読み込むことは出来てしまいます。その場合、上記のコードだと実行時にroscppの初期化を待つため実行がフリーズします。
-
- これを避けるためには、NodeHandleの生成前に以下のようなコードを挿入します。 ::
-
-        if(!ros::isInitialized()){
-            config->os() << config->controllerName()
-                         << " cannot be configured because ROS is not initialized." << std::endl;
-            return false;
-        }
-
- これにより、roscppが初期化されていない(=ROSが使える環境ではない）場合は、エラーメッセージを出力して、configureが失敗するようにしています。通常ここまで気を使う必要はありませんが、一般にも公開するようなコードの場合は、このようにしておくのが親切かもしれません。
-
-通常の初期化処理はinitialize関数に実装しています。その大部分はクローラと砲塔・砲身軸の制御のための準備で、詳細は :doc:`../../simulation/tank-tutorial/index` で解説しておりますので、ここでは詳細を省きます。ROSと関連する部分としては、以下の処理を記述しています。 ::
+通常の初期化処理はinitialize関数に実装しています。その大部分はクローラと砲塔・砲身軸の制御のための準備で、詳細は :doc:`../../simulation/tank-tutorial/index` で解説していますので、ここでは詳細を省きます。ROSと関連する部分としては、以下の処理を記述しています。 ::
 
  subscriber = node->subscribe(
-     "joy", 1, &JoyInputController::joystickCallback, this);
+     "joy", 1, &RttTankController::joystickCallback, this);
 
 この記述により、joyトピックをSubscribeするための初期化を行っています。NodeHandleのsubscribe関数に対象のトピック名を指定してSubscriberを生成します。生成したSubscriberはSubscriber型の変数に格納します。これはSubscriberの実態へのリファレンスとなっていて、これによってSubscriberの生存管理を行います。
 
 2番目の引数はトピックの受信に使用するキューのサイズを指定しています。この値を増やすことで、受信するメッセージの取りこぼしを少なくすることができるようです。ただし本サンプルでは最新のジョイスティックの状態を取得できればよいので、途中の取りこぼしは気にしないこととし、キューサイズとして1を指定しています。
 
-3、4番目の引数で、Subscribe時のコールバック関数を指定しています。コールバック関数の指定の仕方はいくつかあるのですが、ここではメンバ関数を対象としたものを使用していて、JoyInputControllerのjoystickCallbak関数を指定しています。
+3、4番目の引数で、Subscribe時のコールバック関数を指定しています。コールバック関数の指定の仕方はいくつかあるのですが、ここではメンバ関数を対象としたものを使用していて、RttTankControllerのjoystickCallbak関数を指定しています。
 
 以上の記述により、joyトピックがPublishされると、それがChoreonoidのROSノードで受信され、受信されたJoyメッセージがjoystickCallback関数に渡されるようになります。この受信処理は非同期に行われ、コールバック関数はコントローラの制御関数とは異なるスレッドから呼ばれることになるので、その点注意が必要です。
 
