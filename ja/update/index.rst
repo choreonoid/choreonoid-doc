@@ -1,6 +1,11 @@
 更新履歴
 ========
 
+* 2021/8/17
+
+  * :doc:`../agxdynamics/install/install-agx-ubuntu` と :doc:`../agxdynamics/install/install-agxplugin` を修正し、 :ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` と :ref:`agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution` について追記
+  * 上記追記の件を :doc:`../wrs2018/setup` と :doc:`../wrs2018/teleoperation-ros` にも反映
+
 * 2021/8/11
 
   * :doc:`../ros/tank-tutorial/index` に :doc:`../ros/tank-tutorial/step4` と :doc:`../ros/tank-tutorial/step5` を追加

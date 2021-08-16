@@ -11,6 +11,5 @@
   howto-use-commands
   body-tracking-camera
   body-motion
-
-..  jaxon2-sample
+  jaxon2-sample
 ..   multi-sceneviews

@@ -1,8 +1,9 @@
+================
 AGXMagneticJoint
 ================
 
-| AGXMagneticJointはAGX Dynamicsをつかった磁石のような振る舞いをするジョイントです。
-| 実装にはAGX Dynamicsのlock jointを利用しています。
+AGXMagneticJointはAGX Dynamicsをつかった磁石のような振る舞いをするジョイントです。
+実装にはAGX Dynamicsのlock jointを利用しています。
 
 .. image:: images/magnetic_joint.png
 
@@ -61,7 +62,7 @@ poistionはリンク座標系からみた相対位置、connectAxisはジョイ�
 パラメータの説明
 ----------------
 
-| 以下にパラメータの説明をします。
+以下にパラメータの説明をします。
 
 .. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
 .. list-table::

@@ -1,6 +1,6 @@
-
+========
 利用要件
-------------------
+========
 
 ChoreonoidのAGXDynamicsプラグインを利用するためには、以下の要件を満たす必要があります。
 
@@ -9,8 +9,7 @@ ChoreonoidのAGXDynamicsプラグインを利用するためには、以下の�
 * **AGX Dynamicsの実行ライセンスファイルをAGX Dynamicsインストールディレクトリに配置**
 
 
-| AGX Dynamicsの実行ライセンスの購入とSDKの取得につきましては、**株式会社ブイエムシー** にお問い合わせください。
-| なお、World Robot Summit等のイベント参加者はイベントの主催者にお問い合わせください。
+AGX Dynamicsの実行ライセンスの購入とSDKの取得につきましては、**株式会社ブイエムシー** にお問い合わせください。なお、World Robot Summit等のイベント参加者はイベントの主催者にお問い合わせください。
 
   `株式会社ブイエムシー: 	AGX Dynamics Plugin for Choreonoid（コレオノイド）`__
 

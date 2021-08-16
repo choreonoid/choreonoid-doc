@@ -1,74 +1,74 @@
-
+==========================================
 AGX Dynamicsのインストール(Ubuntu Linux編)
-======================================================
+==========================================
 
 .. contents::
    :local:
    :depth: 1
 
-| AGX Dynamics Ubuntu版のインストール方法について説明します。
-| AGX Dynamicsダウンロードサイトからdebパッケージをダウンロードし、/var/tmpディレクトリに保存している状態から始めます。
-| 本稿では説明のためにagx-setup-2.19.1.2-x64-ubuntu_16.04-double.debをインストールすることとします。
+AGX Dynamics Ubuntu版のインストール方法について説明します。
 
-インストール
-----------------------------
+パッケージのインストール
+------------------------
 
-| AGX Dynamicsのインストールは下記のコマンドを実行することで行います。デフォルトでは/opt/Algoryx/AgX-<version>ディレクトリにインストールされます。
-| 次にAGX実行ライセンスファイル(agx.lic)をインストールディレクトリに配置し、AGX Dynamicsを実行できるようにします。
-| 最後に.profileファイルに環境変数設定スクリプトの実行を記述し、OSログイン時に自動的に環境変数が設定されるようにします。
+AGX Dynamicsダウンロードサイトからdebパッケージをダウンロードしてください。
+ここではAGX Dynamicsバージョン2.30.4.0をUbuntu20.04にインストールする例を紹介します。
 
-.. code-block:: text
+まずダウンロードしたdebファイルをdpkgコマンドでインストールします。
 
-   # インストール
-   cd /var/tmp
-   sudo dpkg -i agx-setup-2.19.1.2-x64-ubuntu_16.04-double.deb    // パッケージインストール
-   ls -al /opt/Algoryx/AgX-2.19.1.2                               // インストールディレクトリにファイルが配置されていることを確認
+.. code-block:: sh
 
-   # AGX実行ライセンスファイルの配置
-   sudo cp -i agx.lic  /opt/Algoryx/AgX-2.19.1.2
+ dpkg -i agx-2.30.4.0-amd64-ubuntu_20.04.deb
 
-   # 環境変数の設定
-   cd ~                                                           // ホームディレクトリに移動
-   cp -p .profile .profile_20171010                               // .profileファイルのバックアップ
-   echo "source /opt/Algoryx/AgX-2.19.1.2/setup_env.bash" >> .profile
-   diff .profile .profile_20171010                                // 変更部分以外に差分がないか確認
-   source .profile                                                // ログインシェルに環境変数を設定
-   env | grep -i agx                                              // AGX_DIRやAGX_BINARY_DIRなどが表示されること
+ただしdpkgコマンドでは他のパッケージへの依存が解決されません。依存を解決するには、以下の方法があります。
 
-.. note:: setup_env.bash の取り込みを .profileに記述すると、LD_LIBRARY_PATHの設定が反映されず、AGX Dynamicsを使用しているプログラムがうまく動作しないことがあるようです。(参考: https://help.ubuntu.com/community/EnvironmentVariables#File-location_related_variables ) その場合は、.bashrc に記述して試してみてください。
+1. ファイラからdebファイルをダブルクリックして表示されるGUIツールを用いてインストールする
+2. gdebiコマンドでインストールする
 
+1の方法が手軽ですが、debファイルによってはこの方法でインストールできないこともあるようです。
 
-動作確認
-----------------------------
+2については以下のようにします。
 
-実行ライセンスファイルが配置されているか、環境変数が設定されているかを確認するために、
-AGX Dynamicsのサンプルを実行して動作確認をします。
+.. code-block:: sh
 
-.. code-block:: text
+ sudo apt install gdebi-core
+ sudo gdebi agx-2.30.4.0-amd64-ubuntu_20.04.deb
 
-   cd /opt/Algoryx/AgX-2.19.1.1/bin
-   ./tutorial_trackedVehicle
+インストールに成功すると、/opt/Algoryx/AGX-<version>ディレクトリにインストールされます。
 
+ライセンスのインストール
+------------------------
 
-.. note::
-   VMWareなどの仮想マシン上ではウィンドウが開かず失敗する場合があります。
+次にAGX実行ライセンスファイル(agx.lic)をインストールディレクトリに配置し、AGX Dynamicsを実行できるようにします。
 
-   .. code-block:: text
+環境設定の取り込み
+------------------
 
-      $ ./tutorial_trackedVehicle
-         AGX Library 64Bit AgX-2.19.1.1-81db33e Algoryx(C)
-         Tutorial Tracked Vehicle (agxVehicle::Track)
-        --------------------------------
-      Caught exception: Failed to find window with number: 0
-   ..
+最後にAGXの環境変数設定を取り込んでおきます。
+これはAGXディレクトリの"setup_evn.bash"を実行することで実現できます。
 
-   この場合は以下のコマンドで確認をしてください。--agxOnlyは描画なし、--stopAt 5は5秒シミュレーションをしたのち終了するオプションです。
+通常はホームディレクトリの.bashrcファイルに以下の記述をしておきます。
 
-   .. code-block:: text
+.. code-block:: sh
 
-      ./tutorial_trackedVehicle --agxOnly --stopAt 5
-         AGX Library 64Bit AgX-2.19.1.1-81db33e Algoryx(C)
-         Tutorial Tracked Vehicle (agxVehicle::Track)
-         --------------------------------
-      Loading scene took 0.236783 sec
-      Stepping 301 timesteps (5.01667 sec simulated time) took 1.69487 sec
+ source /opt/Algoryx/AGX-2.30.4.0/setup_env.bash
+
+ディレクトリ "AGX-2.30.4.0" の部分は実際に使用するAGXのバージョンに合うものとしてください。
+
+この設定をしておけば、それ以降起動される端末上ではAGXの環境設定がなされた状態となります。
+
+.. _agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem:
+
+AGX共有ライブラリの参照解決の問題
+---------------------------------
+
+最近のAGXのバージョン（今回2.30.4.0で確認）では、以前のバージョンとは異なり、AGXの共有ライブラリへのパスが上記のスクリプトでは設定されなくなったようです。そのままでは、AGXの共有ライブラリへの参照を解決できず、Choreonoid実行時にAGX Dynamicsプラグインが読み込めないことがあります。
+
+共有ライブラリパスについては環境変数LD_LIBRARY_PATHで設定することができます。
+AGXの共有ライブラリをパスに追加する場合は、この環境変数を以下のように設定します。
+
+.. code-block:: sh
+
+ export LD_LIBRARY_PATH=/opt/Algoryx/AGX-2.30.4.0/lib:$LD_LIBRARY_PATH
+
+ただし、Choreonoid開発版のコミットb71e314d098eb24e0beaf571f6ae0fe9fdb618a2以降では、この環境変数を設定しなくても、Choreonoidビルド時の設定でも解決することができます。そちらの方が他に影響を与えずに済むので、より望ましいかもしれません。その方法については次節で説明します。

@@ -76,6 +76,7 @@ CMakeによるビルドの設定を行います。Choreonoidのデフォルト�
 
  * BUILD_AGX_DYNAMICS_PLUGIN
  * BUILD_AGX_BODYEXTENSION_PLUGIN
+ * ENABLE_INSTALL_RPATH_USE_LINK_PATH ( :ref:`agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution` 参照 )
 
 * 煙や炎を再現する場合
 
@@ -88,7 +89,7 @@ CMakeによるビルドの設定を行います。Choreonoidのデフォルト�
 
 これらのオプションの設定はccmakeコマンドを使ってインタラクティブに行うこともできますが、cmakeコマンドに-Dオプションを与えることも可能です。例えば、上記のオプション全てを有効にする場合は、以下のように入力します。 ::
 
- cmake -DBUILD_WRS2018=ON -DBUILD_COMPETITION_PLUGIN=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON
+ cmake -DBUILD_WRS2018=ON -DBUILD_COMPETITION_PLUGIN=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON -DENABLE_INSTALL_RPATH_USE_LINK_PATH=ON
 
 AGX Dynamicsをインストールしていない場合は、対応するオプションを上記のコマンドライン引数から除去して実行してください。
 

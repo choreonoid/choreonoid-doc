@@ -1,41 +1,47 @@
+===========================================================
 AGXDynamicsプラグインのビルドとインストール(Ubuntu Linux編)
------------------------------------------------------------------
+===========================================================
 
-| AGXDynamicsプラグインはChoreonoidのソースコードに同梱されております。
-| Choreonoidのビルド前に行う :ref:`build-ubuntu-cmake` のcmakeオプションで
-| 以下のオプションを **ON** にすることでビルドすることができます。
+.. highlight:: sh
+
+CMakeオプションによるAGXDynamicsプラグインの有効化
+--------------------------------------------------
+
+AGXDynamicsプラグインはChoreonoid本体のソースコードに含まれています。
+これを有効にするには、Choreonoid本体のビルド時の :ref:`build-ubuntu-cmake` で以下のオプションを **ON** にしておきます。
 
 * **BUILD_AGX_DYNAMICS_PLUGIN**      : AGXDynamicsプラグイン - AGX Dynamicsのシミュレーションプラグイン
 * **BUILD_AGX_BODYEXTENSION_PLUGIN** : AGXBodyExtensionプラグイン - 専用モデルプラグイン(ワイヤーなど)
 
-| 以下にビルド、インストール方法の詳細を説明します。
-| まず、choreonoidのソースディレクトリに移動し、ccmakeまでコマンドを実行します。
+これはcmakeコマンドのオプションとして ::
 
-.. code-block:: text
+ cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON
 
-   cd choreonoid
-   cmake .
-   ccmake .
+などとしてもよいですし、ccmakeコマンドで表示されるメニュー上でこれらのオプションの値をONに切り替える操作でもOKです。
 
-ccmakeで以下のオプションを有効にし、configure、generateを実行をします。
+このCMake設定をした上でChoreonoid本体のビルドを行うと、AGXDynamicsプラグインも同時にビルドされ、使えるようになります。
 
-* BUILD_AGX_DYNAMICS_PLUGIN             ON
-* BUILD_AGX_BODYEXTENSION_PLUGIN        ON
+.. note:: AGXBodyExtensionプラグインはAGXDynamicsプラグインに依存しているため、BUILD_AGX_DYNAMICS_PLUGINがONにならないとccmakeで表示されません。一度BUILD_AGX_DYNAMICS_PLUGINをONにしてconfigureを実行してみてください。
 
-Cmake Errorがでていないことを確認し、以下のようにmake、make installを実行しビルド、インストールをします。
+.. note:: ccmakeでconfigureの操作を行うとAGX DynamicsのパスAGX_DIRが自動的に設定されますが、設定されない場合には手動で設定をしてください。デフォルトのパスは /opt/Algoryx/AGX-<version>です。
 
-.. code-block:: text
+.. _agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution:
 
-   make -j4
-   make install
+AGX Dynamics共有ライブラリへの参照解決用オプション
+--------------------------------------------------
 
+:ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` は、Choreonoidビルド時のCMakeオプションによっても解決することができます。
 
-.. note::
+これを行うには、CMakeのオプションとして **ENABLE_INSTALL_RPATH_USE_LINK_PATH** に **ON** を設定します。
 
-   AGXBodyExtensionプラグインはAGXDynamicsプラグインに依存しているため、BUILD_AGX_DYNAMICS_PLUGINがONにならないとccmakeで表示されません。
-   一度BUILD_AGX_DYNAMICS_PLUGINをONにしてconfigureを実行してみてください。
+この場合、cmakeコマンドによるオプション設定は以下のようにします。 ::
 
-.. note::
+ cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DENABLE_INSTALL_RPATH_USE_LINK_PATH=ON
 
-   ccmake configureを実行するとAGX DynamicsのパスAGX_DIRが自動的に設定されますが、設定されない場合には手動で設定をしてください。
-   デフォルトのパスは /opt/Algoryx/AgX-<version>です。
+ccmakeコマンドの場合は、まず "T" キーを押してアドバンスドモードに切り替えます。
+そしてメニューを操作してENABLE_INSTALL_RPATH_USE_LINK_PATHの項目をONにしておきます。
+
+この設定をした状態でビルドを行うと、AGX Dynamicsプラグインの共有ライブラリファイルに対して、動的リンクするAGX Dynamicsの共有ライブラリへのパスが埋め込まれます。これは共有ライブラリの"RPATH"という機能を使って実現されます。このようにして生成したプラグインファイルは、自身に埋め込まれた依存ライブラリへのパスを用いてライブラリの参照解決をします。この場合、該当するライブラリがOSの共有ライブラリパスに存在しない場合でも、実行時にリンクして実行することができます。
+
+AGX Dynamicsプラグインを使用する場合は、通常このオプションをONにしてビルドしておくのがおすすめです。
+
