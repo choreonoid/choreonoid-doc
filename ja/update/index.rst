@@ -5,6 +5,7 @@
 
   * :doc:`../agxdynamics/install/install-agx-ubuntu` と :doc:`../agxdynamics/install/install-agxplugin` を修正し、 :ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` と :ref:`agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution` について追記
   * 上記追記の件を :doc:`../wrs2018/setup` と :doc:`../wrs2018/teleoperation-ros` にも反映
+  * :doc:`../ros/install-ros` を更新
 
 * 2021/8/11
 
