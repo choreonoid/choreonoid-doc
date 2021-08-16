@@ -8,8 +8,8 @@ Cooperation with ROS
    about
    install-ros
    build-choreonoid
+   run-choreonoid
+   rosplugin
+   tank-tutorial/index
       ..
-	 run-choreonoid
 	 catkin-profile
-	 rosplugin
-	 tank-tutorial/index

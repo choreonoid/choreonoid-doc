@@ -96,6 +96,8 @@ This controller is provided as a sample with Choreonoid; by default, it is confi
 
 For instructions on how to separately implement the SimpleController in a standalone fashion from the sample, please refer to the section on :doc:`howto-build-controller` .
 
+.. _simulation-implement-controller-simple-controller-class:
+
 SimpleController class
 ----------------------
 
@@ -130,10 +132,13 @@ If you define a class to inherit SimpleController, you must define a factory fun
 
 This allows the common library files (dynamic links) compiled from source to be usable as an actual controller in the form of a SimpleController item.
 
-.. _simulator-simple-controller-io:
+.. note:: For more information on the SimpleController class, please refer to "src/SimpleControllerPlugin/library/SimpleController.h", which defines this class in the source archive. Also, please refer to :ref:`simulation-implement-controller-simple-controller-class-supplement` at the end of this section.
 
-IO objects
-----------
+.. _simulator-simple-controller-io:
+.. _simulation-implement-controller-simple-controller-io:
+
+IO object
+---------
 
 The SimpleControllerIO object passed as an io argument to the above initialize function is an object that contains the requisite information for I/O between the controller and robot. Below, we refer to this object as an “IO object.”
 
@@ -164,17 +169,18 @@ This class inherits the ControllerIO class. Some of the functions defined in the
  Returns the current time. Given in seconds. At the start of the simulation, the time is 0.
 
 .. _simulator-io-by-body-object:
+.. _simulation-implement-controller-io-by-body-object:
 
-Input/output using body objects
--------------------------------
+Input/output using a body object
+--------------------------------
 
-The SimpleController allows for input and output via Body objects. The Body object is a Choreonoid internal expression for :doc:`../handling-models/bodymodel` and an instance of the Body class defined in C++. The Body class is a data structure used to store the robot model and its state, so it can be used to store values like joint angle, torque, sensor status, and other data implicated in input/output. This is why the SimpleController allows for input and output via Body objects. These Body objects can be obtained via the body function of the IO object.
+The SimpleController allows for input and output via a body object. The body object is a Choreonoid internal expression for :doc:`../handling-models/bodymodel` and an instance of the Body class defined in C++. The Body class is a data structure used to store the robot model and its state, so it can be used to store values like joint angle, torque, sensor status, and other data implicated in input/output. This is why the SimpleController allows for input and output via a body object. The body object can be obtained via the body function of the IO object.
 
 
 Link objects
 ~~~~~~~~~~~~
 
-Body objects are expressed as a Link class object representing the individual components (rigid bodies) making up the model. These objects contain information pertaining to joints. (See :ref:`model_structure` ）. Link objects can be obtained via the Body class functions below.
+A body object consists of Link class objects representing the individual components (rigid bodies) making up the model. These objects contain information pertaining to joints. (See :ref:`model_structure` ）. Link objects can be obtained via the Body class functions below.
 
 * **int numJoints() const**
 
@@ -520,11 +526,12 @@ The Device objects used by the SR1 model we reference in this section are as fol
    - ForceSensor
    - Force sensor installed on the right ankle
 
+.. _simulation-obtain-device-object:
 
-Polling device objects
-~~~~~~~~~~~~~~~~~~~~~~
+Obtaining device objects
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Device objects are polled by using the below functions against Body objects.
+Device objects can be obtained from a body object by using the following member functions:
 
 * **int numDevices() const**
 
@@ -661,6 +668,37 @@ For the control function, using ::
 would obtain the root link position and orientation.
 
 A simulator supporting output of link position and orientation is needed here, which is a special use case. For example, the AIST simulator item allows for changing the dynamics mode to kinematics, with no dynamics calculations performed in the simulation; instead, only the position and orientation given are reproduced. In this case, outputting the position and orientation of the robot’s root link will navigate the root link to that point. If you output the joint angle, it will reproduce the orientation based on the forward kinematics from the root link.
+
+.. _simulation-implement-controller-simple-controller-class-supplement:
+
+Tip: About the definition of the SimpleController class
+-------------------------------------------------------
+
+In :ref:`simulation-implement-controller-simple-controller-class`, two virtual functions of this class, initialize and control, were introduced. In addition to these, SimpleController has the following virtual functions, each of which can be overridden to implement processing.
+
+* **virtual bool configure(SimpleControllerConfig\* config)**.
+
+ This is another function for initializing the controller, but it is executed at a different timing than the initialize function. initialize function is executed when the simulation is started, but this function is executed before that, when the controller is introduced into the project (embedded in the item tree) and associated with a specific robot model. If there is any process that you want to execute before the simulation starts, you should write it here. You can get information related to initialization through the "config" argument.
+
+* **virtual bool start()**.
+
+ This is another function for initializing the controller, but it is executed after the initialize function in terms of timing; it is executed when the initialization of the entire simulation including the initialize function is completed and the controller is about to start working.
+
+* **virtual void stop()**.
+
+ This function is executed when the simulation is stopped.
+
+* **virtual void unconfigure()**.
+
+ This is the counterpart of configure, and is executed when the controller becomes invalid, such as when it is deleted or detached from the target model.
+
+The config object given as an argument to the configure function is the same as :ref:`simulation-implement-controller-simple-controller-io` . It has the member function to get information about the target model such as
+
+* **Body\* body()** 
+
+and other members similar to IO objects.
+
+Note, however, that the body object obtained from the config object is not the same as the one obtained from the IO object; the one obtained from the IO object is used for input and output to and from the body object during simulation, and is generated at simulation runtime. On the other hand, the body object obtained from the config object is the original body object of the body item, which exists before the simulation is started.
 
 Other samples
 -------------

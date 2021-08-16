@@ -40,6 +40,7 @@ Choreonoidを起動すると表示される「メインウィンドウ」の構�
 
 Choreonoidではこの他にも様々なツールバーが用意されています。
 
+.. _basics_mainwindow_view:
 
 ビュー
 ------

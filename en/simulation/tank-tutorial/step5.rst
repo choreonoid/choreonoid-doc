@@ -1,6 +1,6 @@
 
 Step 5: Controlling the lights
-====================================
+==============================
 
 The Tank model is equipped with a light (lightsource). In Step 5, we enabled controlling this light via the controller and learned how to control the device.
 
@@ -12,12 +12,12 @@ The Tank model is equipped with a light (lightsource). In Step 5, we enabled con
    :linenothreshold: 7
 
 Environment settings
-----------------------------
+--------------------
 
 Let’s configure the environment settings in order to make the effects of the light more clear.
 
 Changing the scene renderer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Internally, Choreonoid contains what is called a “scene renderer” that is used to render models as 3D graphics. The rendering performance in the Scene View will differ depending on whether this functionality has been implemented in your build.
 
 The development version of Choreonoid actually contains a new scene renderer. This is implemented using GSLS, a shading language. Internally, it is referred to as the GLSL Scene Renderer. Using this renderer allows for more accurate rendering of illumination of objects from lightsources, as well as shadows cast by these objects. In other words, this allows you to draw a more realistic scene. This is useful in enhancing the effect of the light installed on the Tank model. Let’s try using this functionality.
@@ -52,8 +52,10 @@ However, note that even if OpenGL 3.3 is supported, it may still not run properl
 
 .. note:: There may be cases where the GLSL renderer underperforms, but setting the Qt version to 5 causes Choreonoid to perform properly. Qt is a GUI library; by default, version 4 is used. However, if you set the USE_QT5 flag to ON in the cmake settings, version 5 will be used.
 
+.. _tank_tutorial_use_labo_model:
+
 Changing the environment model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If we use the existing floor model as-is, the light will not stand out much. Therefore, we want to change the environment model. We will use the “Labo1” model, a sample included with Choreonoid. This model is based around a research plant, as shown below.
 

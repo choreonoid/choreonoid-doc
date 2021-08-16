@@ -1,7 +1,8 @@
-ODEPluginの解説
-===================
+=====================
+補足: ODEPluginの解説
+=====================
 
-Choreonoidでは、Plugin形式で、ユーザが開発したプログラムを組み込むことができることを、:doc:`hello-world-sample` や :doc:`sample1` にて説明しました。ここでは、シミュレーションの核となる動力学エンジンを組み込む方法を解説します。説明には、一般的な動力学エンジンODE（Open Dynamics Engine)をPlugin化したODEPluginを使用します。ソースファイルは "src/ODEPlugin" にあります。ODEの詳細は `http://www.ode.org/ <http://www.ode.org/>`_ をご参照ください。
+ここでは、シミュレーションの核となる動力学エンジンをプラグインとして組み込む方法を解説します。説明には、一般的な動力学エンジンODE（Open Dynamics Engine)をPlugin化したODEPluginを使用します。ソースファイルは "src/ODEPlugin" にあります。ODEの詳細は `http://www.ode.org/ <http://www.ode.org/>`_ をご参照ください。
 
 .. contents:: 目次
    :local:
@@ -1157,8 +1158,3 @@ J1J3は、仮想関節につける名前です。link1Name,link2Nameで拘束す
             }
         }
     }
-
-ビルド
-------
-
-ビルドの方法については、 :doc:`hello-world-sample` や :doc:`sample1` を参照してください。

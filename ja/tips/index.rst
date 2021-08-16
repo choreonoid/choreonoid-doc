@@ -10,6 +10,7 @@
   howto-create-movingimage
   howto-use-commands
   body-tracking-camera
-  jaxon2-sample
+  body-motion
 
+..  jaxon2-sample
 ..   multi-sceneviews

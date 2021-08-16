@@ -11,7 +11,7 @@
 
 ステップ1では外部でPublishされているROSトピックをコントローラでSubscribeして受信する方法を説明しました。ステップ2ではこれとは逆の処理として、コントローラ側からROSトピックをPublishして送信する方法を学びます。
 
-具体的には、Tankの各関節の状態をJointStateトピックとしてPublishできるようにします。Publishされたロボットの関節状態は他のROSノードからSubscribeして利用することが可能となります。
+具体的には、Tankロボットの各関節の状態をJointStateトピックとしてPublishできるようにします。Publishされたロボットの関節状態は他のROSノードからSubscribeして利用することが可能となります。
 
 状態出力用コントローラ
 ----------------------
@@ -19,7 +19,7 @@
 .. highlight:: c++
    :linenothreshold: 7
 
-Choreonoidではロボットの状態出力も基本的にはコントローラの中に実装します。そこで本ステップでは関節の状態を出力するための "JointStateOutputController" というコントローラを新たに作成することにします。まずはそのソースコードを最初に示します。このサンプルを題材として、ロボットの状態をROSトピックとしてPublishする方法を解説します。 ::
+Choreonoidではロボットの状態出力も基本的にはコントローラの中に実装します。そこで本ステップでは関節の状態をPublishするための "RttJointStatePublisher" というコントローラを新たに作成することにします。まずはそのソースコードを最初に示します。このサンプルを題材として、ロボットの状態をROSトピックとしてPublishする方法を解説します。 ::
 
  #include <cnoid/SimpleController>
  #include <ros/node_handle.h>
@@ -28,7 +28,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
  using namespace std;
  using namespace cnoid;
  
- class JointStateOutputController : public SimpleController
+ class RttJointStatePublisher : public SimpleController
  {
      BodyPtr ioBody;
      ros::NodeHandle node;
@@ -97,7 +97,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
      }
  };
  
- CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(JointStateOutputController)
+ CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttJointStatePublisher)
 
 
 状態出力用コントローラの基本構造
@@ -111,7 +111,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
 
 で基底となるSimpleControllerクラスの定義を取り込み、 ::
 
- class JointStateOutputController : public SimpleController
+ class RttJointStatePublisher : public SimpleController
 
 といったかたちで対象となるコントローラをSimpleControllerを継承したクラスとして定義します。
 
@@ -129,7 +129,7 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
 
 をオーバーライドし、Publisherを用いた状態出力の処理を記述します。
 
-この構造はステップ1で作成したJoyInputControllerとほぼ同じですが、control関数の使い方が若干異なると言えるかもしれません。control関数は通常は制御の処理を記述するもので、JoyInputControllerではTankの制御を記述していました。しかしこの関数の本質はコントローラの制御周期で繰り返し何らかの処理を行うことにあり、周期処理の内容は必ずしもロボットの制御である必要はありません。そこで今回のようにロボットの状態を出力する処理にもこの関数を利用できるというわけです。
+この構造はステップ1で作成したRttTankControllerとほぼ同じですが、control関数の使い方が若干異なると言えるかもしれません。control関数は通常は制御の処理を記述するもので、RttTankControllerではTankロボットの制御を記述していました。しかしこの関数の本質はコントローラの制御周期で繰り返し何らかの処理を行うことにあり、周期処理の内容は必ずしもロボットの制御である必要はありません。そこで今回のようにロボットの状態を出力する処理にもこの関数を利用できるというわけです。
 
 ノードハンドルの生成
 --------------------
@@ -148,20 +148,20 @@ Choreonoidではロボットの状態出力も基本的にはコントローラ�
 
 としてノードハンドルを生成しています。
 
-この処理自体はステップ1でも行ったものですが、ここではノードハンドルにネームスペースとして対象モデルの名前を与えています。ネームスペースは必ずしも必要ありませんが、ここではトピックをより区別しやすくするために付与しています。モデル名をネームスペースに含めることで、トピックがそのモデルの状態に関わるものであることを示唆できるからです。
+この処理自体はステップ1でも行ったものですが、ここではノードハンドルにネームスペースとして対象ロボットの名前を与えています。ネームスペースは必ずしも必要ありませんが、ここではトピックをより区別しやすくするために付与しています。ロボットの名前をネームスペースに含めることで、トピックがそのロボットの状態に関わるものであることを示唆できるからです。
 
 ここでは ::
 
  config->body()->name()
 
-によって対象モデルの名前を取得しています。configオブジェクトについては :ref:`simulation-implement-controller-simple-controller-class-supplement` を参照してください。
+によって対象ロボットの名前を取得しています。configオブジェクトについては :ref:`simulation-implement-controller-simple-controller-class-supplement` を参照してください。
 
 今回のサンプルではモデル名は "Tank" となりますので、以下で生成されるトピック名には全て "/Tank" のプレフィックスが付与されることになります。
 
 Publisherの生成
 ---------------
 
-ROSにおいてトピックは対応するPublisherによって出力される設計となっており、roscppにおいてもこれに対応するPublisherクラスが定義されています。このPublisherに対応するメンバが ::
+ROSにおいてトピックは対応するPublisherによって出力される設計となっており、roscppにおいてもこのためのPublisherクラスが定義されています。このPublisherに対応するメンバ変数が ::
 
  ros::Publisher jointStatePublisher;
 
@@ -169,7 +169,9 @@ ROSにおいてトピックは対応するPublisherによって出力される�
 
 また、Publishするためには対応するトピックのメッセージ（データ）を用意する必要があります。このためにはまずメッセージの型を決めなければなりません。本サンプルではROSの標準パッケージで定義されている **"sensor_msgs::JointState"** 型を使用することにします。
 
-この内容を確認するため ::
+この内容を確認するため
+
+.. code-block:: sh
 
  rosmsg show sensor_msgs/JointState
 
@@ -194,13 +196,13 @@ C++のコードからこのメッセージ型を利用するためには、メ�
 
  #include <sensor_msgs/JointState.h>
 
-によって対応するヘッダをインストールしています。ヘッダのパスはROSに登録されているメッセージの型名にそのまま対応していますね。
+によって対応するヘッダをインクルードしています。ヘッダのファイルパスはROSに登録されているメッセージの型名にそのまま対応していますね。
 
 そしてこの型に対応する変数を ::
 
  sensor_msgs::JointState jointState;
 
-として定義しています。こちらもネームスペースを使うことでメッセージの型名にほぼそのまま対応していますね。
+として定義しています。このC++の型名もネームスペースを使うことでROSメッセージの型名にほぼそのまま対応していますね。
 
 .. note:: 本サンプルでは既存のメッセージ型を使用していますが、独自に定義したメッセージ型を用いることも可能です。その方法については別途roscppのマニュアルをご参照ください。
 
@@ -215,6 +217,8 @@ C++のコードからこのメッセージ型を利用するためには、メ�
 2番目の引数は出力に使用するキューのサイズを指定します。短い周期で多数のメッセージを出力し、なおかつメッセージの取りこぼしがないことが望ましい場合には、キューのサイズを大きめにします。そのような必要がなく、メッセージの受け取り側では各時点での最新のメッセージだけ取得できればよいのであれば、キューのサイズは1を指定するのが適切かと思います。今回は特に取りこぼしを防ぐことは想定しないサンプルになりますので、キューサイズに1を指定しています。
 
 これでJointState型のメッセージを出力するPublisherを生成することができました。
+
+.. _ros_tank_tutorial_publish_joint_state:
 
 関節状態のPublish
 -----------------
@@ -325,18 +329,18 @@ timeCounterが設定周期に達して状態出力を行った際には、 ::
 状態出力用コントローラの導入
 ----------------------------
 
-上記のソースコードに対応するコントローラをビルドしてシミュレーションプロジェクトに導入しましょう。やりかたはステップ1で導入したJoyInputControllerと同じです。
+上記のソースコードに対応するコントローラをビルドしてシミュレーションプロジェクトに導入しましょう。やりかたはステップ1で導入したRttTankControllerと同じです。
 
-まず上記ソースコードをsrcディレクトリ内に "JointStateOutputController.cpp" というファイル名で作成しましょう。そして同じsrcディレクトリ内のCMakeLists.txtにこのコントローラをビルドするための以下の記述を追加します。
+まず上記ソースコードをsrcディレクトリ内に "RttJointStatePublisher.cpp" というファイル名で作成しましょう。そして同じsrcディレクトリ内のCMakeLists.txtにこのコントローラをビルドするための以下の記述を追加します。
 
 .. code-block:: cmake
 
- choreonoid_add_simple_controller(JointStateOutputController JointStateOutputController.cpp)
- target_link_libraries(JointStateOutputController ${roscpp_LIBRARIES})
+ choreonoid_add_simple_controller(RttJointStatePublisher RttJointStatePublisher.cpp)
+ target_link_libraries(RttJointStatePublisher ${roscpp_LIBRARIES})
 
-この作業をした上で再度 catkin build を行うと、ソースコードやCMakeLists.txtの記述に誤りがなければ、JointStateOutputControllerがビルドされて利用可能となるはずです。ビルドにおいてエラーが出た場合は適宜修正するようにしてください。
+この作業をした上で再度 catkin build を行うと、ソースコードやCMakeLists.txtの記述に誤りがなければ、RttJointStatePublisherがビルドされて利用可能となるはずです。ビルドにおいてエラーが出た場合は適宜修正するようにしてください。
 
-ビルドに成功したら、ステップ1の :ref:`ros_tank_tutorial_step1_introduce_controller` と同様に、JointStateOutputControllerをシミュレーションプロジェクトに追加します。
+ビルドに成功したら、ステップ1の :ref:`ros_tank_tutorial_step1_introduce_controller` と同様に、RttJointStatePublisherをシミュレーションプロジェクトに追加します。
 
 シンプルコントローラは複数組み合わせて利用できるようになっているので、アイテムツリーを以下のように構成すればOKです。
 
@@ -344,12 +348,12 @@ timeCounterが設定周期に達して状態出力を行った際には、 ::
 
  + World
    + Tank
-     + JoyInputController
-     + JointStateOutputController
-   + Labo1
-   + AISTSimulator
+     - RttTankController
+     - RttJointStatePublisher
+   - Labo1
+   - AISTSimulator
 
-JointStateOutputControllerを追加するため、SimpleControllerアイテムをTankアイテムの小アイテムとして生成し、その「コントローラモジュール」プロパティのダイアログで "JointStateOutputController.so" を選択してください。
+RttJointStatePublisherを追加するため、SimpleControllerアイテムをTankアイテムの子アイテムとして生成し、その「コントローラモジュール」プロパティのダイアログで "RttJointStatePublisher.so" を選択してください。
 
 この状態にしたプロジェクトを保存しましょう。本チュートリアルではステップごとにプロジェクトファイルを分けて保存することにします。そこで今回のプロジェクトは "step2.cnoid" というファイル名で保存しましょう。また、ステップ2用のLaunchファイルも作成しましょう。とりあえずステップ1用に作成したLaunchファイルである"step1.launch" をコピーして "step2.launch" を作成します。そして "step1.cnoid" の部分を "step2.cnoid" に修正します。すると "step2.launch" は以下のようになります。
 
@@ -363,20 +367,23 @@ JointStateOutputControllerを追加するため、SimpleControllerアイテム�
  </launch>
 
 
-ここまで作業を進めると、本チュートリアル用パッケージは以下のファイル構成になるかと思います。
+ここまで作業を進めると、本チュートリアル用パッケージは以下のファイル構成になります。
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
-     + step1.launch
-     + step2.launch
+     - step1.launch
+     - step2.launch
    + project
-     + step1.cnoid
-     + step2.cnoid
+     - step1.cnoid
+     - step2.cnoid
    + src
-     + JoyInputController.cpp
-     + JointStateOutputController.cpp
+     - CMakeLists.txt
+     - RttTankController.cpp
+     - RttJointStatePublisher.cpp
 
 
 出力トピックの確認
@@ -393,7 +400,6 @@ JointStateOutputControllerを追加するため、SimpleControllerアイテム�
 するとステップ1と同様にゲームパッドでTankロボットを操作できるかと思います。
 
 ここでコマンド入力用の端末を用意し、まずは端末からトピックの確認をしてみましょう。
-
 まず以下のコマンドを実行して利用可能なトピックの一覧を表示します。 ::
 
  rostopic list
@@ -429,7 +435,7 @@ JointStateOutputControllerを追加するため、SimpleControllerアイテム�
 
 * メッセージ型がsensor_msgs/JointStateであること
 * このトピックのPublisherとなるノードが表示されたホストにある/choreonoidというノードであること
-* Subscriberは無いこと
+* このトピックのSubscriberは無いこと
 
 が分かります。Subscriberについては、まだ何も接続していないので、このような結果になります。
 
@@ -437,7 +443,9 @@ Publishされているメッセージの内容も確認してみましょう。�
 
  rostopic echo /Tank/joint_state
 
-すると以下のようなテキストが出力され続けるかと思います。 ::
+すると以下のようなテキストが出力され続けるかと思います。
+
+.. code-block:: none
 
  header: 
    seq: 31
@@ -453,9 +461,13 @@ Publishされているメッセージの内容も確認してみましょう。�
  effort: [-3.091940828686953e-07, 1.9612950742218773]
  ---
 
-この出力を続けながら、ゲームパッドで砲身を動かしてみてください。するとposition、velocity、effortの値が変化するかと思います。それぞれ単位は [rad]、[rad/sec」、[N・m] になります。
+この出力を続けながら、ゲームパッドで砲身を動かしてみてください。するとposition、velocity、effortの値が変化するかと思います。それぞれ単位は [rad]、[rad/sec]、[N・m] になります。
 
-ちなみにrostopic echoを止めずに別の端末で再度 "rostopic info /Tank/joint_state" を実行すると、今度は Subscribers: のところが None ではなくなっているはずです。このSubscriberは "rostopic echo" に対応するものです。
+ちなみにrostopic echoを止めずに別の端末で再度 ::
+
+ rostopic info /Tank/joint_state
+
+を実行すると、今度は Subscribers: のところが None ではなくなっているはずです。このSubscriberは "rostopic echo" に対応するものです。
 
 これで関節の状態が無事ROSトピックとして出力できていることが確認できました。
 

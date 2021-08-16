@@ -7,7 +7,7 @@
 --------------------------------
 
 メニューから、 **ファイル** ー **新規** ー **ボディ追尾カメラ** と選択してBodyTrackingCameraItemを作成し、
-追いかけたいロボットのBodyItemの小アイテムとして、BodyTrakingCameraItem を配置します。アイテムには他のカメラと区別できるように名前をつけておきます。また、アイテムにはチェックを入れておきます。
+追いかけたいロボットのBodyItemの子アイテムとして、BodyTrakingCameraItem を配置します。アイテムには他のカメラと区別できるように名前をつけておきます。また、アイテムにはチェックを入れておきます。
 
 .. image:: images/trackingCamera_item.png
 

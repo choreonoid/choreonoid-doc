@@ -1,6 +1,6 @@
 
 Step 1: Creating a simulation project
-=============================================
+=====================================
 
 Begin by importing the model we intended to run a simulation with into Choreonoid and creating a project. For details on this method, see the section on :doc:`../simulation-project` . In this section, we describe in detail the basic workflow.
 
@@ -11,7 +11,7 @@ Begin by importing the model we intended to run a simulation with into Choreonoi
 .. highlight:: C++
 
 Launching Choreonoid
---------------------------
+--------------------
 
 Begin by launching Choreonoid.
 
@@ -28,7 +28,7 @@ In this case, the model files accompanying Choreonoid and the controller files a
 .. note:: For basic Linux usage, see the section on :doc:`../../tips/howto-use-commands` .
 
 Creating a world item
-------------------------
+---------------------
 
 Once Choreonoid launches, first create a world item. From the Main Menu, select File > New > World. You will see the Generate New World Item dialog appear. Click Generate. A new item named “World” will appear in the :ref:`basics_mainwindow_itemtreeview` as shown below.
 
@@ -37,7 +37,7 @@ Once Choreonoid launches, first create a world item. From the Main Menu, select 
 The World item is intended to represent a single virtual world and must be generated if you intend to run a simulation.
 
 Importing the Tank model
------------------------------
+------------------------
 
 First we import the Tank model to be used for this simulation. As the name suggests, the Tank model resembles a tank and has a twin-axis gun turret and left and right crawlers for movement. It is also equipped with a light (as a lightsource) and a camera.
 
@@ -67,9 +67,8 @@ We have discussed in the :doc:`../../handling-models/modelfile/modelfile-newform
 
 .. note:: This tutorial was designed around the SimpleTank model; the below descriptions and figures are based around the SimpleTank. The basic content of the model is the same, so you can use either one. 
 	  
-
 Importing the ground model
-----------------------------------
+--------------------------
 
 We have loaded the Tank model, but gravity causes the Tank to sink when running a simulation. First, import the ground model to serve as an environment to support the Tank.
 
@@ -96,7 +95,7 @@ While we are using the default values (at time of import) for each model (positi
 
 
 Creating a simulator item
-------------------------------
+-------------------------
 
 To run a simulation, you must first create a :ref:`simulator Item<simulation_simulator_item>` .
 
@@ -107,7 +106,7 @@ Position the simulator item, as with model items, as a sub-item of the World ite
 .. image:: images/simulatoritem.png
 
 Setting properties
-----------------------
+------------------
 
 Next, we set the item properties in order to properly run the simulation.
 
@@ -124,7 +123,7 @@ To run a simulation, you must adjust the simulation item’s properties accordin
 .. _tank-tutorial-step1-save-project:
 
 Saving a project
---------------------
+----------------
 
 The steps thus far will have allowed you to create a base for the simulation project. At this point, you should consider :ref:`saving your project<basics_project_save>` .
 
@@ -134,8 +133,10 @@ From the Main Menu, select File > Save Project As, and on the dialog that appear
 
 .. note:: In the /sample/tutorial/Tank subdirectory of the Choreonoid source directory, you will find the files step1.cnoid through step6.cnoid. These contain project files saved at different steps of the tutorial.
 
+.. _tank-tutorial-step1-start-simulation:
+
 Launching a simulation
-----------------------------
+----------------------
 
 For the time being, let’s try running the current simulation.
 
@@ -156,7 +157,7 @@ In this way, if there is no controller, there is no way to maintain the orientat
 You will inevitably need a controller to control the way in which the robot moves. In the next step, we will be creating one.
 
 Stopping a simulation
----------------------------
+---------------------
 
 Before proceeding to the next step, make sure you halt the simulation. Click the Simulation Halt Button shown below to end it.
 
