@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2021/9/27
+
+  * :doc:`../install/build-windows` における依存ソフトウェアの検証済みバージョン番号とAssimpに関する記述を修正
+
 * 2021/8/17
 
   * :doc:`../agxdynamics/install/install-agx-ubuntu` と :doc:`../agxdynamics/install/install-agxplugin` を修正し、 :ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` と :ref:`agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution` について追記
