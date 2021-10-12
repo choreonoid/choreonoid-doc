@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2021/10/12
+
+  * :doc:`../install/build-windows` のODEプラグインに関する記述を更新
+
 * 2021/9/27
 
   * :doc:`../install/build-windows` における依存ソフトウェアの検証済みバージョン番号とAssimpに関する記述を修正
