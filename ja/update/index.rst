@@ -1,6 +1,11 @@
 更新履歴
 ========
 
+* 2021/11/17
+
+  * :doc:`../agxdynamics/install/install-agx-windows` と :doc:`../agxdynamics/install/install-agxplugin-windows` を更新
+  * :doc:`../multicopter/index` のサンプルのビルドに関する説明を修正
+
 * 2021/10/12
 
   * :doc:`../install/build-windows` のODEプラグインに関する記述を更新
