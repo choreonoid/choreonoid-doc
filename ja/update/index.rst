@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2022/06/24
+
+  * :doc:`../simulation/howto-implement-controller` に :ref:`simulation-implement-controller-link-velocity-and-acceleration` に関する解説を追加
+
 * 2021/11/17
 
   * :doc:`../agxdynamics/install/install-agx-windows` と :doc:`../agxdynamics/install/install-agxplugin-windows` を更新
