@@ -7,6 +7,7 @@ Choreonoid上で扱うロボットや環境物体のモデルは通常、あら�
 モデルファイルの形式はロボットのソフトウェアシステムによって様々なものが定義されていますが、Choreonoidでは現在のところ以下の形式を標準でサポートしています。
 
 * Body形式モデルファイル（Bodyファイル）
+* Unified Robotics Description形式モデルファイル（URDFファイル）
 * OpenHRP形式モデルファイル
 
 Choreonoidの現バージョンではBody形式が標準のモデルファイル形式となっていますので、特に理由がなければこの形式を用いるようにしてください。
@@ -22,6 +23,7 @@ Choreonoidの現バージョンではBody形式が標準のモデルファイル
    modelfile-yaml
    tank-blender
    modelfile-blender
+   modelfile-urdf
    modelfile-openhrp
 
 ..   modelfile-sr1
