@@ -1,6 +1,11 @@
 更新履歴
 ========
 
+* 2023/01/23
+
+  * :doc:`../handling-models/modelfile/modelfile-urdf` を追加
+  * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` にIMUに関する記述を追加
+
 * 2022/06/24
 
   * :doc:`../simulation/howto-implement-controller` に :ref:`simulation-implement-controller-link-velocity-and-acceleration` に関する解説を追加
