@@ -538,6 +538,8 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
      + PointLight (点光源ライト）
      + SpotLight (スポットライト）
 
+※ IMUはC++ソースコードにおけるクラス名としては "Imu" となります。
+
 ロボットに搭載されているデバイスの情報は、通常はモデルファイルにおいて記述します。標準形式のモデルファイルでは、 :doc:`../handling-models/modelfile/yaml-reference` の :ref:`body-file-reference-devices` を記述します。
 
 シンプルコントローラでは、Body、Linkオブジェクトと同様に、デバイスに対してもChoreonoidの内部表現であるDeviceオブジェクトをそのまま用いて入出力を行います。
@@ -665,7 +667,7 @@ SR1モデルの加速度センサの入力は以下のような流れになり�
 
 といったかたちで取得することができます。
 
-同様に、ForceSensorやRateGyroSensor、IMUに関しても、該当するメンバ関数を用いて状態の入力を行うことが可能です。
+同様に、ForceSensorやRateGyroSensor、Imuに関しても、該当するメンバ関数を用いて状態の入力を行うことが可能です。
 
 カメラやレンジセンサ等の視覚センサを使用する際には、そのための準備が必要になります。これについては :doc:`vision-simulation` で解説します。
 
