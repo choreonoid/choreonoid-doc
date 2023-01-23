@@ -623,6 +623,28 @@ RateGyroSensorノードは、3軸角速度センサを定義します。
  * - maxAngularVelocity
    - 計測可能な最大角速度。3次元ベクトルの3要素のリストとして指定する。
 
+.. _body-file-reference-imu-node:
+
+IMUノード
+~~~~~~~~~~~~~~~~~~~~
+
+IMUノードは、3軸加速度センサと3軸角速度センサを一体化したIMU（慣性計測ユニット）を定義します。
+
+.. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
+
+.. list-table:: IMUノードのフィールド
+ :widths: 15,85
+ :header-rows: 1
+
+ * - キー
+   - 内容
+ * - type
+   - IMU
+ * - max_acceleration
+   - 計測可能な最大加速度。3次元ベクトルの3要素のリストとして指定する。
+ * - max_angular_velocity
+   - 計測可能な最大角速度。3次元ベクトルの3要素のリストとして指定する。
+
 .. _body-file-reference-force-sensor-node:
 
 ForceSensorノード

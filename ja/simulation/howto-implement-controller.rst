@@ -530,6 +530,7 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
    + ForceSensor (力センサ)
    + RateGyroSensor (角速度センサ)
    + AccelerationSensor (加速度センサ)
+   + IMU（慣性計測ユニット：加速度センサと角速度センサの機能を併せ持つ）
    + Camera (カメラ）
      + RangeCamera (カメラ＋距離画像センサ）
    + RangeSensor (レンジセンサ）
@@ -558,6 +559,9 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
  * - WaistGyro
    - RateGyroSensor
    - 腰リンクに搭載されたジャイロ
+ * - WaistIMU
+   - IMU
+   - 腰リンクに搭載された慣性計測ユニット
  * - LeftCamera
    - RangeCamera
    - 左目に対応する距離画像センサ
@@ -661,7 +665,7 @@ SR1モデルの加速度センサの入力は以下のような流れになり�
 
 といったかたちで取得することができます。
 
-同様に、ForceSensorやRateGyroSensorに関しても該当するメンバ関数を用いて状態の入力を行うことが可能です。
+同様に、ForceSensorやRateGyroSensor、IMUに関しても、該当するメンバ関数を用いて状態の入力を行うことが可能です。
 
 カメラやレンジセンサ等の視覚センサを使用する際には、そのための準備が必要になります。これについては :doc:`vision-simulation` で解説します。
 
