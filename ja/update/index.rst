@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2023/02/08
+
+ * :doc:`../install/index` の :doc:`../install/platform` , :doc:`../install/build-ubuntu` , :doc:`../install/build-windows` を更新。最新の環境に対応し、より簡潔なビルド手順も紹介。
+
 * 2023/01/23
 
   * :doc:`../handling-models/modelfile/modelfile-urdf` を追加
