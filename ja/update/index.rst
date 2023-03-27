@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2023/03/27
+
+ * :doc:`../install/index` の :doc:`../install/build-windows` と :doc:`../install/options` にFreeTypeライブラリに関する記述を追加。
+
 * 2023/02/08
 
  * :doc:`../install/index` の :doc:`../install/platform` , :doc:`../install/build-ubuntu` , :doc:`../install/build-windows` を更新。最新の環境に対応し、より簡潔なビルド手順も紹介。
