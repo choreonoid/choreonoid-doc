@@ -16,7 +16,14 @@ Choreonoid標準のBody形式モデルファイル（Bodyファイル）のリ�
 モデルファイルひとつにつき、ロボットや環境のモデル１体を記述するようにします。
 また、ファイルの拡張子は通常のYAML形式ファイル(".yaml")と区別するため".body" をつけるようにします。
 
-最新のモデルファイルでは、2つ以上の単語を含むキーは，スネークケースで記述されます。しかし、2022年まではキャメルケースを用いてきました。以上を踏まえ、本ドキュメントではキーはスネークケースで記載し、またスネークケースの使用を推奨しますが、引き続きのキャメルケースの利用も可能になっています。
+.. _body-file-reference-key-style:
+
+キーの記述形式について
+~~~~~~~~~~~~~~~~~~~~~~
+
+Choreonoidで使用するYAMLファイルにおけるキーの記述形式について、従来「ロワーキャメルケース」を用いていましたが、これを「スネークケース」に順次切り替えています。ただし切り替えは完全ではなく、一部のキーはまだキャメルケースとなっています。このためChoreonoidで使用するYAMLファイルではキャメルケースとスネークケースが混在している場合があります。これはBodyファイルでも同様です。
+
+本マニュアルではスネークケースに移行済みのキーについてはスネークケースで表記しています。従来キャメルケースで定義されていたキーについては、互換性維持のため最新版でも古い形式のキーを読み込めるようにしています。ただしこの措置は今後廃止される可能性もありますので、新たにファイルを作成する際は新しい形式を利用するようにしてください。
 
 YAML文法
 --------
@@ -79,6 +86,7 @@ YAMLの文法については `プログラマーのための YAML 入門 (初級
 .. list-table:: ヘッダのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -107,6 +115,7 @@ Linkノード
 .. list-table:: Linkノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -171,6 +180,7 @@ RigidBodyノードはリンクの剛体パラメータを定義します。
 .. list-table:: RigidBodyノードの項目
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -195,6 +205,7 @@ Transformノード
 .. list-table:: Transformノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -221,6 +232,7 @@ Shapeノード
 .. list-table:: Shapeノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -248,6 +260,7 @@ Boxノードは直方体を記述する幾何形状ノードです。
 .. list-table:: Boxノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -266,6 +279,7 @@ Sphereノードは球を記述する幾何形状ノードです。
 .. list-table:: Sphereノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -284,6 +298,7 @@ Cylinderノードは円柱を記述する幾何形状ノードです。
 .. list-table:: Cylinderノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -308,6 +323,7 @@ Capsuleノードはカプセル（円柱＋球２つ）を記述する幾何形�
 .. list-table:: Capsuleノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -328,6 +344,7 @@ Coneノードは円錐を記述する幾何形状ノードです。
 .. list-table:: Coneノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -350,6 +367,7 @@ Extrusionノードは押し出し形状を記述する幾何形状ノードで�
 .. list-table:: Extrusionノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -390,6 +408,7 @@ ElevationGridノードはグリッドの格子点ごとに高さを与えた地�
 .. list-table:: ElevationGridノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -425,6 +444,7 @@ IndexedFaceSetノードは、リストされた頂点から面（ポリゴン）
 .. list-table:: IndexedFaceSetノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -460,6 +480,7 @@ Appearanceノード
 .. list-table:: Appearanceノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -478,6 +499,7 @@ Materialノード
 .. list-table:: materialノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -504,6 +526,7 @@ Textureノード
 .. list-table:: textureノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -522,6 +545,7 @@ TextureTransformノード
 .. list-table:: textureTransformノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -546,6 +570,7 @@ Resourceノード
 .. list-table:: Resourceノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -569,6 +594,7 @@ Deviceノード
 .. list-table:: Deviceノードの共通フィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -604,6 +630,7 @@ AccelerationSensorノードは、3軸加速度センサを定義します。
 .. list-table:: AccelerationSensorノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - フィールド
    - 内容
@@ -624,6 +651,7 @@ RateGyroSensorノードは、3軸角速度センサを定義します。
 .. list-table:: RateGyroSensorノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -644,6 +672,7 @@ IMUノードは、3軸加速度センサと3軸角速度センサを一体化し
 .. list-table:: IMUノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -664,6 +693,7 @@ ForceSensorノードは、力／トルクセンサを定義します。
 .. list-table:: ForceSensorノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -684,6 +714,7 @@ Cameraノードは、視覚センサを定義します。
 .. list-table:: Cameraノードのフィールド
  :widths: 30,100
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -732,6 +763,7 @@ RangeSensorノードは、距離センサを定義します。
 .. list-table:: RangeSensorノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -769,6 +801,7 @@ SpotLightノードは、ライトを定義します。
 .. list-table:: SpotLightノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
@@ -800,30 +833,33 @@ SpotLightノードは、ライトを定義します。
 ExtraJointノード
 ~~~~~~~~~~~~~~~~
 
-ExtraJointノードは閉リンク機構を定義します。閉リンクの1つの関節がボールジョイントで接続されていると考え、2つのリンクが離れないように拘束力を発生させます。
+ExtraJointノードはボディに追加の拘束を加えるためのノードです。閉リンク機構を定義します。閉リンクの1つの関節がボールジョイントで接続されていると考え、2つのリンクが離れないように拘束力を発生させます。
+
+.. note:: 本ノードが実現する拘束の種類は現状では非常に限定されたものとなっています。さらに、対応する拘束の種類はシミュレータアイテム（物理エンジン）のタイプにもよります。
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
 .. list-table:: ExtraJointノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - フィールド
    - 内容
- * - link1Name
+ * - link1_name
    - ボールジョイントを受けているジョイント名
- * - link2Name
+ * - link2_name
    - ボールジョイントが付いているジョイント名
- * - link1LocalPos
-   - link1Nameジョイントの拘束位置をそのジョイントのローカル座標で指定
- * - link2LocalPos
-   - link2Nameジョイントの拘束位置をそのジョイントのローカル座標で指定
- * - jointType
-   - 拘束の種類  ball：1点で固定  piston：jointAxisで指定した軸の向きにのみ動く
- * - jointAxis
-   - jointTypeがpistonのとき、可動方向をlink1Nameジョイントのローカル座標で指定。
+ * - link1_local_pos
+   - link1_nameジョイントの拘束位置をそのジョイントのローカル座標で指定
+ * - link2_local_pos
+   - link2_nameジョイントの拘束位置をそのジョイントのローカル座標で指定
+ * - joint_type
+   - 拘束の種類  ball：1点で固定  hinge：回転関節 piston：並進（軸回りの回転は拘束されない）
+ * - axis
+   - joint_typeがhingeまたはpistonのとき、拘束の軸をlink1_nameリンクのローカル座標で指定。
 
-
+このノードはBodyファイルのトップレベルに "extra_joints" というキーのリストとして記述します。     
 閉リンク機構のサンプルとして "share/model/misc/ClosedLinkSample.body" があります。
 
 
@@ -840,6 +876,7 @@ Groupノード
 .. list-table:: Groupノードのフィールド
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - キー
    - 内容
