@@ -16,6 +16,8 @@ Choreonoid標準のBody形式モデルファイル（Bodyファイル）のリ�
 モデルファイルひとつにつき、ロボットや環境のモデル１体を記述するようにします。
 また、ファイルの拡張子は通常のYAML形式ファイル(".yaml")と区別するため".body" をつけるようにします。
 
+最新のモデルファイルでは、2つ以上の単語を含むキーは，スネークケースで記述されます。しかし、2022年まではキャメルケースを用いてきました。以上を踏まえ、本ドキュメントではキーはスネークケースで記載し、またスネークケースの使用を推奨しますが、引き続きのキャメルケースの利用も可能になっています。
+
 YAML文法
 --------
 YAMLの文法については `プログラマーのための YAML 入門 (初級編)  <http://magazine.rubyist.net/?0009-YAML>`_
@@ -82,13 +84,13 @@ YAMLの文法については `プログラマーのための YAML 入門 (初級
    - 内容
  * - format
    - "ChoreonoidBody"を指定。
- * - formatVersion
-   - モデルファイルのフォーマットのバージョンを指定。現在のバージョンは1.0。
- * - angleUnit
+ * - format_version
+   - モデルファイルのフォーマットのバージョンを指定。現在のバージョンは2.0。
+ * - angle_unit
    - モデルファイルにおける関節角度の単位を指定する項目。"degree"または"radian"を指定。
  * - name
    - モデルの名前を指定。
- * - rootLink
+ * - root_link
    - ルートリンク名を指定。
 
 
@@ -118,28 +120,28 @@ Linkノード
    - 本リンクローカルフレームの親リンクからの相対位置。ルートリンクの場合はモデル読み込み時のデフォルト位置として使われる
  * - rotation
    - 本リンクローカルフレームの親リンクからの相対姿勢。姿勢は回転軸と回転角度に対応する4つの数値で表現 (Axis-Angle形式）。ルートリンクの場合はモデル読み込み時のデフォルト位置として使われる
- * - jointId
-   - 関節ID値。0以上の整数値を指定する。モデル内で重複しない任意の値を指定可能。リンクが関節でない場合 （ルートリンクやjointTypeがfixedの場合）や、ID値によるアクセスを必要としない場合は、指定しなくてもよい
- * - jointType
-   - 関節タイプ。 **fixed** (固定）、 **free** (非固定。ルートリンクにのみ指定可）、 **revolute** (回転関節）、 **prismatic** (直動関節）、 **pseudoContinousTrack** (簡易無限軌道）、 のどれかを指定
- * - jointAxis
+ * - joint_id
+   - 関節ID値。0以上の整数値を指定する。モデル内で重複しない任意の値を指定可能。リンクが関節でない場合 （ルートリンクやjoint_typeがfixedの場合）や、ID値によるアクセスを必要としない場合は、指定しなくてもよい
+ * - joint_type
+   - 関節タイプ。 **fixed** (固定）、 **free** (非固定。ルートリンクにのみ指定可）、 **revolute** (回転関節）、 **prismatic** (直動関節）、 **pseudo_continuous_track** (簡易無限軌道）、 のどれかを指定
+ * - joint_axis
    - 関節軸。3次元ベクトルの3要素のリストとして関節軸の向きを指定する。値は単位ベクトルとする。関節軸がリンクのローカル座標におけるX, Y, Z、及びそれらの逆方向のいずれかに一致する場合は、対応する軸の文字(X, Y, Z,-X,-Y,-Z）によって指定することも可能。
- * - jointAngle
+ * - joint_angle
    - 関節の初期角度。degreeで指定。
- * - jointDisplacement
-   - 関節の初期角度。radianで指定。
- * - jointRange
+ * - joint_displacement
+   - 関節の初期角度。radianで指定。joint_angleよりも優先される。
+ * - joint_range
    - 関節可動範囲。最小値、最大値の2つの値をリストとして列挙する。値をunlimitedと記述することで、可動範囲の制限を無くすことも可能。最小値と最大値の絶対値が同じでそれぞれ符号がマイナス、プラスとなる場合は 、その絶対値をひとつだけ（スカラ値として）記述してもよい
- * - maxJointVelocity
-   - 関節の回転・移動速度の範囲をスカラ値(>=0)で指定。この値のマイナス、プラスの範囲に設定される。jointTypeがrevoluteのときは最大角速度(degree/sec)、それ以外のときは最大速度(m/sec)
- * - jointVelocityRange
-   - 関節の回転・移動速度の範囲。最小値、最大値の2つの値をリストとして列挙する。maxJointVelocityより優先される。
- * - rotorInertia
+ * - max_joint_velocity
+   - 関節の回転・移動速度の範囲をスカラ値(>=0)で指定。この値のマイナス、プラスの範囲に設定される。joint_typeがrevoluteのときは最大角速度(degree/sec)、それ以外のときは最大速度(m/sec)
+ * - joint_velocity_range
+   - 関節の回転・移動速度の範囲。最小値、最大値の2つの値をリストとして列挙する。max_joint_velocityより優先される。
+ * - rotor_inertia
    - ロータ慣性モーメント。default値=0.0。
- * - gearRatio
+ * - gear_ratio
    - ギア比。default値=1.0。
-     等価ロータ慣性モーメントはgearRatio*gearRatio*rotorInertiaで設定される。
- * - centerOfMass
+     等価ロータ慣性モーメントはgear_ratio*gear_ratio*rotor_inertiaで設定される。
+ * - center_of_mass
    - 重心位置。リンクローカル座標で指定
  * - mass
    - 質量[kg]
@@ -155,7 +157,7 @@ Linkノード
 	最初に記述するLinkノードはモデルのルートノードとみなされます。
 
 .. note::
-	剛体パラメータ(centerOfMass, mass, inertia)は次に述べるRigidBodyノードで記述することも可能です。その場合elementsを用いてRigidBodyノードをLinkノードの子ノードとして配置します。
+	剛体パラメータ(center_of_mass, mass, inertia)は次に述べるRigidBodyノードで記述することも可能です。その場合elementsを用いてRigidBodyノードをLinkノードの子ノードとして配置します。
 
 .. _body-file-reference-rigid-body-node:
 
@@ -174,7 +176,7 @@ RigidBodyノードはリンクの剛体パラメータを定義します。
    - 内容
  * - type
    - RigidBody
- * - centerOfMass
+ * - center_of_mass
    - 重心位置。リンクローカル座標で指定
  * - mass
    - 質量[kg]
@@ -353,26 +355,26 @@ Extrusionノードは押し出し形状を記述する幾何形状ノードで�
    - 内容
  * - type
    - Extrusion
- * - crossSection
+ * - cross_section
    - | 押し出す断面の形状を頂点の座標で指定(x-z平面)。
-     | crossSection: [ x0, z0, x1, z1, x2, z2, ・・・, xn, zn ]
+     | cross_section: [ x0, z0, x1, z1, x2, z2, ・・・, xn, zn ]
      | のようにx座標,z座標を並べる。改行・スペースを入れて良い。
-     | crossSection: [ x0, z0,
+     | cross_section: [ x0, z0,
      |                 x1, z1,
      |                  ：
  * - spine
-   - | crossSectionで指定した断面を沿わせて動かす区分的直線を端点の座標で指定。
+   - | cross_sectionで指定した断面を沿わせて動かす区分的直線を端点の座標で指定。
      | spine: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
  * - orientation
-   - spineの各点におけるcrossSectionの回転をaxis-angle形式のパラメータ(x, y, z, θ)を並べて指定。
+   - spineの各点におけるcross_sectionの回転をaxis-angle形式のパラメータ(x, y, z, θ)を並べて指定。
      1組のみ指定した場合は全spineで同じ回転が使われる。spineの個数より少ない場合は不足分が回転無しになり、spineの個数より多い場合は無視される。
  * - scale
-   - crossSectionで指定した断面のspineの各点における拡大率。x軸方向の拡大率、z軸方向の拡大率をspineの個数分並べて指定。1組のみ指定した場合は全spineで同じ拡大率になる。spineの個数より指定が少ない場合、未指定分は0倍に拡大され1点になる。spineの個数より多く指定された分は無視される。
- * - creaseAngle
-   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。creaseAngle未満のときはスムーズシェーディングされる。デフォルトは0。
- * - beginCap
+   - cross_sectionで指定した断面のspineの各点における拡大率。x軸方向の拡大率、z軸方向の拡大率をspineの個数分並べて指定。1組のみ指定した場合は全spineで同じ拡大率になる。spineの個数より指定が少ない場合、未指定分は0倍に拡大され1点になる。spineの個数より多く指定された分は無視される。
+ * - crease_angle
+   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。crease_angle未満のときはスムーズシェーディングされる。デフォルトは0。
+ * - begin_cap
    - true:開始端側の断面あり(default) false:開始端側の断面なし
- * - endCap
+ * - end_cap
    - true:終端側の断面あり(default) false:終端側の断面なし
 
 ※参照: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion
@@ -393,20 +395,22 @@ ElevationGridノードはグリッドの格子点ごとに高さを与えた地�
    - 内容
  * - type
    - ElevationGrid
- * - xDimension
+ * - x_dimension
    - x軸方向のグリッドの数
- * - zDimension
+ * - z_dimension
    - z軸方向のグリッドの数
- * - xSpacing
+ * - x_spacing
    - x軸方向のグリッド間隔
- * - zSpacing
+ * - z_spacing
    - z軸方向のグリッド間隔
  * - ccw
    - true: 頂点の順序が反時計回り false: 頂点の順序が時計回り
- * - creaseAngle
-   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。creaseAngle未満のときはスムーズシェーディングされる。デフォルトは0。
+ * - crease_angle
+   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。crease_angle未満のときはスムーズシェーディングされる。デフォルトは0。
  * - height
-   - 各格子点上の高さを配列で指定。格子点の個数(xDimension*zDimension)分の要素が必要。
+   - 各格子点上の高さを配列で指定。格子点の個数(x_dimension*z_dimension)分の要素が必要。
+
+.. TODO: tex_coord キーに関する記述を追加
 
 ※参照: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#ElevationGrid
 
@@ -426,22 +430,25 @@ IndexedFaceSetノードは、リストされた頂点から面（ポリゴン）
    - 内容
  * - type
    - IndexedFaceSet
- * - coordinate
-   - | 頂点の座標を指定。 coordinate: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
+ * - vertices
+   - | 頂点の座標を指定。 vertices: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
      | のようにx座標,y座標、z座標を並べる。
- * - coordIndex
-   - | coordで指定した座標に0からNまでインデックスを付けてポリゴン面を指定。インデックス「-1」は、現在の面が終了したことを示す。
-     | coordIndex: [ 0, 1, 2, 3, -1, 3, 2, 4, 5, -1、  ・・・ ] のようにインデックスを並べる。頂点の順序は反時計回り。
- * - texCoord
+ * - faces
+   - | verticesで指定した座標に0からNまでインデックスを付けてポリゴン面を指定。インデックス「-1」は、現在の面が終了したことを示す。
+     | faces: [ 0, 1, 2, 3, -1, 3, 2, 4, 5, -1、  ・・・ ] のようにインデックスを並べる。頂点の順序は反時計回り。
+ * - tex_coords
    - | textureを貼る場合に使用する。テクスチャを頂点にマッピングするための2次元座標を指定。
-     | texCoord: [ s0, t0, s1, t1, ・・・, sm, tm ]
+     | tex_coords: [ s0, t0, s1, t1, ・・・, sm, tm ]
      | のように、テクスチャの左下を(0.0, 0.0), 右上を(1.0, 1.0)としたときの座標を並べる。
- * - texCoordIndex
-   - | coordIndexと同様に、各頂点のテクスチャ座標を選択するために使用する。coordIndexフィールドと同じ数のインデックスを含み、同じ位置に面の終了記号である「-1」を含まなければならない。
-     | 指定しない場合は、CoordIndexが使用される。
- * - creaseAngle
-   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。creaseAngle未満のときはスムーズシェーディングされる。デフォルトは0。
- 
+ * - tex_coord_indices
+   - | facesと同様に、各頂点のテクスチャ座標を選択するために使用する。facesフィールドと同じ数のインデックスを含み、同じ位置に面の終了記号である「-1」を含まなければならない。
+     | 指定しない場合は、facesが使用される。
+ * - crease_angle
+   - 光源と法線ベクトルの角度によってシェーディングを変えるための閾値。crease_angle未満のときはスムーズシェーディングされる。デフォルトは0。
+
+.. TODO: normalsキーに関する記述を追加
+   TODO: normal_indicesキーに関する記述を追加
+
 ※参照: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#IndexedFaceSet
 
 
@@ -460,7 +467,7 @@ Appearanceノード
    - 物体表面の材質を :ref:`body-file-reference-material-node` として記述
  * - texture
    - 物体表面のテクスチャを :ref:`body-file-reference-texture-node` として記述
- * - textureTransform
+ * - texture_transform
    - テクスチャの平行移動・回転・拡大縮小を :ref:`body-file-reference-textureTransform-node` として記述
 
 .. _body-file-reference-material-node:
@@ -474,18 +481,20 @@ Materialノード
 
  * - キー
    - 内容
- * - ambientIntensity
+ * - ambient
    - 環境光の反射率(0.0〜1.0)
- * - diffuseColor
+ * - diffuse
    - RGBごとの拡散反射率(物体の色) (RGBそれぞれ0.0〜1.0のリスト)
- * - emissiveColor
+ * - emissive
    - 物体自体から発光する色 (RGBそれぞれ0.0〜1.0のリスト)
  * - shininess
    - 輝度 (0.0〜1.0)
- * - specularColor
+ * - specular
    - 鏡面反射率(光のハイライトの色) (RGBそれぞれ0.0〜1.0のリスト)
  * - transparency
    - 透過度(0:透明 〜 1:不透明)
+
+.. TODO: specular_exponentキーに関する記述を追加
 
 .. _body-file-reference-texture-node:
 
@@ -500,9 +509,9 @@ Textureノード
    - 内容
  * - url
    - テクスチャファイルのパス
- * - repeatS
+ * - repeat_s
    - テクスチャを水平方向に繰り返し表示することを指定
- * - repeatT
+ * - repeat_t
    - テクスチャを垂直方向に繰り返し表示することを指定
    
 .. _body-file-reference-textureTransform-node:
@@ -600,7 +609,7 @@ AccelerationSensorノードは、3軸加速度センサを定義します。
    - 内容
  * - type
    - AccelerationSensor
- * - maxAcceleration
+ * - max_acceleration
    - 計測可能な最大加速度。3次元ベクトルの3要素のリストとして指定する。
 
 .. _body-file-reference-rate-gyro-sensor-node:
@@ -620,7 +629,7 @@ RateGyroSensorノードは、3軸角速度センサを定義します。
    - 内容
  * - type
    - RateGyroSensor
- * - maxAngularVelocity
+ * - max_angular_velocity
    - 計測可能な最大角速度。3次元ベクトルの3要素のリストとして指定する。
 
 .. _body-file-reference-imu-node:
@@ -660,9 +669,9 @@ ForceSensorノードは、力／トルクセンサを定義します。
    - 内容
  * - type
    - ForceSensor
- * - maxForce
+ * - max_force
    - 計測可能な力の最大値。3次元ベクトルの3要素のリストとして指定する。
- * - maxTorque
+ * - max_torque
    - 計測可能なトルクの最大値。3次元ベクトルの3要素のリストとして指定する。
 
 .. _body-file-reference-camera-node:
@@ -687,7 +696,7 @@ Cameraノードは、視覚センサを定義します。
      |   ・"COLOR_DEPTH"  色情報と深さ情報を取得
      |   ・"POINT_CLOUD"  3次元点群を取得
      |   ・"COLOR_POINT_CLOUD"  色情報と3次元点群を取得
- * - lensType
+ * - lens_type
    - | レンズの種類を指定する。
      |   ・"NORMAL"  通常レンズ　(デフォルト値）
      |   ・"FISHEYE"  魚眼レンズ
@@ -697,14 +706,14 @@ Cameraノードは、視覚センサを定義します。
  * - width
    - 画像の幅
  * - height
-   - 画像の高さ　(lensType="FISHEYE","DUAL_FISHEYE"の場合はwidthの値から自動で決定 )
- * - fieldOfView
+   - 画像の高さ　(lens_type="FISHEYE","DUAL_FISHEYE"の場合はwidthの値から自動で決定 )
+ * - field_of_view
    - カメラの視野角度　(lensType="DUAL_FISHEYE"の場合は指定不可)
- * - nearClipDistance
+ * - near_clip_distance
    - 視点から前クリップ面までの距離
- * - farClipDistance
+ * - far_clip_distance
    - 視点から後クリップ面までの距離
- * - frameRate
+ * - frame_rate
    - カメラが毎秒何枚の画像を出力するか
 
 .. note::
@@ -730,20 +739,20 @@ RangeSensorノードは、距離センサを定義します。
    - RangeSensor
  * - on
    - 
- * - yawRange
-   - 距離をスキャンする水平面角度。0度を中心として、その両側にyawStepの倍数の角度でyawRangeの範囲内の角度が計測される。センサに水平方向のスキャン機能がない場合は0とする。0度から360度の範囲でyawStepの倍数で指定する。
- * - yawStep
+ * - yaw_range
+   - 距離をスキャンする水平面角度。0度を中心として、その両側にyaw_stepの倍数の角度でyaw_rangeの範囲内の角度が計測される。センサに水平方向のスキャン機能がない場合は0とする。0度から360度の範囲でyaw_stepの倍数で指定する。
+ * - yaw_step
    - スキャン中に距離が計測される水平面角度の刻み幅
- * - pitchRange
-   - 距離をスキャンする垂直面角度。0度を中心として、その両側にpitchStepの倍数の角度でpitchRangeの範囲内の角度が計測される。センサに垂直方向のスキャン機能がない場合は0とする。0度から170度の範囲でpitchStepの倍数で指定する。
+ * - pitch_range
+   - 距離をスキャンする垂直面角度。0度を中心として、その両側にpitch_stepの倍数の角度でpitch_rangeの範囲内の角度が計測される。センサに垂直方向のスキャン機能がない場合は0とする。0度から170度の範囲でpitch_stepの倍数で指定する。
      （大きな値を指定すると、処理時間が増え、計測精度が悪くなります。）
- * - pitchStep
+ * - pitch_step
    - スキャン中に距離が計測される垂直面角度の刻み幅
- * - scanRate
+ * - scan_rate
    - １秒間あたり行うスキャン回数[Hz]
- * - minDistance
+ * - min_distance
    - 計測可能な最小距離[m]
- * - maxDistance
+ * - max_distance
    - 計測可能な最大距離[m]
 
 .. note::
@@ -773,11 +782,11 @@ SpotLightノードは、ライトを定義します。
    - 明るさを0.0〜1.0で指定。
  * - direction
    - 光の向き。3次元ベクトルの3要素のリストとして方向を指定。
- * - beamWidth
+ * - beam_width
    - 最大輝度で光の広がる角度。デフォルトは90度。
- * - cutOffAngle
+ * - cut_off_angle
    - 完全に光が遮断される角度。デフォルトは45度。
- * - cutOffExponent
+ * - cut_off_exponent
    - 非負の値を指定。デフォルトは1.0。
  * - attenuation
    - 減衰率。非負の3要素のリストを指定。
