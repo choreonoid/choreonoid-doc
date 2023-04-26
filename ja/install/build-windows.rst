@@ -447,9 +447,11 @@ FreeTypeライブラリを有効化するにあたっては、まずFreeTypeラ�
 2については、上記のAssimpのインストールと同様の作業になります。
 コマンドライン端末を開き、アーカイブを展開したディレクトリに移動します。そこで以下のコマンドを実行します。 ::
 
- cmake -B build -G "Visual Studio 17 2022" -A x64
+ cmake -B build -G "Visual Studio 17 2022" -A x64 -DBUILD_SHARED_LIBS=true
  cmake --build build --config Release -- -m
  cmake --install build --config Release --prefix c:/local/freetype
+
+FreeTypeはスタティックライブラリとしても共有ライブラリ（DLL）としてもビルドできますが、Choreonoidで利用する際は共有ライブラリとしてビルドしておく必要があります。これはChoreonoidが利用しているzlibがFreeTypeに組み込まれているzlibと競合してしまうためです。このため "-DBUILD_SHARED_LIBS=true" によって、共有ライブラリとしてビルドするように指定します。
 
 最後の "--prefix c:/local/freetype" によって、インストール先を "c:\\local\\freetype" にしています。このディレクトリにしておけば、Choreonoid本体のCMake設定時に、FreeTypeが自動で検出されます。インストール先を設定しない場合はデフォルトの "c:\\Program Files\\freetype" にインストールされます。ただしその場合は管理者権限が必要ですので、コマンドライン端末を予め管理者権限で起動しておきます。このデフォルトのインストール先でも、ChoreonoidのCMake設定時に自動で検出されます。また、上記のディレクトリ以外にインストールする場合は、Choreonoidビルド時のCMakeでfeetype_DIR変数にFreeTypeインストール先の "lib\\cmake\\freetype" までのディレクトリを設定しておきます。これらの設定方法は全てAssimpの場合と同様です。
 
