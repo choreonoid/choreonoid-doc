@@ -530,7 +530,7 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
    + ForceSensor (力センサ)
    + RateGyroSensor (角速度センサ)
    + AccelerationSensor (加速度センサ)
-   + IMU（慣性計測ユニット：加速度センサと角速度センサの機能を併せ持つ）
+   + Imu（慣性計測ユニット：加速度センサと角速度センサの機能を併せ持つ）
    + Camera (カメラ）
      + RangeCamera (カメラ＋距離画像センサ）
    + RangeSensor (レンジセンサ）
@@ -562,7 +562,7 @@ Choreonoidのボディモデルにおいて、デバイスの情報は「Device�
    - RateGyroSensor
    - 腰リンクに搭載されたジャイロ
  * - WaistIMU
-   - IMU
+   - Imu
    - 腰リンクに搭載された慣性計測ユニット
  * - LeftCamera
    - RangeCamera

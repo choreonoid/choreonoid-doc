@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2023/05/23
+
+ * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` のIMUのクラス名の修正 (IMU->Imu)。
+
 * 2023/04/24
 
  * :doc:`../handling-models/modelfile/index` の :doc:`../handling-models/modelfile/yaml-reference` について、キーの記述形式を最新のものに更新。 :doc:`../handling-models/modelfile/modelfile-yaml` にはキーの記述形式に関する注釈を追加。
