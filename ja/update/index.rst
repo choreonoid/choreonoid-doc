@@ -8,6 +8,7 @@
 * 2023/05/23
  
  * :doc:`../handling-models/modelfile/modelfile-xacro` を追加。
+ * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` のIMUのクラス名の修正 (IMU->Imu)。
 
 * 2023/04/24
 
