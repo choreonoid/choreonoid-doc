@@ -24,6 +24,7 @@ Choreonoidの現バージョンではBody形式が標準のモデルファイル
    tank-blender
    modelfile-blender
    modelfile-urdf
+   modelfile-xacro
    modelfile-openhrp
 
 ..   modelfile-sr1
