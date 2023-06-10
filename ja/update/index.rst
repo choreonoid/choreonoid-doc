@@ -3,29 +3,29 @@
 
 * 2023/05/28
 
- * :doc:`../install/build-windows` で使用するディレクトリをより分かりやすいものに修正。
+ * :doc:`../install/build-windows` で使用するディレクトリをより分かりやすいものに修正
 
 * 2023/05/23
  
- * :doc:`../handling-models/modelfile/modelfile-xacro` を追加。
- * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` のIMUのクラス名の修正 (IMU->Imu)。
+ * :doc:`../handling-models/modelfile/modelfile-xacro` を追加
+ * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` のIMUのクラス名の修正 (IMU->Imu)
 
 * 2023/04/24
 
- * :doc:`../handling-models/modelfile/index` の :doc:`../handling-models/modelfile/yaml-reference` について、キーの記述形式を最新のものに更新。 :doc:`../handling-models/modelfile/modelfile-yaml` にはキーの記述形式に関する注釈を追加。
+ * :doc:`../handling-models/modelfile/index` の :doc:`../handling-models/modelfile/yaml-reference` について、キーの記述形式を最新のものに更新。 :doc:`../handling-models/modelfile/modelfile-yaml` にはキーの記述形式に関する注釈を追加
 
 * 2023/03/27
 
- * :doc:`../install/index` の :doc:`../install/build-windows` と :doc:`../install/options` にFreeTypeライブラリに関する記述を追加。
+ * :doc:`../install/index` の :doc:`../install/build-windows` と :doc:`../install/options` にFreeTypeライブラリに関する記述を追加
 
 * 2023/02/08
 
- * :doc:`../install/index` の :doc:`../install/platform` , :doc:`../install/build-ubuntu` , :doc:`../install/build-windows` を更新。最新の環境に対応し、より簡潔なビルド手順も紹介。
+ * :doc:`../install/index` の :doc:`../install/platform` , :doc:`../install/build-ubuntu` , :doc:`../install/build-windows` を更新。最新の環境に対応し、より簡潔なビルド手順も紹介
 
 * 2023/01/23
 
   * :doc:`../handling-models/modelfile/modelfile-urdf` を追加
-  * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` にIMUに関する記述を追加
+  * :doc:`../handling-models/modelfile/yaml-reference` と :doc:`../simulation/howto-implement-controller` にIMUに関する記述を追加。
 
 * 2022/06/24
 
