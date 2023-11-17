@@ -191,9 +191,10 @@ CMakeによるビルド手順の記述
 
 .. highlight:: cmake
 
-今回はまずChoreonoid本体のビルド環境でビルドします。この場合、以下の内容のCMakeLists.txtファイルをプラグインのソースディレクトリに作成すればOKです。
 
-そして、CMakeLists.txtには以下の一行を記述します。 ::
+次にやるべきことは、CMakeでビルドするためのファイルを作成することです。CMakeでは基本的にCMakeLists.txtというファイルにビルド手順を記述します。以下の内容のファイルをCMakeLists.txtというファイル名でプラグインのソースディレクトリに作成すればOKです。
+
+CMakeLists.txtには以下の一行を記述します。 ::
 
  choreonoid_add_plugin(CnoidDevGuidePlugin DevGuidePlugin.cpp)
 
