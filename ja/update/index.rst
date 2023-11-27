@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2023/11/27
+
+ * :doc:`../tips/body-motion` のYAMLの記述例において改行が抜けていたのを修正
+
 * 2023/11/1
 
  * :doc:`../simulation/tank-tutorial/index` の :doc:`../simulation/tank-tutorial/step2` について、作成するディレクトリ・ファイルの構成がより分かりやすくなるよう修正
