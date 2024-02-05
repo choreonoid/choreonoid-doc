@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2023/2/5
+
+ * :doc:`../plugin-development/index` におけるCMakeLists.txtの記述を修正
+
 * 2023/11/27
 
  * :doc:`../tips/body-motion` のYAMLの記述例において改行が抜けていたのを修正

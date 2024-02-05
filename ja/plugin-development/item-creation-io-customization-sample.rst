@@ -357,7 +357,7 @@ Choreonoid本体のビルド環境でビルドする場合は以下になりま�
 
  set(sources DevGuidePlugin.cpp BodyPositionItem.cpp BodyPositionItemCusomization.cpp)
  choreonoid_add_plugin(CnoidDevGuidePlugin ${sources})
- target_link_libraries(CnoidDevGuidePlugin CnoidBodyPlugin)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC CnoidBodyPlugin)
 
 ソースファイルが増えてきたので一旦sourcesという変数にソースファイルの一覧を格納するようにしています。
 
@@ -369,7 +369,7 @@ Choreonoid本体とは独立してビルドする場合は以下になります�
  set(CMAKE_CXX_STANDARD ${CHOREONOID_CXX_STANDARD})
  set(sources DevGuidePlugin.cpp BodyPositionItem.cpp BodyPositionItemCusomization.cpp)
  choreonoid_add_plugin(CnoidDevGuidePlugin ${sources})
- target_link_libraries(CnoidDevGuidePlugin Choreonoid::CnoidBody)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC Choreonoid::CnoidBodyPlugin)
 
 追加設定項目の利用方法
 ----------------------

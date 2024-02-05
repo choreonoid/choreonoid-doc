@@ -99,7 +99,7 @@
 .. code-block:: cmake
 
  choreonoid_add_plugin(CnoidDevGuidePlugin DevGuidePlugin.cpp)
- target_link_libraries(CnoidDevGuidePlugin CnoidBodyPlugin)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC CnoidBodyPlugin)
 
 これまでのサンプルで使用してきたものに対して、一行追加されていることにご注意ください。
 
@@ -112,7 +112,7 @@ Choreonoid本体とは独立してビルドする場合は以下のようにし�
  find_package(Choreonoid REQUIRED)
  set(CMAKE_CXX_STANDARD ${CHOREONOID_CXX_STANDARD})
  choreonoid_add_plugin(CnoidDevGuidePlugin DevGuidePlugin.cpp)
- target_link_libraries(CnoidDevGuidePlugin Choreonoid::CnoidBody)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC Choreonoid::CnoidBodyPlugin)
 
 プラグインの実行
 ----------------
@@ -353,22 +353,24 @@ CMakeLists.txtにおける依存ライブラリの追加
 
 本サンプルをビルドするためののCMakeLists.txtでは、これまでのサンプルに加えて ::
 
- target_link_libraries(CnoidDevGuidePlugin CnoidBodyPlugin)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC CnoidBodyPlugin)
 
 を追加する必要があります。
 
-これはBodyプラグインのライブラリとリンクするための記述です。上述のように本サンプルはBodyプラグインに依存しています。これは本プラグインのバイナリがBodyプラグインのバイナリにも依存するということを意味します。すなわち、Bodyプラグインのライブラリファイルとリンクしなければなりません。ところがプラグインの全てがBodyプラグインに依存するわけではないので、choreonoid_add_pluginを記述するだけではBodyプラグインへのリンクはされないようになっています。
+これはBodyプラグインのライブラリとリンクするための記述です。上述のように本サンプルはBodyプラグインに依存しています。これは本プラグインのバイナリがBodyプラグインのバイナリにも依存するということを意味します。すなわち、Bodyプラグインのライブラリファイルとリンクしなければなりません。ところが、プラグインの全てがBodyプラグインに必ずしも依存するわけではないので、choreonoid_add_pluginを記述するだけではBodyプラグインへのリンクはされないようになっています。
 
 そこでCMakeの組み込みコマンドであるtarget_link_librariesを用いて、リンクスべきライブラリを明示的に指定します。
 このコマンドでは第一引数に対象となるターゲットを指定し、その後リンクすべきターゲットやライブラリを列挙します。
-これはChoreonoid本体のビルド環境でビルドする場合のものなので、BodyプラグインについてもCMakeのビルドターゲットとして同時にビルドされています。
+:ref:`plugin-dev-cmake-description-basics` で補足したように、リンクすべきターゲットやライブラリの前には、 "PUBLIC" か "PRIVATE" のキーワードを記述する必要があります。
+
+ここではChoreonoid本体のビルド環境でプラグインを同時にビルドしているので、BodyプラグインについてもCMakeのビルドターゲットとして同時にビルドされています。
 その名前が"CnoidBodyPlugin"なので、このように指定することで、Bodyプラグインにリンクされるようになります。
+
 
 Choreonoid本体とは独立してビルドする場合もやっていることは同じです。ただしターゲット名が ::
 
- Choreonoid::CnoidBody
+ Choreonoid::CnoidBodyPlugin
 
 と指定されていて、本体のビルド環境でビルドする場合とは若干異なっています。
 
 これはfind_packageによるライブラリ情報の取得において、ChoreonoidのコンフィグファイルはCMakeの「インポートライブラリ」の形態で情報を提供するようになっているためです。インポートライブラリの場合はこのように「パッケージ名::ライブラリ名」とするのがCMakeの慣習なので、このようになっています。
-

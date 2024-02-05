@@ -475,7 +475,7 @@ CMakeLists.txtについては、 :doc:`item-creation-io-customization-sample` �
    BodyPositionItemView.cpp)
 
  choreonoid_add_plugin(CnoidDevGuidePlugin ${sources})
- target_link_libraries(CnoidDevGuidePlugin CnoidBodyPlugin)
+ target_link_libraries(CnoidDevGuidePlugin PUBLIC CnoidBodyPlugin)
 
 sourcesに設定するファイルの数が多くなってきたので、ここではファイルごとに改行を入れるようにしています。
 
