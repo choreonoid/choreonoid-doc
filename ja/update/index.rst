@@ -4,6 +4,7 @@
 * 2023/2/5
 
  * :doc:`../plugin-development/index` におけるCMakeLists.txtの記述を修正
+ * :ref:`build-windows-freetype` に記載のURLを修正
 
 * 2023/11/27
 

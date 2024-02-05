@@ -410,6 +410,8 @@ cmakeコマンドのオプションについては、:ref:`build-windows-command
 
 ここで「AssimpのCMakeファイルのディレクトリ」は、Assimpインストール先の "lib\\cmake\\assimp-x.x" というディレクトリになります。"x.x" のところにはAssimpのバージョン番号が入ります。
 
+.. _build-windows-freetype:
+
 FreeTypeライブラリの有効化
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -417,7 +419,7 @@ Choreonoidではシーンビュー上にテキストを描画する機能があ�
 
 FreeTypeライブラリを有効化するにあたっては、まずFreeTypeライブラリを利用可能としておく必要があります。これは以下の手順で行います。
 
-1. FreeTypeの公式サイト https://feetyoe.org からライブラリのソースコードを取得する。
+1. FreeTypeの公式サイト https://freetype.org からライブラリのソースコードを取得する。
 2. 取得したソースコードを適当なディレクトリに展開し、CMakeを利用してビルド・インストールを行う
 3. Choreonoidのビルド時にCMakeの設定で **ENABLE_FREE_TYPE** を **ON** にする
 
