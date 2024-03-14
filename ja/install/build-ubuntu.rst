@@ -66,15 +66,18 @@ Choreonoidをソースコードからビルドするためには、以下の開�
   
 基本機能をビルドするにあたって以下のライブラリも必要になります。
 
-* `Boost C++ Libraries <http://www.boost.org/>`_ : C++の便利なライブラリ集です。
 * `Eigen <eigen.tuxfamily.org>`_ : 行列・ベクトル・線形代数演算のための高速・高機能なテンプレートライブラリです。
 * `Qt <http://qt-project.org/>`_ : GUIツールキットを含むフレームワークライブラリです。
 * `gettext <http://www.gnu.org/s/gettext/>`_ : 表示を多国語対応とするためのツール・ライブラリです。
 * `fmtlib <https://github.com/fmtlib/fmt>`_ : 書式付き文字列を出力するライブラリです。
 * `libjpeg <http://libjpeg.sourceforge.net/>`_ : JPEG形式の画像ファイルを読み込むためのライブラリです。
 * `libpng <http://www.libpng.org/pub/png/libpng.html>`_ : PNG形式の画像ファイルを読み込むためのライブラリです。
+* `libzip <https://libzip.org/>`_ : ZIP形式のファイルを読み書きするためのライブラリです。
 * `LibYAML <http://pyyaml.org/wiki/LibYAML>`_ : YAML形式テキストのパーサです。
+* `FreeType <http://freetype.org/>`_ : フォントを描画するためのライブラリです。3D画像にテキストを描画するために使用します。
 * `Assimp <http://assimp.sourceforge.net/>`_ : 様々な形式の3Dモデルファイルを読み込むためのライブラリです。
+
+.. note:: 以前のバージョンではBoost C++ Librariesにも依存していましたが、2024年3月11日のコミットf40ea6fcよりBoost C++ Librariesは不要となりました。ただし、Choreonoid本体とは別に配布されているプラグインがBoost C++ Librariesを必要とする場合はあるかもしれません。
 
 また、オプションの機能をビルドする際には、以下のようなソフトウェアも追加で必要となってきます。
 
@@ -90,7 +93,7 @@ Choreonoidをソースコードからビルドするためには、以下の開�
 依存パッケージのインストール
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-Ubuntuの場合、"misc/script" 以下にある "install-requisites-ubuntu-x.x.sh" というスクリプトを用いることにより、以上のソフトウェアのほとんどを簡単にインストールすることができます。x.xはUbuntuのバージョンに対応します。例えば Ubuntu 22.04 であれば ::
+Ubuntuの場合、"misc/script" 以下にある "install-requisites-ubuntu-x.x.sh" というスクリプトを用いることにより、上記のソフトウェアのほとんどを簡単にインストールすることができます。x.xはUbuntuのバージョンに対応します。例えば Ubuntu 22.04 であれば ::
 
  misc/script/install-requisites-ubuntu-22.04.sh
 

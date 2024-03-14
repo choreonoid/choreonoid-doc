@@ -1,7 +1,11 @@
 更新履歴
 ========
 
-* 2023/2/5
+* 2024/3/14
+
+ * :doc:`../install/build-ubuntu` 、 :doc:`../install/build-windows` 、 :doc:`../install/options` を更新。Boost C++ Librariesが不要になったことに伴い、関連する記述を修正するなど。
+
+* 2024/2/5
 
  * :doc:`../plugin-development/index` におけるCMakeLists.txtの記述を修正
  * :ref:`build-windows-freetype` に記載のURLを修正
