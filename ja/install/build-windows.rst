@@ -307,7 +307,7 @@ Choreonoidの実行ファイル "choreonoid.exe" がインストール先のbin�
 
 として起動します。（この場合はディレクトリの区切り文字として "/" しか使用できません。）Git Bash端末の場合は、ディレクトリ区切り文字として "/" を用いて ::
 
- c:/choreonoid/bin/choreonoid.ext
+ c:/choreonoid/bin/choreonoid.exe
 
 とします。どちらの場合も、拡張子の ".exe" は省略可能です。インストール先が "c:\\choreonoid" でない場合は、その部分を実際のインストール先に置き換えるようにしてください。
 
