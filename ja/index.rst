@@ -14,6 +14,7 @@ Choreonoidマニュアル
    handling-models/index
    simulation/index
    ros/index
+   ros2/index
    agxdynamics/index
    multicopter/index
    trafficcontrol/index
