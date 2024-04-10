@@ -6,7 +6,7 @@ ROS環境におけるChoreonoidの実行
 
 .. highlight:: sh
 
-.. _choreonoid_ros2_run_choreonoid_node:
+.. _choreonoid_ros2_run_choreonoid:
 
 Choreonoidの起動
 ----------------

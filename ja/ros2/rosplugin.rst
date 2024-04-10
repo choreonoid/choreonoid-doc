@@ -1,0 +1,40 @@
+ROS 2プラグイン
+=============
+
+.. contents::
+   :local:
+
+.. highlight:: sh
+
+ROS 2プラグインとは
+-----------------
+
+ROS 2プラグインは、choreonoid_rosパッケージに含まれるChoreonoid用のプラグインです。
+
+このプラグインは、Choreonoid上でのシミュレーションに関する情報を、ROS 2のトピックを介して提供します。
+
+現在、シミュレーション時刻を `/clock` トピックで提供する WorldROS2 アイテムと、ロボットのセンサデータを提供する BodyROS2 アイテムが利用可能です。
+
+
+ROS 2プラグインの読み込み
+-----------------------
+
+ROS 2プラグインは chorenoid_ros パッケージに含まれています。ROS 2プラグインを利用するためには、choreonoid_ros を介してChoreonoidを起動する必要があります。これは、:ref:`choreonoid_ros2_run_choreonoid` でも述べたように、ros2 run コマンドを用いて ::
+
+   ros2 run choreonoid_ros choreonoid
+
+とすることで起動できます。あるいは ros2 launch コマンドを用いて、 ::
+
+   ros2 launch choreonoid_ros choreonoid.launch.xml
+
+としても起動が可能です．
+
+
+このように、ros2 run/launch コマンドによって、 choreonoid_ros パッケージの一部として起動されたChoreonoidでは、ROS 2プラグインが自動で読み込まれます。その際、起動されたChoreonoidのメッセージビュー内に、 ::
+
+   ROSプラグインが読み込まれました．
+   （もしくは）ROS2-plugin has been activated.
+
+とメッセージが出力されます。
+
+もしこのメッセージが出力されていない場合、ROS 2プラグインは読み込まれていません。このとき、Choreonoid上でのROS 2との連携機能は大幅に制限が加わりますので、ご注意ください。（ROSとは独立してインストールしたChoreonoidを通常の方法で起動した場合は、そのようになります。）
