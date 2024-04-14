@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2024/4/14
+
+ * :doc:`../ros2/index` を追加
+
 * 2024/3/14
 
  * :doc:`../install/build-ubuntu` 、 :doc:`../install/build-windows` 、 :doc:`../install/options` を更新。Boost C++ Librariesが不要になったことに伴い、関連する記述を修正するなど。
