@@ -11,17 +11,14 @@ ROS環境におけるChoreonoidの実行
 Choreonoidの起動
 ----------------
 
-ROS 1 環境においては、Choreonoidは通常ROSノードとして扱われました。一方 ROS 2 環境においては、Choreonoid本体はノードとして扱われません。
-
-例えば、シミュレーション時刻を提供する WorldROS2Item やロボットのセンサ情報を提供する BodyROS2Item 、そしてロボットを動かすための個々のコントローラなどが、単一の ROS 2 ノードとなります。
-
-Choreonoidは ROS 2ノードではありませんが、 choreonoid_ros パッケージを利用することによって、 ROS 2 のツールを用いて起動できます。
-例えば、 ros2 run コマンドを使用して、ターミナル上で ::
+ROS 2環境では以下のコマンドでChoreonoidを起動できます。 ::
 
    ros2 run choreonoid_ros choreonoid
 
-とすることで、Choreonoidを起動できます。
+ここでは、"ros2 run" コマンドを使用して、"choreonoid_ros" パッケージの実行ファイルである "choreonoid" を起動しています。
 
 起動に成功すると、Choreonoidのメインウィンドウが表示されます。これはChoreonoidを通常の方法で起動した場合と基本的には同じもので、操作方法も同じです。
 
 このコマンドの後ろに、Choreonoidへの各種オプションを付与することも可能です。
+
+.. note:: Choreonoid本体に対応する "choreonoid" パッケージにも実行ファイル "choreonoid" が含まれます。そちらは単に "choreonoid" と入力して実行することもできます。しかしその場合は :doc:`rosplugin` が読み込まれませんので、ROS 2連携機能は使用できません。ROS 2連携機能を使用する場合は、上記の方法でChoreonoidを起動するようにしてください。混乱を避けるため、Choreonoid本体の "choreonoid" コマンドは、 :ref:`ros2_build_choreonoid_cmake_options` で紹介している "--cmake-args -DBUILD_CHOREONOID_EXECUTABLE=OFF" オプションによって、ビルドしないようにしておくとよいでしょう。

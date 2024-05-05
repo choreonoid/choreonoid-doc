@@ -11,32 +11,29 @@ ROS 2ディストリビューションのインストール
 
 ROS 2のディストリビューションがまだインストールされていない場合は、 `ROS 2 Documentation: Humble - Installation <https://docs.ros.org/en/humble/Installation.html>`_ に従ってインストールを行ってください。
 
-2024年3月末時点では、以下のコマンド操作でROS環境をインストールできます。最新のインストール方法については、上記ドキュメントを参照してください。
+2024年4月時点では、以下のコマンド操作でROS環境をインストールできます。最新のインストール方法については、上記ドキュメントを参照してください。
 
 .. http://wiki.ros.org/noetic/Installation/Ubuntu
 
 **Ubuntu 22.04 LTS (Jammy Jellyfish) に ROS 2 Humbleをインストールする場合** ::
 
-   # set locale
-   locale  # check for UTF-8
-   sudo apt update && sudo apt install locales
-   sudo locale-gen en_US en_US.UTF-8
-   sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-   export LANG=en_US.UTF-8
-   locale  # verify settings
-   # add the ROS 2 apt repository
-   sudo apt install software-properties-common
-   sudo add-apt-repository universe
-   sudo apt update && sudo apt install curl -y
-   sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-   # install ROS 2 packages
-   sudo apt update
-   sudo apt upgrade
-   sudo apt install ros-humble-desktop
-   # source the setup script (for bash)
-   echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
-   source ~/.bashrc
+  # Add the ROS 2 apt repository
+  sudo apt install software-properties-common
+  sudo add-apt-repository universe
+  sudo apt update && sudo apt install curl -y
+  sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  
+  # Install ROS 2 packages
+  sudo apt update
+  sudo apt upgrade
+  sudo apt install ros-humble-desktop
+
+  # Sourcing the setup script (for bash)
+  echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+  source ~/.bashrc
+
+.. note:: ROS 2はUTF-8をサポートしたロケール環境で動作します。Ubuntuを日本語環境となるようにインストールすると、通常は "ja_JP.UTF-8" のロケールとなって、UTF-8をサポートした環境になっているはずです。Dockerコンテナなどで必要最低限の環境にある場合は "POSIX" 等の最低限のロケールとなっている場合もあり得ますが、その場合はUTF-8をサポートしたロケールとなるように追加設定してください。詳細はROS 2公式ドキュメントのインストールのページを参照してください。
 
 .. note:: 最後のsourceコマンドは setup.bash の内容を現在のシェルに反映させるためのものです。一連のコマンドによるインストールの直後に、続けて同じシェルで作業する場合に必要となります。インストール後にあらためてシェルを起動する場合は、bashrcにより setup.bash の内容が反映されますので、このコマンドを実行する必要はありません。
 
