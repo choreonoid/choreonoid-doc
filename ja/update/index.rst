@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2024/6/27
+
+ * Qt6のサポートに伴い、 :doc:`../install/build-windows` と :doc:`../install/setup-qt` を更新
+
 * 2024/5/5
 
  * :doc:`../ros2/index` を更新
