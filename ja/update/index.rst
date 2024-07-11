@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2024/7/11
+
+ * :doc:`../install/index` について、対応プラットフォームなどを更新
+
 * 2024/6/27
 
  * Qt6のサポートに伴い、 :doc:`../install/build-windows` と :doc:`../install/setup-qt` を更新
