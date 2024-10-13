@@ -10,3 +10,4 @@ ROS 2との連携
    build-choreonoid
    run-choreonoid
    rosplugin
+   ros2-mobile-robot-tutorial

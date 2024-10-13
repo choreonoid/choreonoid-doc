@@ -5,7 +5,12 @@ Choreonoid関連パッケージのビルド
 
 本ドキュメントでは :doc:`../install/build-ubuntu` とは異なる手順でChoreonoidをインストールします。既にそちらの手順でインストール済みのChoreonoidがあったとしても、それとは独立してROS 2用のChoreonoidを別途インストールすることになりますので、ご注意ください。
 
-ご興味のある方は、ROS 2が提供するcolconの公式ドキュメント `ROS 2 Documentation: Humble - Using colcon to build packages <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_ もあわせてご覧ください。
+Choreonoidとその関連パッケージののビルドには、他のROSパッケージと同様にcolconを使用します。
+colconのより詳細な説明は、ROS 2公式ドキュメントの以下のページをご参照ください。
+
+* `ROS 2 Documentation: Jazzy - Using colcon to build packages <https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_
+* `ROS 2 Documentation: Humble - Using colcon to build packages <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_
+
 
 .. contents::
    :local:
@@ -46,18 +51,34 @@ Choreonoid用のROS 2ワークスペースを作成します。
 各リポジトリの内容はなるべく最新に保つようにしてください。
 
 
-依存パッケージのインストール
-----------------------------
+Choreonoid本体の依存パッケージのインストール
+--------------------------------------------
 
-Choreonoidのビルドや実行に必要となる依存パッケージをインストールします。
+Choreonoid本体のビルドや実行に必要となる依存パッケージをインストールします。
 
-Choreonoidのソースディレクトリに移動して、対応するスクリプトを実行します。Ubuntu 22.04であれば、 ::
+これについては、元々Ubuntu用の依存パッケージをインストールするためのスクリプトが用意されているので、そちらを利用します。
+この方法は、ROSにおける通常の依存パッケージインストール方法とは異なりますが、ご了承ください。
+
+Choreonoidのソースディレクトリに移動して、対応するスクリプトを実行します。Ubuntu 24.04であれば、 ::
+
+   misc/script/install-requisites-ubuntu-24.04.sh
+
+を実行します。Ubuntu 22.04であれば ::
 
    misc/script/install-requisites-ubuntu-22.04.sh
 
 を実行します。
 
 なお、OS上でROS 2とは独立して既に最新のChoreonoidをインストールしている場合、この作業を改めて実行する必要はありません。
+
+choreonoid_rosの依存パッケージのインストール
+--------------------------------------------
+
+choreonoid_rosパッケージについては、ROSのいくつかのパッケージに依存するようになっており、それらのパッケージもインストールしておく必要があります。こちらはROSの通常の方法で依存パッケージをインストールします。具体的には、rosdepコマンドを以下のように実行します。 ::
+
+   rosdep install -y --from-paths ~/ros2_ws/src --ignore-src
+
+このコマンドにより、choreonoid_rosの "package.xml" に記述されている依存パッケージが追加でインストールされることになります。
 
 
 .. _ros2_colcon_build_command:
@@ -74,7 +95,7 @@ Choreonoidのソースディレクトリに移動して、対応するスクリ�
 
 ビルドオプションとして付けている `--symlink-install` は、インストール時に各種ファイルをシンボリックリンクを用いてインストールします。ファイルのコピーが生じない分、PCの記録容量の消費が少なく、またコンパイルが不要なファイルについては、編集した内容が直ちに反映されるという利点があります。例えば、Choreonoidでは .body ファイルや .project ファイル、ROS 2では .urdf ファイル や .yaml ファイルなどが、編集内容の即時反映の対象になります。
 
-colconコマンドのオプションの詳細については `colconのドキュメント <https://colcon.readthedocs.io/en/released/reference/verb/build.html>`_ を参照してください。
+このコマンドのオプションの詳細は `colconの公式ドキュメント <https://colcon.readthedocs.io/en/released/index.html>`_ の `build - Build Packages <https://colcon.readthedocs.io/en/released/reference/verb/build.html>`_ を参照ください。
 
 ビルドに成功すると、
 
@@ -87,7 +108,7 @@ colconコマンドのオプションの詳細については `colconのドキュ
 
    Summary: 2 packages finished
 
-と表示されます。
+といったメッセージが出力されます。
 
 なお、colconコマンドではCMakeオプションの設定が可能です。詳しくは :ref:`ros2_build_choreonoid_cmake_options` をご覧ください。
 
