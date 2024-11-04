@@ -259,7 +259,6 @@ CMakeのコマンドを用いることで、Choreonoidをコマンドライン�
 
     * Visual Studio 2022: **"Visual Studio 17 2022"**
     * Visual Studio 2019: **"Visual Studio 16 2019"**
-    * Visual Studio 2017: **"Visual Studio 15 2017"**
 
 * "-A"
 
