@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2025/4/13
+
+ * :doc:`../tips/gamepad/supported-gamepads` を追加
+
 * 2025/3/17
 
  * :doc:`../tips/jaxon2-sample` について、該当サンプルのリポジトリの情報が追加

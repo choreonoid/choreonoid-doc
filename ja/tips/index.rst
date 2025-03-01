@@ -12,4 +12,5 @@
   body-tracking-camera
   body-motion
   jaxon2-sample
+  gamepad/supported-gamepads
 ..   multi-sceneviews
