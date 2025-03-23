@@ -43,6 +43,8 @@ Jaxon2WalkStabilizer.cnoid では、JAXON2の各関節はPD制御によって目
 
 Jaxon2StandingStabilizer.cnoid では、JAXON2が、安定化制御が有効な状態で立ち続けます。ロボットの上で右クリックをし、編集モードを選択してください。すると、ロボットの各リンクをドラッグすることで、外力を加えることができるようになります。もちろん安定化制御には限界がありますので、例えば胴体や頭部に大きな力を加えたり、短い時間で繰り返し力を加えたりすると転倒します。しかしながら、多くの場合は、安定化制御によって、ゆっくりと元の姿勢に収束していく様子が観察できるでしょう。
 
+.. note:: Jaxon2WalkPatternControllerとJaxon2WalkStabilizerで参照している歩行動作データは、Choreonoidの動作振付機能を用いて作成しました。この動作データを編集するプロジェクトとして、Jaxon2SampleWalkPattern.cnoidというプロジェクトも用意しています。このプロジェクトを利用する場合は、Choreonoid本体のビルド時に **BUILD_POSE_SEQ_PLUGIN** と **BUILD_BALANCER_PLUGIN** をONにして、PoseSeqプラグインとBalancerPluginが有効になるようにしてください。
+
 体幹位置コンプライアンス制御に基づく安定化
 -------------------------------------------
 
