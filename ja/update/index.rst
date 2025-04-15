@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2025/4/15
+
+ * :doc:`../ros2/ros2-control` を追加
+
 * 2025/4/13
 
  * :doc:`../tips/gamepad/supported-gamepads` を追加

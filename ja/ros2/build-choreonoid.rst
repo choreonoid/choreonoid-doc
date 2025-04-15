@@ -71,6 +71,8 @@ Choreonoidのソースディレクトリに移動して、対応するスクリ�
 
 なお、OS上でROS 2とは独立して既に最新のChoreonoidをインストールしている場合、この作業を改めて実行する必要はありません。
 
+.. _install-choreonoid-ros2-dependencies:
+
 choreonoid_rosの依存パッケージのインストール
 --------------------------------------------
 

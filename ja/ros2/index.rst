@@ -11,3 +11,4 @@ ROS 2との連携
    run-choreonoid
    rosplugin
    ros2-mobile-robot-tutorial
+   ros2-control
