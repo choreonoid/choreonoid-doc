@@ -147,7 +147,7 @@ IOオブジェクト
 
 このクラスはControllerIOを継承したものになっています。ControllerIOクラスで定義されている関数としては以下のようなものがあり、コントローラの実装に用いることができます。
 
-* **Body\* controllerName()**
+* **std::string controllerName() const**
 
  コントローラの名前を返します。
 
@@ -355,7 +355,7 @@ Choreonoidでは入出力の対象となる状態変数を識別するための�
 
  指定したリンクの入出力を有効にします。リンクに対して設定されているアクチュエーションモードに対して適切な状態量が入出力対象となります。
 
-.. note:: SimpleControllerIO には setLinkInput、setJointInput、setLinkOutput、setJointOutput といった関数も定義されています。これらはChoroenoid 1.5以前のバージョンで使われていた関数ですが、バージョン1.6以降ではこれらの関数に代わるものとして上記の enableIO、enableInput、enableOutput 関数を導入されており、今後はそちらの関数を使うようにしてください。
+.. note:: SimpleControllerIO には setLinkInput、setJointInput、setLinkOutput、setJointOutput といった関数も定義されています。これらはChoroenoid 1.5以前のバージョンで使われていた関数であり、バージョン1.6以降ではこれらの関数に代わるものとして上記の enableIO、enableInput、enableOutput 関数を導入されており、今後はそちらの関数を使うようにしてください。
 
    
 実際に利用可能なアクチュエーションモードは、シミュレータアイテム（≒物理エンジン）のタイプや設定によって変わってきます。ほとんどのシミュレータアイテムではJOINT_EFFORTに対応しており、これとJOINT_DISPLACEMENTの入力を組み合わせることで、PD制御等を行うことが可能です。
@@ -764,7 +764,7 @@ Linkオブジェクトにおいて、その位置姿勢はIsometry3型の値と�
 補足: SimpleControllerクラスの定義について
 ------------------------------------------
 
-:ref:`simulation-implement-controller-simple-controller-class` ではこのクラスのvirtual関数として initialize と control の2つを紹介しましたが、SimpleControllerはこれ以外にも以下に示すvirtual関数を備えていて、それぞれオーバーライドして処理を記述できるようになっています。
+:ref:`simulation-implement-controller-simple-controller-class` ではこのクラスのvirtual関数として initialize と control の2つを紹介しました。SimpleControllerはこれ以外にも以下に示すvirtual関数を備えていて、それぞれオーバーライドして処理を記述できるようになっています。
 
 * **virtual bool configure(SimpleControllerConfig\* config)**
 

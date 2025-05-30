@@ -1,4 +1,4 @@
-=========================================
+==========================================
 AGX Vehicle Continuous Track (AGXクローラ)
 ==========================================
 
@@ -6,7 +6,6 @@ AGXVehicleContinuousTrackはAGX Dynamicsを使ったクローラモデルです�
 実装にはAGX DynamicsのモジュールagxVehicleを利用しています。
 
 .. image:: images/continuous-track.png
-   :scale: 70%
 
 .. contents::
    :local:
@@ -139,7 +138,6 @@ Choreonoidでサンプルプロジェクトをロードし、AGXSimulatorでシ�
 #. :ref:`agx_continous_track_stabilize` を参考にクローラベルトの巻きつけに関わるパラメータを設定します。
 
 .. image:: images/continuous-track-detail.png
-   :scale: 70%
 
 パラメータの説明
 ----------------
@@ -455,7 +453,6 @@ Choreonoidでサンプルプロジェクトをロードし、AGXSimulatorでシ�
     nodeDistanceTension: 2.0e-4
 
 .. image:: images/continuous-track-hinge.png
-   :scale: 50%
 
 6. これでクローラを前後方向はスムーズに動くと思います。
    しかし、信地旋回、超信地旋回をさせるとベルトが発振します。
@@ -488,7 +485,6 @@ Choreonoidでサンプルプロジェクトをロードし、AGXSimulatorでシ�
     nodesToWheelsSplitThreshold: -0.05   # 2つのベクトル間の角度が1.62rad(92.7deg)以上になった場合にマージを解除
 
 .. image:: images/continuous-track-merge-tracks-wheels.png
-   :scale: 50%
 
 
 パフォーマンスチューニング
@@ -521,7 +517,6 @@ AGXVehicleContinuousTrackは複数のノードをヒンジジョイントで繋�
   * ノードの厚さが薄いと、地面と侵入しやすくなり、接触応答が不安定になる可能性がありますので厚くします
 
 .. image:: images/continuous-track-replace-wheels-with-box.png
-   :scale: 70%
 
 
 ノードのマージ

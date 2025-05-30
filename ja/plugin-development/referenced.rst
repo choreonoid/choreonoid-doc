@@ -125,7 +125,7 @@ Referenced + ref_ptrによるスマートポインタは、Choreonoid開発の�
 weak_ref_ptr
 ------------
 
-shared_ptrでは弱参照を保持するweak_ptrも利用可能ですが、ref_ptrについても弱参照を保持するためのweak_ref_ptrを使用可能です。利用方法はweak_ptrとほぼ同じです。以下のようにref_ptrから生成できます。 ::
+shared_ptrについては、対象のオブジェクトへの弱参照を保持するweak_ptrが利用可能です。同様に、ref_ptrについても弱参照を保持するためのweak_ref_ptrを利用可能です。利用方法はweak_ptrとほぼ同じです。以下のようにref_ptrから生成できます。 ::
 
  ref_ptr<Object> object = new Object;
  weak_ref_ptr<Object> wobject = object;

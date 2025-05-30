@@ -60,6 +60,12 @@ ROS 2でChoreonoidを利用する際には、現状ではROS 2環境上で :doc:
 
 このパッケージをインストールすると、ROS 2用のビルドシステムである "colcon" もインストールされます。
 
+また、以下のコマンドで、colconでビルドしたバイナリをcleanする "colcon clean" コマンドも使用できるようになります。 ::
+
+  sudo apt install python3-colcon-clean
+
+こちらは必ずしも必要ではないですが、あると便利かもしれません。
+
 rosdepの初期化
 --------------
 

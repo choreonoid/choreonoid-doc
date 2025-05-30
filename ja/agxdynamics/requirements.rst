@@ -11,7 +11,6 @@ ChoreonoidのAGXDynamicsプラグインを利用するためには、以下の�
 
 AGX Dynamicsの実行ライセンスの購入とSDKの取得につきましては、**株式会社ブイエムシー** にお問い合わせください。なお、World Robot Summit等のイベント参加者はイベントの主催者にお問い合わせください。
 
-  `株式会社ブイエムシー: 	AGX Dynamics Plugin for Choreonoid（コレオノイド）`__
+* `VMC Motion Technologies株式会社: AGX Dynamics Plugin for Choreonoid（コレオノイド） <https://www.vmc-motion.com/商品・サービス/プラグインソリューション/plugin-for-choreonid/>`_
 
-.. _VMC: http://www.vmc-motion.com/15135605209828
-__ VMC_
+.. 英訳指示： "VMC Motion Technologies株式会社" は "VMC Motion Technologies Co., Ltd." と訳してください。また、(コレオノイド)は削除してください。

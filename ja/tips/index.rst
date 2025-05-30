@@ -13,4 +13,6 @@
   body-motion
   jaxon2-sample
   gamepad/supported-gamepads
-..   multi-sceneviews
+
+.. 英訳指示： howto-create-movingimage、howto-use-commandsは英語版には含めないでください。
+

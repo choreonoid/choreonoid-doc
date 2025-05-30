@@ -3,7 +3,6 @@ AGXWire
 =======
 
 .. image:: images/wire.png
-   :scale: 60%
 
 AGXWireはAGX Dynamicsを使ったワイヤーモデルです。
 実装にはAGX DynamicsのモジュールagxWireを利用しています。
@@ -169,7 +168,6 @@ Choreonoidでサンプルプロジェクトをロードし、AGXSimulatorでシ�
 
 
 .. image:: images/wire-detail.png
-   :scale: 70%
 
 パラメータの説明
 ----------------
@@ -322,7 +320,6 @@ Choreonoidでサンプルプロジェクトをロードし、AGXSimulatorでシ�
 ------------------
 
 .. image:: images/wire-collision.png
-   :scale: 100%
 
 :ref:`agx_wire_feature` で説明いたしました通り、agxWireはロボットが踏みつけたりするようなケースに対応しておりません。
 しかし、このようなケースに遭遇しないようロボットを操作することは難しいと思います。

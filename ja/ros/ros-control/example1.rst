@@ -27,13 +27,11 @@
 
 .. image:: images/rtf_plant1.png
    :align: center
-   :scale: 60%
 
 最後に，下図の再生ボタンを押下し，シミュレートを実行してください．
 
 .. image:: images/rtf_plant2.png
    :align: center
-   :scale: 180%
             
 以上で起動が完了しました！！
 ROSの扱いに慣れている方ならば，後はPub/Subを行ってロボットを動かして見てください．
@@ -52,7 +50,6 @@ ROSの扱いに慣れている方ならば，後はPub/Subを行ってロボッ�
 
 .. image:: images/rviz.png
    :align: center
-   :scale: 60%
 
 続いて， `rqt_robot_steering <http://wiki.ros.org/rqt_robot_steering>`_ を使って，シミュレータ内の"Tank"ロボットをROSのトピックを介して動かしてみましょう．
 まずは下記コマンドで， `rqt_robot_steering <http://wiki.ros.org/rqt_robot_steering>`_ をインストールしてください（すでに完了している方は不要です．） ::
@@ -67,14 +64,12 @@ ROSの扱いに慣れている方ならば，後はPub/Subを行ってロボッ�
 
 .. image:: images/rqt1.png
    :align: center
-   :scale: 200%
 
 最後に，下図の場所に Topic 名を記入します．
 ここでは，"/Tank/base_controller/cmd_vel" と入力してください（コピー＆ペーストができます）．
 
 .. image:: images/rqt2.png
    :align: center
-   :scale: 200%
 
 以上ですべての起動が完了です！！
 あとはウィンドウのスクロールバーを動かして"Tank"モデルを動かして遊んでみましょう！！
@@ -87,4 +82,3 @@ ROSの扱いに慣れている方ならば，後はPub/Subを行ってロボッ�
  
 .. image:: images/slam.png
    :align: center
-   :scale: 60%

@@ -98,7 +98,7 @@
 
 についてはTimeBarクラスの唯一のインスタンスをTimeBarのポインタで返すstaticメンバ関数です。このようにシングルトンパターンでインスタンスを返すクラスがChoreonoidにはいくつもあり、同じ形式で利用できます。
 
-スロットの本体はDevGuidePluginのメンバ関数onTimeChangedなのですが、これがメンバ関数であるため、シグナルとの接続にあたって以下のラムダ式を用いています。 ::
+スロットの本体はDevGuidePluginのメンバ関数onTimeChangedとなります。これがメンバ関数であるため、シグナルとの接続にあたって以下のラムダ式を用いています。 ::
   
  [this](double time){ return onTimeChanged(time); });
 
@@ -108,7 +108,7 @@
 
 と同等のコードで、このようにthisポインタのオブジェクトに対してonTimeChangedが呼ばれています。この書き方の方がより分かりやすいかもしれません。
 
-sigTimeChangedシグナルについては、名前から推測できると思いますが、タイムバーで管理している時刻が変化した際に送出されるシグナルです。これは `TimeBarクラス <https://choreonoid.org/ja/documents/reference/latest/classcnoid_1_1TimeBar.html>`_ で以下のように定義されています。 ::
+sigTimeChangedシグナルについては、名前から推測できるように、タイムバーで管理している時刻が変化した際に送出されるシグナルです。これは `TimeBarクラス <https://choreonoid.org/ja/documents/reference/latest/classcnoid_1_1TimeBar.html>`_ で以下のように定義されています。 ::
 
  SignalProxy<bool(double time), LogicalSum> sigTimeChanged();
 

@@ -3,7 +3,9 @@ Choreonoid関連パッケージのビルド
 
 ここではROS環境におけるパッケージとしてChoreonoidをビルド（インストール）します。あわせていくつかのChoreonoid関連パッケージもビルドします。
 
-本ドキュメントでは :doc:`../install/build-ubuntu` とは異なる手順でChoreonoidをインストールします。既にそちらの手順でインストール済みのChoreonoidがあったとしても、それとは独立してROS用のChoreonoidを別途インストールすることになりますので、ご注意ください。通常の手順でインストールされたChoreonoidをROS環境で使用することも可能なのですが、そちらについては必要なROSパッケージやドキュメントを現在整備中ですので、当面は本ドキュメントの解説に従って、ROS用のChoreonoidをインストールするようにしてください。ここでインストールするChoreonoidは、通常の手順でインストールされたものとは区別し、それぞれ独立に管理するようにしてください。
+本ドキュメントでは :doc:`../install/build-ubuntu` とは異なる手順でChoreonoidをインストールします。既にそちらの手順でインストール済みのChoreonoidがあったとしても、それとは独立してROS用のChoreonoidを別途インストールすることになりますので、ご注意ください。ここでインストールするChoreonoidは、通常の手順でインストールされたものとは区別し、それぞれ独立に管理するようにしてください。
+
+.. 通常の手順でインストールされたChoreonoidをROS環境で使用することも可能なのですが、そちらについては必要なROSパッケージやドキュメントを現在整備中ですので、当面は本ドキュメントの解説に従って、ROS用のChoreonoidをインストールするようにしてください。
 
 .. contents::
    :local:
@@ -95,13 +97,6 @@ Choreonoidのソースディレクトリに移動し対応するスクリプト�
 
 を実行します。
 
-Ubuntu 18.04、16.04の場合はそれぞれ
-
-* misc/script/install-requisites-ubuntu-18.04.sh
-* misc/script/install-requisites-ubuntu-16.04.sh
-
-を実行してください。
-
 この処理は本来Catkin用の依存パッケージ情報で解決すべきなのですが、Choreonoidについてはそこがまだ完全でない部分があり、インストールを確実にするため、この作業を行っておく必要があります。
 
 なお、OS上でROSとは独立して既に最新のChoreonoidをインストールしている場合この作業は適用済みのはずですので、あらためて実行する必要はありません。
@@ -153,24 +148,12 @@ Choreonoidのオプションのプラグインを有効にすることも可能�
 
 .. _note_on_ros_python_version:
 
-Pythonバージョンの設定
-^^^^^^^^^^^^^^^^^^^^^^
+Pythonバージョンに関する注意
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ChoreonoidではデフォルトでPythonプラグインとPython用ラッパライブラリがビルドされますが、そこで使用するPythonのバージョンには注意が必要です。ChoreonoidではデフォルトでPython3を使用するようになっていますが、ROSの従来のバージョン、具体的にはUbuntu 18.04用のMelodic Morenicaまでは、Python2（バージョン2.7）が使用されています。そのようなROSのバージョンを使用する場合、そのままではChoreonoidのPython3とROSのPython2が競合してしまい、不具合が生じることになります。
-
-.. note:: Ubuntu 20.04に対応するROSのNoetic NinjemysからはPython3が使用されるようになった模様で、デフォルトの設定で不具合は生じないものと思われます。Ubuntu 20.04の場合は以下の説明は読み飛ばしてください。
-
-Python2を使用する従来のROSバージョンにおいては、ChoreonoidでもPython2を使用するように設定しておきます。これはChoreonoidビルド時のCMakeでUSE_PYTHON3 というオプションをOFFにすればOKです。そのようにするとChoreonoidでもPythonバージョン2が使用されるようになります。
-
-catkin においては ::
-
- catkin config --cmake-args -DUSE_PYTHON3=OFF
-
-とすることでこれを実現できます。
-
-あるいは、ChoreonoidのPython機能が必要ない場合は、以下のようにしてPython機能自体をオフにしてしまってもよいかと思います。 ::
-
- catkin config --cmake-args -DENABLE_PYTHON=OFF
+ChoreonoidではデフォルトでPythonプラグインとPython用ラッパライブラリがビルドされるようになっており、そこで使用されるPythonはデフォルトではPython3となっています。
+これはUbuntu 20.04に対応するROSのNoetic Ninjemysで使用されるPythonと同じですので、通常はChoreonoidのデフォルト設定で問題ありません。
+ただしオプションの設定でChoreonoidで使用するPythonをPython2とする場合は、うまく動作しなくなりますので、ご注意ください。
 
 .. _ros_catkin_config_cmake_build_type:
 
@@ -200,7 +183,8 @@ Choreonoid関連のROSパッケージはデフォルトでReleaseが設定され
 ビルド
 ------
 
-ここまで :ref:`ros_build_choreonoid_cmake_options` や :ref:`ros_catkin_build_type` について説明しましたが、細かいオプションについてよく分からない場合はとりあえず以下の設定としておきましょう。
+ここまで :ref:`ros_build_choreonoid_cmake_options` や :ref:`ros_catkin_build_type` について説明しました。
+細かいオプションについてよく分からない場合はとりあえず以下の設定としておきましょう。
 
 **Ubuntu 20.04 (ROS Noetic Ninjemys) の場合** ::
 
@@ -224,7 +208,7 @@ Choreonoid関連のROSパッケージはデフォルトでReleaseが設定され
 
 といった表示がされます。
 
-.. note:: Emacsでは "M-x compile" コマンドでビルドを行うことが可能ですが、Catkin環境でもこの機能を利用することができます。ただしCatkinの出力は通常色付けされるのですが、Emacs上ではその制御コードが表示されてしまい、そのままでは表示が見にくくなってしまいます。これを回避するため、 "M-x compile" 実行時にビルド用のコマンドとして "catkin build --no-color" を入力するとよいです。"--no-color" を入れることで、Cakin出力の色付け用の制御コードが無効化され、表示の乱れがなくなります。また、"-v" オプションを追加して "catkin build -v --no-color" とすることで、ビルド時に実際のコマンド（コンパイルオプションなど）を確認することもできます。
+.. note:: Emacsでは "M-x compile" コマンドでビルドを行うことが可能であり、Catkin環境でもこの機能を利用することができます。ただしCatkinの出力は通常色付けされるのですが、Emacs上ではその制御コードが表示されてしまい、そのままでは表示が見にくくなってしまいます。これを回避するため、 "M-x compile" 実行時にビルド用のコマンドとして "catkin build --no-color" を入力するとよいです。"--no-color" を入れることで、Cakin出力の色付け用の制御コードが無効化され、表示の乱れがなくなります。また、"-v" オプションを追加して "catkin build -v --no-color" とすることで、ビルド時に実際のコマンド（コンパイルオプションなど）を確認することもできます。
 
 なお、 :ref:`ros_catkin_build_command` は、catkin build に付与する --cmake-argsオプションによって設定することもできます。例えば ::
 

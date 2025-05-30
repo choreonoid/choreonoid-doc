@@ -1,6 +1,6 @@
 
 ROS 2との連携
-===========
+============
 
 .. toctree::
    :maxdepth: 3
@@ -9,6 +9,6 @@ ROS 2との連携
    install-ros2
    build-choreonoid
    run-choreonoid
-   rosplugin
+   ros2-plugin
    ros2-mobile-robot-tutorial
    ros2-control

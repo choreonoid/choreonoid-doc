@@ -1,5 +1,5 @@
 ステップ3: ゲームパッドによる砲塔の制御
-=======================================
+======================================
 
 ステップ2では最小限の制御を行うコントローラを作成し、コントローラの導入方法を学びました。ステップ3ではもう少し複雑なコントローラを作成してみましょう。
 
@@ -22,7 +22,8 @@
 
 .. image:: images/f310.jpg
 
-これは `ロジクールのF310 <http://gaming.logicool.co.jp/ja-jp/product/f310-gamepad>`_ という製品ですが、他に同様の構成をもつゲームパッドとして、プレイステーション4用の `DUALSHOCK4 <http://www.jp.playstation.com/ps4/peripheral/cuhzct1j.html>`_ やプレイステーション3用のDUALSHOCK3、 `Xbox用コントローラ <https://www.xbox.com/ja-JP/xbox-one/accessories/controllers/xbox-black-wireless-controller>`_ やXbox360用コントローラを利用することも可能です。
+これは `ロジクールのF310 <http://gaming.logicool.co.jp/ja-jp/product/f310-gamepad>`_ という製品です。
+他に同様の構成をもつゲームパッドとして、プレイステーション4用の `DUALSHOCK4 <http://www.jp.playstation.com/ps4/peripheral/cuhzct1j.html>`_ やプレイステーション3用のDUALSHOCK3、 `Xbox用コントローラ <https://www.xbox.com/ja-JP/xbox-one/accessories/controllers/xbox-black-wireless-controller>`_ やXbox360用コントローラを利用することも可能です。
 
 これらのゲームパッドは通常USBを用いてPCに接続します。DUALSHOCK4については、 `USBワイヤレスアダプター <http://www.jp.playstation.com/ps4/peripheral/cuhzwa1j.html>`_ による接続も可能です。
 
@@ -99,7 +100,7 @@ Windowsの設定を開き、**ゲーム** を選択します。
 Windows10でPS3のゲームパッドを使う場合
 """""""""""""""""""""""""""""""""""""""""""
 
-PS3用のゲームパッドは、接続しただけでは使用できません。使用するための無料のソフトウェアがいくつかありますが、ここでは、"XInput Wrapper for DS3"というソフトを紹介します。このソフトを使用していただきますと、軸やボタンの設定を変更しなくても、Choreonoidのサンプルを操作することができます。
+PS3用のゲームパッドは、接続しただけでは使用できません。使用するための無料のソフトウェアがいくつかあり、ここでは、"XInput Wrapper for DS3"というソフトを紹介します。このソフトを使用すると、軸やボタンの設定を変更しなくても、Choreonoidのサンプルを操作することができます。
 
 まず、PS3デームパッドを接続します。デバイスとプリンターに **PLAYSTATION(R)3 Controller** と表示されているかと思います。
 

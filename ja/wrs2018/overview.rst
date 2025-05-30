@@ -47,9 +47,11 @@ Choreonoidの開発版は `github上のChoreonoidリポジトリ <https://github
 
 OSはUbntu Linuxを使用します。バージョンは16.04の64ビット版を前提とします。
 
-本競技では物理エンジンとして `AGX Dynamics <http://www.vmc-motion.com/14416057938792>`_ を使用します。AGX Dynamicsは商用の物理エンジンであり、使用にあたってはライセンスが必要となりますが、本競技の参加登録者には参加用のラインセンスが無償で提供されます。ライセンスがあれば、Choreonoid本体に含まれている :doc:`../agxdynamics/index` によって、Choreonoid上で利用することが可能となります。
+本競技では物理エンジンとして `AGX Dynamics <https://www.algoryx.se/products/agx-dynamics/>`_ を使用します。AGX Dynamicsは商用の物理エンジンであり、使用にあたってはライセンスが必要となりますが、本競技の参加登録者には参加用のラインセンスが無償で提供されます。ライセンスがあれば、Choreonoid本体に含まれている :doc:`../agxdynamics/index` によって、Choreonoid上で利用することが可能となります。
 
-.. note:: 競技会に参加しない方でも、 `株式会社ブイエムシー <http://www.vmc-motion.com/>`_ が販売している `Choreonoid用のAGX Dynamicsライセンス <http://www.vmc-motion.com/15135605209828>`_ を購入することで、競技のシミュレーションを試すことが可能です。（もちろん、競技以外のシミュレーションにも活用することができます。）あるいは、AGX Dynamicsが無くても、Choreonoid標準の物理エンジンを用いることで、競技の概要を試すことは可能です。ただしその場合、ロボットやタスクのシミュレーションは一部不完全なものとなりますし、シミュレーション速度も遅くなります。
+.. note:: 競技会に参加しない方でも、 `VMC Motion Technologies株式会社 <http://www.vmc-motion.com/>`_ が販売している `Choreonoid用のAGX Dynamicsライセンス <https://www.vmc-motion.com/商品・サービス/プラグインソリューション/plugin-for-choreonid/>`_ を購入することで、競技のシミュレーションを試すことが可能です。（もちろん、競技以外のシミュレーションにも活用することができます。）あるいは、AGX Dynamicsが無くても、Choreonoid標準の物理エンジンを用いることで、競技の概要を試すことは可能です。ただしその場合、ロボットやタスクのシミュレーションは一部不完全なものとなりますし、シミュレーション速度も遅くなります。
+
+.. 英訳指示： "https://www.vmc-motion.com/商品・サービス/プラグインソリューション/plugin-for-choreonid/" というURLは英語版でもそのまま（英訳せずに）記述してください。
 
 競技会場で使用するシミュレーション用PCは運営側で用意します。PCのスペックは以下になります。
 

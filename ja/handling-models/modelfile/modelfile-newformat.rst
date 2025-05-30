@@ -60,7 +60,9 @@ Body形式のモデルファイルはテキストファイルとして作成し�
 
 なお、以下の記述をまとめたものは :doc:`tank` で参照することができます。
 
-.. note:: Ubuntuの標準テキストエディタ "gedit" を使ってモデルファイルを作成する場合、メインメニューの「表示」-「ハイライト」で表示される設定ダイアログで "YAML" を選択すると、YAMLのフォーマットに適した色付けがされ、編集しやすくなるかと思います。
+.. note:: Ubuntuの標準テキストエディタ "gedit" を使ってモデルファイルを作成する場合、メインメニューの「表示」-「ハイライトモード」で表示される設定ダイアログで "YAML" を選択すると、YAMLのフォーマットに適した色付けがされ、編集しやすくなるかと思います。
+
+.. 英訳指示： 「表示」-「ハイライトモード」のメニューはView - Highlight Modeとします。
 
 YAMLについて
 ------------
@@ -71,21 +73,27 @@ Bodyファイルは記述方式のベースとしてYAMLを採用しています
 
 * `プログラマーのためのYAML入門（初級編） <http://magazine.rubyist.net/?0009-YAML>`_
 
+.. 英訳指示： この解説記事への参照は除去してください。
+
 ヘッダの記述
 ------------
 
 まずモデルファイルのヘッダとして、YAMLのマッピングを用いて以下のように記述します。 ::
 
  format: ChoreonoidBody
- formatVersion: 1.0
- angleUnit: degree
+ format_version: 2.0
  name: SimpleTank
 
-最初の行の記述により、このファイルがChoreonoidのモデルファイルとして認識されるようになります。formatVersionは現在のところ1.0となります。今後仕様に変更があった場合に、新しい仕様と区別するためにバージョン番号を明示しておきます。
+最初の行の記述により、このファイルがChoreonoidのモデルファイルとして認識されるようになります。
 
-モデルファイルにおける関節角度の単位を指定する項目として、"angleUnit" があります。今回は "degree" を指定しているので、角度を度数法で記述します。ラジアンで記述したい場合は、ここに "radian" を指定します。通常は degree の方が記述がしやすいのではないかと思います。
+format_versionは記述方式のバージョンを区別するためのものです。
+現在バージョン2.0が最新となっていますので、特に理由がなければ2.0を指定しておきます。
 
 モデルの名前は "name" に記述します。ここでは "SimpleTank" という名前にしています。
+
+.. note:: Bodyファイルで使用されるキーは基本的に"snake case"の形式で命名されています。これはキーの文字列を全て小文字で記述して、複数の単語からなる場合はその間をアンダースコア（ _ ）でつなぐというものです。上記の "format_version" もこの形式ですね。ただし、Choreonoidの古いバージョンではキーは全て "lower camel case" の命名としていました。これは単語の変わり目を大文字にするというもので、"formatVersion" といった記述となります。以前定義されていたlower camel caseのキーは互換性確保のため読み込めるようになっていますが、今後は新しい形式を用いるようにしてください。なお、依然としてlower camel caseでのみ定義されているキーもあるので、ご注意ください。
+
+.. note:: 記述方式のバージョンが1.0の場合は、Bodyファイルで記述する角度の単位も指定することができます。具体的には、"angleUnit" に "degree" を指定すれば度数法になり、"radian" を指定すると弧度法（ラジアン）となります。ただしこれは混乱のもとになるので、バージョン2.0では常に度数法で記述するようになりました。
 
 .. _modelfile_yaml_links:
 
@@ -126,15 +134,15 @@ LinkノードはYAMLのマッピング形式で記述します。マッピング
    - 本リンクローカルフレームの親リンクからの相対位置。ルートリンクの場合はモデル読み込み時のデフォルト位置として使われる
  * - rotation
    - 本リンクローカルフレームの親リンクからの相対姿勢。姿勢は回転軸と回転角度に対応する4つの数値で表現(Axis-Angle形式）。ルートリンクの場合はモデル読み込み時のデフォルト位置として使われる
- * - jointType
-   - 関節タイプ。 **fixed** (固定）、 **free** (非固定ルートリンク）、 **revolute** (回転関節）、 **prismatic** (直動関節）、 **pseudoContinousTrack** (簡易無限軌道）のどれかを指定
- * - jointAxis
+ * - joint_type
+   - 関節タイプ。 **fixed** (固定）、 **free** (非固定ルートリンク）、 **revolute** (回転関節）、 **prismatic** (直動関節）、 **pseudo_continuous_track** (簡易無限軌道）のどれかを指定
+ * - joint_axis
    - 関節軸。3次元ベクトルの3要素のリストとして関節軸の向きを指定する。値は単位ベクトルとする。関節軸がリンクのローカル座標におけるX, Y, Zのいずれかに一致する場合は、対応する軸の文字(X, Y, Zのいずれか）によって指定することも可能。
- * - jointRange
+ * - joint_range
    - 関節可動範囲。最小値、最大値の2つの値をリストとして列挙する。値をunlimitedと記述することで、可動範囲の制限を無くすことも可能。最小値と最大値の絶対値が同じでそれぞれ符号がマイナス、プラスとなる場合は、その絶対値をひとつだけ（スカラ値として）記述してもよい
- * - jointId
-   - 関節ID値。0以上の整数値を指定する。モデル内で重複しない任意の値を指定可能。リンクが関節でない場合（ルートリンクやjointTypeがfixedの場合）や、ID値によるアクセスを必要としない場合は、指定しなくてもよい
- * - centerOfMass
+ * - joint_id
+   - 関節ID値。0以上の整数値を指定する。モデル内で重複しない任意の値を指定可能。リンクが関節でない場合（ルートリンクやjoint_typeがfixedの場合）や、ID値によるアクセスを必要としない場合は、指定しなくてもよい
+ * - center_of_mass
    - 重心位置。リンクローカル座標で指定
  * - mass
    - 質量[kg]
@@ -153,8 +161,8 @@ LinkノードはYAMLのマッピング形式で記述します。マッピング
    -
      name: CHASSIS
      translation: [ 0, 0, 0.1 ]
-     jointType: free
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: free
+     center_of_mass: [ 0, 0, 0 ]
      mass: 8.0
      inertia: [
        0.1, 0,   0,
@@ -167,9 +175,9 @@ LinkノードはYAMLのマッピング形式で記述します。マッピング
            size: [ 0.45, 0.3, 0.1 ]
          appearance: &BodyAppearance
            material:
-             diffuseColor: [ 0, 0.6, 0 ]
-             specularColor: [ 0.2, 0.8, 0.2 ]
-             shininess: 0.6
+             diffuse: [ 0, 0.6, 0 ]
+             specular: [ 0.2, 0.8, 0.2 ]
+             specular_exponent: 80
 
 YAMLでは各行のインデントがデータの構造も規定することになりますので、上記の記述でインデントが揃っているところはそのまま揃えて記述するように注意してください。
 
@@ -211,11 +219,11 @@ translationは通常親リンクからの相対位置を表すパラメータな
 
 次に、 ::
 
- jointType: free
+ joint_type: free
 
 という記述により、このモデルが空間中を自由に動けるモデルであることを設定しています。
 
-jointTypeは通常親子リンク間を接続する関節のタイプを指定するパラメータですが、ルートリンクの場合は意味が少し異なり、リンクが環境に固定されるか否かを指定します。ここに"fixed"を指定するとリンクが固定されますので、ベース部分が床に固定されているマニピュレータ等に対してはそのように設定してください。一方、今回のモデルのように特定の箇所に固定さない場合は、ここに"free"を指定します。
+joint_typeは通常親子リンク間を接続する関節のタイプを指定するパラメータですが、ルートリンクの場合は意味が少し異なり、リンクが環境に固定されるか否かを指定します。ここに"fixed"を指定するとリンクが固定されますので、ベース部分が床に固定されているマニピュレータ等に対してはそのように設定してください。一方、今回のモデルのように特定の箇所に固定さない場合は、ここに"free"を指定します。
 
 
 .. _modelfile_yaml_rigidbody_parameters:
@@ -223,23 +231,24 @@ jointTypeは通常親子リンク間を接続する関節のタイプを指定�
 剛体パラメータの記述
 --------------------
 
-各リンクは通常剛体としてモデリングされます。この情報を記述する :ref:`modelfile_yaml_link_node` として、centerOfMass, mass, inertia があります。CHASSISリンクではこれらに関して以下のように記述しています。
+各リンクは通常剛体としてモデリングされます。この情報を記述する :ref:`modelfile_yaml_link_node` として、center_of_mass, mass, inertia があります。CHASSISリンクではこれらに関して以下のように記述しています。
 
 .. code-block:: yaml
  :dedent: 0
 
-     centerOfMass: [ 0, 0, 0 ]
+     center_of_mass: [ 0, 0, 0 ]
      mass: 8.0
      inertia: [
        0.1, 0,   0,
        0,   0.1, 0,
        0,   0,   0.5 ]
 
-centerOfMass には、リンクのローカル座標における重心位置を記述します。CHASSISリンクのローカル座標原点は車体中央部に設定しており、重心もそこにに一致させています。
+center_of_mass には、リンクのローカル座標における重心位置を記述します。CHASSISリンクのローカル座標原点は車体中央部に設定しており、重心もそこにに一致させています。
 
 mass には質量を、inertiaには慣性テンソルの行列要素を指定します。
 
-ここでは慣性テンソルに適当な値を設定していますが、適切な計算やCADツールなどを用いて、妥当な値を設定するようにしてください。
+ここでは慣性テンソルに適当な値を設定しています。
+実際には適切な計算やCADツールなどを用いて、妥当な値を設定するようにしてください。
 
 慣性テンソルは対称行列なので、上三角部分の6要素のみを記述してもOKです。この場合、上記の値は
 
@@ -272,9 +281,9 @@ mass には質量を、inertiaには慣性テンソルの行列要素を指定�
            size: [ 0.45, 0.3, 0.1 ]
          appearance: &BodyAppearance
            material:
-             diffuseColor: [ 0, 0.6, 0 ]
-             specularColor: [ 0.2, 0.8, 0.2 ]
-             shininess: 0.6
+             diffuse: [ 0, 0.6, 0 ]
+             specular: [ 0.2, 0.8, 0.2 ]
+             specular_exponent: 80
 
 この部分は「Shapeノード」となります。先ほどモデルファイルを読み込んだ際にシーンビューに表示された形状は、ここで記述されています。
 
@@ -290,22 +299,24 @@ appearancについては物体表面の材質を記述するmaterialを記述し
 
  * - キー
    - 内容
- * - ambientIntensity
+ * - ambient
    - 環境光に対する反射係数のスカラ値を指定します。値の範囲は0.0から1.0となります。デフォルトでは0.2となっています。
- * - diffuseColor
+ * - diffuse
    - 拡散反射係数のRGB値を記述します。RGB値は赤、緑、青のの3成分をリストとして記述したもので、各成分の値の範囲は0.0から1.0となります。
- * - emissiveColor
+ * - emissive
    - 放射色のRGB値を指定します。デフォルトでは無効（全成分が0）となっています。
- * - specularColor
+ * - specular
    - 鏡面反射係数のRGB値を記述します。デフォルトでは無効（全成分が0）となっています。
+ * - specular_exponent
+   - 鏡面反射の鋭さを制御するパラメータです。値が大きいとハイライトが小さく鋭くなり、金属や磨かれた表面のような見た目になります。0以上の値を設定します。デフォルトでは25となります。値が100程度になると金属っぽくなってきます。
  * - shininess
-   - 光沢度を0.0から1.0のスカラ値で指定します。この値が大きいと鏡面反射によるハイライトがシャープになります。デフォルトでは0.2となっています。
+   - 鏡面反射の鋭さを制御する古いパラメータです。こちらは0〜1の範囲で指定します。このパラメータは今後は使用しないでください。
  * - transparency
    - 透明度を指定します。値は0.0から1.0のスカラ値で、0.0で完全に不透明となり、1.0で完全に透明となります。デフォルトでは0.0となっています。
 
-ここではdiffuseColor、specularColor、shininessの3つのパラメータを設定することで、少し金属的な光沢のある緑色の材質を表現しています。
+ここではdiffuse、specular、specular_exponentの3つのパラメータを設定することで、やや金属的な光沢のある緑色の材質を表現しています。
 
-.. note:: このような形状の記述については、文法的には多少異なるものの、その構造や形状タイプ、パラメータ等について `VRML97 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/>`_ で定義されているもの（ `Shape <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Shape>`_ 、 `Box <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Box>`_ 、`Sphere <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Sphere>`_ 、 `Cylinder <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cylinder>`_ 、 `Cone <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cone>`_ 、 `Appearance <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Appearance>`_ 、 `Material <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Material>`_ 等）を踏襲するようにしています。VRML97はOpenHRP形式のモデルファイルでベースとしていた形式なので、それの利用経験がある方でしたら勝手をつかみやすいのではないかと思います。
+.. note:: このような形状の記述については、文法やキーの名称は多少異なるものの、その構造や形状タイプ、パラメータ等について `VRML97 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/>`_ で定義されているもの（ `Shape <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Shape>`_ 、 `Box <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Box>`_ 、`Sphere <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Sphere>`_ 、 `Cylinder <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cylinder>`_ 、 `Cone <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cone>`_ 、 `Appearance <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Appearance>`_ 、 `Material <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Material>`_ 等）をほぼ踏襲しています。VRML97はOpenHRP形式のモデルファイルでベースとしていた形式なので、それの利用経験がある方でしたら勝手をつかみやすいのではないかと思います。
 
 .. note:: 冒頭でも述べたように、本チュートリアルでは各リンクの形状について上記のような記述方式を利用してモデルファイル中にテキストとして記述します。これに関して、モデリングツールやCADツール等を用いて別途作成した形状データのファイルを用いることも可能です。そちらについては別のドキュメントで解説します。
 
@@ -389,12 +400,12 @@ Linkノードではこのelementsを用いることで、形状やセンサと�
      name: TURRET_Y
      parent: CHASSIS
      translation: [ -0.04, 0, 0.1 ]
-     jointType: revolute
-     jointAxis: -Z
-     jointRange: unlimited
-     maxJointVelocity: 90
-     jointId: 0
-     centerOfMass: [ 0, 0, 0.025 ]
+     joint_type: revolute
+     joint_axis: -Z
+     joint_range: unlimited
+     max_joint_velocity: 90
+     joint_id: 0
+     center_of_mass: [ 0, 0, 0.025 ]
      mass: 4.0
      inertia: [
        0.1, 0,   0,
@@ -413,7 +424,7 @@ Linkノードではこのelementsを用いることで、形状やセンサと�
 
 車体の上部に新たに追加された部分が、砲塔の土台部分となります。この部分はヨー軸回転をするようになっており、そのための関節も含んでいます。
 
-nameに指定したように、本リンクの名前は "TURRET_Y" としています。これは砲塔(Turret)のYaw軸であることを表しています。また、CHASSISリンクと同様に、centerOfMass, mass, inertia の剛体パラメータも記述しています。
+nameに指定したように、本リンクの名前は "TURRET_Y" としています。これは砲塔(Turret)のYaw軸であることを表しています。また、CHASSISリンクと同様に、center_of_mass, mass, inertia の剛体パラメータも記述しています。
 
 形状についても、CHASSISリンクと同様にBoxタイプのgeometoryを用いています。これの size パラメータを調整することで、砲塔の土台部分として適切なサイズの形状にしています。
 
@@ -461,7 +472,7 @@ TURRET_Yリンクは、CHASSISリンクの小リンクとしてモデリング�
 
  rotation: [ x, y, z, θ ]
 
-の形式で記述します。これは姿勢（回転）を回転軸とその軸まわりの回転角度で指定するというもので、 x, y, z に回転軸の単位ベクトルを指定し、θに回転角度を指定します。
+の形式で記述します。これは姿勢（回転）を回転軸とその軸まわりの回転角度で指定するというもので、 x, y, z に回転軸の単位ベクトルを指定し、θに回転角度を指定します。θはformat_versionが2.0の場合は常に度数法で記述します。（角度を指定する他のパラメータも基本的にはそうなります。）
 
 このパラメータの実際の使用例は後ほど紹介します。
 
@@ -470,34 +481,34 @@ TURRET_Yリンクは、CHASSISリンクの小リンクとしてモデリング�
 
 親子関係のある２つのリンクは通常関節によって接続されます。TURRET_Yリンクについても、親リンクCHASSISに対してヨー軸の関節で接続され、CHASSISに対するヨー軸向きを変えられるようになっています。これに関する情報は、TURRET_Yリンクの以下のパラメータによって記述されています。 ::
 
- jointType: revolute
- jointAxis: -Z
- jointRange: unlimited
- jointId: 0
+ joint_type: revolute
+ joint_axis: -Z
+ joint_range: unlimited
+ joint_id: 0
 
-ここではまずjointTypeにrevoluteを指定しています。これにより、親リンクとの間に回転関節が設定されることになります。（これは1自由度の回転関節であり、ヒンジとも呼ばれます。）
+ここではまずjoint_typeにrevoluteを指定しています。これにより、親リンクとの間に回転関節が設定されることになります。（これは1自由度の回転関節であり、ヒンジとも呼ばれます。）
 
-jointAxisには関節軸を指定します。ヒンジ関節の場合はその回転軸をここに指定します。指定の仕方は、X、Y、Zの文字で行う場合と、３次元ベクトルとして指定する方法があります。いずれの場合も、軸方向はリンクのローカル座標系で記述します。ここでは "-Z" を指定することで、Z軸のマイナス方向を回転軸としています。関節軸を3次元ベクトルで指定する場合は、 ::
+joint_axisには関節軸を指定します。ヒンジ関節の場合はその回転軸をここに指定します。指定の仕方は、X、Y、Zの文字で行う場合と、３次元ベクトルとして指定する方法があります。いずれの場合も、軸方向はリンクのローカル座標系で記述します。ここでは "-Z" を指定することで、Z軸のマイナス方向を回転軸としています。関節軸を3次元ベクトルで指定する場合は、 ::
 
- jointAxis: [ 0, 0, -1 ]
+ joint_axis: [ 0, 0, -1 ]
 
 となります。この書き方だと、X、Y、Z軸以外にも任意の向きを軸に設定可能です。
   
 Z軸は本モデルも含めて通常鉛直上向きに設定されるため、本関節はヨー軸回転を行う関節となります。向きはZ軸マイナス方向としているため、関節角度のプラス側が右方向への回転、マイナス側が左方向への回転となります。関節の位置はこのリンクの原点に設定されます。親リンクからみたこの位置は、先ほどtranslationで設定した位置になります。
 
-jointTypeとしては他に直動関節に対応する"prismatic"も指定可能です。この場合jointAxisには直動方向を指定します。
+joint_typeとしては他に直動関節に対応する"prismatic"も指定可能です。この場合joint_axisには直動方向を指定します。
 
-関節可動範囲は jointRange を用いて設定します。ここではunlimitedを指定し、可動範囲の制限をなしとしています。可動範囲を設定したい場合は、 ::
+関節可動範囲は joint_range を用いて設定します。ここではunlimitedを指定し、可動範囲の制限をなしとしています。可動範囲を設定したい場合は、 ::
 
- jointRange: [ -180, 180 ]
+ joint_range: [ -180, 180 ]
 
-といったように、下限と上限の値を並べて記述します。この例のように下限と上限の絶対値が同じ場合は、その絶対値で ::
+といったように、下限と上限の値を並べて記述します。関節が回転関節の場合の角度の値は、やはり度数法で記述します。ここでは可動範囲が-180°から+180°となるように指定しています。なお、下限と上限の絶対値が同じ場合は、その絶対値で ::
 
- jointRange: 180
+ joint_range: 180
 
 と書くこともできます。
 
-jointIdには、この関節に割り振るID値（0以上の整数）を設定します。ID値はChoreonoidのインタフェース上で参照したり、この値によって操作する関節を指定したりすることができます。また、ロボットを制御するプログラムからもこの値を用いて関節を特定することができます。この値は自動的には割り振られず、このようにモデル作成時に適当な値を明示的に割り振るようになっています。この際、必ずしも全ての関節にID値を割り振る必要はありません。ただし、関節角度等を配列に格納する際にそのインデックスとしてこの値が使われることもあるので、なるべく0から隙間なく連続する値を割り振るのが望ましいです。
+joint_idには、この関節に割り振るID値（0以上の整数）を設定します。ID値はChoreonoidのインタフェース上で参照したり、この値によって操作する関節を指定したりすることができます。また、ロボットを制御するプログラムからもこの値を用いて関節を特定することができます。この値は自動的には割り振られず、このようにモデル作成時に適当な値を明示的に割り振るようになっています。この際、必ずしも全ての関節にID値を割り振る必要はありません。ただし、関節角度等を配列に格納する際にそのインデックスとしてこの値が使われることもあるので、なるべく0から隙間なく連続する値を割り振るのが望ましいです。
 
 このモデルは砲塔のヨー軸、ピッチ軸の２つの関節を持ちますので、関節IDとしてそれぞれ0と1を割り振ることにします。
 
@@ -506,7 +517,7 @@ jointIdには、この関節に割り振るID値（0以上の整数）を設定�
 
 関節が正しくモデリングできているかを確認する場合、ChoreonoidのGUI上で実際にモデルの関節を動かしてみることが有効です。 :doc:`../index` - :doc:`../pose-editing` で紹介した機能を用いてこれを試してみましょう。
 
-まず、 :ref:`pose_editing_joint_slider_view` を用いて関節を動かしてみましょう。作成中のモデルをアイテムツリービュー上で選択すると、関節スライダビューの表示はに以下のようになっているかと思います。
+まず、 :ref:`pose_editing_joint_slider_view` を用いて関節を動かしてみましょう。作成中のモデルをアイテムツリービュー上で選択すると、関節変位ビューの表示は以下のようになっているかと思います。
 
 .. image:: images/jointslider0.png
 
@@ -514,7 +525,7 @@ jointIdには、この関節に割り振るID値（0以上の整数）を設定�
 
 .. image:: images/tank_turret_y_rotation.png
 
-TURRET_Yについては関節可動範囲を無制限にしているのですが、この場合関節スライダでは-360°から+360°の範囲で動かすことが可能です。可動範囲に制限を加えている場合は、その範囲内でスライダを操作することが可能となります。
+TURRET_Yについては関節可動範囲を無制限にしており、この場合関節スライダでは-360°から+360°の範囲で動かすことが可能です。可動範囲に制限を加えている場合は、その範囲内でスライダを操作することが可能となります。
 
 :ref:`sceneview_forward_kinematics` も可能です。シーンビューを編集モードに切り替えて、TURRET_Yの部分をマウスでドラッグしてください。するとマウスの動きを追従するように関節を回転できるかと思います。うまく行かない場合は、上記リンクページをみて設定等を確認してください。
 
@@ -532,16 +543,16 @@ TURRET_Yについては関節可動範囲を無制限にしているのですが
      name: TURRET_P
      parent: TURRET_Y
      translation: [ 0, 0, 0.05 ]
-     jointType: revolute
-     jointAxis: -Y
-     jointRange: [ -10, 45 ]
-     maxJointVelocity: 90
-     jointId: 1
+     joint_type: revolute
+     joint_axis: -Y
+     joint_range: [ -10, 45 ]
+     max_joint_velocity: 90
+     joint_id: 1
      elements:
        - 
          # Turret
          type: RigidBody
-         centerOfMass: [ 0, 0, 0 ]
+         center_of_mass: [ 0, 0, 0 ]
          mass: 3.0
          inertia: [
            0.1, 0,   0,
@@ -572,7 +583,7 @@ RigidBodyノード
 
 上記の記述において、 :ref:`modelfile_yaml_rigidbody_parameters` はLinkノードで行わずに、別途 RigidBody というノードを用いて行っています。
 
-RigidBodyノードは剛体パラメータの記述に特化されたノードであり、centerOfMass, mass, inertia の3つのパラメータを記述することが出来ます。これらはLinkノードで用いていたものと同じ意味を持ちます。このノードをLinkノードのelements以下に記述することでも、剛体パラメータを設定できます。逆に、RigidBodyに代わる簡略的な記法として、Linkノードにも直接剛体パラメータを記述できるようになっていると考えることもできます。
+RigidBodyノードは剛体パラメータの記述に特化されたノードであり、center_of_mass, mass, inertia の3つのパラメータを記述することが出来ます。これらはLinkノードで用いていたものと同じ意味を持ちます。このノードをLinkノードのelements以下に記述することでも、剛体パラメータを設定できます。逆に、RigidBodyに代わる簡略的な記法として、Linkノードにも直接剛体パラメータを記述できるようになっていると考えることもできます。
 
 剛体パラメータの記述にあえてRigidBodyノードを用いる利点としては、以下が挙げられます。
 
@@ -624,7 +635,7 @@ appearanceについては、先ほどと同様にBodyAppearanceをエイリア�
          rotation: [ 0, 0, 1, 90 ]
          elements:
            RigidBody:
-             centerOfMass: [ 0, 0, 0 ]
+             center_of_mass: [ 0, 0, 0 ]
              mass: 1.0
              inertia: [
                0.01, 0,   0,
@@ -706,7 +717,7 @@ Transformノードを用いる代わりに、対象となるノードに直接 t
          type: RigidBody:
          translation: [ 0.2, 0, 0 ]
          rotation: [ 0, 0, 1, 90 ]
-         centerOfMass: [ 0, 0, 0 ]
+         center_of_mass: [ 0, 0, 0 ]
          mass: 1.0
          inertia: [
            0.01, 0,   0,
@@ -720,7 +731,7 @@ Transformノードを用いる代わりに、対象となるノードに直接 t
                radius: 0.02
              appearance: *BodyAppearance
 
-Transformのtranslationとrotationを、そのままRigidBodyに持ってきただけです。こちらの方が記述がシンプルになります。内部的にはTransformノードを挿入するのと同じ処理が行われていますが、それを簡略化した記述方法だと考えてください。
+Transformのtranslationとrotationを、そのままRigidBodyに持ってきただけです。こちらの方が記述がシンプルになります。内部的にはTransformノードを挿入するのと同じ処理が行われており、それを簡略化した記述方法だと考えてください。
 
 Transformパラメータは、他にShapeノードや後ほど解説するデバイス関連のノードでも利用可能となっています。
 
@@ -732,14 +743,14 @@ Transformパラメータは、他にShapeノードや後ほど解説するデバ
 
  parent: TURRET_Y
  translation: [ 0, 0, 0.04 ]
- jointType: revolute
- jointAxis: -Y
- jointRange: [ -45, 10 ]
- jointId: 1
+ joint_type: revolute
+ joint_axis: -Y
+ joint_range: [ -45, 10 ]
+ joint_id: 1
 
 親リンクはTURRET_Yです。関節はこのリンクとの間に設置されます。また、translation によって、親リンクからのオフセットをZ軸方向に4cmとしています。
 
-関節のタイプはTURRET_Yと同様にrevoluteを指定し、回転（ヒンジ）関節としています。ここでは回転軸をピッチ軸に対応するY軸としています。ただし軸の向きはマイナス方向としていて、関節角度マイナス方向を砲身の下方向への回転、プラス方向を上方向への回転としています。また、jointRangeにより可動範囲を上側に45°、下側に10°としています。jointIdには1を設定し、TURRET_Yで設定した0とは異なる値としています。
+関節のタイプはTURRET_Yと同様にrevoluteを指定し、回転（ヒンジ）関節としています。ここでは回転軸をピッチ軸に対応するY軸としています。ただし軸の向きはマイナス方向としていて、関節角度マイナス方向を砲身の下方向への回転、プラス方向を上方向への回転としています。また、joint_rangeにより可動範囲を上側に45°、下側に10°としています。joint_idには1を設定し、TURRET_Yで設定した0とは異なる値としています。
 
 この関節の挙動も確認をしてみましょう。関節スライダビューで以下のようにTURRET_YとTURRET_Pに対応する関節２つ分のインタフェースが表示されているかと思います。
 
@@ -765,7 +776,7 @@ Choreonoidで定義されるロボットモデルにおいて、ロボットに�
 .. その砲塔ピッチ軸リンクに、
 .. 各デバイスはそれが設置されるリンクの要素として定義されます。これについても、モデルファイル中で定義することが可能です。
 
-まず、暗闇の中で活動するロボットのシミュレーションをできるように、ライト（光源）のデバイスを搭載することにしましょう。ライトについてはいくつかの種類がありますが、ここではロボットに搭載するライトとして一般的な、スポットライトを用いることとします。
+まず、暗闇の中で活動するロボットのシミュレーションをできるように、ライト（光源）のデバイスを搭載することにしましょう。ライトについてはいくつかの種類がありますが、ここではロボットに搭載するライトとして一般的なスポットライトを用いることとします。
 
 デバイスはいずれかのリンクに搭載されることになりますので、リンクのelements以下にその定義を記述します。ライトの方向を変えられるように、ライトは砲塔ピッチ軸部に搭載することにしましょう。これにより、砲塔ヨー軸、ピッチ軸の動きと連動してライトの向きも変わることになります。
 
@@ -779,9 +790,9 @@ Choreonoidで定義されるロボットモデルにおいて、ロボットに�
          name: Light
          translation: [ 0.08, 0, 0.1 ]
          direction: [ 1, 0, 0 ]
-         beamWidth: 36
-         cutOffAngle: 40
-         cutOffExponent: 6
+         beam_width: 36
+         cut_off_angle: 40
+         cut_off_exponent: 6
          attenuation: [ 1, 0, 0.01 ]
 
 ここでは type: SpotLight により、スポットライトのデバイスに対応するSpotLightノードの記述としています。記述内容のポイントを以下にまとめます。
@@ -789,7 +800,7 @@ Choreonoidで定義されるロボットモデルにおいて、ロボットに�
 * このデバイスの名前として"Light"を設定しています。デバイスを扱うプログラムからは名前を使ってデバイスにアクセスすることが多いため、デバイスにはこのように名前を設定するようにしてください。
 * デバイスノードでも :ref:`modelfile_yaml_transform_parameters` が利用可能です。ここではtranslationによってライトの設置位置を指定しています。これはTURRET_Pリンク原点からの相対位置になります。
 * SpotLightのdirectionパラメータで、光軸方向を指定しています。モデルの正面を向けたいので、X軸方向としています。
-* beamWidth, cutOffAngle, cutOffExponent のパラメータでスポットライトとの照射範囲を設定しています。また、attenuationで光源からの距離に対する光の減衰具合を設定しています。
+* beam_width, cut_off_angle, cut_off_exponent のパラメータでスポットライトとの照射範囲を設定しています。また、attenuationで光源からの距離に対する光の減衰具合を設定しています。
 
 ライト形状の記述
 ~~~~~~~~~~~~~~~~
@@ -809,13 +820,13 @@ Choreonoidで定義されるロボットモデルにおいて、ロボットに�
                radius: 0.025
              appearance:
                material:
-                 diffuseColor: [ 1.0, 1.0, 0.4 ]
-                 ambientIntensity: 0.3
-                 emissiveColor: [ 0.8, 0.8, 0.3 ]
+                 diffuse: [ 1.0, 1.0, 0.4 ]
+                 ambient: 0.3
+                 emissive: [ 0.8, 0.8, 0.3 ]
 
 ここではライトの形状としては円錐形状（Coneノード）を使用しています。これもデフォルトの座標系だと向きが合わないので、 :ref:`modelfile_yaml_transform_parameters` を利用して向きを変えています。また、光源がこの形状によって隠れてしまうことのないよう、少し後方にずらした位置としています。レンダリングにおいて影も発生させる場合にはこの点注意する必要があります。
 
-materialではemissiveColorも設定し、暗闇の中でもライトの部分が光って見えるようにしています。
+materialではemissiveも設定し、暗闇の中でもライトの部分が光って見えるようにしています。
 
 ここまで記述してモデルの再読み込みを行うと、ライトの形状が以下のように表示されるかと思います。
 
@@ -841,11 +852,11 @@ materialではemissiveColorも設定し、暗闇の中でもライトの部分�
          translation: [ 0.1, 0, 0.05 ]
          rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ] ]
          format: COLOR_DEPTH
-         fieldOfView: 65
-         nearClipDistance: 0.02
+         field_of_view: 65
+         near_clip_distance: 0.02
          width: 320
          height: 240
-         frameRate: 30
+         frame_rate: 30
          elements:
            Shape:
              rotation: [ 1, 0, 0, 90 ]
@@ -855,9 +866,9 @@ materialではemissiveColorも設定し、暗闇の中でもライトの部分�
                height: 0.02
              appearance:
                material:
-                 diffuseColor: [ 0.2, 0.2, 0.8 ]
-                 specularColor: [ 0.6, 0.6, 1.0 ]
-                 shininess: 0.6
+                 diffuse: [ 0.2, 0.2, 0.8 ]
+                 specular: [ 0.6, 0.6, 1.0 ]
+                 specular_exponent: 80
 
 カメラはCameraノードを用いて記述します。
 
@@ -869,7 +880,7 @@ materialではemissiveColorも設定し、暗闇の中でもライトの部分�
 
 COLORを指定した場合は通常のカラー画像となります。DEPTHの場合は、距離画像が得られます。COLOR_DEPTHの場合、これら両方の画像を同時に取得することができます。これはKinect等のRGBDカメラのシミュレーションを想定しています。
 
-また、画像のサイズ（解像度）をwidthとheightで指定します。ここでは横320 x 縦240の解像度としています。さらに、画像取得のフレームレートをframeRateに設定します。
+また、画像のサイズ（解像度）をwidthとheightで指定します。ここでは横320 x 縦240の解像度としています。さらに、画像取得のフレームレートをframe_rateに設定します。
 
 
 カメラ位置姿勢の記述
@@ -905,7 +916,7 @@ rotationによる姿勢の指定方法は :ref:`modelfile_yaml_offset_position` 
 
 なお、カメラの定義にて ::
 
- nearClipDistance: 0.02
+ near_clip_distance: 0.02
 
 という記述をしています。これはカメラ画像内に収める外界の範囲をカメラ中心点より少し前方にずらすための記述です。今回カメラの形状を付与していることにより、そのままではその形状によって前方の視界が遮られることになってしまいます。この記述を入れることで、カメラ形状の外側をカメラ画像に映すことが可能となります。
 
@@ -928,10 +939,9 @@ rotationによる姿勢の指定方法は :ref:`modelfile_yaml_offset_position` 
      name: TRACK_L
      parent: CHASSIS
      translation: [ 0, 0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
+     center_of_mass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [
        0.02, 0,    0,
@@ -941,7 +951,7 @@ rotationによる姿勢の指定方法は :ref:`modelfile_yaml_offset_position` 
        Shape: &TRACK 
          geometry:
            type: Extrusion
-           crossSection: [
+           cross_section: [
              -0.22, -0.1,
               0.22, -0.1,
               0.34,  0.06,
@@ -951,7 +961,7 @@ rotationによる姿勢の指定方法は :ref:`modelfile_yaml_offset_position` 
            spine: [ 0, -0.05, 0, 0, 0.05, 0 ]
          appearance:
            material:
-             diffuseColor: [ 0.2, 0.2, 0.2 ]
+             diffuse: [ 0.2, 0.2, 0.2 ]
 
 この状態でモデルの再読み込みを行うと、以下のように左側のクローラがモデルに加わるかと思います。
 
@@ -965,15 +975,16 @@ rotationによる姿勢の指定方法は :ref:`modelfile_yaml_offset_position` 
 
 を記述することで、本リンクの位置を車体の左側に設定しています。
 
-クローラは本来、金属やゴムでできた履帯を繋ぎあわせたベルト状のものを内部のホイールで駆動して回すという機構ですが、そのような複雑な機構をシミュレートするのは一般的には難しい課題です。そこで今回モデリングするクローラは、リンクひとつで表される擬似的なクローラとします。リンクひとつなのでベルト状の履帯はなく、クローラ全体がひとつの剛体で表現されています。踏破能力は正確なクローラには全く及びませんが、クローラと環境との接触部分に推進力を与えることで、ある程度クローラに近い動きを実現することが可能です。この詳細は :doc:`../../simulation/pseudo-continuous-track` を参照してください。
+クローラは本来、金属やゴムでできた履帯を繋ぎあわせたベルト状のものを内部のホイールで駆動して回すという機構であり、そのような複雑な機構をシミュレートするのは一般的には難しい課題です。そこで今回モデリングするクローラは、リンクひとつで表される擬似的なクローラとします。リンクひとつなのでベルト状の履帯はなく、クローラ全体がひとつの剛体で表現されています。踏破能力は正確なクローラには全く及びませんが、クローラと環境との接触部分に推進力を与えることで、ある程度クローラに近い動きを実現することが可能です。この詳細は :doc:`../../simulation/pseudo-continuous-track` を参照してください。
 
-このような擬似クローラ（簡易クローラ）の場合、関節が動くわけではありませんので、リンクのjointTypeには "fixed" を指定します。
+リンクをこのような擬似クローラ（簡易クローラ）として使用する場合は、joint_typeに "pseudo_continuous_track" を指定します。
 
-jointAxis には想定されるクローラのホイールの回転軸方向を指定します。この軸に対して右ねじ正方向の回転が前進方向となります。ここではY軸を回転軸としています。
+.. note:: 以前はjoint_typeにfixedを指定して、actuation_modeパラメータに "jointSurfaceVelocity" 設定することで、疑似クローラの設定としていました。この記述でも動作しますが、今後は上記のようにjoint_typeで設定するようにしてください。
 
-そして actuationMode に "jointSurfaceVelocity" 設定します。このようにしておくと、このリンクが擬似クローラとして駆動されることになります。（このパラメータはモデル使用時に制御プログラム側でも設定できるので、必ずしもモデルファイルに記述しておく必要はありませんが、擬似クローラの場合はモデルファイルにも書いておいたほうが分かりやすくてよいかと思います。）
+joint_axis には想定されるクローラのホイールの回転軸方向を指定します。この軸に対して右ねじ正方向の回転が前進方向となります。ここではY軸を回転軸としています。
 
-クローラの形状は "Extrusion"タイプの幾何形状ノードによって記述しています。これは押し出し形状とも呼ばれるもので、まず断面の形状をcrossSectionで指定し、それをspineの記述に従って押し出すようなかたちで立体形状を記述するものです。ここではクローラの断面を台形とし、それをY軸方向に押し出して幅を持たせた形状としています。この記述方式は本々VRML97で定義されているものであり、その詳細は `VRML97のExtrusionノードの仕様 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_ を参照いただければと思います。
+
+クローラの形状は "Extrusion"タイプの幾何形状ノードによって記述しています。これは押し出し形状とも呼ばれるもので、まず断面の形状をcross_sectionで指定し、それをspineの記述に従って押し出すようなかたちで立体形状を記述するものです。ここではクローラの断面を台形とし、それをY軸方向に押し出して幅を持たせた形状としています。この記述方式は本々VRML97で定義されているものであり、その詳細は `VRML97のExtrusionノードの仕様 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_ を参照いただければと思います。
 
 ここで記述した形状にも :ref:`modelfile_yaml_anchor` を行います。ここでは "TRACK" というアンカーをつけて、右側のクローラの形状としても使い回すことにします。
 
@@ -989,10 +1000,9 @@ jointAxis には想定されるクローラのホイールの回転軸方向を�
      name: TRACK_R
      parent: CHASSIS
      translation: [ 0, -0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
+     center_of_mass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [
        0.02, 0,    0,

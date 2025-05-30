@@ -72,6 +72,8 @@ Archiveを含む「YAML型構造化データクラス群」の使用にあたっ
 
 * `WikipediaのYAMLのページ <https://en.wikipedia.org/wiki/YAML>`_
 
+.. 英訳指示： 「プログラマーのためのYAML入門（初級編）」は、英語版では "Learn X in Y minutes" https://learnxinyminutes.com/yaml/ に置き換えてください。また、Wikipediaの方を最初に挙げるようにしてください。
+
 「YAML型構造化データクラス群」はこのYAMLの構造をC++のクラスで表現したもので、Choreonoid SDKのUtilライブラリで定義・実装されています。YAMLのテキストを読み込んでこのクラス群のオブジェクトを生成するパーザや、このクラス群のオブジェクトをYAMLのテキストとして出力するライタも用意されており、YAMLファイルの読み込みや書き込みも容易に行なえます。
 
 このクラス群は以下のクラスで構成されます。

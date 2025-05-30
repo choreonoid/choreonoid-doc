@@ -211,4 +211,3 @@ AGXDynamicsは、三角形メッシュの形状を凸形状に分割する機能
 サンプルを実行すると、凸分割が実行され、複数の凸形状で構成された形状となります。
 
 .. image:: images/convexdecomposition.png
-   :scale: 70%

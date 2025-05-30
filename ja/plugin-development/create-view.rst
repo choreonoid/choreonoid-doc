@@ -38,7 +38,7 @@ Viewクラスでは初期化処理としてビューの機能に必要なGUI要�
 
 *  **void setLayout(QLayout* layout, double leftMarginRatio, double topMarginRatio, double rightMarginRatio, double bottomMarginRatio)**
 
-  * setLayoutと同様にビューに最上位のレイアウトを設定しますが、上下左右の各境界からのマージンを個別に設定できます。
+  * setLayout関数の引数が異なるバージョンです。こちらの関数では上下左右の各境界からのマージンを個別に設定できます。
 
 これらの関数はQWidgetのsetLayout関数にマージン調整の機能を追加したものです。
 ビューの場合はその領域の大部分がひとつのウィジェットで占められることも多く、その場合は境界からのマージンを無くした方が自然な表示になります。そのような場合も含めてマージンの調整をしやすくするために上記の関数が用意されています。

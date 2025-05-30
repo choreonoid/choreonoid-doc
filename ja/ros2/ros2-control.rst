@@ -26,6 +26,8 @@ choreonoid_rosパッケージのリポジトリを最新版に更新し、ロー
 
 この状態で :ref:`install-choreonoid-ros2-dependencies` と、 :ref:`choreonoid_rosのビルド <ros2_colcon_build_command>` を実行すると、ros2_controlを利用できるようになります。
 
+.. _ros2_control_item:
+
 ROS2Controlアイテム
 -------------------
 

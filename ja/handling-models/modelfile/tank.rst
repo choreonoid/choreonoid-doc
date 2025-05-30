@@ -5,19 +5,18 @@ SimpleTankモデルファイル全記述内容
 .. highlight:: YAML
    :linenothreshold: 5
 
-:doc:`modelfile-newformat` で解説したTankモデルを記述しているモデルファイルの全テキストを以下に掲載します。本モデルは Choreonoid インストール先の "share/model/tank/simpletank.body" というファイルに格納されています。 ::
+:doc:`modelfile-newformat` で解説したTankモデルを記述しているモデルファイルの全テキストを以下に掲載します。本モデルは Choreonoid インストール先の "share/model/tank/SimpleTank.body" というファイルに格納されています。 ::
 
  format: ChoreonoidBody
- formatVersion: 1.0
- angleUnit: degree
+ format_version: 2.0
  name: SimpleTank
  
  links:
    -
      name: CHASSIS
      translation: [ 0, 0, 0.1 ]
-     jointType: free
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: free
+     center_of_mass: [ 0, 0, 0 ]
      mass: 8.0
      inertia: [
        0.1, 0,   0,
@@ -30,19 +29,19 @@ SimpleTankモデルファイル全記述内容
            size: [ 0.45, 0.3, 0.1 ]
          appearance: &BodyAppearance
            material:
-             diffuseColor: [ 0, 0.6, 0 ]
-             specularColor: [ 0.2, 0.8, 0.2 ]
-             shininess: 0.6
+             diffuse: [ 0, 0.6, 0 ]
+             specular: [ 0.2, 0.8, 0.2 ]
+             specular_exponent: 80
    -
      name: TURRET_Y
      parent: CHASSIS
      translation: [ -0.04, 0, 0.1 ]
-     jointType: revolute
-     jointAxis: -Z
-     jointRange: unlimited
-     maxJointVelocity: 90
-     jointId: 0
-     centerOfMass: [ 0, 0, 0.025 ]
+     joint_type: revolute
+     joint_axis: -Z
+     joint_range: unlimited
+     max_joint_velocity: 90
+     joint_id: 0
+     center_of_mass: [ 0, 0, 0.025 ]
      mass: 4.0
      inertia: [
        0.1, 0,   0,
@@ -58,16 +57,16 @@ SimpleTankモデルファイル全記述内容
      name: TURRET_P
      parent: TURRET_Y
      translation: [ 0, 0, 0.05 ]
-     jointType: revolute
-     jointAxis: -Y
-     jointRange: [ -10, 45 ]
-     maxJointVelocity: 90
-     jointId: 1
+     joint_type: revolute
+     joint_axis: -Y
+     joint_range: [ -10, 45 ]
+     max_joint_velocity: 90
+     joint_id: 1
      elements:
        - 
          # Turret
          type: RigidBody
-         centerOfMass: [ 0, 0, 0 ]
+         center_of_mass: [ 0, 0, 0 ]
          mass: 3.0
          inertia: [
            0.1, 0,   0,
@@ -87,7 +86,7 @@ SimpleTankモデルファイル全記述内容
          rotation: [ 0, 0, 1, 90 ]
          elements:
            RigidBody:
-             centerOfMass: [ 0, 0, 0 ]
+             center_of_mass: [ 0, 0, 0 ]
              mass: 1.0
              inertia: [
                0.01, 0,   0,
@@ -105,9 +104,9 @@ SimpleTankモデルファイル全記述内容
          name: Light
          translation: [ 0.08, 0, 0.1 ]
          direction: [ 1, 0, 0 ]
-         beamWidth: 36
-         cutOffAngle: 40
-         cutOffExponent: 6
+         beam_width: 36
+         cut_off_angle: 40
+         cut_off_exponent: 6
          attenuation: [ 1, 0, 0.01 ]
          elements:
            Shape:
@@ -119,22 +118,21 @@ SimpleTankモデルファイル全記述内容
                radius: 0.025
              appearance:
                material:
-                 diffuseColor: [ 1.0, 1.0, 0.4 ]
-                 ambientIntensity: 0.3
-                 emissiveColor: [ 0.8, 0.8, 0.3 ]
+                 diffuse: [ 1.0, 1.0, 0.4 ]
+                 ambient: 0.3
+                 emissive: [ 0.8, 0.8, 0.3 ]
        - 
          type: Camera
          name: Camera
          translation: [ 0.1, 0, 0.05 ]
          rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ] ]
          format: COLOR_DEPTH
-         fieldOfView: 65
+         field_of_view: 65
          width: 320
          height: 240
-         frameRate: 30
+         frame_rate: 30
          elements:
            Shape:
-             translation: [ 0, 0, 0.005 ]
              rotation: [ 1, 0, 0, 90 ]
              geometry:
                type: Cylinder
@@ -142,16 +140,15 @@ SimpleTankモデルファイル全記述内容
                height: 0.02
              appearance:
                material:
-                 diffuseColor: [ 0.2, 0.2, 0.8 ]
-                 specularColor: [ 0.6, 0.6, 1.0 ]
-                 shininesss: 0.6
+                 diffuse: [ 0.2, 0.2, 0.8 ]
+                 specular: [ 0.6, 0.6, 1.0 ]
+                 specular_exponent: 80
    -
      name: TRACK_L
      parent: CHASSIS
      translation: [ 0, 0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
      centerOfMass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [
@@ -162,7 +159,7 @@ SimpleTankモデルファイル全記述内容
        Shape: &TRACK 
          geometry:
            type: Extrusion
-           crossSection: [
+           cross_section: [
              -0.22, -0.1,
               0.22, -0.1,
               0.34,  0.06,
@@ -172,14 +169,13 @@ SimpleTankモデルファイル全記述内容
            spine: [ 0, -0.05, 0, 0, 0.05, 0 ]
          appearance:
            material:
-             diffuseColor: [ 0.2, 0.2, 0.2 ]
+             diffuse: [ 0.2, 0.2, 0.2 ]
    -
      name: TRACK_R
      parent: CHASSIS
      translation: [ 0, -0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
      centerOfMass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [

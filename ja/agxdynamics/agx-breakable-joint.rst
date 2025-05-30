@@ -32,12 +32,10 @@ DoubleArmを操作し、ドアを掴みながら引くとヒンジ拘束がな�
 * **一定時間一定以上の力を受け続けた時(breakType: force)**
 
 .. image:: images/breakable_joint_breaklimitforce.png
-   :scale: 70%
 
 * **受けた力積が閾値を超えた時(breakType: impulse)**
 
 .. image:: images/breakable_joint_breaklimitimpulse.png
-   :scale: 70%
 
 breakTypeは力の受け方で使い分けをします。
 例えば、:ref:`ヒンジで取り付けられたドアを取り外すようなシーン <agx_breaking_door>` ではforceが適しています。
@@ -82,7 +80,6 @@ AGXBrekableJointは以下のように記述し、利用します。
 6. 必要に応じてvalidAxisを設定します。validAxisは関節軸のどの軸をbreakLimitの計算に利用するかを指定することができます。例えば、下図ではvalidAxisを[0, 1, 0]とすることで、XZ軸方向のに加えられた力は考慮しないということになります。
 
 .. image:: images/breakable_joint_validaxis.png
-   :scale: 50%
 
 
 パラメータの説明
