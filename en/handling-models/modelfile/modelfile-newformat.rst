@@ -1,8 +1,7 @@
+Body File Tutorial
+==================
 
-Body file tutorial
-==========================
-
-This page contains a tutorial describing how to format Body files, the standard model file used on Choreonoid.
+This page provides a tutorial on how to write "Body files," which are Choreonoid's standard model file format.
 
 .. contents::
    :local:
@@ -12,149 +11,149 @@ This page contains a tutorial describing how to format Body files, the standard 
 
 .. _bodyfile-tutorial-simple-tank-model:
 
-SimpleTank model
----------------------
+SimpleTank Model
+----------------
 
-The model we will use is the “SimpleTank” model shown below.
+The model we will be working with is the "SimpleTank" model shown below.
 
 .. image:: images/tank.png
 
-This model contains two rotating joints used to move the gun turret and gun barrel, with a camera and light acting as onboard devices.
+This is a model composed of two rotational joints that move the turret and gun barrel, and two crawlers for movement, with a camera and light mounted as devices.
 
-SimpleTank is a simplified version of the “Tank,” a standard sample of a crawler-based mobile robot. The former’s basic structure is the same as the Tank model. For more on the Tank model, please refer to these files:
+SimpleTank is a simplified version of the "Tank" model, which is a standard sample of a crawler-type mobile robot, and has the same basic structure as the Tank model. Sample projects such as:
 
 * TankJoystick.cnoid
 * TankVisionSensors.cnoid
 
-These are packaged as sample projects with Choreonoid.
+are included in Choreonoid itself for the Tank model.
 
-This manual contains a :doc:`../../simulation/tank-tutorial/index` as a sample summarizing how to conduct a simulation using this model.
+This manual also includes :doc:`../../simulation/tank-tutorial/index`, which explains how to perform simulations using this model.
 
-Basic model layout
----------------------------
+Basic Model Structure
+---------------------
 
-The SimpleTank model comprises the five parts shown in the figure below.
+The SimpleTank model consists of five parts as shown in the figure below.
 
 .. image:: images/tank_decomposed.png
 
-The base is composed of the tank body. On top of the body are installed the gun turret and gun barrel. This piece acts as a foundation for the turret and consists of a rotating yaw axis and, on top of this, the gun barrel and a separate pitch axis attached to the barrel. Each side of the body is outfitted with crawlers used for movement.
+The base part is the chassis. The upper part of the chassis is equipped with a turret and gun barrel. This part consists of two components: a base for the turret that performs yaw axis rotation, and a part mounted on top of it that performs pitch axis rotation along with the gun barrel. Crawler mechanisms for movement are attached to the left and right sides of the chassis.
 
-These five parts are modeled together as “links.” The body piece acts as the core of the model and is modeled as a “root link.” Each model must have a single root link defined. The two links on the gun turret are modeled as rotating joints. The crawlers are modeled as links that correspond to a :doc:`../../simulation/pseudo-continuous-track` .
+These five parts are modeled as "links." The chassis part is the central part of the model and is modeled as the "root link." Each model must have exactly one root link defined. The two turret links are each modeled as rotational joints. The crawler parts are modeled as links corresponding to :doc:`../../simulation/pseudo-continuous-track`.
 
-The tiered structure (parent-child relationship) between the links is as follows: ::
+The hierarchical structure (parent-child relationships) between these links is as follows: ::
 
- - Body (root)
-     + turret yaw axis (rotating joint)
-            + turret pitch axis (rotating joint)
-     + left crawler
-     + right crawler
+ - Chassis (root)
+     + Turret yaw axis part (rotational joint)
+            + Turret pitch axis part (rotational joint)
+     + Left crawler
+     + Right crawler
 
-This tutorial describes the shape of each link as text declarations in the model file. This allows you to create a finished model using text files alone and not need figural data created through CAD or modeling tools. By the same token, you can also choose to use data created through said CAD or modeling tools. For details on this, please refer to the section on  :doc:`tank-blender` .
+In this tutorial, we will describe the shape of each link as text directly in the model file. This allows us to complete the modeling with just text files, without using shape data created with CAD or modeling tools. However, it is also possible to use shape data created with CAD or modeling tools. Please refer to :doc:`tank-blender` for more information on this.
 
-Preparing the model file
--------------------------------------
+Preparing the Model File
+------------------------
 
-First, we create a Body format model file as a text file. The file extension is normally saved as “.body.”
+Body format model files are created as text files. The file extension is usually ".body".
 
-To begin creating a model file, first create an empty text document in a text editor and save the extension as “.body,” with a filename of your choice. For our purposes, we will save the file as “simpletank.body.” A finished version of this file can be found in the Choreonoid /share directory under “/model/tank.” In this tutorial, we refer to that file and explain it in detail to show you the steps of how to create the finished file from start to finish.
+To start creating a model file, first create an empty text file using a text editor and save it with an appropriate filename with the ".body" extension. In this case, we'll save it as "simpletank.body". The completed file is stored in the "model/tank" directory of Choreonoid's share directory. This tutorial will explain the contents of that file while showing an example of the creation process leading to completion.
 
-You can find a summary of the steps below in the section on  :doc:`tank` .
+The complete description can be found in :doc:`tank`.
 
-.. note:: If creating a model file using the default text editor in Ubuntu (gedit), select View from the main menu, then Highlight Mode. On the dialog that appears, select YAML to toggle syntax highlighting for the YAML format, allowing for easier editing.
+.. note:: When creating model files using Ubuntu's standard text editor "gedit," selecting "YAML" in the settings dialog displayed from the main menu's "View" - "Highlight Mode" will provide syntax highlighting suitable for YAML format, making it easier to edit.
 
-YAML
-------------
+About YAML
+----------
 
-Body files use YAML as the basis for their notation. You can obtain an understanding in the essentials of practical YAML notation by reading the below. For more details, please refer to the `YAML documentation <http://www.yaml.org/spec/1.2/spec.html>`_  or various manuals available on the subject.
+Body files use YAML as the base description format. While you can generally understand how to write YAML by reading the explanation below, for more detailed information, please refer to the `YAML specification <http://www.yaml.org/spec/1.2/spec.html>`_ and various tutorial articles.
 
-The below is a good resource that is easy to understand.
+Writing the Header
+------------------
 
-* `Programmer's Guide to YAML (Beginner) <http://magazine.rubyist.net/?0009-YAML>`_
-
-Header format
---------------------
-
-We begin by using YAML mapping to create a header for the model file. ::
+First, write the following as the model file header using YAML mapping: ::
 
  format: ChoreonoidBody
- formatVersion: 1.0
- angleUnit: degree
- name: Tank
+ format_version: 2.0
+ name: SimpleTank
 
-The parameter on the last line allows Choreonoid to recognize this file as a model file. As of this writing, the formatVersion should be set to 1.0. If future changes are made to the Choreonoid specifications, version numbers will be used in order to distinguish between them.
+The first line allows this file to be recognized as a Choreonoid model file.
 
-“angleUnit” is used to specify the unit of measure of angle joints in the model file. In this case, we have used “degree,” so the angle is declared in degrees. If you want to use radians, enter “radian” here. Under normal circumstances, using degree should be easier.
+format_version is used to distinguish between different versions of the description format.
+Currently, version 2.0 is the latest, so specify 2.0 unless there is a specific reason not to.
 
-The name of the model is specified in the “name” field.
+The model name is written in "name". Here we set it as "SimpleTank".
+
+.. note:: Keys used in Body files are basically named in "snake case" format. This means writing all key strings in lowercase and connecting multiple words with underscores (_). The "format_version" above is also in this format. However, in older versions of Choreonoid, all keys were named in "lower camel case." This capitalizes the first letter of each word boundary, resulting in descriptions like "formatVersion". Previously defined lower camel case keys can still be read for compatibility, but please use the new format going forward. Note that some keys are still only defined in lower camel case.
+
+.. note:: When the description format version is 1.0, you can also specify the unit for angles described in the Body file. Specifically, if you specify "degree" for "angleUnit", it uses degrees, and if you specify "radian", it uses radians. However, this can cause confusion, so version 2.0 always uses degrees for description.
 
 .. _modelfile_yaml_links:
 
-Link notation
-----------------------
+Writing Links
+-------------
 
-The link data contained by models is declared as follows using “links:” ::
+Information about the links that the model has is written in "links:" as follows: ::
 
  links:
    -
-     Link 1 (root link) notation
+     Description of link 1 (root link)
    -
-     Link 2 notation
+     Description of link 2
    -
-     Link 3 notation
+     Description of link 3
    ...
 
-In this way, you can declare a desired number of links in the form of a YAML list. The code for each link is referred to as a “Link node.” The final Link node given acts as the model’s root link.
+This way, you can describe any number of links as a YAML list. The description part of each link is called a "Link node." The first Link node described is considered the model's root link.
 
 .. _modelfile_yaml_link_node:
 
-Link nodes
----------------------
+Link Node
+---------
 
-Link nodes are described using the YAML mapping format. Parameters like the below can be used as mapping elements.
+Link nodes are written in YAML mapping format. The following parameters are available as mapping elements.
 
 .. list-table::
  :widths: 20, 80
  :header-rows: 1
 
  * - Key
-   - Details
+   - Content
  * - name
-   - The link name.
+   - Link name
  * - parent
-   - The parent link. Specified by calling the name of the parent link (the string declared in the name field). This is not used for root links.
+   - Parent link. Specified by the parent link's name (string written in name). Not used for root link
  * - translation
-   - Location relative to the parent link for the link-local frame. For root links, used as the default position at import.
+   - Relative position of this link's local frame from parent link. For root link, used as default position when loading model
  * - rotation
-   - The orientation relative to the parent link for the link-local frame. The orientation is expressed (Axis-Angle format) as four values corresponding to the rotational axes and angles. For root links, used as the default position at import.
- * - jointType
-   - The joint type. Specify either **fixed**, **free** (no fixed root link), **revolute** (rotating joint), **prismatic** (direct joint), or **pseudoContinousTrack** (simplified caterpillar track)
- * - jointAxis
-   - The joint axis. Specify the axis joint as a list containing the three elements of the 3D vector. Use unit vectors for the value here. Where the joint axis corresponds to any of the X, Y, or Z coordinates for the link-local coordinates, you can also declare this using the corresponding letter for that axis (X, Y, or Z).
- * - jointRange
-   - The range of motion of the joints. Give a list containing the two values of maximum and minimum. Declaring the value as “unlimited” allows for removing range of motion restrictions. Where the maximum and minimum values are the same, with the flags respectively being the negative and positive signs, you can also declare just one absolute value (as a scalar value).
- * - jointId
-   - The joint ID. Specify an integer value greater than zero. You can specify any value so long as it does not overlap with another value in the model. If the link is not a joint (if the root link or jointType are fixed), or if you do not need access via IDs, you can omit this.
- * - centerOfMass
-   - The position of the center of gravity. Set using link-local coordinates.
+   - Relative orientation of this link's local frame from parent link. Orientation is expressed with 4 numbers corresponding to rotation axis and rotation angle (Axis-Angle format). For root link, used as default orientation when loading model
+ * - joint_type
+   - Joint type. Specify one of **fixed** (fixed), **free** (unfixed root link), **revolute** (rotational joint), **prismatic** (linear joint), **pseudo_continuous_track** (simple continuous track)
+ * - joint_axis
+   - Joint axis. Specify the direction of the joint axis as a list of 3 elements of a 3D vector. The value should be a unit vector. If the joint axis matches any of X, Y, Z in the link's local coordinates, it can also be specified by the corresponding axis character (one of X, Y, Z).
+ * - joint_range
+   - Joint range of motion. List the minimum and maximum values as two values. By writing the value as unlimited, you can remove range restrictions. If the absolute values of minimum and maximum are the same with negative and positive signs respectively, you can write just the absolute value (as a scalar value)
+ * - joint_id
+   - Joint ID value. Specify an integer value of 0 or greater. Any value that doesn't duplicate within the model can be specified. If the link is not a joint (root link or joint_type is fixed) or if access by ID value is not needed, it doesn't need to be specified
+ * - center_of_mass
+   - Center of mass position. Specified in link local coordinates
  * - mass
-   - The mass in kg.
+   - Mass [kg]
  * - inertia
-   - The moment of inertia. Given as a list of nine inertia tensors. Due to the symmetry of inertia tensors, you need only list the six elements of the upper triangle.
+   - Moment of inertia. List 9 elements of the inertia tensor matrix. Due to the symmetry of the inertia tensor, you may list only the 6 elements of the upper triangular part.
  * - elements
-   - Give the child nodes that are constituent elements of the link
+   - Describe child nodes that constitute the link's components
 
 
-Body link notation
--------------------------
+Writing the Chassis Link
+------------------------
 
-We begin by setting the root links that correspond to the tank body for this model. Declare the corresponding Link node below “links,” as below. ::
+Let's first write the root link corresponding to the chassis part of this model. Write the corresponding Link node under links as follows: ::
 
  links:
    -
      name: CHASSIS
      translation: [ 0, 0, 0.1 ]
-     jointType: free
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: free
+     center_of_mass: [ 0, 0, 0 ]
      mass: 8.0
      inertia: [
        0.1, 0,   0,
@@ -167,80 +166,82 @@ We begin by setting the root links that correspond to the tank body for this mod
            size: [ 0.45, 0.3, 0.1 ]
          appearance: &BodyAppearance
            material:
-             diffuseColor: [ 0, 0.6, 0 ]
-             specularColor: [ 0.2, 0.8, 0.2 ]
-             shininess: 0.6
+             diffuse: [ 0, 0.6, 0 ]
+             specular: [ 0.2, 0.8, 0.2 ]
+             specular_exponent: 80
 
-In YAML, indents on each line prescribe the structure of the data, so ensure that the indentation you see above is preserved when you write your own code.
+Since indentation on each line also defines the data structure in YAML, be careful to maintain proper indentation alignment in the above description.
 
-For the link definitions, begin by setting a name used to identify the link. Here, we use ::
+In the link definition, first set a name to identify the link. Here, we have: ::
 
  name: CHASSIS
 
-This gives it the name “CHASSIS.”
+which sets the name to "CHASSIS".
 
-Checking a model in progress
--------------------------------------
+Checking the Model Being Edited
+-------------------------------
 
-We have not set a root link yet, but the model is already functioning in this state. You can now import the file in progress into Choreonoid, render the model, and check whether you have written it correctly. From the main menu, select File > Import > Body, then select the corresponding file in the dialog box that appears. On the dialog, you can enable the option “Add a check on the Item Tree View,” or alternately click the checkbox for the item after import. This will display the model on the Scene View as below.
+Although we have only written the root link, this already constitutes a valid model. Let's load the file being edited in Choreonoid to display it and check if it's written correctly. Select "File" - "Load" - "Body" from the main menu and select the target file in the dialog that appears. If you enable "Check in item tree view" on the dialog or click the item's checkbox after loading, it should be displayed in the scene view as follows.
 
 .. image:: images/tank_chassis.png
 
-If there is an error on import, or if the model is imported but does not render properly, check your text file to see if there are any problems in your notation.
+If an error occurs when loading the item or if it doesn't display properly after loading, please check the content written so far.
 
-If you want to re-import the model file after editing it and that file is already imported as a body item, you can use the Re-Import feature to refresh the view. This can be done by either of the methods below.
+When reloading a model file after modification, if the previous file is already loaded as a body item, you can easily reload it using the item's "reload function". This can be done by either of the following operations:
 
-* Select the corresponding item on the Item Tree View and press **"Ctrl + R"** .
-* Right-click on the corresponding item in the Item Tree View and select Re-Import.
+* Select the target item in the item tree view and press **"Ctrl + R"**.
+* Right-click the target item in the item tree view and select "Reload" from the menu that appears.
 
-Re-importing a model will refresh the view with the updated version of the file (provided there are no import errors), and the current item will be replaced with its latest version. If there have been changes to the shape of the model in the file, the Scene View display will immediately reflect this. You can use this feature to edit your model file directly as a text file while updating it in the live view, letting you work more efficiently. We will use the Re-Import feature several times in this tutorial, so you should learn and remember it.
+When you reload, the updated file is reloaded immediately, and (if there are no loading errors) the current item is replaced with it. If there are changes to the shape or other aspects in the updated file, the display in the scene view immediately reflects this. Using this function, you can edit model files relatively efficiently while directly editing text files. You will perform this "reload" operation many times as you progress through this tutorial, so please remember it.
 
-Notation unique to root links
---------------------------------------
 
-The chassis link is declared as: ::
+Root Link-Specific Description
+------------------------------
+
+In the CHASSIS link, we have: ::
 
  translation: [ 0, 0, 0.1 ]
 
-This specifies its starting coordinates at the time of import. (Strictly speaking, these correspond to the origin of the root link in the world coordinate system.)
+which sets the initial position when loading the model. (To be precise, this is the position of the root link origin in the world coordinate system.)
 
-The translation parameter is generally used to describe the relative position from a parent link, but root links do not have parent links. Instead, their relative position from the world coordinate system’s starting point at the time the model is imported is used. It is also possible to use rotation to specify the starting orientation. If you are not concerned with the starting position, you do not have to set these parameters.
+translation is normally a parameter that represents the relative position from the parent link, but the root link has no parent link. Instead, it is considered as the relative position from the world coordinate origin when loading the model. Note that the initial orientation can also be set using rotation. If you don't care about the initial position, you don't need to set these parameters.
 
-Setting the Z-coordinate value to 0.1 here allows you to set the root link starting position 0.1[m] above the default Z axis. This lets you utilize the root link starting point as the center of the tank body while also allowing the bottom of the crawlers to sit flush at Z=0 when imported. In most environment models, this coordinate is treated as the floor/ground, so the above settings allow for easily fitting the model to that practice.
+Here, by setting the Z coordinate value to 0.1, we set the initial position of the root link to be raised 0.1[m] in the Z-axis direction. This allows the bottom surface of the crawlers to coincide exactly with the Z=0 plane when loaded, while keeping the root link origin at the center of the chassis. Since environmental models often use this as the floor surface, the above setting makes it easy to align with that.
 
-Next is the ::
+Next, with: ::
 
- jointType: free
+ joint_type: free
 
-notation. This tells the system that the model can freely move about the space.
+we set that this model is a model that can move freely in space.
 
-The jointType parameter is generally used to specify the type of joints connecting parent and child links, but its meaning varies slightly in the case of root links -- it specifies whether the link is fixed to the environment or not. Declaring a link as “fixed” will fix it to the environment. For manipulators and other items where the base is fixed to the ground, you can use this functionality. For models like the one in this tutorial, which are not fixed to a specific point, declare the link as “free.”
+joint_type is normally a parameter that specifies the type of joint connecting parent and child links, but for the root link the meaning is slightly different - it specifies whether the link is fixed to the environment or not. If you specify "fixed" here, the link becomes fixed, so set it that way for manipulators whose base is fixed to the floor. On the other hand, for models like this one that are not fixed to a specific location, specify "free" here.
 
 
 .. _modelfile_yaml_rigidbody_parameters:
 
-Rigid body parameters
-------------------------------
+Writing Rigid Body Parameters
+-----------------------------
 
-Links are normally modeled as rigid bodies. :ref:`modelfile_yaml_link_node` used to specify the above include centerOfMass, mass, and inertia. The CHASSIS link uses the below notation for these.
+Each link is usually modeled as a rigid body. The :ref:`modelfile_yaml_link_node` for describing this information includes center_of_mass, mass, and inertia. For the CHASSIS link, these are written as follows:
 
 .. code-block:: yaml
  :dedent: 0
 
-     centerOfMass: [ 0, 0, 0 ]
+     center_of_mass: [ 0, 0, 0 ]
      mass: 8.0
      inertia: [
        0.1, 0,   0,
        0,   0.1, 0,
        0,   0,   0.5 ]
 
-centerOfMass takes the center of gravity for the link-local coordinates. The link-local coordinate start point for the CHASSIS link is set as the center of the tank body, with the center of gravity also set as the same point.
+center_of_mass describes the center of mass position in the link's local coordinates. The local coordinate origin of the CHASSIS link is set at the center of the chassis, and the center of mass is also set to coincide with it.
 
-mass takes the mass, and inertia takes a matrix element for the inertia tensor.
+mass specifies the mass, and inertia specifies the matrix elements of the inertia tensor.
 
-We have put an arbitrary value in the inertia tensor here, but you should use a proper calculation or CAD tool to set the correct value.
+Here we have set appropriate values for the inertia tensor.
+In practice, please set appropriate values using proper calculations or CAD tools.
 
-Inertia tensors are a symmetric matrix, so you can simply include the six elements of the upper triangle. In this case, the above value is written as:
+Since the inertia tensor is a symmetric matrix, it's OK to write only the 6 elements of the upper triangular part. In this case, the above values can be written as:
 
 .. code-block:: yaml
  :dedent: 0
@@ -250,17 +251,15 @@ Inertia tensors are a symmetric matrix, so you can simply include the six elemen
             0.1, 0,
                  0.5 ]
 
-.
-
-The rigid body parameter can also make use of the “RigidBody” node to treat it as a standalone entity. This will be discussed in detail later.
+Note that rigid body parameters can also be written independently using a "RigidBody" node. This will be explained later.
 
 
 .. _modelfile_yaml_chassis_shape:
 
-Body shape notation
---------------------------------
+Writing the Chassis Shape
+-------------------------
 
-The link shape is declared underneath the “elements” section of the Link node. For the CHASSIS link, the below code is used.
+The shape of the link is written under "elements" in the Link node. For the CHASSIS link, it is written as follows:
 
 .. code-block:: yaml
  :dedent: 0
@@ -271,115 +270,117 @@ The link shape is declared underneath the “elements” section of the Link nod
            size: [ 0.45, 0.3, 0.1 ]
          appearance: &BodyAppearance
            material:
-             diffuseColor: [ 0, 0.6, 0 ]
-             specularColor: [ 0.2, 0.8, 0.2 ]
-             shininess: 0.6
+             diffuse: [ 0, 0.6, 0 ]
+             specular: [ 0.2, 0.8, 0.2 ]
+             specular_exponent: 80
 
-This section acts as a Shape node. The shape displayed in the Scene View when we imported the model file earlier is drawn from this section.
+This part is a "Shape node". The shape displayed in the scene view when you loaded the model file earlier is described here.
 
-Shape nodes use the geometry element to declare the geometric shape, and the appearance element to declare the appearance of the surface.
+In the Shape node, geometry describes the geometric shape and appearance describes the surface appearance.
 
-For the geometry type, we use “Box” and create a Box node that will render a geometric, rectangular box. For the Box node’s size parameter, a list describing the length of the x, y, and z axes is used. You can also use shape nodes like “Sphere,” “Cylinder,” and “Cone.”
+This time we specified "Box" for the geometry type to describe a Box node that represents a box-shaped (cuboid) geometric shape. In the Box node, the lengths in the x, y, and z axis directions are written as a list for the size parameter. Other shape nodes such as sphere (Sphere), cylinder (Cylinder), and cone (Cone) can also be used.
 
-For appearance, “material” is used to declare the material on the item surface. The below parameters can be set for material.
+For appearance, we describe material which describes the surface material. The following parameters can be set in material:
 
 .. list-table::
  :widths: 20, 80
  :header-rows: 1
 
  * - Key
-   - Details
- * - ambientIntensity
-   - Sets a scalar value of the reflection coefficient of ambient light. The range can be between 0.0 and 1.0. By default, it is set to 0.2.
- * - diffuseColor
-   - Sets an RGB value for the diffusion coefficient. The RGB value is a list comprising the three elements of red, green, and blue, with each having a range between 0.0 and 1.0.
- * - emissiveColor
-   - Specifies the RGB value of emissive color. By default, it is disabled (all set to 0).
- * - specularColor
-   - Specifies the RGB value of the specular reflection coefficient. By default, it is disabled (all set to 0).
+   - Content
+ * - ambient
+   - Specifies the scalar value of the reflection coefficient for ambient light. The value range is 0.0 to 1.0. Default is 0.2.
+ * - diffuse
+   - Describes the RGB values of the diffuse reflection coefficient. RGB values are a list of three components for red, green, and blue, with each component value ranging from 0.0 to 1.0.
+ * - emissive
+   - Specifies the RGB values of the emissive color. Default is disabled (all components are 0).
+ * - specular
+   - Describes the RGB values of the specular reflection coefficient. Default is disabled (all components are 0).
+ * - specular_exponent
+   - A parameter that controls the sharpness of specular reflection. Larger values make highlights smaller and sharper, creating an appearance like metal or polished surfaces. Set a value of 0 or greater. Default is 25. Values around 100 start to look metallic.
  * - shininess
-   - Use a scalar value between 0.0 and 1.0. The larger the value, the sharper the highlights from specular reflection become. By default, it is set to 0.2.
+   - An old parameter that controls the sharpness of specular reflection. This is specified in the range 0 to 1. Do not use this parameter in the future.
  * - transparency
-   - Specifies the transparency. Use a scalar value from 0.0 to 1.0. At 0.0, the item is completely opaque. At 1.0, it is completely transparent. By default, the value is set to 0.0.
+   - Specifies transparency. The value is a scalar from 0.0 to 1.0, where 0.0 is completely opaque and 1.0 is completely transparent. Default is 0.0.
 
-Using the three parameters of diffuseColor, specularColor, and shininess allows us to create a material with a slightly greenish, metallic gloss.
+Here we set the three parameters diffuse, specular, and specular_exponent to represent a green material with somewhat metallic luster.
 
-.. note:: While the syntax of this code  varies slightly here and there, the structure, shape types, and parameters are based on those defined in `VRML97 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/>`_ （ `Shape <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Shape>`_ , `Box <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Box>`_ , `Sphere <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Sphere>`_ , `Cylinder <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cylinder>`_ , `Cone <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cone>`_ , `Appearance <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Appearance>`_ , `Material <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Material>`_ , etc.) VRML97 is based on OpenHRP model files, so if you have used it before, this system should be relatively easy to understand.
+.. note:: For such shape descriptions, although the syntax and key names differ somewhat, the structure, shape types, and parameters largely follow those defined in `VRML97 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/>`_ (such as `Shape <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Shape>`_, `Box <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Box>`_, `Sphere <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Sphere>`_, `Cylinder <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cylinder>`_, `Cone <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Cone>`_, `Appearance <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Appearance>`_, `Material <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Material>`_, etc.). Since VRML97 was the format used as the base for OpenHRP format model files, those with experience using it should find it easy to understand.
 
-.. note:: As mentioned in the preface, this tutorial makes use of the above notation format to describe the shape of links in the model using a text file. You can also use a modeling or CAD tool to separately create a shape data file. Details on using these tools are explained elsewhere.
+.. note:: As mentioned at the beginning, in this tutorial we describe the shape of each link as text directly in the model file using the above description method. It is also possible to use shape data files created separately with modeling tools or CAD tools. This is explained in other documents.
 
 .. _modelfile_yaml_anchor:
 
-Setting anchors
--------------------------
+Setting Anchors
+---------------
 
-In the above code, ::
+In the above code, we have: ::
 
  appearance: &BodyAppearance
 
-&BodyAppearance is appended immediately after appearance.
+where "&BodyAppearance" is added immediately after appearance.
 
-This corresponds to the “anchor” functionality provided by YAML and allows you to assign a specific name to a location in YAML and then refer to it by that name. This lets you set an initial anchor and then simply refer to that anchor for subsequent uses, instead of having to repeat the same code multiple times. In YAML, the part of the code that refers to the anchor is called an “alias.”
+This corresponds to YAML's "anchor" feature, which allows you to name a specific part of YAML and reference it later. This makes it possible to omit repetitive descriptions by setting an anchor on the first description and referencing it for the rest. The part that references an anchor is called an "alias" in YAML.
 
-We will also apply the material parameters we set in the appearance section to the :ref:`modelfile_yaml_turret_pitch_shape`  so an anchor is used in order to let us quickly reference that section of the code later. The actual usage is explained in the :ref:`modelfile_yaml_alias` section.
+Since we will apply the same material parameters set for appearance in :ref:`modelfile_yaml_turret_pitch_shape`, we set an anchor here so it can be reused there. The actual usage is described in :ref:`modelfile_yaml_alias`.
 
 .. _modelfile_yaml_elements:
 
-Elements notation
-------------------------
+Writing elements
+----------------
 
-Groups of constituent elements in a model file are referred to as “nodes.” Some examples include the Link nodes and Shape nodes that we have discussed thus far.
+In model files, a collection of information about a component is called a "node". We have introduced Link nodes and Shape nodes as examples so far.
 
-Nodes can also include subordinate nodes treated as child nodes. This lets you describe nodes in a hierarchical manner. The standard means of doing this is using the “elements” key.
+Some nodes can contain subordinate nodes as their child nodes. This allows nodes to be described hierarchically. A general method for doing this is the elements key.
 
-elements generally uses YAML’s list functionality to describe a child node as below. ::
+In elements, child nodes are basically written using YAML's list notation as follows: ::
 
  elements:
    -
-     type: node type name
+     type: Node type name
      key1: value1
      key2: value2
      ...
    - 
-     type: node type name
+     type: Node type name
      key1: value1
      key2: value2
    ...
 
 
-Where the subordinate node includes further elements, you can add layers to the hierarchy as below. ::
+If subordinate nodes can also contain elements, you can deepen the hierarchy as follows: ::
 
  elements:
    -
-     type: node type name
+     type: Node type name
      key1: value1
      elements:
        -
-         type: node type name
+         type: Node type name
          key1: value1
          elements:
            ...
 
-In this way, using elements lets you combine multiple types of nodes.
+In this way, using elements makes it possible to describe structures that combine multiple types of nodes.
 
-Where there is only one type of node below the elements key, you can simplify the notation as below. ::
+Note that if only one node of a certain type is included under elements, the following simplified notation can also be used: ::
 
  elements:
-   node type name:
+   Node type name:
       key1: value1
       key2: value2
       ...
 
-This has no major difference from the previous method, but since it does not use lists, it allows for a slightly simpler notation.
+There's not much difference from the previous one, but this notation is slightly simpler as it doesn't use list notation.
 
-Using these elements in Link nodes allows you to incorporate a range of aspects like shape and sensor details. Nodes which support elements are the Transform and RigidBody nodes, among others.
+Link nodes can contain various elements such as shapes and sensors using this elements. Other nodes that can use elements include Transform and RigidBody nodes.
 
-.. note:: Where a model contains multiple links, the relationship between links generally becomes hierarchical. This could also potentially be achieved by using elements for the Link node, but this type of model file does not utilize that format. This is because employing that notation means the structure of the text for the model file becomes progressively more nested the deeper you create a link hierarchy, making checking and editing the text more difficult. Link hierarchy is declared by using the “parent” key for the Link node.
+.. note:: When a model has multiple links, the relationships between links are generally hierarchical. While it might be considered to describe this using elements of Link nodes, this format of model files does not use such description. This is because such description would deepen the text hierarchy in the model file as the link hierarchy deepens, making it difficult to check and edit as text. The link hierarchy is described using the "parent" key of Link nodes.
 
-Gun turret yaw axis link notation
-----------------------------------------
+Writing the Turret Yaw Axis Link
+--------------------------------
 
-Next, let’s declare the links for the gun turret base and the yaw axis. Add the below to the code you have so far.
+Next, let's write the link for the yaw axis part that serves as the base of the turret. Add the following to the previous description.
 
 .. code-block:: yaml
  :dedent: 0
@@ -388,12 +389,12 @@ Next, let’s declare the links for the gun turret base and the yaw axis. Add th
      name: TURRET_Y
      parent: CHASSIS
      translation: [ -0.04, 0, 0.1 ]
-     jointType: revolute
-     jointAxis: -Z
-     jointRange: unlimited
-     maxJointVelocity: 90
-     jointId: 0
-     centerOfMass: [ 0, 0, 0.025 ]
+     joint_type: revolute
+     joint_axis: -Z
+     joint_range: unlimited
+     max_joint_velocity: 90
+     joint_id: 0
+     center_of_mass: [ 0, 0, 0.025 ]
      mass: 4.0
      inertia: [
        0.1, 0,   0,
@@ -406,123 +407,121 @@ Next, let’s declare the links for the gun turret base and the yaw axis. Add th
            size: [ 0.2, 0.2, 0.1 ]
          appearance: *BodyAppearance
 
-Once you add the above, save your file and try re-importing it again as before. You will see that the model in the Scene View will have changed to the figure below.
+After writing this, save the file and perform the reload mentioned earlier. The model display in the scene view should look like this:
 
 .. image:: images/tank_turret_y.png
 
-The new part on top of the tank body is the base of the gun turret. This controls the yaw axis rotation and includes joints for that purpose.
+The newly added part on top of the chassis is the turret base. This part is designed to rotate around the yaw axis and includes the joint for that purpose.
 
-As specified in the name field, the name of this link is “TURRET_Y.” This indicates that it is the yaw axis for the Turret. As we did for the CHASSIS link, you specify rigid body parameters: centerOfMass, mass, and inertia.
+As specified in name, this link is named "TURRET_Y". This indicates that it is the Yaw axis of the turret. Also, like the CHASSIS link, we have written the rigid body parameters center_of_mass, mass, and inertia.
 
-Similarly, the shape can be specified using the geometry parameter for the Box type. Adjusting the size parameters here lets you shape the gun turret base into the adequate size.
+For the shape, we are using a Box type geometry like the CHASSIS link. By adjusting its size parameter, we have made it an appropriately sized shape for the turret base.
 
 .. _modelfile_yaml_alias:
 
-Using aliases
--------------------------
+Using Aliases
+-------------
 
-The appearance used in the shape notation above can be the same as the CHASSIS link; we can reuse the same code from  :ref:`modelfile_yaml_chassis_shape`. We also  :ref:`modelfile_yaml_anchor` called “BodyAppearance” that corresponds to the appearance of the CHASSIS link. We use the below code: ::
+In the shape description above, since the appearance can be the same as the CHASSIS link, we will reuse the content set in :ref:`modelfile_yaml_chassis_shape`. We set an :ref:`modelfile_yaml_anchor` with the name "BodyAppearance" for the appearance of the CHASSIS link. Here we call that content with: ::
 
  appearance: *BodyAppearance
 
-to call the anchor as a YAML alias. In this way, by prepending an asterisk to the anchor name, you can reference it as an alias.
+as a YAML alias. By adding "*" to the name set with an anchor, you can reference it as an alias.
 
 .. _modelfile_yaml_offset_position:
 
-Describing relative link position
---------------------------------------------
+Writing Link Relative Position
+------------------------------
 
-We model the TURRET_Y link as a sub-link of the CHASSIS link.
+The TURRET_Y link is modeled as a child link of the CHASSIS link.
 
-To achieve this, we use ::
+To do this, first with: ::
 
  parent: CHASSIS
 
-This indicates that the link’s parent link is CHASSIS.
+we explicitly state that this link's parent link is CHASSIS.
 
-Next, we set the relative position (offset) from the parent link. The translation parameter controls this. For this link, we use ::
+Next, we specify the relative position (offset) of this link from the parent link. This is done with the translation parameter, which for this link is: ::
 
  translation: [ -0.04, 0, 0.08 ]
 
-This allows the link to be offset 5[cm] back from the starting point of the CHASSIS link and 8[cm] up. The position is based on the coordinates for the parent link.
+This sets this link's origin at a position 5[cm] backward and 8[cm] upward from the CHASSIS link origin. This position is based on the parent link's coordinate system.
 
-In order to see how the relative position goes into effect, try importing the file without the translation line. You can delete the above line or comment it out with a # at the start of the line, then re-import the model.
+To confirm the effect of relative position, let's try removing the translation description. Delete the translation line above or comment it out by adding # at the beginning of the line, then reload the model.
 
-You will see that the gun turret has now disappeared. This is because the gun turret has been positioned inside of the center of the tank body and is embedded within it. Try turning on the :ref:`basics_sceneview_wireframe` in the Scene View. You should see the below.
+You should find that the turret part that was visible earlier has disappeared. This is because the turret part is also placed at the center of the chassis and is buried inside it. So, turn ON :ref:`basics_sceneview_wireframe` in the scene view. You should see something like this:
 
 .. image:: images/tank_turret_y_0.png
 
-In this way, enabling wireframes lets you confirm that the gun turret is physically within the tank body.
+With wireframe display, you can confirm that the turret part is buried inside the chassis.
 
-As you can see, properly setting the link position requires using the aforementioned translation parameter. Try playing with the values of this parameter to see how it changes the outcome.
+As you can see, to properly position links, you need the translation description as before. Try changing this value to see what happens.
 
-You can also use the rotation parameter to change the relative orientation (within the coordinate system). Rotation is controlled as follows: ::
+Note that relative orientation (coordinate system direction) can also be specified using the rotation parameter. rotation is written in the form: ::
 
  rotation: [ x, y, z, θ ]
 
-This controls the orientation (rotation) based around a rotating axis and the angles of rotation around it, with unit vectors for X, Y, and Z given, and the angle of rotation given for θ.
+This specifies orientation (rotation) with a rotation axis and rotation angle around that axis, where x, y, z specify the unit vector of the rotation axis and θ specifies the rotation angle. When format_version is 2.0, θ is always written in degrees. (Other parameters that specify angles are basically the same.)
 
-An actual example of using this parameter will follow.
+An actual example of using this parameter will be introduced later.
 
-Joint notation
------------------------
+Writing the Joint
+-----------------
 
-Two parent-child links are generally connected as a standard joint. The TURRET_Y link is connected to the CHASSIS parent link by way of a yaw axis, with the yaw axis configurable. Data controlling this can be set by placing the below code below the TURRET_Y link section. ::
+Two links with a parent-child relationship are usually connected by a joint. The TURRET_Y link is also connected to the parent link CHASSIS with a yaw axis joint, allowing the yaw orientation relative to CHASSIS to be changed. Information about this is described by the following parameters of the TURRET_Y link: ::
 
- jointType: revolute
- jointAxis: -Z
- jointRange: unlimited
- jointId: 0
+ joint_type: revolute
+ joint_axis: -Z
+ joint_range: unlimited
+ joint_id: 0
 
-We begin by setting the jointType as revolute. This creates a revolute (rotating) joint between the parent and child links. (This is a joint with one degree of freedom, also known as a hinge.)
+Here we first specify revolute for joint_type. This sets a rotational joint between this link and the parent link. (This is a 1-degree-of-freedom rotational joint, also called a hinge.)
 
-jointAxis is given the joint axis. In the case of a hinged joint, we specify the corresponding axis of rotation. You can use X, Y, and Z coordinates, or use 3D vector units. In both cases, the axis orientation is given in the form of link-local coordinates. You can specify -Z to set a negative position on the Z axis as the axis of rotation. Where specifying the joint axis as a 3D vector, the syntax is: ::
+joint_axis specifies the joint axis. For a hinge joint, specify its rotation axis here. You can specify this using the letters X, Y, Z, or as a 3D vector. In either case, the axis direction is described in the link's local coordinate system. Here we specify "-Z" to set the negative Z-axis direction as the rotation axis. When specifying the joint axis as a 3D vector, it would be: ::
 
- jointAxis: [ 0, 0, -1 ]
+ joint_axis: [ 0, 0, -1 ]
 
-With the above, you can set an orientation of your choice other than the X, Y, and Z axes.
+With this notation, you can set any orientation as the axis, not just X, Y, or Z axes.
   
-Typically, the Z axis is set perpendicular and upward (the same is true in this model). In this joint, it controls the yaw axis rotation. We have set the orientation as negative on the Z axis, meaning the angle of rotation on the positive side will rotate to the right, while the negative side will rotate to the left. The joint position is set with this link as a starting point. The position as seen from the parent link corresponds to the position we just set using the translation parameter.
+Since the Z-axis is usually set vertically upward, including in this model, this joint performs yaw axis rotation. Since the direction is negative Z-axis, positive joint angles correspond to rightward rotation and negative angles to leftward rotation. The joint position is set at this link's origin. From the parent link's perspective, this position is the one set earlier with translation.
 
-For the jointType, you can also set “prismatic,” which corresponds to a direct joint. In this case, you give jointAxis the direct orientation.
+Other joint_type options include "prismatic" for linear joints. In this case, joint_axis specifies the linear motion direction.
 
-For the range of motion of the joint, use jointRange. Here we used “unlimited,” implying that it has no restrictions on range of motion. If you want to restrict the range, use specific values like: ::
+The joint range of motion is set using joint_range. Here we specify unlimited to have no range restrictions. If you want to set a range, write: ::
 
- jointRange: [ -180, 180 ]
+ joint_range: [ -180, 180 ]
 
-This sets a lower and upper limit. Where the lower and upper limits are an absolute value that is the same, you can notate this as: ::
+listing the lower and upper limit values. For rotational joints, angle values are also written in degrees. Here we specify a range from -180° to +180°. If the absolute values of the lower and upper limits are the same, you can also write just the absolute value as: ::
 
- jointRange: 180
+ joint_range: 180
 
-.
+joint_id sets the ID value (integer 0 or greater) assigned to this joint. ID values can be referenced on Choreonoid's interface and used to specify which joint to operate. Robot control programs can also use this value to identify joints. This value is not automatically assigned; appropriate values must be explicitly assigned when creating the model. It's not necessary to assign ID values to all joints. However, since this value is sometimes used as an index when storing joint angles in arrays, it's preferable to assign consecutive values starting from 0 without gaps.
 
-jointId takes an ID assigned to the joint (an integer of 0 or larger). The ID is referenced on the Choreonoid interface and allows you to control joints by calling the ID. You can also call these IDs from the program used to control the robot and select specific joints. The values are not set automatically. When creating the model, you must explicitly assign an integer value of your choice to act as an ID. Note that there is no requirement that all joints be given an ID. However, when storing joint angles in an array, these values are used as an index, so you should ideally aim to assign sequential values beginning with 0.
+This model has two joints for the turret yaw and pitch axes, so we'll assign joint IDs 0 and 1 respectively.
 
-This model contains the yaw axis for the gun turret and the pitch axis, so we will assign them 0 and 1, respectively.
+Checking Joint Operation
+------------------------
 
-Checking joint functionality
--------------------------------------
+To check if the joint is modeled correctly, it's effective to actually move the model's joint on Choreonoid's GUI. Let's try this using the functions introduced in :doc:`../index` - :doc:`../pose-editing`.
 
-To check whether the joints are properly modeled, the most effective way is to actually move them around on the model in the Choreonoid GUI. Try using the functionality previously discussed in  :doc:`../index` - :doc:`../pose-editing`.
-
-First, try :ref:`pose_editing_joint_slider_view`. By selecting a model in progress in the Item Tree View, the joint slider view should present the below.
+First, let's move the joint using :ref:`pose_editing_joint_slider_view`. When you select the model being created in the item tree view, the joint displacement view should look like this:
 
 .. image:: images/jointslider0.png
 
-This display indicates that the joint with ID 0 has been defined at TURRET_Y. Try manipulating this slider. You will see that the box corresponding to TURRET_Y on the Scene View will rotate along the yaw axis. The model orientation for joints with angles of respectively -30°, 0°, and +30 is as follows. 
+This display shows that a joint named TURRET_Y with joint ID 0 has been defined. Try operating the slider here. You should be able to confirm that the box corresponding to TURRET_Y rotates around the yaw axis in the scene view. For example, the model poses when the joint angle is -30°, 0°, and +30° are as follows:
 
 .. image:: images/tank_turret_y_rotation.png
 
-TURRET_Y’s joint range of motion has been set as unlimited, meaning that the joint slider can be moved between -360° and +360°. If you have placed limitations on the range of motion, the slider will let you move the figure within that range.
+For TURRET_Y, the joint range is unlimited, so the joint slider can move in the range from -360° to +360°. If range restrictions are applied, the slider can be operated within that range.
 
-You can also :ref:`sceneview_forward_kinematics`. Toggle the Scene View to edit mode and drag the TURRET_Y section with the mouse. You will see that the joint can be rotated to follow the path of the mouse. If you have trouble, please refer to the above linked page and check your settings.
+:ref:`sceneview_forward_kinematics` is also possible. Switch the scene view to edit mode and drag the TURRET_Y part with the mouse. You should be able to rotate the joint to follow the mouse movement. If it doesn't work well, check the settings on the linked page above.
 
 .. _modelfile_yaml_TURRET_P_description:
 
-Gun turret pitch axis notation
+Writing the Turret Pitch Axis Part
 ----------------------------------
 
-Next, let’s supply the code for the gun turret pitch axis. Begin by adding the below code after the links section.
+Next, let's write the turret pitch axis part. First, add the following under links:
 
 .. code-block:: yaml
  :dedent: 0
@@ -531,16 +530,16 @@ Next, let’s supply the code for the gun turret pitch axis. Begin by adding the
      name: TURRET_P
      parent: TURRET_Y
      translation: [ 0, 0, 0.05 ]
-     jointType: revolute
-     jointAxis: -Y
-     jointRange: [ -10, 45 ]
-     maxJointVelocity: 90
-     jointId: 1
+     joint_type: revolute
+     joint_axis: -Y
+     joint_range: [ -10, 45 ]
+     max_joint_velocity: 90
+     joint_id: 1
      elements:
        - 
          # Turret
          type: RigidBody
-         centerOfMass: [ 0, 0, 0 ]
+         center_of_mass: [ 0, 0, 0 ]
          mass: 3.0
          inertia: [
            0.1, 0,   0,
@@ -554,49 +553,47 @@ Next, let’s supply the code for the gun turret pitch axis. Begin by adding the
                radius: 0.1
              appearance: *BodyAppearance
 
-As specified in the name field, the name of this link is “TURRET_P.”
-
-The line reading ::
+As specified in name, this link is named "TURRET_P". The notation ::
 
  # Turret
 
-s a comment; this code will not execute. Lines preceded by a # are comments; code spanning to the end of the line is not interpreted as part of the program.
+is a comment. Text from # to the end of the line becomes a comment.
 
-If you re-import the model at this stage, it should appear as below.
+After writing this and reloading the model, it should be displayed as follows:
 
 .. image:: images/tank_turret_p.png
 
-The base of the gun turret pitch axis has been added.
+The base part for the turret pitch axis has been added.
 
-RigidBody nodes
-----------------------
+RigidBody Node
+--------------
 
-In the above code, the :ref:`modelfile_yaml_rigidbody_parameters` do not make use of a Link node; instead, the RigidBody node is used.
+In the above description, :ref:`modelfile_yaml_rigidbody_parameters` are not written in the Link node but separately using a node called RigidBody.
 
-The RigidBody node is a node developed specifically for notation of rigid body parameters, and it allows for specifying the centerOfMass, mass, and inertia parameters. These carry the same meaning as the corresponding parameters used in Link nodes. You can also set rigid body parameters by including a RigidBody node below the elements section of a Link node. Conversely, you could also interpret writing rigid body parameters directly within a Link node as an abbreviated form of RigidBody notation.
+The RigidBody node is specialized for describing rigid body parameters and can describe the three parameters center_of_mass, mass, and inertia. These have the same meaning as when used in Link nodes. By writing this node under elements of a Link node, you can also set rigid body parameters. Conversely, you can think of the ability to write rigid body parameters directly in Link nodes as a simplified notation replacing RigidBody.
 
-Some of the benefits of deliberately using a RigidBody note to set rigid body parameters include:
+The advantages of deliberately using RigidBody nodes to describe rigid body parameters include:
 
-1. Enable sharing of rigid body parameters
-2. Use a coordinate system of your choosing
-3. Combine multiple rigid bodies together
+1. Enables sharing of rigid body parameters
+2. Can be written in any coordinate system
+3. Can be written as a combination of multiple rigid bodies
 
-First, you can break out rigid body parameters into a standalone node, then use :ref:`anchors <modelfile_yaml_anchor>` and :ref:`aliases <modelfile_yaml_alias>` to share the same rigid body parameters across different code blocks. This is convenient when modeling forms in which the same parts are used multiple times.
+First, since rigid body parameters can be written as independent nodes, applying :ref:`modelfile_yaml_anchor` and :ref:`modelfile_yaml_alias` to them enables sharing the same rigid body parameters. This is convenient when modeling mechanisms that use many identical parts.
 
-Further, when a node is independent, you can also separately apply :ref:`modelfile_yaml_transform_node` and use these to set various rigid body parameters within a coordinate system of your choice.
+Also, when nodes are independent, :ref:`modelfile_yaml_transform_node` can be applied individually, making it possible to describe each rigid body's parameters in any coordinate system.
 
-Since there is no restriction on the number of RigidBody nodes used for each link, you can describe link-wide rigid body parameters by combining multiple rigid bodies. In this case, rigid body parameters reflecting all RigidBody components within the link are set as parameters of that link. By combining benefits 1) and 2) above, you can efficiently model complex figures even if they consist of multiple parts, all while maintaining consistency.
+Furthermore, since there's no limit to the number of RigidBody nodes used in each link's description, it's possible to describe the link's overall rigid body parameters as a combination of multiple rigid bodies. In this case, rigid body parameters reflecting all RigidBody nodes contained in the link are set as the link's rigid body parameters. Combining this with advantages 1 and 2 enables efficient and maintainable modeling even for complex shapes composed of multiple parts.
 
-The TURRET_P link consists of two RigidBody nodes combined as an example of how to use this node. The first is the base for the gun turret pitch axis, which we imported earlier. The second is the gun barrel, which extends past the turret.
+As an example of using RigidBody nodes, the TURRET_P link is composed by combining two RigidBody nodes. The first is the turret pitch axis base part loaded earlier, and the second is the gun barrel part connected to it.
 
-The RigidBody node also supports :ref:`modelfile_yaml_elements`, which can be used to include other nodes within it. Here, we incorporate the following shape details within the elements section. Doing so allows us to store the rigid body’s physical parameters and shape within the RigidBody node and make the structure of the model easier to understand.
+Note that RigidBody is also a node that supports :ref:`modelfile_yaml_elements`, so it can contain other nodes using this. Here we describe the shape part explained below inside elements. This allows the rigid body's physical parameters and shape to be grouped together under the RigidBody node, making the model structure clearer.
 
 .. _modelfile_yaml_turret_pitch_shape:
 
-Describing the gun turret pitch axis base shape
-----------------------------------------------------
+Writing the Turret Pitch Axis Base Shape
+----------------------------------------
 
-The shape of the gun turret pitch base is set as follows. ::
+The shape of the turret pitch axis base is written as follows: ::
 
           Shape:
             geometry:
@@ -605,15 +602,15 @@ The shape of the gun turret pitch base is set as follows. ::
               radius: 0.11
             appearance: *BodyAppearance
 
-By using Cylinder for the geometry, we give the shape a cylindrical form. The Cylinder node takes the cylinder height (“height”) and radius (“radius”) as parameters. The position and orientation of the cylinder correspond to a circle with its center set as a radius on the XZ plane, with the height of both the positive and negative Y axes pushed out. Here, we use this as-is without changing the orientation.
+Here we use a Cylinder node for geometry to represent a cylinder shape. The Cylinder node specifies the cylinder's height and radius as parameters. The cylinder's position and orientation correspond to a shape created by extruding a circle of the specified radius on the XZ plane centered at the origin in both positive and negative Y-axis directions by the height amount. Here we use this orientation without modification.
 
-For the appearance, we reference the BodyAppearance alias as before and use the foregoing settings.
+For appearance, we reference BodyAppearance as an alias as before, using the same settings as before.
 
 
-Gun barrel notation
+Writing the Gun Barrel Part
 ---------------------------
 
-Now let’s add the gun barrel notation. Add the following code below the elements section of the TURRET_P link. (Ensure that the indentation is preserved.) 
+Let's also add the gun barrel part description. Add the following code to the elements of the TURRET_P link (be careful to match the indentation).
 
 .. code-block:: yaml
  :dedent: 0
@@ -625,7 +622,7 @@ Now let’s add the gun barrel notation. Add the following code below the elemen
          rotation: [ 0, 0, 1, 90 ]
          elements:
            RigidBody:
-             centerOfMass: [ 0, 0, 0 ]
+             center_of_mass: [ 0, 0, 0 ]
              mass: 1.0
              inertia: [
                0.01, 0,   0,
@@ -638,64 +635,66 @@ Now let’s add the gun barrel notation. Add the following code below the elemen
                    height: 0.2
                    radius: 0.02
                  appearance: *BodyAppearance
-	 
-Re-import the model, and the gun barrel should appear as follows.
-	   
+		 
+When you reload the model, the gun barrel part should also be displayed as follows:
+		   
 .. image:: images/tank_turret_barrel.png
 
-As before, this section is described using a RigidBody node, with the shape included in the node. The shape is a cylinder, of course, with its length and radius tweaked to create the gun barrel shape.
+This part is also written using a RigidBody node as before, with the shape included within this node. The shape also uses a cylinder, with the length and radius adjusted to represent the gun barrel.
+
+
 
 .. _modelfile_yaml_transform_node:
 
-Transform nodes
----------------------
+Transform Node
+--------------
 
-For the gun barrel, add the below to the top of the RigidBody node code: ::
+In the gun barrel description, we insert the following above the RigidBody node: ::
 
  type: Transform
  translation: [ 0.2, 0, 0 ]
  rotation: [ 0, 0, 1, 90 ]
  elements:
 
-This section is referred to as a Transform node.
+This part is called a Transform node.
 
-Transform nodes are a node which is used to transform the coordinates that appear below the elements section of that node. This achieves the same functionality as Link node translation and rotation parameters, as discussed in the section on :ref:`modelfile_yaml_offset_position` . However, what differs is that the target is a node located below the elements section of a Link node, and that you can combine multiple Transform nodes.
+The Transform node is used to transform the coordinate system of content written under its elements. This has the same effect as the translation and rotation parameters of Link nodes described in :ref:`modelfile_yaml_offset_position`. However, it differs in that it targets nodes written under elements of Link nodes and that multiple Transform nodes can be combined.
 
-To see how this works, try disabling the Transform node. While you can remove the entire Transform node, commenting out the translation and rotation sections as follows: ::
+To see this effect, let's disable the Transform node. You could remove the entire Transform node, but you can reproduce the same result by commenting out the translation and rotation parts as follows: ::
 
  type: Transform
  #translation: [ 0.2, 0, 0 ]
  #rotation: [ 0, 0, 1, 90 ]
  elements:
 
-will achieve the same effect. Re-importing the model will produce a figure like the below.
+When you reload the model in this state, the result should look like the following figure:
 
 .. image:: images/tank_turret_barrel_no_transform.png
 
-What you see embedded in the gun turret is the gun barrel. The position is not matched up correctly, and the barrel is pointing sideways.
+The part buried in the turret is the gun barrel we described. The position is incorrect, and the orientation is sideways.
 
-This is because the cylinder created by the Cylinder node is referencing a coordinate system set for this orientation. The gun turret pitch axis base was fine with these coordinates, but when creating a gun barrel, we must modify the position and orientation.
+This is because the coordinate system of the cylinder shape generated by the Cylinder node is originally set this way, and this is a natural result. While this coordinate system was fine for the turret pitch axis base part earlier, when using it as a gun barrel, we need to correct this position and orientation.
 
-To do so, we insert the above Transform node. Here, we use ::
+That's why we inserted the Transform node above. Here with: ::
 
  rotation: [ 0, 0, 1, 90 ]
 
-This first creates a 90 degree rotation on the Z axis, causing the gun barrel to match the front-to-back (X axis) orientation of the model. Next, use ::
+we first rotate 90 degrees around the Z-axis so the gun barrel direction matches the model's front-back direction (X-axis). Then with: ::
 
  translation: [ 0.2, 0, 0 ]
 
-to move the cylinder 20cm forward and place it in front of the gun turret.
+we move the cylinder forward 20cm to position it at the front of the turret.
 
-Note that the elements section of Transform also contains a RigidBody node. This applies the coordinate transformation not just to the shape, but also to the rigid body parameters included in the RigidBody node. Put differently, you can set rigid body parameters for the local coordinates of the cylinder, allowing you to save time on the calculations required for the center of gravity and moment of inertia, among others.
+Note that the Transform's elements also include the RigidBody node. This means the coordinate transformation above is applied not only to the shape but also to the rigid body parameters described in the RigidBody node. In other words, you can describe the rigid body parameters in the cylinder's local coordinates, which reduces the effort required to calculate the center of mass position and inertia tensor.
 
 .. _modelfile_yaml_transform_parameters:
 
-Transform parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transform Parameters
+~~~~~~~~~~~~~~~~~~~~
 
-In lieu of using a Transform node, you can directly declare the translation and rotation parameters for the node in question. These parameters are referred to as Transform parameters.
+Instead of using Transform nodes, there's also a method to write translation and rotation parameters directly in the target node. These parameters are called "Transform parameters".
 
-For example, Transform parameters also work with RigidBody nodes, so you can describe the gun barrel as follows. 
+For example, since RigidBody nodes also support Transform parameters, the gun barrel part can also be written as follows:
 
 .. code-block:: yaml
  :dedent: 0
@@ -705,7 +704,7 @@ For example, Transform parameters also work with RigidBody nodes, so you can des
          type: RigidBody:
          translation: [ 0.2, 0, 0 ]
          rotation: [ 0, 0, 1, 90 ]
-         centerOfMass: [ 0, 0, 0 ]
+         center_of_mass: [ 0, 0, 0 ]
          mass: 1.0
          inertia: [
            0.01, 0,   0,
@@ -719,53 +718,53 @@ For example, Transform parameters also work with RigidBody nodes, so you can des
                radius: 0.02
              appearance: *BodyAppearance
 
-The translation and rotation parameters from the Transform node are simply being used here in a RigidBody node. The notation for this node is simpler. Internally, the process is the same as inserting a Transform node, but you can think of the notation as a simplified form.
+We've simply moved the Transform's translation and rotation directly to RigidBody. This makes the description simpler. Internally, the same processing as inserting a Transform node is performed, so consider this a simplified notation method.
 
-Transform parameters can also be used in Shape nodes and in device-related nodes, discussed later.
+Transform parameters are also available for Shape nodes and device-related nodes explained later.
 
 
-Gun turret pitch axis joint notation
------------------------------------------------
+Writing the Turret Pitch Axis Joint
+-----------------------------------
 
-Let’s also take a look at the gun turret pitch axis joint. Set the joint for the TURRET_P link using the code below. ::
+Let's also check the turret pitch axis joint description. In the TURRET_P link, the joint is described in the following part: ::
 
  parent: TURRET_Y
  translation: [ 0, 0, 0.04 ]
- jointType: revolute
- jointAxis: -Y
- jointRange: [ -45, 10 ]
- jointId: 1
+ joint_type: revolute
+ joint_axis: -Y
+ joint_range: [ -45, 10 ]
+ joint_id: 1
 
-The parent link is TURRET_Y. The joint is set between these links. Furthermore, the translation parameter is used to set an offset from the parent link of 4cm on the Z axis.
+The parent link is TURRET_Y. The joint is set between this link. Also, translation sets the offset from the parent link to 4cm in the Z-axis direction.
 
-The joint type is, as with TURRET_Y, set to revolute, creating a hinged joint. The axis of revolution is the Y axis, which corresponds to pitch. However, the orientation of the axis is negative. The negative orientation of the joint angle is rotated to be downward from the gun barrel, while the positive direction is rotated to be upward. jointRange is used to set the range of motion for the upper section as 45 degrees, and the lower as 10 degrees. Set 1 for the jointId; note that this differs from the 0 we used for TURRET_Y.
+The joint type is specified as revolute like TURRET_Y, making it a rotational (hinge) joint. Here we set the rotation axis to the Y-axis corresponding to the pitch axis. However, the axis direction is negative, making negative joint angles correspond to downward gun barrel rotation and positive angles to upward rotation. Also, joint_range sets the range of motion to 45° upward and 10° downward. joint_id is set to 1, different from the 0 set for TURRET_Y.
 
-Now, let’s take a look at how the joint behaves. In the joint slider view, you will see interfaces for the two joints, corresponding to TURRET_Y and TURRET_P.
+Let's also check the behavior of this joint. The joint slider view should display interfaces for two joints corresponding to TURRET_Y and TURRET_P as follows:
 
 .. image:: images/jointslider01.png
 
-You can use these sliders, or drag directly on the Scene View, to move the pitch axis (TURRET_P). This should allow you to change the up-and-down orientation of the gun barrel as below.
+Using the slider here or dragging in the scene view, first try moving the pitch axis (TURRET_P). This should allow you to change the vertical orientation of the gun barrel as follows:
 
 .. image:: images/tank_turret_p_rotation.png
 
-The yaw axis functions as before, but you will also notice that the orientation moves in accordance with the rest. This is because the TURRET_P link is a child link of the TURRET_Y link.
+Also, the yaw axis behaves the same as before, but you can confirm that the gun barrel's yaw orientation also changes in conjunction. This is because the TURRET_P link is a child link of the TURRET_Y link.
 
 
-Device notation
------------------------
+Writing Devices
+---------------
 
-For robot models defined in Choreonoid, the sensors and other devices equipped on the robot are referred to as “devices.” The devices this tank model has equipped are the spotlight and the camera. Below, we describe the notation for these devices.
+In robot models defined in Choreonoid, equipment such as sensors mounted on robots are called "devices". This Tank model will be equipped with two devices: a spotlight and a camera. Below we explain how to write these devices.
 
 .. _modelfile-tank-spotlight:
 
-Spotlight notation
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Spotlight
+~~~~~~~~~~~~~~~~~~~~~
 
-First, in order to simulate a robot working in the darkness, we equip it with a light device, which acts as a lightsource. There are various types of light. The light we will attach to the robot in this case is a standard spotlight.
+First, let's mount a light (light source) device so we can simulate a robot operating in darkness. There are several types of lights, but here we'll use a spotlight, which is common for lights mounted on robots.
 
-Devices can be applied to any link, so define which link to apply the device to below the elements section for that link. Install the light on the gun turret’s pitch axis in order to be able to freely change its orientation. This allows the light to change direction along with the movement of the yaw and pitch axes of the gun turret.
+Since devices are mounted on one of the links, write their definitions under the link's elements. Let's mount the light on the turret pitch axis part so we can change the light direction. This way, the light orientation will change in conjunction with the turret yaw and pitch axis movements.
 
-To do so, add the below underneath the elements section of the TURRET_P link.
+To achieve this, add the following description to the elements of the TURRET_P link:
 
 .. code-block:: yaml
  :dedent: 0
@@ -775,22 +774,22 @@ To do so, add the below underneath the elements section of the TURRET_P link.
          name: Light
          translation: [ 0.08, 0, 0.1 ]
          direction: [ 1, 0, 0 ]
-         beamWidth: 36
-         cutOffAngle: 40
-         cutOffExponent: 6
+         beam_width: 36
+         cut_off_angle: 40
+         cut_off_exponent: 6
          attenuation: [ 1, 0, 0.01 ]
 
-By setting type: SpotLight, we treat the spotlight device as a SpotLight node. Below are the key points to pay attention to when styling the above.
+Here, type: SpotLight makes this a SpotLight node description corresponding to a spotlight device. Key points of the description:
 
-* The name of the device is set as “Light.” Because the program handling the device uses its name to frequently poll it, give the device the name above.
-* Device nodes also let you use :ref:`modelfile_yaml_transform_parameters` . The use of translation here lets us specify the position of the light. This describes the relative position from the origin of the TURRET_P link.
-* The SpotLight direction parameter lets you specify the direction of the optical axis. We want it to face the front of the model, so we set it as the X axis.
-* beamWidth, cutOffAngle, and cutOffExponent are parameters that let you set the illumination range of the spotlight. attenutation lets you set the degree of attenuation based on distance from the lightsource.
+* We set "Light" as the name of this device. Since programs that handle devices often access devices by name, please set names for devices like this.
+* Device nodes can also use :ref:`modelfile_yaml_transform_parameters`. Here we specify the light installation position with translation. This is relative to the TURRET_P link origin.
+* The SpotLight's direction parameter specifies the optical axis direction. Since we want it facing the model's front, we set it to the X-axis direction.
+* The beam_width, cut_off_angle, and cut_off_exponent parameters set the spotlight's illumination range. Also, attenuation sets how the light attenuates with distance from the light source.
 
-Light shape notation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Light Shape
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Now, let’s add the light’s shape. At the end of the SpotLight node, add the following as an elements section.
+Let's write a shape corresponding to the light. Add the following as elements at the end of the SpotLight node:
 
 .. code-block:: yaml
  :dedent: 0
@@ -805,28 +804,28 @@ Now, let’s add the light’s shape. At the end of the SpotLight node, add the 
                radius: 0.025
              appearance:
                material:
-                 diffuseColor: [ 1.0, 1.0, 0.4 ]
-                 ambientIntensity: 0.3
-                 emissiveColor: [ 0.8, 0.8, 0.3 ]
+                 diffuse: [ 1.0, 1.0, 0.4 ]
+                 ambient: 0.3
+                 emissive: [ 0.8, 0.8, 0.3 ]
 
-For the shape of the light, we have opted to use a conical one (Cone node). In the default coordinate system, the orientation will be incorrect, so we use :ref:`modelfile_yaml_transform_parameters` to align it correctly. To ensure that the lightsource is not hidden behind this shape, we set it slightly behind. This is a key point to consider if you want to generate shadows when rendering.
+Here we use a cone shape (Cone node) for the light shape. Since the default coordinate system doesn't have the right orientation, we use :ref:`modelfile_yaml_transform_parameters` to change the orientation. Also, we position it slightly backward so the light source isn't hidden by this shape. This needs attention when generating shadows in rendering.
 
-For material, we use emissiveColor to ensure that the light appears to glow even in the dark.
+In material, we also set emissive so the light part appears to glow even in darkness.
 
-After adding the above and re-importing the model, the shape of the light should appear as follows.
+After writing this and reloading the model, the light shape should be displayed as follows:
 
 .. image:: images/tank_light.png
 
-You can now look at the model to confirm whether the light is in the right location and oriented correctly.
+This allows you to visually confirm that the light is installed in the correct position and orientation by looking at the model.
 
-Note that, when applying a device, there is no requirement to have a corresponding shape for it. Even if there is a corresponding shape, there is no requirement to declare that shape below the device node’s elements section. In this example, we did so in order to make the modeling more clear, but devices generally function irrespective of shape.
+However, when mounting devices, corresponding shapes are not necessarily required. Also, even if there is a corresponding shape, it doesn't necessarily have to be written under the device node's elements. We did this in this example to make the modeling clearer, but devices basically function independently of shapes.
 
 .. _modelfile-tank-camera:
 
-Camera notation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Camera
+~~~~~~~~~~~~~~~~~~
 
-Now, let’s add a camera device. As with the SpotLight node, add the below underneath the elements section of the TURRET_P link.
+Let's also add a camera device. Like the SpotLight node, add the following under the elements of the TURRET_P link:
 
 .. code-block:: yaml
  :dedent: 0
@@ -837,11 +836,11 @@ Now, let’s add a camera device. As with the SpotLight node, add the below unde
          translation: [ 0.1, 0, 0.05 ]
          rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ] ]
          format: COLOR_DEPTH
-         fieldOfView: 65
-         nearClipDistance: 0.02
+         field_of_view: 65
+         near_clip_distance: 0.02
          width: 320
          height: 240
-         frameRate: 30
+         frame_rate: 30
          elements:
            Shape:
              rotation: [ 1, 0, 0, 90 ]
@@ -851,71 +850,69 @@ Now, let’s add a camera device. As with the SpotLight node, add the below unde
                height: 0.02
              appearance:
                material:
-                 diffuseColor: [ 0.2, 0.2, 0.8 ]
-                 specularColor: [ 0.6, 0.6, 1.0 ]
-                 shininess: 0.6
+                 diffuse: [ 0.2, 0.2, 0.8 ]
+                 specular: [ 0.6, 0.6, 1.0 ]
+                 specular_exponent: 80
 
-Cameras make use of the Camera node.
+Cameras are written using Camera nodes.
 
-This node lets you specify the format of the images polled by it. You can specify any of the below parameters to do so.
+In this node, specify the format of images to acquire with format. You can specify one of the following three:
 
 * COLOR
 * DEPTH
 * COLOR_DEPTH
 
-If using COLOR, it will obtain a standard color image. If you specify DEPTH, it will obtain a distance image. If you specify COLOR_DEPTH, it will obtain both images simultaneously. This functionality is designed for cases like simulation of RGBD cameras used in the Kinect and other devices.
+If you specify COLOR, it becomes a normal color image. For DEPTH, you get a depth image. For COLOR_DEPTH, you can acquire both types of images simultaneously. This is intended for simulating RGBD cameras like Kinect.
 
-You can also specify the image size (resolution) using the width and height parameters. In this case, we have set a resolution of 320 pixels wide by 240 pixels tall. Next, you can set the framerate at which to poll images using the frameRate parameter.
+Also, specify the image size (resolution) with width and height. Here we set a resolution of 320x240. Furthermore, set the image acquisition frame rate with frame_rate.
 
 
-Camera position and orientation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing Camera Position and Orientation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the camera position, use ::
+The camera position is set slightly below the light with: ::
 
  translation: [ 0.1, 0, 0.05 ]
 
-to install the camera slightly lower than the light.
+For camera orientation, by default the positive Y-axis corresponds to the camera's up direction and the negative Z-axis corresponds to the camera's front (viewing) direction. If you want to point the camera in a different direction, you need to change the camera's orientation using rotation of :ref:`modelfile_yaml_transform_node` or :ref:`modelfile_yaml_transform_parameters`.
 
-The orientation of the camera by default has the positive direction on the Y axis correspond to the upper direction of the camera, with the negative direction of the Z axis correspond to the front of the camera (line of sight). To orient the camera in a different direction, use a  :ref:`modelfile_yaml_transform_node` or the rotation aspect of :ref:`modelfile_yaml_transform_parameters`.
-
-In this model, the Z axis is pointed upward. This means that by default, the camera will be facing down. Thus, we add the below to the upper Transform node: ::
+In this model, since the Z-axis is taken as vertically upward, the camera would face downward with the default orientation. So we set the desired camera orientation by writing: ::
 
  rotation: [ [ 1, 0, 0, 90 ], [ 0, 1, 0, -90 ] ]
 
-This allows us to change the camera orientation to our desired one.
+in the upper Transform node.
 
-To specify the orientation using the rotation parameter, we combine the axis and angle of rotation, as discussed in the section on :ref:`modelfile_yaml_offset_position` . In this section, we see how two sets have been added. The rotation parameter can actually be accompanied by multiple lists of orientations. In this case, the orientation values (rotation commands) are applied in sequence, starting from the right. (Think of each element as a rotation matrix, with the multiplication for each matrix being applied in that order.)
+The method of specifying orientation with rotation was explained in :ref:`modelfile_yaml_offset_position` as a pair of rotation axis and rotation angle. Here we have two such pairs. Actually, rotation can be written by listing multiple orientation expressions like this. In this case, the orientation values (rotation commands) are applied in order from right to left. (It's the same as applying matrix multiplication in this order, considering each element as a rotation matrix.)
 
-First, [ 0, 1, 0, -90 ] is applied on the Y axis, for a -90 degree rotation. This allows the camera to face forward. In this current state, the upper orientation of the camera corresponds to the left of the model, so the image will be as though the camera has fallen over on its side. To this, we add [ 1, 0, 0, 90 ] to make an additional 90 degree rotation on the X axis, propping the camera back up and obtaining the image we want.
+Here we first rotate -90 degrees around the Y-axis with [ 0, 1, 0, -90 ]. This makes the camera face forward. However, in this state the camera's up direction is still the model's left direction, resulting in an image as if the camera were lying on its side. So we further rotate 90 degrees around the X-axis with [ 1, 0, 0, 90 ] to stand the camera up and obtain the desired image.
 
-These two rotations can be combined into one string, but this is hard to interpret at a glance or calculate. Instead, combining multiple rotation sets as we have done above allows for more intuitive notation.
+While it's possible to combine these two rotations into a single rotation expression, such combined values are difficult to intuitively understand or calculate. In contrast, by combining multiple rotations as above, such textual description becomes easier.
 
 
-Camera shape
-~~~~~~~~~~~~~~~~~~~~~
+Camera Shape
+~~~~~~~~~~~~
 
-We have given the figure a cylindrical shape so as to have it act like a camera lens. The model will now appear as below.
+Here we add a cylinder shape representing the camera lens. This makes the model display look like this:
 
 .. image:: images/tank_camera.png
 
-The camera definition is set as: ::
+Note that in the camera definition we have: ::
 
- nearClipDistance: 0.02
+ near_clip_distance: 0.02
 
-This allows the external field of view created in the camera image to be pushed slightly forward from center. Giving the camera a shape and not modifying it causes its inherent shape to have the field of view obstructed in the front. By inserting the above line, the exterior of the camera is able to properly display the camera image as desired.
+This shifts the range of the external world captured in the camera image slightly forward from the camera center point. Since we've added a camera shape, without this the forward view would be blocked by that shape. By including this description, it becomes possible to capture the area outside the camera shape in the camera image.
 
 .. _modelfile_yaml_crawlers:
 
-Crawler notation
------------------------
+Writing the Crawlers
+--------------------
 
-Lastly, we add the crawler notation.
+Finally, let's write the crawler parts.
 
-Left crawler notation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Left Crawler
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-We begin by adding the left crawler. As described in the :ref:`modelfile_yaml_links`  section, return to the links hierarchy (indented) and append the following below.
+Let's start with the left crawler. Returning to the hierarchy (indentation) of :ref:`modelfile_yaml_links` mentioned earlier, add the following description:
 
 .. code-block:: yaml
  :dedent: 0
@@ -924,10 +921,9 @@ We begin by adding the left crawler. As described in the :ref:`modelfile_yaml_li
      name: TRACK_L
      parent: CHASSIS
      translation: [ 0, 0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
+     center_of_mass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [
        0.02, 0,    0,
@@ -937,7 +933,7 @@ We begin by adding the left crawler. As described in the :ref:`modelfile_yaml_li
        Shape: &TRACK 
          geometry:
            type: Extrusion
-           crossSection: [
+           cross_section: [
              -0.22, -0.1,
               0.22, -0.1,
               0.34,  0.06,
@@ -947,36 +943,37 @@ We begin by adding the left crawler. As described in the :ref:`modelfile_yaml_li
            spine: [ 0, -0.05, 0, 0, 0.05, 0 ]
          appearance:
            material:
-             diffuseColor: [ 0.2, 0.2, 0.2 ]
+             diffuse: [ 0.2, 0.2, 0.2 ]
 
-Re-importing the model at this stage will append the left-hand crawler to the model as seen below.
+When you reload the model in this state, the left crawler should be added to the model as follows:
 
 .. image:: images/tank_crawler_l.png
 
-Crawlers are attached to the tank body; in this link, the parent link is again set as CHASSIS.
+Since crawlers are connected to the chassis, this link specifies CHASSIS as the parent link again.
 
-For the relative position from the parent link, using ::
+Also, as the relative position from the parent link, by writing: ::
 
  translation: [ 0, 0.2, 0]
 
-allows the figure to be positioned to the left of the tank body.
+we set this link's position to the left side of the chassis.
 
-By design, crawlers are linked treads made of metal or rubber and functioning in a belt-like formation that drives wheels inside. However, such a complex structure is difficult to recreate in a simulation. To that end, the crawlers we are modeling are pseudo-crawlers that consist of a single link. Since it is one link, there is no belt tread; the crawler itself is expressed as a single rigid body. While its travel ability does not match that of an accurate crawler model, by applying driving force to the point where the crawler and the environment make contact, you can to some extent simulate movement like that of a real crawler. For details, please refer to the section on  :doc:`../../simulation/pseudo-continuous-track`.
+Crawlers are originally mechanisms where belt-like tracks made of connected metal or rubber treads are driven by internal wheels. Simulating such complex mechanisms is generally a difficult task. Therefore, the crawler we model here will be a pseudo crawler represented by a single link. Since it's a single link, there's no belt-like track, and the entire crawler is represented as a single rigid body. While its traversability doesn't match that of accurate crawlers at all, by applying propulsive force to the contact area between the crawler and environment, it's possible to achieve movement somewhat similar to crawlers. For details, see :doc:`../../simulation/pseudo-continuous-track`.
 
-In the case of pseudo (simplified) crawlers, the joints themselves do not move, so the link jointType is set to fixed.
+To use a link as such a pseudo crawler (simple crawler), specify "pseudo_continuous_track" for joint_type.
 
-For jointAxis, we assign the presumed direction of the crawler wheel rotational axes. A right-forward twist of this axis corresponds to forward motion. Here, we use the Y axis for rotation.
+.. note:: Previously, this was set by specifying fixed for joint_type and setting the actuation_mode parameter to "jointSurfaceVelocity". While this notation still works, please use the joint_type setting as above going forward.
 
-Next, we set the actuationMode to jointSurfaceVelocity. This allows the link to move like a pseudo-crawler. (This parameter can be set in the control program when using the model, so it need not be described in the model file. However, in the case of pseudo-crawlers, including it in the model file makes for better readability at a glance.)
+For joint_axis, specify the assumed rotation axis direction of the crawler wheels. Forward motion is the positive right-hand screw direction relative to this axis. Here we set the Y-axis as the rotation axis.
 
-The crawler shape is described as a geometric node of the Extrusion type. This is an extruded form; first, the crossSection is set, and this follows the spine parameter to create a structural, extruded figure. Here we treat the crawler cross-section as a trapezoid and extrude it along the Y axis, extending its width. This notation is defined in VRML97; for details, please refer to `the Extrusion node documentation for VRML97 <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_.
 
-For this figure, we will, as before, make use of :ref:`anchors <modelfile_yaml_anchor>` . We assign the “TRACK” anchor in order to reuse the previous crawler for the right-hand side.
+The crawler shape is described using an "Extrusion" type geometric shape node. This is also called an extruded shape, where you first specify the cross-sectional shape with cross_section, then describe a 3D shape by extruding it according to the spine description. Here we make the crawler cross-section trapezoidal and extrude it in the Y-axis direction to give it width. This description method was originally defined in VRML97, and for details please refer to the `VRML97 Extrusion node specification <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_.
 
-Right crawler notation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We also perform :ref:`modelfile_yaml_anchor` on the shape described here. We attach the anchor "TRACK" so it can be reused for the right crawler shape.
 
-Let’s add the notation for the right crawler. As before, add the below code underneath the links section.
+Writing the Right Crawler
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's also write the right crawler. Add the following to the links hierarchy as before:
 
 .. code-block:: yaml
  :dedent: 0
@@ -985,10 +982,9 @@ Let’s add the notation for the right crawler. As before, add the below code un
      name: TRACK_R
      parent: CHASSIS
      translation: [ 0, -0.2, 0 ]
-     jointType: fixed
-     jointAxis: Y
-     actuationMode: jointSurfaceVelocity
-     centerOfMass: [ 0, 0, 0 ]
+     joint_type: pseudo_continuous_track
+     joint_axis: Y
+     center_of_mass: [ 0, 0, 0 ]
      mass: 1.0
      inertia: [
        0.02, 0,    0,
@@ -997,9 +993,15 @@ Let’s add the notation for the right crawler. As before, add the below code un
      elements:
        Shape: *TRACK 
 
-This link is largely the same as the left crawler, with the exception of one symmetrical section. The shape uses the alias of the CRAWLER anchor we previously set.
+The content of this link is almost the same as the left crawler except for being left-right symmetric. For the shape, we reference the anchor set earlier with the name "CRAWLER" as an alias.
 
-Re-import the model and you should see a model like the below. This completes the tank!
+If you reload the model and see a model displayed like below, it's complete!
 
 .. image:: images/tank.png
 
+.. Writing Additional Information
+.. -----------------------------
+
+.. Although we've completed writing the model body, it's also possible to write additional supplementary information.
+
+.. This is written the same way as :doc:`modelfile-yaml`. While that explains the method of combining OpenHRP format model files with YAML files, the model files we've worked with in this format are originally written in YAML, so :doc:`modelfile-yaml` can be included directly in the same file.

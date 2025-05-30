@@ -25,7 +25,7 @@ Launch the simulation. Even when the robot moves, it is displayed as if you are 
 
 .. image:: images/trackingCamera_sceneView_move.png
 
-If **Keep relative attitude** is set to **true** in the BodyTrackingCameraItem property, in addition to the relative position of the viewpoint with regard to the robot, it is also displayed so as to keep the posture constant.
+If **Keep relative attitude** is set to **true** in the BodyTrackingCameraItem property, in addition to the relative position of the viewpoint with respect to the robot, the relative posture is also kept constant.
 
 .. image:: images/trackingCamera_sceneView_attitude.png
 
@@ -45,7 +45,7 @@ The properties unique to BodyTrackingCameraItem are as follows:
  * - Name
    - This is the name of the item. It is also used for the camera name.
  * - Keep relative attitude
-   - When set to True, the relative posture of the robot and the camera is kept constant.
+   - When set to True, the relative posture between the robot and the camera is kept constant.
  * - Camera type
    - Select whether the camera type is Perspective or Orthographic.
  * - Near clip distance

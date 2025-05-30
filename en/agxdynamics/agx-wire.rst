@@ -3,7 +3,6 @@ AGXWire
 ===========================
 
 .. image:: images/wire.png
-   :scale: 60%
 
 AGXWire is a wire model using AGX Dynamics.
 The agxWire module of AGX Dynamics is used for implementation.
@@ -168,7 +167,6 @@ Link composition of sample model is as below.
 
 
 .. image:: images/wire-detail.png
-   :scale: 70%
 
 Explanation of parameters
 --------------------------
@@ -181,11 +179,11 @@ Wire
   :widths: 20,9,4,4,75
   :header-rows: 1
 
-  * - parameter
-    - default value
-    - uinit
-    - data type
-    - explanation
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - type: AGXWireDevice
     - \-
     - \-
@@ -258,11 +256,11 @@ Winch
   :widths: 20,9,4,4,75
   :header-rows: 1
 
-  * - parameter
-    - default value
-    - uinit
-    - data type
-    - explanation
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - linkName
     - \-
     - \-
@@ -295,11 +293,11 @@ Node
   :widths: 20,9,4,4,75
   :header-rows: 1
 
-  * - parameter
-    - default value
-    - uinit
-    - data type
-    - explanation
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - type
     - \-
     - \-
@@ -320,7 +318,6 @@ Collision settings of the wire
 -------------------------------------
 
 .. image:: images/wire-collision.png
-   :scale: 100%
 
 | As explained in :ref:`agx_wire_feature`, agxWire does not correspond to the case such as the robot stepping on wires.
 | However, it is difficult to operate the robot avoiding such a case.

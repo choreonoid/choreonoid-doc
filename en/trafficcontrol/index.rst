@@ -1,50 +1,55 @@
+TrafficControl Plugin
+=====================
 
-Traffic Control Plugin
-======================
-This plugin is for simulating communication failure (communication delay, band limitation, packet loss) during remotely controlling the target robot. For simulating communication failure, this plugin uses “iproute2”, a network setting tool for Linux, to control the signal transmission state on Ethernet communication. Here, we will explain the communication failure simulation applying the effects based on the specified parameters and also the dynamic communication failure simulation for applying the effects depending on the simulation of remote operation. The contents are as follows.
+The TrafficControl plugin is a plugin for simulating communication failures (communication delay, bandwidth limitation, packet loss) that can occur when remotely controlling robots. This plugin uses "iproute2", a network configuration tool for Linux, to control communication between Ethernet-connected computers and simulate communication failures.
 
-* Presetting
-* Introduction of Traffic Control Plugin
-* How to Set  TrafficControlSimulationItem
-* Introduction of Dynamic Traffic Control Plugin
-* How to Set  DynamicTrafficControlSimulatorItem
+Here, we will explain the communication failure simulation that applies fixed communication failure effects during simulation based on specified parameters, and the dynamic communication failure simulation that applies communication failure effects dynamically during simulation, divided into the following items in order.
+
+.. contents:: Table of Contents
+   :local:
 
 Presetting
 ----------
-The traffic control plugin uses ifb module (virtual communication port) for applying to the failure effects to inbound communication. (In this manual “inbound” indicates the direction in which the computer installed this plugin receives the packet, and “outbound” the direction in which sends out the packet.) 
 
-.. note:: The virtual communication port can be set by “modprove” and “tc” commands. As, in general, administrator premission is required for setting them, if you do not have the administrator permission, ask the administrator of the computer.
+The TrafficControl plugin uses the ifb module (virtual communication port) to simulate inbound communication failures.
+(In this manual, "inbound" refers to the direction in which the computer running this plugin receives packets, and "outbound" refers to the direction in which the computer running this plugin sends packets.)
 
-Here we will explain how to set the virtual communication port with the case using two communication ports.  If one communication port is used only, setting of ifb1 is not necessary.
+.. note:: Virtual communication ports can be configured using the "modprobe" and "ip" commands, but these settings typically require administrator privileges. If administrator privileges have not been granted, please check with the administrator of the computer you are using.
 
-First, create the same number of virtual communication ports as the communication ports that you need to the state of signal transmission.  ::
+Here, we will explain how to set up virtual communication ports using the example of using two communication ports. (If only one communication port is used, the ifb1 configuration is not necessary.)
+
+First, create the same number of virtual communication ports as the communication ports to control. ::
 
  $ modprobe ifb numifbs=2
  $ modprobe act_mirred
 
-By the commands in the these lines, the module needed for using “tc” command (used to apply effect of communication failure) with ifb module is loaded. Here, “numifbs=2” in the first line indicates that two virtual communication ports are created.
+The commands on lines 1 and 2 load the modules necessary for using the "tc" command (used to apply communication failure effects) with the ifb module.
+Here, numifbs=2 on line 1 indicates that two virtual communication ports will be created.
 
-Next, enable the created communication ports. In general, numbers are allocated to the created ifb, as the name, in ascending order from 0; for example, first one is ifb0 and the second one ifb1. As two communication ports are used here, enable ifb0 and ifb1, as follows. ::
+Next, enable the created communication ports. Typically, the generated ifb names are assigned numbers in ascending order starting from 0, such as ifb0, ifb1. Since we are using two communication ports here, we enable ifb0 and ifb1. ::
 
  $ ip link set dev ifb0 up
  $ ip link set dev ifb1 up
 
-Then, Create the directory “cnoid-conf” under “/usr/local/share/” to store the configuration file for traffic control. Then, create the configuration file. The configuration file is needed to link the inbound and outbound communication ports one-to-one. Create the file, naming it as “tc.conf”, with an arbitrary text editor in the created directory “cnoid-conf”, the following lines indicate the example of description format for linking eth0 with ifb0 and eth1 with ifb1.  ::
+Next, create a directory to store the configuration file. Please create the directory cnoid-conf under /usr/local/share/.
+Then, create the configuration file. The configuration file is necessary to associate inbound and outbound communication ports one-to-one. Using any text editor, create a file named "tc.conf" in the cnoid-conf directory you created, referring to the following. Below is an example description for associating eth0 with ifb0 and eth1 with ifb1. ::
 
  Port,ifb
  eth0,ifb0
  eth1,ifb1
 
-The first line indicates the file header, which should not be omitted. The second and the third lines are description to link the communication port with the virtual communication port. Left side of the comma is the communication port and the right side is the corresponding virtual communication port. Furthermore,  a name of the communication port described as eth0 · eth1 in the example differs depending on the computer to be used. Therefore, you need to check a name of communication port with the "ifconfig" command.
+Here, the first line represents the file header. Please be sure to include this file header. The second line onward contains the description for associating communication ports, with the communication port on the left and the associated virtual communication port on the right, separated by commas.
+Note that the communication port names described as eth0 and eth1 in the example differ depending on the computer used, so please check them with the "ifconfig" command or similar.
 
-Finally, set the permission to using the tc command. Execute "visudo" with the line below. The set user name is "user" in the following example. Therefore, you need to change the user name to your own. ::
+Finally, set permissions for using the tc command. Execute visudo and add the following line. Note that the example below is for when the username is "user", so please change it to your username as appropriate. ::
 
  user ALL=(ALL:ALL) NOPASSWD: /sbin/tc
 
-Unsetting
----------
-For unsetting, execute the following command with the administrator permission and remove the tc setting and virtual communication port. ::
- 
+Unsetting the Presetting
+------------------------
+
+To unset the presetting, execute the following commands with administrator privileges to delete the tc settings and virtual communication ports. ::
+
  // delete tc setting
  $ tc qdisc del dev eth0 root
  $ tc qdisc del dev eth1 root
@@ -56,83 +61,91 @@ For unsetting, execute the following command with the administrator permission a
  // unload ifb module
  $ rmmod ifb
 
-Finally, If you do not use the traffic control plugin, manually remove/revise the file and directory created/edited in presetting. 
+Finally, manually delete or modify the files and directories created or edited in the presetting.
 
-Introduction of Traffic Control Plugin
---------------------------------------
-Enable the following option by the setting of CMake configuration for building choreonoid.
+Introducing TrafficControl Plugin
+---------------------------------
 
-* BUILD_TRAFFIC_CONTROL_PLUGIN ON
+When building, please turn ON the following option in the CMake configuration.
 
-How to Set TrafficControlSimulatiorItem
----------------------------------------
-The communication failure simulation uses  TrafficControlSimulatiorItem. The effect of communication failure is set according to the configuration of the property of TrafficControlSimulatorItem. You cannot change the configuration during simulation running. Choose “TrafficControlSimulator” from “File” - “New...” of the main menu, and create TrafficControlSimulatiorItem. By default, it is named as “TrafficControlSimulator”. Allocate it as a child item of the simulator item in the item tree view.
+* BUILD_TRAFFIC_CONTROL_PLUGIN
 
-Example of the configuration of TrafficControlSimulatiorItem ::
+How to Set TCSimulatorItem
+--------------------------
 
- [ ] - World
- [/]   + Tank
- [/]   + floor
- [ ]   + AISTSimulator
- [ ]     + TrafficControlSimulatorItem
+The communication failure simulation uses TCSimulatorItem.
+Communication failure effects are set according to the property settings of TCSimulatorItem. Note that settings cannot be changed during simulation.
+Select "TCSimulator" from "File" - "New..." in the main menu to create a TCSimulatorItem. The default name is "TCSimulator". Place this as a child item of the simulator item in the item tree view.
 
-Setting Items of TrafficControlSimulatiorItem
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-For the communication failure simulation, properties of TrafficControlSimulatiorItem must be set. Below is the detail of each property.
-
-.. csv-table::
-    :header: "Property", "Unit", "Function"
-    :widths: 16, 8, 32
-
-    "EnableTrafficControl", "[-]", "Chooses true/false for enabling/disabling the effect of communication failure."
-    "Port", "[-]", "The communication port. Chooses the using port from the list."
-    "InboundDelay", "[ms]", "The tiem delay value applied to inbound communication. In the case of setting 0, it is set no time delay."
-    "InboundBandWidth", "[kbit/s]", "The upper limit of the communication speed applied to inbound communication. In the case of 0, it is not set."
-    "InboundLoss", "[%]", "The rate of packet loss applied to the inbound communication. In the case of 0, it is not set."
-    "OutboundDelay", "[ms]", "The time delay value applied to outbound communication. In the case of 0, it is not set."
-    "OutboundBandWidth", "[kbit/s]", "The upper limit of the communication speed applied to outbound communication. In the case of 0, it is not set."
-    "OutboundLoss", "[%]", "The rate of packet loss applied to the outbound communication. In the case of 0, it is not set."
-    "IP Address", "[-]", "The IP address and the subnet mask of the computer, the communication destination to which the effect of communication failure is applied. If you do not specify a computer or network, this setting is not necessary. In that case, the effect of communication failure is applied to all the packets passing through the communication port specified by “Port”. 
-Input example) 192.168.0.1/24"
-
-Introduction of Dynamic Traffic Control Plugin
-----------------------------------------------
-For using the dynamic traffic control plugin, the above traffic control plugin needs to be introduced. Therefore, making sure to enable BUILD_TRAFFIC_CONTROL_PLUGIN in the configuration of CMake configuration for building choreonoid, enable the option below.
-
-* BUILD_DYNAMIC_TRAFFIC_CONTROL_PLUGIN ON
-
-How to Set DynamicTrafficControlSimulatorItem
----------------------------------------------
-The dynamic communication failure simulation uses  DynamicTrafficControlSimulatorItem and the above  TrafficControlSimulatorItem for the communication failure simulation. During simulation, the effect of communication failure that is corresponding to the distance between the Body model and the reference point will be updated at each time step as specified in the property of DynamicTrafficControlSimulatorItem.
-Choose “DynamicTrafficControlSimulator” from “File” - “New...” of the main menu, and create  DynamicTrafficControlSimulatiorItem. By default, it is named as “DynamicTrafficControlSimulator”. Allocate it as a child item of the simulator item in the item tree view. If  TrafficControlSimulatiorItem is not registered in the item tree view, register it in the item tree view by reffering with the above “How to Set TrafficControlSimulatiorItem”.
-Example of the configuration of DynamicTrafficControlSimulatiorItem ::
+Example of TCSimulatorItem configuration) ::
 
  [ ] - World
  [/]   + Tank
  [/]   + floor
  [ ]   + AISTSimulator
- [ ]     + TrafficControlSimulatorItem
- [ ]     + DynamicTrafficControlSimulatorItem
+ [ ]     + TCSimulatorItem
 
-For using the dynamic communication failure simulation, choose “false” at “EnableTrafficControl”, a property of TrafficControlSimulatiorItem, and set the “Port” of TrafficControlSimulatiorItem and that of DynamicTrafficControlSimulatiorItem in the way that they correspond to each other. The defree of communication can be change by editing the source code directly.
+Setting Items of TCSimulator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Setting Items of DynamicTrafficControlSimulatorItem
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-For executing the dynamic communication failure simulation, you need to set properties of  DynamicTrafficControlSimulatorItem. Below is the details of the properties.
+To perform communication failure simulation, you need to set the properties of TCSimulatorItem. The contents of each property are shown below.
 
 .. csv-table::
     :header: "Property", "Unit", "Function"
     :widths: 16, 8, 32
 
-    "Port", "[-]", "The communication port. Chooses the using port from the list."
-    "EnableDynamicTrafficControl", "[-]", "Chooses true/false for enabling/disabling the effect of communication failure."
-    "ReferencePoint", "[m, m, m]", "The coordinates of the reference point in the world coordinate. "
-    "TargetBody", "[-]", "The target Body model."
-    "TimeStep", "[s]", "The time interval to update the effect of communication effect."
+    "EnableTrafficControl", "[-]", "Specifies enable/disable of communication failure effects."
+    "Port", "[-]", "Specifies the communication port. Select the port to use from the list."
+    "InboundDelay", "[ms]", "Specifies the delay time applied to inbound communication. If 0, it is not set."
+    "InboundBandWidth", "[kbit/s]", "Specifies the upper limit of communication speed applied to inbound communication. If 0, it is not set."
+    "InboundLoss", "[%]", "Specifies the percentage of packet loss applied to inbound communication. If 0, it is not set."
+    "OutboundDelay", "[ms]", "Specifies the delay time applied to outbound communication. If 0, it is not set."
+    "OutboundBandWidth", "[kbit/s]", "Specifies the upper limit of communication speed applied to outbound communication. If 0, it is not set."
+    "OutboundLoss", "[%]", "Specifies the percentage of packet loss applied to outbound communication. If 0, it is not set."
+    "IP Address", "[-]", "Specifies the IP address and subnet mask of the destination computer to which communication failure effects are applied. If you do not specify a destination computer or network, this setting is not necessary. In that case, communication failure effects are applied to all packets passing through the communication port specified in ``Port``. Input example) 192.168.0.1/24"
+
+.. Introducing Dynamic Communication Failure Simulation Plugin
+.. --------------------------------------------------------
+.. To use the dynamic communication failure simulation plugin, the above communication failure simulation plugin must be introduced.
+.. Therefore, after confirming that BUILD_TRAFFIC_CONTROL_PLUGIN is ON in the CMake configuration during build, please turn ON the following option.
+.. 
+.. * BUILD_DYNAMIC_TRAFFIC_CONTROL_PLUGIN
+
+How to Set DynamicTCSimulatorItem
+---------------------------------
+
+The dynamic communication failure simulation uses DynamicTCSimulatorItem and the TCSimulatorItem from the communication failure simulation plugin described above.
+Select "DynamicTCSimulator" from "File" - "New..." in the main menu to create a DynamicTCSimulatorItem. The default name is "DynamicTCSimulator". Place this as a child item of the simulator item in the item tree view. If TCSimulatorItem is not registered in the item tree view, please register TCSimulatorItem in the item tree view by referring to the TCSimulatorItem setup method described above.
+
+Example of DynamicTCSimulatorItem configuration) ::
+
+ [ ] - World
+ [/]   + Tank
+ [/]   + floor
+ [ ]   + AISTSimulator
+ [ ]     + TCSimulatorItem
+ [ ]     + DynamicTCSimulatorItem
+
+When performing dynamic communication failure simulation, set the TCSimulatorItem property "EnableTrafficControl" to "false" and ensure that the "Port" properties of TCSimulatorItem and DynamicTCSimulatorItem match.
+During simulation, communication failure effects corresponding to the distance between the target Body model and the reference point are updated at each time step set in the DynamicTCSimulatorItem properties. Note that since the communication failure effects are directly written in the source code, it is also possible to change the degree of communication failure effects.
+
+Setting Items of DynamicTCSimulatorItem
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To perform dynamic communication failure simulation, you need to set the properties of DynamicTCSimulatorItem. The contents of each property are shown below.
+
+.. csv-table::
+    :header: "Property", "Unit", "Function"
+    :widths: 16, 8, 32
+
+    "Port", "[-]", "Specifies the communication port. Select the port to use from the list."
+    "EnableDynamicTrafficControl", "[-]", "Specifies enable/disable of communication failure effects."
+    "ReferencePoint", "[m, m, m]", "Specifies the coordinates of the reference point in global coordinates."
+    "TargetBody", "[-]", "Specifies the target Body model."
+    "TimeStep", "[s]", "Specifies the time interval for updating communication failure effects."
 
 Sample
 ------
-As a sample, the dynamicTrafficControlSimulatorItem is set to give 200 ms outbound delay at maximum value within the scope of 10 m radius centering in the reference origin (0, 0, 0).  
 
-.. figure:: image/image1.png
+As a sample, DynamicTCSimulatorItem is configured to dynamically apply a maximum communication delay of 200ms within a 10m radius centered at the reference point (0,0,0).
 
+.. figure:: image/dynamicsample.png

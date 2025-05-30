@@ -1,164 +1,168 @@
-Competition overview
+Competition Overview
 ====================
 
-Here we’ll introduce an overview of the WRS2018 robotics competition “Tunnel Disaster Response and Recovery Challenge”.
+This section provides an overview of the WRS2018 robot competition "Tunnel Disaster Response and Recovery Challenge."
 
 .. contents::
    :local:
 
-Event information
+Event Information
 -----------------
 
-This competition is based on the assumption that a disaster or accident has occurred in a tunnel, and robots compete using their ability to perform the tasks required in such a situation. The competition consists of a total of six tasks, and the robots perform the tasks in the virtual environment simulated on a computer.
+This competition assumes disasters or accidents occurring within tunnels and challenges teams to demonstrate their robots' task execution capabilities in such situations. The competition consists of six tasks in total, with robots performing these tasks in a computer-simulated virtual environment.
 
-The details of the event were as follows.
+The event overview is as follows:
 
-* Date: October 17th (Wed) to 21st (Sun), 2018
+* Dates: October 17 (Wed) - 21 (Sun), 2018
 * Venue: Tokyo Big Sight
-* Participation format: applicants form teams and submit application documents. Participation is free of charge. Participation is possible once application documents have been approved.
-* Number of participating teams: 8
-* `Prize money: <http://worldrobotsummit.org/download/guideline/prize_money_for_the_wrc2018_en.pdf>`_ : 1st = 10 million yen; 2nd = 3 million yen; 3rd = 1 million yen
+* Participation: Teams formed by interested participants apply through documentation. Participation is free. Teams can participate after passing the document screening.
+* Number of participating teams: 8 teams in total
+* `Prize money <http://worldrobotsummit.org/download/guideline/prize_money_for_the_wrc2018_en.pdf>`_: 1st place: 10 million yen, 2nd place: 3 million yen, 3rd place: 1 million yen
 
 .. _wrs2018_overview_rules:
 
-Competition rules
+Competition Rules
 -----------------
 
-The rules of the competition are summarized in the document below.
+The competition rules are compiled in the following documents:
 
-* :download:`Rule book of the tunnel disaster response and recovery challenge <rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`
+* :download:`Official English rulebook <rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`
+* :download:`Japanese reference version <detailed-rules-tunnel-disaster-response-and-recovery-challenge-ja.pdf>`
 
 .. _wrs2018_overview_simulator:
 
-Simulator used
+Simulator Used
 --------------
 
-Information about the simulator used in this competition is summarized below.
+The following summarizes information about the simulator used in this competition:
 
-* Simulator: software: Choreonoid
-* Choreonoid version: uses the development version. The version actually used has the `wrs2018 tag attached <https://github.com/s-nakaoka/choreonoid/tree/wrs2018>`_ .
+* Simulator software: Choreonoid
+* Choreonoid version: Development version used. The actual version used is `tagged as wrs2018 <https://github.com/choreonoid/choreonoid/tree/wrs2018>`_.
 * OS: Ubuntu Linux 16.04 64-bit
-* Uses the commercial physics engine AGX Dynamics
+* Utilizes the commercial physics engine "AGX Dynamics"
 
-The development version of Choreonoid is available from the `Choreonoid repository on GitHub <https://github.com/s-nakaoka/choreonoid>`_ .
+.. note:: This information reflects the conditions at the time of the competition. The WRS2018 samples can also run on Ubuntu 18.04 and 20.04 environments.
 
-Uses the Ubuntu Linux OS. It is assumed to be the 16.04 64-bit version.
+The development version of Choreonoid is available from the `Choreonoid repository on GitHub <https://github.com/choreonoid/choreonoid>`_.
 
-In this competition, the `AGX Dynamics <http://www.vmc-motion.com/14416057938792>`_  physics engine is used. AGX Dynamics is a commercial physics engine and its use requires a license, but licensing for taking part in this event is provided free of charge for registered participants. If you have a license, you can use it on Choreonoid via the :doc:`../agxdynamics/index` included with Choreonoid.
+The OS used is Ubuntu Linux, specifically the 64-bit version of 16.04.
 
-The simulation PC used at the competition venue is prepared by the event management. The specs of the PC are as follows.
+This competition uses `AGX Dynamics <https://www.algoryx.se/products/agx-dynamics/>`_ as its physics engine. AGX Dynamics is a commercial physics engine requiring a license for use, but participants registered for this competition receive a free license for participation. With a license, you can use it on Choreonoid through the :doc:`../agxdynamics/index` included in Choreonoid itself.
 
-* CPU: Intel Core i7 8700K (6 cores, 12 threads, processor base frequency 3.7GHz)
+.. note:: Even those not participating in the competition can try the competition simulations by purchasing the `AGX Dynamics license for Choreonoid <https://www.vmc-motion.com/商品・サービス/プラグインソリューション/plugin-for-choreonid/>`_ sold by `VMC Motion Technologies Co., Ltd. <https://www.vmc-motion.com/>`_. (Of course, it can also be used for simulations other than the competition.) Alternatively, you can get an overview of the competition using Choreonoid's standard physics engine without AGX Dynamics. However, in that case, robot and task simulations will be partially incomplete, and simulation speed will be slower.
+
+The simulation PCs used at the competition venue are provided by the organizers with the following specifications:
+
+* CPU: Intel Core i7 8700K (6 cores, 12 threads, base clock frequency 3.7GHz)
 * Memory: 32GB
 * GPU: NVIDIA GeForce GTX 1080 Ti
 
-Participants must do any development and testing for taking part in the competition with their own PCs. It is ideal if the PC specs are the same as the above. But as long as they are equivalent to those shown below, there shouldn’t be any problems.
+For development and testing for competition participation, participants need to use their own PCs. While having the same specifications as above would be ideal, the following specifications should generally be sufficient:
 
-* CPU: Intel series, AMD Ryzen series, 4 or more cores, processor base frequency 3GHz or better
-* GPU: NVIDIA GeForce/Quadro, Intel HD Graphics (built into the CPU)
-* Memory: 8GB
+* CPU: Intel Core series, AMD Ryzen series, 4 or more cores, base frequency around 3GHz or higher
+* GPU: NVIDIA GeForce/Quadro, Intel HD Graphics (CPU integrated)
+* Memory: Around 8GB
 
-Naturally, the simulation speed and frame rate will vary depending on the CPU, GPU and other specs. And even if the specs are lower than those above, the simulation will run slower but will not necessarily fail to work.
+Of course, simulation speed and rendering frame rates will vary depending on CPU and GPU specifications. Also, even with lower specifications than those listed above, the system will still run, just more slowly.
 
-Please avoid using AMD GPUs (such as Radeon) because their drivers for Linux may not be mature enough.
+Please avoid using AMD GPUs (Radeon, etc.) as their Linux drivers may not be adequately maintained.
 
 .. _wrs2018_overview_robots:
 
-Supported robots
-----------------
+Target Robots
+-------------
 
-The following robot models have been prepared as the robots expected to be used in the competition.
+The following robot models are prepared for use in the competition:
 
 .. image:: images/wrs-robots.png
 
-The elements of each robot are shown below.
+Here's an overview of each robot:
 
 * WAREC-1
 
- A robot developed mainly at Waseda University for the `ImPACT Tough Robotics Challenge（TRC） <http://www.jst.go.jp/impact/en/program/07.html>`_ . This is a variety of leg-type robot, and it features four legs symmetrically constructed around the torso. With this construction, it can be used as a 4-leg type robot, or it can be used like a humanoid robot that stands on two of the legs and uses the remaining two legs like arms. As such, with ingenuity, it can adopt various forms in order to deal with various tasks.
+ A robot developed primarily by Waseda University as part of the `ImPACT Tough Robotics Challenge (TRC) <http://www.jst.go.jp/impact/en/program/07.html>`_. This is a type of legged robot characterized by four legs arranged symmetrically around the torso. This allows it to be used as a quadruped robot, or by standing on two legs and using the other two as arms, it can function like a humanoid robot. Thus, it has the potential to handle various tasks in different configurations with creative approaches.
 
-* Double-Arm Robot (a dual-arm construction robot)
+* Double-Arm Robot
 
- A robot developed mainly by Osaka University for ImPACT-TRC. It is a construction robot equipped with two arms. The two arms and the end-effectors attached to them can be used to perform various operations. And, as a construction machine, it is capable of operations requiring a lot of power. Since it is equipped with tracks as its movement mechanism, it is also able to move over rough terrain. Furthermore, utilizing the two arms increases its ability to travel over irregular terrain or to work stably even when it has an unstable foothold.
- 
+ A robot developed primarily by Osaka University as part of ImPACT-TRC. This is a construction equipment-type robot equipped with two arms. Using these two arms and their attached end effectors, it can perform various tasks. Being construction equipment, it can handle tasks requiring significant force. It features crawlers for mobility, enabling movement on rough terrain. Furthermore, by utilizing both arms, it can enhance its rough terrain traversal capabilities and perform stable work on unstable footing.
+
 * Aizu Spider
 
- A robot jointly developed by Aizu University and IZAK Co., Ltd. It is a crawler-type robot, and in addition to the main tracks, it has auxiliary tracks called flippers in the front and back. It is also equipped with a working arm. Robots of this type are increasingly being used for disaster response in recent years and have a lot of potential for investigative and operational work at disaster sites. This robot comes in three variations with regard to the arm: no arm, single arm, and double arm. Considering the tasks involved in WRS, the double-arm configuration is the most practical.
+ A robot jointly developed by the University of Aizu and AISAC Corporation. This crawler-type robot features main crawlers plus auxiliary crawlers called flippers at the front and rear. It also includes a working arm. Robots of this form have seen increasing use as disaster response robots in recent years, holding great potential for investigation and work at disaster sites. This robot comes in three arm configurations: no arm, single arm, and dual arm. For tackling WRS tasks, the dual-arm type is the most practical choice.
 
-WAREC-1 and Double-Arm Robot are official WRS :download:`platform robots <platformrobots.pdf>` . Regarding Aizu Spider, while it is not an official WRS robot, it was originally provided as a sample model of Choreonoid, so it can also be used in this event. Actual working versions of all of these robots have been developed and are in operation.
+WAREC-1 and Double-Arm Robot are official WRS :download:`platform robots <platformrobots.pdf>`. While Aizu Spider is not officially WRS-sanctioned, it was originally provided as a Choreonoid sample model and can be utilized in this competition. All these robots have actual physical counterparts that have been developed and are operational.
 
-The multicopter (drone) can also be used in this competition. For the multicopter model, we have prepared a sample model of the quadrotor type developed by the Japan Atomic Energy Agency (JAEA).
+This competition also allows the use of multicopters (drones). As a multicopter model, the following quadrotor sample model developed by the Japan Atomic Energy Agency (JAEA) is available:
 
 .. image:: images/quadcopter.png
 
-Flight simulation of this kind of multicopter model can be performed using the :doc:`../multicopter/index` . In the competition, it is expected to be used in tandem with other robots to investigate the situation inside the tunnel and provide a bird's-eye view of the work done by the other robots.
+Using the :doc:`../multicopter/index`, flight simulations of such multicopter models can be performed. In the competition, multicopters are expected to be used in conjunction with other robots to investigate tunnel conditions or provide overhead views for other robots' operations.
 
-Model files for the robot models above are bundled with Choreonoid and can be used as they are in this competition. These are referred to as the “standard robots” in this competition.
+The above robot models come bundled with Choreonoid and can be used as-is in this competition. We'll refer to these as the "standard robots" for this competition.
 
-Note that you are allowed to participate using robot models other than the standard robots. You are allowed to modify the standard robots, to use other Choreonoid sample models, or to use your own original robot models. However, in that case, they are required to pass an inspection by the competition steering committee. The criteria for the inspection are based on whether it is a robot which exists in reality or whether it has a structure or specification that could potentially exist.
+Note that participants may also use robot models other than the standard robots. They may modify parts of the standard robots, use other Choreonoid sample models, or use their own unique robot models. However, such models must pass review by the competition organizing committee. The review criteria require that the robot either exists in reality or has a structure and specifications that could plausibly exist.
 
-Task overview
+Task Overview
 -------------
 
-In this competition, the setting is, “A disaster has occurred in a tunnel, debris is scattered everywhere ad fires have broken out due to collapse of the walls and vehicle accidents. Robots enter the tunnel, which is too dangerous for people to enter, and are used to investigate the situation inside the tunnel, rescue survivors, extinguish fires, etc.” With this as the setting, the competition is composed of six tasks T1 to T6 shown in the images below. The competition is divided up into the separate tasks.
+This competition is set in a scenario where "a disaster has occurred in a tunnel, causing wall collapses and vehicle accidents that scatter debris and create fires, making it dangerous for humans to enter. Robots are deployed into the tunnel to investigate conditions, rescue victims, and conduct firefighting activities." Under this premise, the competition consists of six specific tasks labeled T1 through T6, as shown in the figure below. The competition is conducted separately for each task.
 
 .. image:: images/sixtaskimages.png
 
-The overview of each task is as follows.
+The overview of each task is as follows:
 
-* T1: Traversing Obstacles
+* T1: Obstacle Traversal
 
- This task involves moving inside a tunnel whose terrain is uneven due to scattered debris and to conduct an internal investigation. This tests the robot’s maneuverability. Also, visibility may be impaired due to smoke from fires, etc.
+ A task to navigate through a tunnel made uneven by scattered debris and conduct internal investigations. This tests the robot's mobility. Visibility may be impaired due to smoke from fires.
 
-* T2: Vehicle Inspection
+* T2: Vehicle Investigation
 
- This task involves investigating the vehicles that have been left inside the tunnel. Investigate whether there are victims left inside vehicles or whether there are any abnormalities. In the investigation, the abilities that are tested include operations such as opening the door of a vehicle, or visual recognition ability required to check the inside of a vehicle.
+ A task to investigate vehicles stranded in the tunnel. This involves checking whether victims are trapped inside vehicles and looking for any abnormalities. The investigation tests both operational capabilities for opening vehicle doors and visual recognition abilities for internal inspection.
 
-* T3: Vehicle Inspection Using Tools and Victim Extraction
+* T3: Tool-assisted Vehicle Investigation and Rescue
 
- This task involves extracting the victims left in vehicles that have crashed. Use a hydraulic spreader to open vehicle doors that otherwise cannot be opened after a crash and extract victims from inside the vehicle. It is necessary to handle the victims carefully so as not to injure them. This test requires a higher level of operation capability than task T2.
- 
-* T4:  Securing a Route
+ A task to rescue victims from accident vehicles where victims are trapped. Using a hydraulic spreader to pry open doors that won't open due to the accident, then extracting victims from inside the vehicle. Victims must be handled carefully to avoid injury. This tests more advanced operational capabilities than Task T2.
 
- Remove obstacles scattered inside the tunnel and secure a route so that other vehicles and people can enter. Things such as the robot’s operation capability and action planning ability are tested.
+* T4: Route Clearing
 
-* T5: Fire Extinguishing
+ A task to remove obstacles scattered in the tunnel to secure a path for other vehicles and people to enter. This tests the robot's operational capabilities and motion planning abilities.
 
- Extinguish fires that have broken out inside the tunnel using fire hydrants It is necessary to do a sequence of jobs: open the door to the fire hydrants, connect a nozzle for discharging water to the end of a hose, open a valve, extend the hose, turn on the water discharge lever, maneuver the hose tip so that the water is aimed at the fire. High-level operation capability is tested.
+* T5: Firefighting
+
+ A task to conduct firefighting activities using fire hydrants against fires occurring in the tunnel. This requires completing a series of operations: opening the fire hydrant door, connecting the water nozzle to the hose end, opening the valve, extending the hose, turning on the water lever, and manipulating the hose end to direct water at the fire source. This tests advanced operational capabilities.
 
 * T6: Shoring and Breaching
 
- Investigate inside a vehicle trapped under rubble from a collapsed wall. First, insert a tool to support the collapsed wall around the investigation site, and stabilize the wall so that it will not move inadvertently. This operation is called shoring. Next, use a drill to make a hole in the wall that has been shored up. This operation is called breaching. Once this is done, extend an arm through the hole to investigate inside the trapped vehicle. This task also tests high-level operation capability.
+ A task to investigate inside a vehicle trapped under a collapsed wall. First, stabilize the collapsed wall around the investigation area by inserting support tools to prevent unwanted movement—this operation is called shoring. Next, drill holes in the shored wall—this operation is called breaching. Then, investigate inside the trapped vehicle by inserting an arm through the holes. This task also tests advanced operational capabilities.
 
-In the competition, the elements that can be scored are set for each task, and the score is increased as those elements are cleared. There is a defined time limit for each task, and the aim is to get as many points as possible within that time and to clear the task. If you clear the task, the time taken is also included in the score (the quicker you finish, the higher your score.) The final rankings of the competition will be determined based on the total score for all 6 tasks.
+In the competition, scoring points are set for each task, and points are accumulated by clearing these objectives. Each task has a time limit, and the goal is to score as many points as possible and complete the task within that time. When a task is completed, the time taken is also factored into the score (faster completion yields higher scores). The final competition ranking is determined by the total score across all six tasks.
 
-Note that when executing a task, you can use up to two robots and have them coordinate with each other. Making effective use of coordination between robots should make it easier to aim for a higher score.
+Note that up to two robots can be deployed for task execution and can work cooperatively. Effective use of robot cooperation may make it easier to achieve higher scores.
 
-Refer to the `rule book <http://worldrobotsummit.org/download/rulebook-en/rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`_  for details about the tasks, scoring elements, etc.
+For details on tasks and scoring points, please refer to the `rulebook <http://worldrobotsummit.org/download/rulebook-en/rulebook-Tunnel_Disaster_Response_and_Recovery_Challenge.pdf>`_.
 
 .. _wrs2018_overview_operation:
 
-Operating the robots
---------------------
+Robot Operation
+---------------
 
-Participants can prepare a set of robot control software to install and execute on the simulation PC. Control software is basically implemented as Choreonoid controller items. However, you can construct a control software system external to the controller items and connect this system with the controller items. In that case, you can use middleware such as ROS or OpenRTM. Either way, the simulation PC for operating the robot is equivalent to the control PC installed in an actual robot.
+On the simulation PC side, participants can install and execute their complete set of robot control software. The control software is basically implemented as a Choreonoid controller item. However, you may also build a control software system external to the controller item and connect that system to the controller item. In that case, you can use middleware such as ROS or OpenRTM. In any case, regarding robot operation, the simulation PC corresponds to the control PC mounted on the actual robot.
 
-Only sensors mounted on the robot (camera, LiDAR sensor, force sensor, acceleration sensor, rate gyro, etc.) can be used to get information used to control the robot, such as its surroundings or current state. In other words, you control the robot in the same situation as you would the actual machine. Unlike with the actual machine, the simulator allows you to get things such as images from arbitrary viewpoints or the robot’s global coordinate values, but such information cannot be used for control.
+The environment used for robot control and the robot's state must be obtained only from sensors mounted on the robot (cameras, LiDAR sensors, force sensors, acceleration sensors, rate gyros, etc.). This means performing control under the same conditions as the actual robot. While the simulator, unlike actual robots, can obtain views from arbitrary viewpoints or global coordinate values of the robot, such information cannot be used for control.
 
-It is allowed for the robot control software built on the simulation PC to run completely autonomously, as long as the robot can complete its operations. But because of the advanced tasks included in this competition, it is probably difficult for the robot’s operations to be done fully autonomously.
+If the robot control software built on the simulation PC operates completely autonomously, robot operation can be completed with this alone. However, since this competition includes advanced tasks, fully automating robot operation may be challenging.
 
-Therefore, it is also possible to prepare a separate operator’s PC and control the robot remotely from there. Participating teams should prepare and bring their own PCs for this purpose. The simulation PC and the PC for teleoperation should be networked and communicate by TCP/IP. Of course, you can use ROS or OpenRTM based on TCP/IP for this communication. If it is based on TCP/IP, you can use another communication system or your own proprietary communication system. However, note that the communication target on the simulation PC side only applies to the robot control system. It is prohibited to access the simulator directly from the teleoperation PC and get information that cannot originally be obtained by the robot.
+Therefore, for robot operation, it's also possible to prepare a separate operation PC for remote control. The PC used for this is prepared and brought by each participating team. The simulation PC and remote operation PC are network-connected and communicate via TCP/IP. Of course, you may use ROS or OpenRTM based on TCP/IP for this communication. As long as it's based on TCP/IP, you may use other communication systems or proprietary communication systems. However, note that the communication target on the simulation PC side must only be the robot control system. Direct access to the simulator from the remote operation PC to obtain information not normally available from the robot is prohibited.
 
-The above structure can be represented graphically as shown below.
+The above configuration is illustrated as follows:
 
 .. image:: images/teleop-overview.png
 
-It is allowed to use multiple teleoperation PCs. However, the power capacity available for the operation PC is limited to 1500W, so your usage must stay within that range. Also, there is a fixed size of the table on which the operating PC is installed at the venue, so the devices have to fit in that space.
+Note that multiple remote operation PCs may be used. However, the power capacity available for operation PCs is limited to 1500W, so usage must be within this range. Also, the size of tables for installing operation PCs at the venue is fixed, and equipment must fit within these constraints.
 
-Also, there may be communication problems between the simulation PC and the teleoperation PC. Communication delays, packet loss, etc. This can also occur in an actual disaster scene. While communication problems are occurring, teleoperation may be hindered. When that happens, robots that are able to operate largely autonomously should be able to carry out their tasks efficiently. Whether or not communication problems occur, or how frequently they occur, in the actual competition will be adjusted by the competition management, taking into account the competition’s level of difficulty.
+Additionally, communication failures may occur between the simulation PC and remote operation PCs, such as communication delays or packet loss. These can also occur at actual disaster sites. While communication failures are occurring, remote operation will also be affected. In this case, teams with more autonomous robot operations should be able to proceed with tasks more efficiently. The occurrence and frequency of communication failures in actual competitions will be adjusted by the competition organizers considering the difficulty level.
 
-About competition simulation samples
+About Competition Simulation Samples
 ------------------------------------
 
-Samples are available for simulating this competition on Choreonoid. We will explain how to execute them and their details in the following section, so please try out these samples first. They will give you an idea of the competition’s outline and what preparations you need to make before participating. Then it is probably a good idea to modify the sample to suit your own robot model, control software, and teleoperation system.
-
+We have prepared samples for conducting this competition's simulations on Choreonoid. The following sections explain how to run these samples and their contents, so please try these samples first. This should give you an idea of the competition overview and the preparations needed for participation. After that, you can modify the samples to accommodate your own robot models, control software, and remote operation systems.

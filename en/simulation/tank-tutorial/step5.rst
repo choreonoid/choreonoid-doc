@@ -1,112 +1,78 @@
+Step 5: Controlling the Light
+=============================
 
-Step 5: Controlling the lights
-==============================
+The Tank model is equipped with a light (light source). In Step 5, we'll make it possible to operate this light from the controller and learn about how to control devices.
 
-The Tank model is equipped with a light (lightsource). In Step 5, we enabled controlling this light via the controller and learned how to control the device.
-
-.. contents:: 
+.. contents:: Table of Contents
    :local:
    :depth: 2
 
 .. highlight:: C++
    :linenothreshold: 7
 
-Environment settings
---------------------
+Environment Setup
+-----------------
 
-Let’s configure the environment settings in order to make the effects of the light more clear.
+To make the effects of using the light more clear, let's set up the environment.
 
-Changing the scene renderer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Internally, Choreonoid contains what is called a “scene renderer” that is used to render models as 3D graphics. The rendering performance in the Scene View will differ depending on whether this functionality has been implemented in your build.
+Checking the Graphics Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The development version of Choreonoid actually contains a new scene renderer. This is implemented using GSLS, a shading language. Internally, it is referred to as the GLSL Scene Renderer. Using this renderer allows for more accurate rendering of illumination of objects from lightsources, as well as shadows cast by these objects. In other words, this allows you to draw a more realistic scene. This is useful in enhancing the effect of the light installed on the Tank model. Let’s try using this functionality.
-
-The GLSL is currently in development; by default, it is set to not be used, but you can use the CNOID_USE_GLSL environment variable to enable it. Specifically, when launching Choreonoid, using ::
-
- CNOID_USE_GLSL=1 choreonoid
-
-will apply this environment variable, causing the instance of Choreonoid to use the GLSL renderer. Or, you can issue the below command in advance: ::
-
- export CNOID_USE_GLSL=1
-
-This will enable the environment variable setting thereafter.
-
-One point to note is that the GLSL scene renderer requires that the OS’s OpenGL version be 3.3 or later. This is not a particularly new version, but it may not be supported on certain computer hardware and OS versions; if running on a virtual machine, it may stop functioning.
-
-In Ubuntu, you can issue the glxinfo command to check what version of OpenGL you are running. This command is installed by invoking ::
-
- sudo apt-get install mesa-utils
-
-Next, use ::
-
- glxinfo
-
-to display information on the OpenGL configuration available for the environment. If you see a line reading:
-
- OpenGL version string: 4.5.0 NVIDIA 375.39
-
-you know that OpenGL 4.5.0 is supported.
-
-However, note that even if OpenGL 3.3 is supported, it may still not run properly. In particular, if you are using a GPU other than Nvidia or are running the tool on a virtual machine, it is likely to underperform. In this case, clear the above environment variable and try using the default scene renderer.
-
-.. note:: There may be cases where the GLSL renderer underperforms, but setting the Qt version to 5 causes Choreonoid to perform properly. Qt is a GUI library; by default, version 4 is used. However, if you set the USE_QT5 flag to ON in the cmake settings, version 5 will be used.
+To ensure that the light effects are rendered correctly, :doc:`../../install/setup-gpu` needs to be done properly. When using Ubuntu Linux, please also check :ref:`setup_gpu_ubuntu_gpu_driver`.
 
 .. _tank_tutorial_use_labo_model:
 
-Changing the environment model
+Changing the Environment Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If we use the existing floor model as-is, the light will not stand out much. Therefore, we want to change the environment model. We will use the “Labo1” model, a sample included with Choreonoid. This model is based around a research plant, as shown below.
+With just the floor model we've been using, there isn't much visible difference when the light is illuminated. So let's change the environment model. This time we'll use a model called "Labo1" that's prepared as a Choreonoid sample. This is a model assuming a research plant, as shown below.
 
 .. image:: images/labo1.png
 
-This model is contained within the file Labo1.body in the model/Labo1 directory of the Choreonoid share directory. Add this to the projects you have created so far and import the model.
+This model is stored in Choreonoid's share directory under "model/Labo1" with the filename "Labo1.body". Please add it to the project we've been creating and load this model.
 
-The position of this item on the Item Tree View when imported is, like the other items, a sub-item of the World item. If there is no check for this item, place a check next to it to display the model. The position of the model on the scene can be left as-is per the default. Now, delete the Floor item that we had imported for use on the ground. Right-clicking on the item will bring up a context menu, from which you can select Cut to delete the item. The above steps will present you with an Item Tree like the below.
+The placement of the loaded item in the Item Tree View should be as a child item of the World item, similar to other models. If the item isn't checked, check it to display the model. The position of the model in the scene can remain at the default. Then, let's delete the "Floor" item, which is the floor model we've been loading. Right-clicking on the item displays a context menu, from which you can select "Cut" to delete it. After performing these operations, the item tree should look like this:
 
 .. image:: images/labo1item.png
 
-If the parent-child relationship is the same, the item order does not matter. Therefore, it is fine is, for example, if Labo1 comes after AISTSimulator. If the order bothers you, you can drag the items to change the order to one you prefer.
+As long as the parent-child relationships between items are the same, the order of items doesn't matter. So for example, it's fine if Labo1 is placed after AISTSimulator. If you're concerned about the order, you can drag items to change just the order, so set it up as you like.
 
-Changing the scene settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changing Scene Settings
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Next, let’s change the configuration implicated in rendering the scene. To do so, first click the Settings Button on the Scene Bar below.
+Next, let's change settings related to scene rendering. To do this, first press the "Settings button" on the scene bar below.
 
 .. image:: images/scenebar-config.png
 
-This will display a settings dialog like below. Here you can configure various settings implicated in rendering the scene.
+This displays a settings dialog like the one below, where you can configure various settings related to scene rendering.
 
 .. image:: images/scene-config.png
 
-First remove the checkmark next to “display floor gridlines.”
+First, uncheck "Show floor grid lines" to hide the grid lines.
 
-Next, let’s configure the lighting. Is the additional light turned on? If it is, the light on the Tank model should also be on.
+Next, let's configure the lighting. First, is "Additional lights" turned on? If this is on, the light mounted on the Tank model will also be enabled.
 
-Now, turn off the Headlight and World light. This will create a scene like below, where the Tank model’s light illuminates the dark view.
+Then, try turning off "Headlight" and "World light". You should see a scene like the figure below, where only the Tank model's light illuminates the surroundings in darkness.
 
 .. image:: images/tanklightscene.png
 
-Now the illumination from the light can be fully seen. (When using the default renderer, the light illumination is more diffuse.)
+Now the light effect is clearly visible. (When using the default renderer, the light illumination appears somewhat more diffuse.)
 
-If you make the scene this dark, some of it will become invisible and difficult to operate. Now, let’s try incorporating some lighting from the Headlight and World light that we previously disabled.
+If you have enabled the GLSL renderer, you can also display shadows. This is set with the "Shadow 1" and "Shadow 2" checkboxes in the settings dialog. Enter the target light number in "Light" for each. The numbers correspond to 1 for the light mounted on the Tank model and 2 for the ceiling light in the Labo1 model, so try enabling each and see how the display changes.
 
-Begin by turning the lights on one by one from the settings dialogue. You should see the scene becoming brighter, as well as that the way each light illuminates the scene is different. The Headlight illuminates outward from line of sight, while the World light illuminates from the top of the scene and pointed down. Now, turn on both lights and tweak the intensity of each light in the settings dialog using the Illuminance field. With the default Illuminance, the scene is too bright and lacks in mood. Tweak this value as desired, setting it to a level that you find comfortable for working on the scene.
-
-If you have also enabled the GLSL renderer, you will be able to display shadows. This can be configured by placing checkmarks next to Shadows 1 and Shadows 2 on the settings dialog. Each of the lights takes the number of the target light. 0 corresponds to the World light, while 1 and later correspond to lights installed on the model. Try enabling these and seeing how the appearance changes.
-
-An example of a scene in which the Illuminance of the Headlight and World light has been toggled and shadows from the World light and Tank model light enabled can be seen below.
+An example of a scene with shadows from the Tank model and Labo1 model lights enabled is shown in the figure below.
 
 .. image:: images/lighting-all.png
 
-Now the ambiance is much more befitting the scene. Save your settings so far as a project file named step5.cnoid.
+Now the scene has an appropriate atmosphere. Let's save the settings up to this point as a project file with a name like "step5.cnoid".
+
+.. note:: Shadows may not be rendered depending on the GPU or GPU driver you're using. For details, see :doc:`../../install/setup-gpu`.
 
 
-Light controllers
---------------------
+Light Controller
+----------------
 
-The environment configuration has taken some time, but let us get into the main subject without further ado. We will be creating a controller used to operate the Tank model light and name it LightController. The source code to the controller is seen below. ::
+The environment setup has taken a while, but let's get to the main topic. What we'll create this time is a controller to operate the Tank model's light, which we'll call "LightController". The source code for this controller is shown below. ::
 
  #include <cnoid/SimpleController>
  #include <cnoid/SpotLight>
@@ -121,14 +87,14 @@ The environment configuration has taken some time, but let us get into the main 
      bool prevButtonState;
  
  public:
-     virtual bool initialize(SimpleControllerIO* io)
+     virtual bool initialize(SimpleControllerIO* io) override
      {
          light = io->body()->findDevice<SpotLight>("Light");
          prevButtonState = false;
          return true;
      }
  
-     virtual bool control()
+     virtual bool control() override
      {
          static const int buttonID[] = { 0, 2, 3 };
         
@@ -161,84 +127,84 @@ The environment configuration has taken some time, but let us get into the main 
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(LightController)
 
-As before, save the above source code in the project directory as a file named LightController.cpp.
+As before, save the above source code with the filename "LightController.cpp" in the project directory.
 
-Add ::
+Add to CMakeLists.txt: ::
 
- add_cnoid_simple_controller(TankTutorial_LightController LightController.cpp)
+ choreonoid_add_simple_controller(TankTutorial_LightController LightController.cpp)
 
-to CMakeLists.txt and compile.
+and compile it.
 
-Deploying the controller
-------------------------------
+Introducing the Controller
+--------------------------
 
-As with the TrackController we employed in Step 4, you can also generate a Simple Controller item that works with the Light Controller and position this as a sub item of the TurretController. This will cause the Item Tree View to be as follows.
+Similar to the TrackController introduced in Step 4, generate a corresponding SimpleController item for the LightController and place it as a child item of the TurretController. After doing this, the Item Tree View will look like this:
 
 .. image:: images/lightcontrolleritem.png
 
-Using this positioning allows the control functions for TurretController, TrackController, and LightController to be called in sequence and function as one.
+By placing them this way, the control functions of TurretController, TrackController, and LightController will be called in sequence, and they will function as one unit.
 
-Controlling the light
---------------------------
+Operating the Light
+-------------------
 
-Launch the simulation and confirm that the lights can be controlled.
+Run the simulation and confirm that you can now operate the light.
 
-The light is manipulated using the A, X, and Y buttons on the gamepad or virtual joystick (on a PlayStation gamepad, these correspond to the x, square, and triangle buttons).
+Light operation is assigned to the A, X, and Y buttons on the gamepad or virtual joystick view (on PlayStation gamepads, these are the ×, □, and △ buttons).
 
-The A button is used to toggle the light on and off.
+First, the A button toggles the light on and off.
 
-The X and Y buttons are used to change the width of the light beam. Pushing the X button contracts the beam width, and pushing the Y button expands it.
+Also, the X and Y buttons change the light's illumination range. Pressing the X button narrows the illumination range, and pressing the Y button widens it.
 
-You can continue manipulating the crawlers and gun turrets per the configuration we have made thus far. Try moving the Tank model while illuminating various parts of the Labo1 environment.
+The crawler and turret operations we've implemented so far are still available, so try illuminating various parts of Labo1 with the light while moving the Tank model.
 
-If “log device state,” a property of simulation items, is set to “true,” the operation of the light will be logged as simulation results and will show up when :ref:`playing back simulations<simulation-result-playback>` . By default, this property is set to true. After confirming that this functionality is working by moving the light around, stop the simulation and then relaunch it.
+Note that if the simulator item's property "Record device states" is set to true, light operations will also be recorded as simulation results and reproduced during :ref:`simulation-result-playback`. This property is true by default. To confirm this feature, after operating the light in various ways, stop the simulation and play it back.
 
-How this implementation works
----------------------------------
+Explanation of Implementation Details
+-------------------------------------
 
-Choreonoid defines lights as a form of device. The key takeaway from this step involves learning how the controller outputs to devices.
+In Choreonoid, lights are defined as one type of "device". The key point of this step is to learn how to output from the controller to devices.
 
-First, use the initialize function: ::
+First, in the initialize function: ::
 
  light = io->body()->findDevice<SpotLight>("Light");
 
-This polls a device object called “Light” and of the SpotLight type from the Body object being used for I/O, then stores it in the light variable. This object can also be used for device I/O. For details on the Tank model Light definitions, refer to the section on :ref:`modelfile-tank-spotlight` in the section on :doc:`Tank model creation<../../handling-models/modelfile/modelfile-newformat>` .
+obtains a device object of SpotLight type with the name "Light" from the Body object for input/output, and stores it in the light variable. This object is used for input/output with devices as well. For the definition of the Tank model's Light, see :ref:`modelfile-tank-spotlight` in :doc:`Creating the Tank Model <../../handling-models/modelfile/modelfile-newformat>`.
 
-Using the control function below: ::
+In the control function: ::
 
  static const int buttonID[] = { 0, 2, 3 };
 
-enables you to set the button IDs to control the light. These IDs ordinarily correspond to the A, X, and Y buttons. If the buttons do not respond correctly, try adjusting the above.
+sets the button IDs to use for light operation. These IDs normally correspond to the A, X, and Y buttons. If the button mapping doesn't work well, adjust these values.
 
-You can poll the state of button A using: ::
+The state of the A button is obtained with: ::
 
  bool currentState = joystick.getButtonState(buttonID[0]);
 
-In this way, you can use the getButtonState function to poll the current button state. Next, use ::
+In this way, you can obtain the button state using the getButtonState function. Then: ::
 
  if(currentState && !prevButtonState){
      light->on(!light->on());
      changed = true;
  }
 
-This engages the on function of the SpotLight device when the button is pushed, allowing you to toggle the light object on and off.
+toggles the on/off state of the light object using the SpotLight device's on function when the button is pressed.
 
-Simply changing the state of the input/output device object will not result in outputting its content. To do so, you must invoke the notifyStateChange function against the device object. This enables state changes to also be detected by the simulator and reflected in the simulation.
+Note that just changing the state of the input/output device object doesn't mean the content has been output. To do this, you need to execute a function called "notifyStateChange" on the device object. This allows the state change to be detected by the simulator itself and actually reflected in the simulation.
 
-However, even when using this function to change multiple device parameters, it can simply be run once (by calling a single control function). For this reason, we first utilize “changed,” a boolean variable used to determine whether the state was changed. Then, the final section of code: ::
+However, this function only needs to be executed once (per control function call), even when changing multiple device parameters. For this reason, this implementation first uses a bool variable called "changed" as a flag for whether there was a state change, and at the end: ::
 
  if(changed){
      light->notifyStateChange();
  }
 
-is used to run this process at once.
+executes it once collectively.
 
-The same applies to the operations used to change the range of the light beam. To enlarge the light beam, use: ::
+The operation to change the light's illumination range is similar. For the operation to expand the illumination range: ::
 
  if(joystick.getButtonState(buttonID[1])){
      light->setBeamWidth(std::max(0.1f, light->beamWidth() - 0.001f));
      changed = true;
 
-This detects for the X button being pushed. If the button if pushed, the setBeamWidth function of SpotLight reduces the value for the beam angle.  The same sort of functionality applies to the Y button.
+determines the state of the X button, and if the button is pressed, uses SpotLight's setBeamWidth function to decrease the illumination angle value. The Y button operation is similar.
 
-A more in-depth explanation of device handling is covered in the section on  :ref:`simulation-device` and thereafter within the section on :doc:`../howto-implement-controller` .
+For more detailed information about handling devices, please refer to the sections from :ref:`simulation-device` onward in :doc:`../howto-implement-controller`.

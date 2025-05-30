@@ -1,6 +1,6 @@
 
-Cooperation with ROS
-====================
+ROS Integration
+===============
 
 .. toctree::
    :maxdepth: 3
@@ -9,7 +9,7 @@ Cooperation with ROS
    install-ros
    build-choreonoid
    run-choreonoid
+   catkin-profile
    rosplugin
    tank-tutorial/index
-      ..
-	 catkin-profile
+   ros-control/index

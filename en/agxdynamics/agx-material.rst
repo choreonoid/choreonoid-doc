@@ -1,36 +1,36 @@
+Additional Parameters for Physical Materials
+============================================
 
-Additional parameters for physical material
-=====================================================
-
-When user uses AGXDynamics Plugin the following physical material (properties) can be used.
+When using the AGX Dynamics plugin, the following physical material properties are available.
 
 .. contents::
    :local:
    :depth: 2
 
 Sample
---------
+------
 
-User can find the sample of AGXDynamicsPlugin material from below.
-The motion will be changed as per value of parameters.
+A sample demonstrating AGX Dynamics Plugin materials is available at:
+You can see how different parameter values affect the simulation behavior.
 
 * choreonoid/samples/AGXDynamics/agxMaterialSample.cnoid
 
-How to set the material
---------------------------
-Friction coefficient and restitution coefficient of links in AGXSimulator can be set by below procedure.
+Material Configuration Procedure
+--------------------------------
 
-1. Describe Material and ContactMaterial in material file.
-2. Set Material defined in material file in body file.
+In AGXSimulator, friction coefficients and restitution coefficients between links can be adjusted using the following procedure:
 
-How to describe in material file
---------------------------------------
+1. Define Material and ContactMaterial in a material file
+2. Set the Material defined in the material file in the body file
 
-| Material file is the list file that describe the properties like friction and restitution coefficient.
-| In this file user can describe the same or different ContactMaterial for each material.
-| When user descibes the material name defined in this file in the Body file, the material on the model can be set.
-| Material file is loaded by setting in the property of world item.
-| The default setting is  ``choreonoid/share/default/materials.yaml`` , and automatically loaded.
+.. _agx_material_file:
+   
+Material File
+-------------
+
+A material file is a list file that describes physical properties such as friction coefficients and restitution coefficients. This file can describe contact properties (ContactMaterial) for the same or different materials. By specifying the material name defined here in the body file, you can set materials for your models.
+
+The material file is loaded by setting it in the world item properties. By default, ``choreonoid/share/default/materials.yaml`` is set and loaded automatically.
 
 .. code-block:: yaml
 
@@ -53,227 +53,231 @@ How to describe in material file
       surfaceViscosity: 1.0e-8
       adhesionForce: 100
       adhesivOverlap: 0.2
-      frictionModel: [ cone, direct ]
+      frictionModel: [ iterative, direct ]
       contactReductionMode: reduceGeometry
       contactReductionBinResolution: 3
 
 
-Explanation of material parameters
-------------------------------------
+Material Parameter Descriptions
+-------------------------------
 
-Bulk material
-~~~~~~~~~~~~~~~
-
-.. list-table::
-  :widths: 10,7,4,4,75
-  :header-rows: 1
-
-  * - parameter
-    - default value
-    - unit
-    - data type
-    - explanation
-  * - density
-    - 1000
-    - kg/m3
-    - double
-    - density that is used for calculating of mass of link, inertia tensor, and center of mass.
-  * - youngsModulus
-    - 4.0e8
-    - Pa
-    - double
-    - Young's modulus that represents the hardness of link(rigid body). Smaller value may cause penetration between links.
-  * - viscosity
-    - 0.5
-    - \-
-    - double
-    - viscous restitution.The pair of viscous restitution becomes restitution coefficient.
-  * - spookDamping
-    - 0.075
-    - s
-    - double
-    - spook damping. Relax the penetration of links(rigid bodies).
-  * - poissonRatio
-    - 0.3
-    - \-
-    - double
-    - Poisson's ratio (deprecated since AGX 2.27.0.0)
-
-Surface material
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. list-table::
-  :widths: 10,7,4,4,75
-  :header-rows: 1
-
-  * - parameter
-    - default value
-    - unit
-    - data type
-    - explanation
-  * - roughness
-    - 0.5
-    - \-
-    - double
-    - Roughness, Corresponds to friction coefficient.
-  * - surfaceViscosity
-    - 5e-09
-    - \-
-    - double
-    - Surface viscosity. The pair of each surface viscosity becomes the surfaceViscosity of ContactMaterial. It defines how "wet" a surface is.
-  * - adhesionForce
-    - 0.0
-    - N
-    - double
-    - adhesion force that determines attactive force acting between two colliding rigid bodies in the normal direction. Acting like adhesive agent.
-  * - adhesivOverlap
-    - 0.0
-    - m
-    - double
-    - an absolute distance that defines the contact overlap where the adhesive force is active. It becomes active when penetration of link is larger than adhesiveOverlap
-
-.. note::
-  If ContactMaterial is set, it is prioritized. Surface material of Material is not used.
-
-.. _agx_wire_material:
-
-Wire Material
-~~~~~~~~~~~~~~~~~
+Bulk Material
+~~~~~~~~~~~~~
 
 .. list-table::
   :widths: 10,7,4,4,75
   :header-rows: 1
 
   * - Parameter
-    - Default value
-    - unit
-    - data type
-    - explanation
-  * - wireYoungsModulusStretch
-    - 6e10
+    - Default Value
+    - Unit
+    - Type
+    - Description
+  * - density
+    - 1000
+    - kg/m³
+    - double
+    - Density. Used for automatic calculation of link mass, inertia tensor, and center of mass.
+  * - youngsModulus
+    - 4.0e8
     - Pa
     - double
-    - young's modulus for strech
-  * - wireSpookDampingStretch
+    - Young's modulus. Represents the stiffness of links (rigid bodies). Lower values make links more prone to interpenetration.
+  * - viscosity
+    - 0.5
+    - \-
+    - double
+    - Restitution viscosity. Pairs of restitution viscosity values determine the restitution coefficient.
+  * - spookDamping
     - 0.075
     - s
     - double
-    - spook damping for stretch
-  * - wireYoungsModulusBend
-    - 6e10
-    - Pa
+    - Spook damping. Used to relax interpenetration between links (satisfying constraint conditions).
+  * - poissonRatio
+    - 0.3
+    - \-
     - double
-    - young's modulus for bending.
-  * - wireSpookDampingBend
-    - 0.075
-    - s
-    - double
-    - spook damping for bending
+    - Poisson's ratio (deprecated since 2.27.0.0)
 
-Explanation of ContactMaterial parameters
-------------------------------------------------
+Surface Material
+~~~~~~~~~~~~~~~~
 
 .. list-table::
   :widths: 10,7,4,4,75
   :header-rows: 1
 
-  * - parameter
-    - default value
-    - unit
-    - data type
-    - explanation
-  * - youngsModulus
-    - 2.0e8
-    - Pa
-    - double
-    - young's modulus
-  * - restitution
-    - 0.0
-    - \-
-    - double
-    - restitution coefficient. 0:completely inelastic collision、1:completely elastic collision
-  * - spookDamping
-    - 0.075
-    - s
-    - double
-    - spook damping
-  * - friction
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
+  * - roughness
     - 0.5
     - \-
     - double
-    - friction coefficient
-  * - secondaryFriction
-    - -1.0
-    - \-
-    - double
-    - secondary friction coeefient. It is activated when friction model is orientedBox and secondaryFriction>=0.
+    - Surface roughness. Pairs of surface roughness values determine the friction coefficient.
   * - surfaceViscosity
-    - 1.0e-8
+    - 5e-09
     - \-
     - double
-    - surface viscosity coeeficient. Complaiance for friction constraint.
-  * - secondarySurfaceViscosity
-    - -1.0
-    - \-
-    - double
-    - secondary surface viscosity coefficient. It is activated when friction model is orientedBox and secondaryFriction>=0.
+    - Surface viscosity. Viscosity acting in tangential directions. Pairs of surface viscosity values become the ContactMaterial's surfaceViscosity. Used to represent wetness like oil.
   * - adhesionForce
     - 0.0
     - N
     - double
-    - adhesion force
+    - Adhesion force. When shapes are in contact, adhesion force acts in the normal direction. Used for adhesive-like behavior.
   * - adhesivOverlap
     - 0.0
     - m
     - double
-    - adhesive overlap
+    - Adhesion effective distance. Adhesion force becomes active when link penetration > effective distance.
+
+.. note::
+  For materials with defined ContactMaterial, the ContactMaterial parameters are used. Surface material parameters from Material are not used.
+
+.. _agx_wire_material:
+
+Wire Material
+~~~~~~~~~~~~~
+
+.. list-table::
+  :widths: 10,7,4,4,75
+  :header-rows: 1
+
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
+  * - wireYoungsModulusStretch
+    - 6e10
+    - Pa
+    - double
+    - Tensile Young's modulus
+  * - wireSpookDampingStretch
+    - 0.075
+    - s
+    - double
+    - Tensile spook damping
+  * - wireYoungsModulusBend
+    - 6e10
+    - Pa
+    - double
+    - Bending Young's modulus
+  * - wireSpookDampingBend
+    - 0.075
+    - s
+    - double
+    - Bending spook damping
+
+.. _agx_contact_material_parameters:
+
+ContactMaterial Parameter Descriptions
+--------------------------------------
+
+.. list-table::
+  :widths: 10,7,4,4,75
+  :header-rows: 1
+
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
+  * - youngsModulus
+    - 2.0e8
+    - Pa
+    - double
+    - Young's modulus
+  * - restitution
+    - 0.0
+    - \-
+    - double
+    - Restitution coefficient. 0: perfectly inelastic collision, 1: perfectly elastic collision
+  * - spookDamping
+    - 0.075
+    - s
+    - double
+    - Spook damping
+  * - friction
+    - 0.5
+    - \-
+    - double
+    - Friction coefficient
+  * - secondaryFriction
+    - -1.0
+    - \-
+    - double
+    - Secondary direction friction coefficient. Enabled when secondaryFriction>=0 and friction model is set to oriented_box, oriented_scaled_box, constant_normal_force_oriented_box, or oriented_iterative.
+  * - surfaceViscosity
+    - 1.0e-8
+    - \-
+    - double
+    - Surface viscosity coefficient. Compliance for friction constraints.
+  * - secondarySurfaceViscosity
+    - -1.0
+    - \-
+    - double
+    - Secondary direction surface viscosity coefficient. Enabled when secondaryFriction>=0 and friction model is set to oriented_box, oriented_scaled_box, constant_normal_force_oriented_box, or oriented_iterative.
+  * - adhesionForce
+    - 0.0
+    - N
+    - double
+    - Adhesion force
+  * - adhesivOverlap
+    - 0.0
+    - m
+    - double
+    - Adhesion effective distance
   * - frictionModel
     - [ default, default ]
     - \-
     - | string
       | string
-    - | friction model : default(cone), cone, box, scaledBox, orientedBox
-      | solver    : default(split), split, direct, iterative, iterativeAndDirect
+    - | Friction model: default(iterative), iterative, box, scaled_box, oriented_box, oriented_scaled_box, constant_normal_force_oriented_box, oriented_iterative
+      | Solver: default(split), split, direct, iterative, direct_and_iterative
 
   * - contactReductionMode
     - default
     - \-
     - string
-    - the way of contact reduction: default(reduceGeometry), reduceGeometry, reduceALL, reduceNone
+    - Contact reduction mode: default(reduceGeometry), reduceGeometry, reduceALL, reduceNone
   * - contactReductionBinResolution
     - 0
     - \-
     - uint8_t
-    - bin resolution(number of bins per dimension) of contact reduction. In case of zero, the parameters of AGXSimulator item are used.
+    - Contact reduction bin resolution. Uses AGXSimulator item parameter when 0.
   * - primaryDirection
     - [ 0, 0, 0 ]
     - Unit vector
     - Vec3
-    - primary direction of the vector when orientedBox friction model is used.
+    - Primary direction vector when using orientedBox friction model
 
   * - referenceBodyName
     - \-
     - \-
     - string
-    - reference body name when orientedBox friction model is used.
+    - Reference body name when using orientedBox friction model
   * - referenceLinkName
     - \-
     - \-
     - string
-    - reference link name when orientedBox friction model is used.
+    - Reference link name when using orientedBox friction model
 
 .. note::
-  AGX Dynamics does not distinguish between dynamic friction coefficient and static friction coefficient. Actually, the difference in value is around 10-20%, and most situations do not have to worry about it.
+  AGX Dynamics does not distinguish between dynamic and static friction coefficients. In practice, the difference is only 10-20%, which is negligible in most situations.
 
+.. note::
+  Additional friction models have been added since Choreonoid 1.7. The iterative and constant_normal_force_oriented_box models correspond to the cone and orientedBox models used up to version 1.7.
 
 .. _not_defined_contact_material:
 
-If the ContactMaterial is not defined
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When ContactMaterial is Not Defined
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| It is desirable that the all Material pairs are described in ContactMaterial, but it is difficult.
-| If the ContactMaterial is not defined, AGX Dynamic compute parameters of ContactMaterial from the parameters of Material as follows.
-| When paramters of Material are not set, default paramters are used.
+Ideally, all material pair properties should be described in ContactMaterial, but this can be difficult.
+When ContactMaterial is not defined, parameter values are calculated according to the following formulas using parameters described in Material.
+Default values are applied when parameters are not set in Material either.
 
 * youngsModulus = (m1.youngsModulus * m2.youngsModulus)/(m1.youngsModulus + m2.youngsModulus)
 * restitution = sqrt((1-m1.viscosity) * (1-m2.viscosity))
@@ -283,42 +287,39 @@ If the ContactMaterial is not defined
 * adhesionForce = m1.adhesionForce + m2.adhesionForce
 
 
-How to describe the material in the body file
-----------------------------------------------
+Material Description in Body Files
+----------------------------------
 
-| This section describes how to set material in the body file.
-| You can select the types of setting center of gravity, mass and inertia with massType.
-| If massType is mass, values of center of mass, mass and inertia which described in the body file are directly used.
-| If massType is density, values of center of mass, mass and inertia are automatically calculated by AGX Dynamics.
-| The default type is mass.
+This section explains how to describe materials in body files.
+Center of mass, mass, and inertia can be either directly specified or automatically calculated using density, selectable via massType.
+The default is mass.
 
 .. code-block:: yaml
 
-  massType: mass             # Use values of center of mass, mass, inertia which described in the body file
-  massType: density          # Calculate values of center of mass, mass, inertia automatically
+  massType: mass             # Direct specification
+  massType: density          # Automatic calculation using density
 
-| You can set the material with material:.
-| Default is Default which is defined in the material file choreonoid_dev/share/default/materials.yaml.
+Materials can be selected from those defined in the material file or directly specified.
+The default is Default or default as defined in the material file.
 
 .. code-block:: yaml
 
   material: Default          # Default material
-  material: Ground           # Ground material defined in choreonoid_dev/share/default/materials.yaml or user defined material file
-  material: useLinkInfo      # Use parameters of material described in the body file
+  material: Ground           # Material
+  material: useLinkInfo      # Direct specification
 
-Below are examples of how to describe.
+Below are description examples.
 
 .. note::
+  Currently, calculation results for center of mass, mass, and inertia tensor using density are held internally in AGX Dynamics and cannot be retrieved or confirmed from Choreonoid links or GUI.
 
-  Currently, you could not get or check the result values of center of mass, mass, inertia from the Choreonoid Links and GUI when using massType: density
+Traditional Notation
+~~~~~~~~~~~~~~~~~~~~
 
-Conventional description
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* Conventional description of Choreonoid
-* Use centerOfMass, mass inertia which are described in the body file
-* Parameters of material are set default values except density
-* ContactMaterial will be default vs xxxxxx
+* Traditional Choreonoid notation
+* Uses the described centerOfMass, mass, and inertia
+* Material becomes default except for density
+* ContactMaterial becomes default vs xxxxx
 
 .. code-block:: yaml
 
@@ -332,46 +333,47 @@ Conventional description
         0,    0.02, 0,
         0,    0,    0.02 ]
 
-Using material file (Recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Using Material File (Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Use material file to set material including density
-
-.. code-block:: yaml
-
-  links:
-    -
-      name: box1
-      massType: density     # Use density to calculate center of mass, mass, inertia automatically
-      material: steel       # Use material steel defined in the material file
-      density: 1.0          # If density is written here, use this value. It override density of steel material.
-
-Using conventional description and material file (Recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* massType: mass <- use center of mass, mass, inertia described in body file
-* Other material parameters use the value of the material file
+* Uses parameters described in the material file including density
 
 .. code-block:: yaml
 
   links:
     -
       name: box1
-      massType: mass      # Use center of mass, mass, inertia described in body file
+      massType: density     # Automatically calculate center of mass, mass, and inertia tensor using density
+      material: steel       # Use steel from material file
+      density: 1.0          # If density is described, it overrides steel's density
+                            # and uses the directly specified value
+
+Traditional Notation + Material List (Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Uses directly described center of mass, mass, and inertia tensor with massType: mass
+* Other material parameters use steel from the material file
+
+.. code-block:: yaml
+
+  links:
+    -
+      name: box1
+      massType: mass      # Use directly described center of mass, mass, and inertia tensor
       centerOfMass: [ 0, 0, 0 ]
       mass: 1.0
       inertia: [
         0.02, 0,    0,
         0,    0.02, 0,
         0,    0,    0.02 ]
-      material: steel     # Use steel material described in the material file
+      material: steel     # Use steel from material file
 
 
-Describe all material paramters directly (Not recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Direct Description (Not Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* When set material: useLinkInfo, you can describe material parameters in body file
-* The values of ContactMaterial are calculated according to :ref:`not_defined_contact_material`
+* material: useLinkInfo allows using Material parameters described in the body file
+* ContactMaterial values are calculated according to :ref:`not_defined_contact_material`
 
 .. code-block:: yaml
 
@@ -391,28 +393,27 @@ Describe all material paramters directly (Not recommended)
       adhesivOverlap:
 
 
-Describe everything  (Not recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Full Description (Not Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Every paramters are described in the body file
-* You will be confused which parameters are used in the simulation
-* So this is absolutely not recommended
+* When everything is described
+* Not recommended as it's difficult to determine which parameters are being used
 
 .. code-block:: yaml
 
   links:
     -
       name: box1
-      massType: density               # Use center of mass, mass, inertia described in body file
+      massType: density               # Automatically calculate center of mass, mass, and inertia tensor using density
       centerOfMass: [ 0, 0, 0 ]
       mass: 1.0
       inertia: [
         0.02, 0,    0,
         0,    0.02, 0,
         0,    0,    0.02 ]
-      material: steel                 # Use material defined in the material file
-      density: 1.0                    # Use this density for automatic calculate
-      youngsModulus:                  # Below are not used
+      material: steel                 # Use material list
+      density: 1.0                    # Use described density
+      youngsModulus:                  # Following are not used
       poissonRatio:
       viscosity:
       spookDamping:

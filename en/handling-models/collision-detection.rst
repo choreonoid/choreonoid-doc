@@ -1,8 +1,7 @@
-
 Collision Detection
 ===================
 
-Sometimes a link collides (conflict) with another link while you are moving a model. Choreonoid provides a function to detect such collision. This section describes how to use the function.
+When moving models, links may interfere (collide) with other links. Choreonoid is equipped with a function to detect such interference, and this section explains how to use it.
 
 .. contents::
    :local:
@@ -13,69 +12,67 @@ Sometimes a link collides (conflict) with another link while you are moving a mo
 Collision Detection and World Item
 ----------------------------------
 
-To detect collision, you must first install an item of the "WorldItem" type (World item).
+To perform collision detection, you first need to introduce a "World Item" type item.
 
-The World item is an item representing one virtual world in Choreonoid. This item enables you to perform the following operations:
+A World Item is an item that represents a virtual world in Choreonoid. With this item, you can:
 
-* Connecting a Body model to a virtual world
-* Configuring settings for a virtual world as a whole
-* Handling multiple virtual worlds at the same time
+* Associate body models with a virtual world
+* Configure settings for the entire virtual world
+* Handle multiple virtual worlds simultaneously
 
-Some other operations can also be performed.
+For collision detection, the following settings are also required:
 
-For collision detection, you must specify:
+* Which objects to detect collisions between
+* How to display collision detection results
 
-* Between which objects collision is to be detected.
-* How the collision detection result is to be displayed.
-
-It is reasonable to associate these settings with a virtual world. Therefore, configure collision detection settings through a World item.
+Since it is logical to associate these settings with a specific virtual world, collision detection settings are also configured through the World Item.
 
 
 Creating a World Item
--------------------
+---------------------
 
-You can create a World item using the procedure for creating a normal item. Specifically, select the main menu "File" - "New" - "World" and click the "Generate" button in the "Generate New World Item" dialog that appears.
+A World Item can be created using the standard item creation method. Specifically, execute "File" - "New" - "World" from the main menu, and press the "Create" button in the "Create New World" dialog that appears.
 
-Associating a Body Model
-------------------------
+Associating Body Models
+-----------------------
 
-A World item only make sense if a Body model is associated with it. Associate a Body item with a World item by allocating the Body item as a sub-item of the World item.
+A World Item only becomes meaningful when body models are associated with it. Association is done by placing body items as child items of the World Item.
 
-Try to perform this operation using the PA10 model, which we have been used. Create the above World item in the state in which the PA10 is loaded. Then, the two items should be displayed in a row in the item tree view.
+Let's try this with the PA10 model we've been working with. With the PA10 model loaded and the World Item created as described above, you should see two items displayed side by side in the Item Tree View as follows:
 
 .. image:: images/pa10_and_world.png
 
-Drag "PA10" onto "World" by following the description in :ref:`basics_itemtree_management` - :ref:`basics_item_move` to move PA10 to make it a sub-item of World as shown in the figure below.
+Here, following the instructions in :ref:`basics_itemtree_management` - :ref:`basics_item_move`, drag "PA10" onto "World" to move PA10 as a child item of World, resulting in:
 
 .. image:: images/pa10_in_world.png
 
-This means that the PA10 model is associated with the "World" virtual world.
+This associates the PA10 model with the virtual world "World".
 
-.. note:: If you generate a World item when "PA10" is selected, the generated World item is allocated as a sub-item of PA10, resulting in a parent-child relationship that is inverse of the one in the above example. In this case, temporarily drag the World item to the empty area at the lower part of the item tree view. This makes the World item no longer be a sub-item of PA10. Then, perform the above operation.
+.. note:: If you generate a World Item while "PA10" is selected, the generated World Item will be placed as a child item of PA10, reversing the parent-child relationship from the example above. In this case, first drag the World Item to an empty area at the bottom of the Item Tree View. This will remove the World Item from being a child of PA10, and then you can perform the operation described above.
 
-.. note:: If you create a World item and load a Body model in the state in which the World item is selected, the model is loaded as a sub-item of the World item from the first. You can make operations more efficient in this way when creating a project with a World item installed from scratch.
+.. note:: If you create a World Item and load a body model with it selected, the model will be loaded as a child item of the World Item from the beginning. When creating a project with a World Item from scratch, you can streamline operations by doing this.
 
 
 Associating Multiple Body Models
 --------------------------------
 
-Normally, you associate multiple Body models with a virtual world. In this case, there is no problem if multiple Body items are simply allocated as sub-items of the same World item.
+Typically, multiple body models are associated with one virtual world. In this case, simply have multiple body items as child items of the same World Item.
 
-Try to add the model of the floor from :ref:`bodymodel_samplemodels` , in addition to the PA10 model, which was added earlier. Load "misc/floor.wrl" from the share directory and associate it with the same World item. The item tree should be as shown in the figure below.
+Let's add a floor model from :ref:`bodymodel_samplemodels` in addition to the PA10 model we just worked with. Load "misc/floor.wrl" from the share directory and associate it with the same World Item. The item tree should look like this:
 
 .. image:: images/pa10_floor_in_world.png
 
-Try to display the model of the floor in the scene view by selecting the Floor checkbox as shown in the figure. When you set PA10 to the standard posture, the following scene should be displayed.
+Check the Floor item as well to display the floor model in the Scene View. With PA10 in the standard pose, you should see a scene like the following:
 
 .. image:: images/pa10_floor_scene.png
 
-The following describes an example of collision detection by detecting and displaying collision between the PA10 and floor models.
+In the following sections, we'll detect and display collisions between this PA10 and the floor model as an example of collision detection.
 
 
 Collision Detection Settings
 ----------------------------
 
-You can specify whether to detect collision through the properties of the World and Body items. Relevant properties are as follows.
+Whether to perform collision detection can be toggled in the properties of World Items and Body Items. The related properties are as follows:
 
 .. tabularcolumns:: |p{3.0cm}|p{4.0cm}|p{8.0cm}|
 
@@ -85,101 +82,109 @@ You can specify whether to detect collision through the properties of the World 
 
  * - Item
    - Property (true, false)
-   - Overview
+   - Description
  * - World Item
    - Collision detection
-   - Whether to perform collision detection for the virtual world as a whole in the first place
+   - Whether to perform collision detection for the entire virtual world
  * - Body Item
    - Collision detection
-   - Whether to detect collision between each Body model and other Body models
+   - Whether to perform collision detection with other body models for each body model
  * - Body Item
    - Self-collision detection
-   - Whether to detect self-collision of each Body model
+   - Whether to detect self-collisions in each body model
+
+First, as a fundamental setting for collision detection, the World Item's "Collision detection" must be set to true. Then, configure the two Body Item properties to individually toggle whether to perform collision detection for each model.
+
+The World Item's "Collision detection" is false by default, so first switch this to true (see :ref:`basics_item_property`). For Body Items, the "Collision detection" property is true by default, which can remain as is. "Self-collision detection" will be explained later.
+
+.. note:: Collision detection is generally a computationally intensive process. This impact becomes greater especially when models are complex (many polygons, etc.), and in some cases, model manipulation and display may become sluggish. Considering this, it may be more comfortable to skip collision detection processing when performing work that doesn't particularly require it. This is why the World Item's "Collision detection" is false by default.
+
+The above settings enable internal collision detection calculations. However, additional settings are required to display the detection results. Since there are various ways to display collisions and you may not always want to display them, this approach is taken.
 
 
-As an essential setting for collision detection, you must first set "Collision detection" of the World item to true. Then, set the two properties of the Body item to switch whether to perform collision detection individually for each model.
+Displaying Collision Detection Results
+--------------------------------------
 
-Since the "Collision detection" property of the World item is set to false by default, first set it to true (see :ref:`basics_item_property` ). The "Collision detection" of the Body item is set to true by default. Leave the setting as is. The "Self-collision detection" property is described later in this manual.
-
-.. note:: Generally, collision detection is a process that takes a relatively long calculation time. Particularly, this impact is greater for a complex model (with many polygons, etc.), and in some cases, speed of displaying or operating the model becomes slower. Considering this, you may be more comfortable if you omit collision detection processing when perform work that does not particularly require collision detection. This is the reason why "Collision detection" of the World item is set to false by default.
-
-The above settings enable internal collision detection calculation. However, you must also configure other settings to display the collision. This is because various methods are available to display collision and you do not always want to display it.
-
-
-Displaying Collision Detection Result
--------------------------------------
-
-This section introduces how to display collision detection result in the scene view. To do this, first select the checkbox for the World item in the item tree view.
+Here, we'll introduce how to display collision detection results in the Scene View. To do this, first check the World Item in the Item Tree View.
 
 .. image:: images/pa10_floor_in_world_checked.png
 
-Similar to the way selecting the checkbox for a Body item displays the model in the scene view, this means that the virtual world information of the World item is displayed in the scene view.
+This means displaying the virtual world information held by the World Item in the Scene View, similar to how checking a Body Item displays that model in the Scene View.
 
-In addition, as a setting for the scene view, turn on the "collision line display" button (part in the red box in the figure below) of the :ref:`basics_sceneview_scenebar` .
-      
+Additionally, as a Scene View setting, turn on the "Toggle the collision line visibility" button in :ref:`basics_sceneview_scenebar` (the part enclosed in the red frame in the figure below).
 
 .. image:: images/collision-toggle.png
 
-This makes "collision lines" appear in the corresponding location in the scene view if collision occurs.
+This will display "collision lines" at corresponding locations in the Scene View when collisions occur.
 
-Settings for collision detection and display are now complete. If you no longer need collision calculation and display, turn off again the corresponding settings described above.
+The settings related to collision detection and display are now complete. When collision calculations and their display are no longer needed, simply turn off the corresponding settings mentioned above.
 
 
-Example of Collision Detection
-------------------------------
+Collision Detection Example
+---------------------------
 
-So, try to detect collision between PA10 and the floor. Move the head of the arm toward the floor by referencing :ref:`sceneview_inverse_kinematics` . When you move the arm to the degree at which it sinks into the floor, a number of green lines appear in the colliding part as shown in the figure below. These are collision lines.
+Let's perform collision detection between PA10 and the floor. Using :ref:`sceneview_inverse_kinematics`, try moving the arm's end toward the floor. When you move it to a position where the arm penetrates the floor, several green lines will be displayed at the colliding parts as shown below. These are the collision lines.
 
 .. image:: images/pa10_floor_collision.png
 
-The direction of a collision line represents the normal line of the colliding surface, and the length represents the depth of collision. In this way, you can confirm the result of collision detection.
+Here, the direction of the collision lines represents the normal of the colliding surfaces, and the length represents the depth of the collision. This way, you can confirm the collision detection results.
 
 .. _collision_detection_penetration_block:
 
 Penetration Block Function
 --------------------------
 
-If collision is detected while you are moving a link, you can also block the collision to prevent it from being deepened (penetrating). To do this, turn on the "penetration block mode" button (part in the red box in the figure below) of the kinematics bar.
+When collision is detected while moving a link, you can block it from penetrating further. To do this, turn on the "Penetration block mode" button in the Kinematics Bar (the part shown in the red frame below).
 
 .. image:: images/PenetrationBlockButton.png
 
-In this state, move the arm toward the floor as with the earlier operation. When the dragged link contacts with the floor, you cannot move it any further toward the floor. For example, blocking occurs in the state as shown in the figure below while you a moving the "J7" link.
+In this state, try moving the arm toward the floor as before. When the link you're dragging contacts the floor, it can no longer move in that direction. For example, when moving the "J7" link, it will be blocked in the state shown below:
 
 .. image:: images/pa10_j7_blocked.png
 
-As you can see, however, only the link you are moving is blocked. Note that if collision occurs in another link, the collision is not blocked. If you want to block collision in the gripper part at the head in this example, switch the kinematics mode to the inverse kinematics mode, and move the link at head ("HAND_L" or "HAND_R"). The collision is blocked at the position as shown in the figure below.
+However, as you can see in this figure, only the link being moved by the user is blocked. Even if collisions occur with other links, they are not blocked, so you need to be aware of this. In this example, if you want to block at the gripper part at the end, switch the kinematics mode to inverse kinematics mode and move the end links ("HAND_L" or "HAND_R"). Then blocking will occur at the position shown below:
 
 .. image:: images/pa10_HAND_L_blocked.png
 
 
-Self-collision Detection
+Self-Collision Detection
 ------------------------
 
-Although collision between different Body models is detected in the above example, you can also detect self-collision that may occur in a single Body model. This function is off by default. To enable the function, set the "Self-collision detection" property of the Body item to true.
+In the above example, we performed collision detection between different body models, but you can also detect self-collisions that occur within a single body model. This function is off by default, but can be enabled by setting the Body Item's "Self-collision detection" property to true.
 
-In the example of PA10, you can see that self-collision can be detected when, for example, you make the head of the arm collide into the base part as shown in the figure below.
+In the PA10 example, you can see that self-collision is detected when you make the arm's end collide with the base part, as shown below:
 
 .. image:: images/pa10_selfcollision.png
 
-Note that the penetration block function is disabled for self-collision.
+Note that the penetration block function does not work for self-collisions.
 
 
-Displaying Collision in the Body/Link View
-------------------------------------------
+Collision Display in Body/Link View
+-----------------------------------
 
-You can also check the result of collision detection in the "Collision" display area in the :ref:`model_body_link_view` . This view displays the link name of the colliding link if the target link encounters a collision. A link of another model is displayed in the "Collision" area, and the link in which self-collision occurs is displayed in the "Self-collision" area.
+Collision detection results can also be confirmed in the "Collisions" display area of :ref:`model_body_link_view`. Here, when the target link has collisions, it displays the names of the colliding links. Links from other models are displayed in the "Collisions" area, and self-colliding links are displayed in the "Self-Collisions" area.
 
-For example, if the J7 link of the PA10 model is selected as the target, and the J7 link collide with the floor model and the "Base" link of the PA10 model itself, the display should be as shown below.
+For example, when selecting the J7 link as the target in the PA10 model, and the J7 link is colliding with the floor model and its own "Base" link, the display appears as follows:
 
 .. image:: images/collision-panel-pa10.png
+
 
 .. _handling-models_switch-collision-detector:
 
 Switching Collision Detectors
 -----------------------------
  
-Various algorithms for collision detection have been developed. To respond to a desire to use them according to their use or to use faster algorithms, Choreonoid has "Collision Detectors" with collision detection algorithms added by a plugin, and allows you to use them by switching them.
+Various algorithms have been developed for collision detection. To meet demands such as using different algorithms for different purposes or using faster algorithms, Choreonoid allows you to add new "Collision Detectors" that implement collision detection algorithms through plugins and switch between them.
 
-To switch collision detectors, set the "Collision Detector" property of the World item. This property is specified by selecting an option. Select a desired one from the displayed list of available collision detectors. The standard collision detector provided by Choreonoid is "AISTCollisionDetector", which is selected by default. There also is "NullCollisionDetector", which represents an empty collision detector. If you select this, collision detection is not performed.
+Switching collision detectors is done by setting the World Item's "Collision detector" property. This property is a selection type that displays a list of available collision detectors, from which you can select the desired one. The standard collision detector provided by Choreonoid is "AISTCollisionDetector", which is selected by default. "NullCollisionDetector" in the options represents an empty collision detector, and selecting this prevents collision detection from being performed.
 
-The other collision detectors become available by installing plugins. For example, the "ODE plugin", which is one of optional plugins for Choreonoid, provides a collision detector called "ODECollisionDetector" that uses the collision detection function of the Open Dynamics Engine (ODE). The collision detector becomes available after installing the plugin.
+By introducing plugins, collision detectors other than these can also be used. For example, the "ODE Plugin", one of Choreonoid's optional plugins, provides a collision detector called "ODECollisionDetector" that uses the collision detection function of the Open Dynamics Engine (ODE), which becomes selectable when the plugin is installed.
+
+.. _handling-models-collision-detection-for-simulation:
+
+About Collision Detection in Simulation
+---------------------------------------
+
+The collision detection function introduced in this section is basically performed independently of :doc:`../simulation/index`. In the current specification, whether the "Collision detection" property of World Items or Body Items is true or false does not change the simulation behavior. Collision detection in simulation is performed on the physics calculation model inside the simulator, and its processing content is determined by :ref:`simulation_simulator_item`.
+
+If the collision detection function in this section is enabled, collision detection will be performed again for the model positions and orientations updated by simulation result playback. Note that this may differ from the collision detection results performed inside the simulator.

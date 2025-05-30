@@ -1,48 +1,47 @@
-
-Creation of Simulation Project
-==============================
+Creating a Simulation Project
+=============================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 
-.. contents:: 
+.. contents:: Table of Contents
    :local:
 
-.. highlight:: cpp
 
+.. highlight:: cpp
 
 Simulation Project
 ------------------
 
-To make a simulation on Choreonoid, it is necessary to import and create the necessary project items and prepare the project for simulation. A project requires the following three types of project items at minimum:
+To perform simulations in Choreonoid, you need to load or create the necessary project items and prepare a project for simulation. A project requires at least the following three types of project items:
 
-* World item that represents the virtual world to be simulated;
-* Body item of the robot or the environment object to be simulated; and
-* Simulator item that executes the simulation.
+* A world item representing the virtual world to be simulated
+* Body items for robots and environmental objects to be simulated
+* A simulator item to execute the simulation
 
-"World item" is a project item that corresponds to a virtual world and "Body item" is an item that corresponds to the model (body model) of a robot or an environment object. See :doc:`../handling-models/index` or detail. The virtual world to be simulated is built by allocating all the target body items as child items of the world item. This operation is similar to the operation to build a virtual world described under :doc:`../handling-models/collision-detection` .
+A "world item" is a project item corresponding to a virtual world, and a "body item" is an item corresponding to a robot or environmental object model (body model). See :doc:`../handling-models/index` for details. By placing all target body items as child items of the world item, you construct the virtual world to be simulated. This operation is similar to the virtual world construction described in :doc:`../handling-models/collision-detection`.
 
-Next, create the simulator item. Select the desired simulator item from "File" under Main Menu and "New" to create it. Allocate it also as a child item of the world item. By allocating it so, this simulator item will be associated with the world item and the virtual world to be simulated will be decided.
+Next, create a simulator item. Select the desired simulator item from the main menu's "File" - "New", and create it. Place this as a child item of the world item as well. By arranging it this way, the simulator item is associated with the world item, and the virtual world to be simulated is determined.
 
-In addition, configure the initial position of the robot or the environment object and the time resolution (time step) for the simulation. You can also modify the simulator settings by changing the property of a simulator item.
+Additionally, you need to set the initial positions of robots and environmental objects, and configure the time resolution (time step) for the simulation. You can also change simulator settings through the simulator item's properties.
 
-Below, the above-mentioned operations are described in concrete by creating a project actually:
+Below, we'll explain these operations specifically while actually creating a project.
 
-Creation of World Item
-----------------------
+Creating a World Item
+---------------------
 
-Call "File" under Main Menu - "New" - "World". Then the dialog of "Create new world item" is prompted. So, click "Create" button there. The name can be left as "World" but you may also assign any other name that can better identify the simulation target.
+Select "File" - "New" - "World" from the main menu. This will display a "Generate new world item" dialog, where you should click the "Generate" button. You can keep the name as "World", or change it to something more descriptive of your simulation target.
 
-You can verify that the world item has been created by checking the item tree view.
+You can confirm that the world item has been created by checking the item tree view.
 
 .. image:: images/simproject-item1.png
 
 
-Importing of Model
-------------------
+Loading Models
+--------------
 
-Next, import the model to be simulated as a body item. Here, let's import the box model and the floor model from :ref:`bodymodel_samplemodels` . Import "box1" model file and "floor" model file in the sample according to the operation instruction provided under :ref:`loading_model` .
+Next, load the models to be simulated as body items. Let's load the box model and floor model from :ref:`bodymodel_samplemodels`. Following the instructions in :ref:`loading_model`, load the sample "box1" and "floor" model files.
 
-When doing so, allocate box1 and floor items so that they become child items of the world item as illustrated in the figure below. You may import the model with the world item selected, or you may import the models anyway and can drag them to the world item. Unless this position relationship can be set correctly, the simulation will not succeed. So, please be careful. ::
+When doing this, arrange the box1 and floor items to be child items of the world item as shown below. You can either select the world item before loading the models, or load the models first and then drag them to the World item. If this relationship is not set correctly, the simulation will not work properly, so please be careful. ::
 
  [ ] - World
  [/]   + box1
@@ -50,53 +49,51 @@ When doing so, allocate box1 and floor items so that they become child items of 
 
 .. images/simproject-item2.png
 
-The allocation in the item tree is as above. Check the two body items that have been imported and display them in the scene view. By checking them, they will be displayed as follows: Here, the yellow object is box1 model and the blue object is the floor model.
+This is how the item tree should be arranged. Check the two loaded body items to display the models in the scene view. Once checked, the scene view should display as follows. Here, the yellow object is the box1 model, and the blue object is the floor model.
 
 .. image:: images/simproject-scene1.png
 
-.. note:: The "floor" model imported as the floor model this time is a "static model". A static model is a model defined as an object that is static. It may be influenced by a collision with another object during the simulation but does not move per se. On the other hand, box1 model is defined as a dynamic model. Dynamic models move due to internal or external force that can occur during the simulation. Try to use static and dynamic models properly in creating a simulation project. The type of a model can be verified in the "Static model" property of a body item. By editing this profile, you can switch the type of the model.
+.. note:: The "floor" model loaded as the floor in this example is a "static model". A static model is defined as an object that doesn't move. While it may be affected by collisions with other objects during simulation, it doesn't move itself. On the other hand, the box1 model is defined as a dynamic model. Dynamic models move according to internal and external forces generated during simulation. When creating simulation projects, make sure to use static and dynamic models appropriately. You can check the model type in the body item's "Static model" property. You can also switch the model type by editing this property.
 
-.. note:: Note that the configuration of the "Collision detection" property to a world item and/or a body item does not influence on the simulation. In a simulation, it is basically necessary to perform a collision detection for all combinations of objects that may collide each other and it is not proper to configure whether or not to perform a collision detection for each model. If you do want to configure in that way, the method of configuration depends on a simulator item.
-.. as so mentioned in  :ref:`handling-models-collision-detection-for-simulation` under :doc:`../handling-models/collision-detection` . 
-
+.. note:: As mentioned in :ref:`handling-models-collision-detection-for-simulation` in :doc:`../handling-models/collision-detection`, note that the "Collision detection" property settings for world items and body items do not affect simulation. In simulation, collision detection must basically be performed for all combinations of objects that might collide, and it's not desirable to configure whether to perform collision detection on a per-model basis. Even if you want such configuration, the configuration method depends on the simulator item.
 
 .. _simulation_setting_initial_status:
 
-Configuration of Initial Status
-----------------------------------
+Setting Initial State
+---------------------
 
-The status regarding the position and the posture of the model immediately after it is imported is either the initial position described in the model file or the position where the origin of the model matches the origin of the global coordinate. It is OK if it is acceptable, but normally you need to reconfigure the initial status of the model.
+The position and orientation state of a model immediately after loading is either the initial position described in the model file or a position where the model's origin matches the global coordinate origin. While this may be acceptable in some cases, you usually need to reconfigure the model's initial state.
 
-In this example, box1 model is initially caved in the floor. Now, let's correct this initial setting to a position where box1 model is dropped from above the floor. Move box1 model with the mouse operation explained in :ref:`model_move` or using :ref:`model_body_link_view` to the position as shown in the figure.
+In this example, the box1 model is embedded in the floor. Let's correct this and set it to a position where the box1 model will drop from above the floor. Using the mouse operations described in :ref:`model_move` or using :ref:`model_body_link_view`, move the box1 model to the position shown in the figure.
 
 .. image:: images/simproject-scene2.png
 
-An operation to make this position the initial status of the simulation is required. For Simulation Bar, which is one of Tool Bars, this operation is performed using "Simulation initial status setting button" shown in the following figure:
+To make this position the simulation's initial state, you need to perform a specific operation. Use the "Set initial state of simulation" button shown in the figure on the Simulation Bar, which is one of the toolbars.
 
 .. image:: images/simbar-set-button.png
 
-First, select the item of the model the initial status of which you want to reconfigure in the item tree view. By pressing Initial Status Setting button while the item is selected, the current status of the model is registered as the initial status of the simulation. When the registration is successful, it is so displayed in the message view.
+First, select the model item whose initial state you want to reconfigure in the item tree view. With it selected, press the initial state setting button to register the current model state as the simulation's initial state. When registration is successful, a message will be displayed in the message view.
 
-Note that it is also possible to configure the initial status of all the body models existing in the virtual world at once. In that case, edit the status of all the models in advance, and then select the world item. You can just click Initial Status Setting button in that state.
+Note that it's also possible to set the initial state for all body models in the virtual world at once. In this case, edit all model states in advance, then select the world item. Press the initial state setting button in that state.
 
-.. note::  Don't fail to register the initial status using Initial Status Setting button after editing the position or the posture of a model. If this operation is neglected, the simulation will start at the default status when the model is imported or at the initial status configured the previous time. In fact, there is a function that enables starting the simulation from the current status of a model (the status presented in the display) instead of the initial status configured via the above operation, but that function keeps changing as a result of execution or replay of a simulation. It is normal for a project to fix the initial status and that is why we employed this kind of method of configuration considering the convenience for such a purpose.
+.. note:: Don't forget to register the initial state using the initial state setting button after editing a model's position or orientation. If you forget this operation, the simulation will start with either the default state from when the model was loaded or the previously set initial state. While there is a function to start simulation from the current model state (what's displayed on screen) rather than the set initial state, this changes with simulation execution and playback. Projects typically want a fixed initial state, so we've adopted this configuration method for usability in such cases.
 
-You can call the initial status currently configured by clicking the following button:
+You can restore the currently set initial state by pressing the following button:
 
 .. image:: images/simbar-restore-button.png
 
-For this operation also, you can specify the target body model by selecting the body item or the world item.
+For this operation as well, you specify the target body models by selecting either body items or the world item.
 
-.. note:: Since box1 model, used in this example, is a single link model, it was OK to configure the position and the posture of the entire model as the initial status. In case of a multi-link model having joints, however, the joint angles (or the joint displacement of prismatic joints) are also subject to configuration of the initial status. So, you should configure such configuration as appropriate. See :doc:`../handling-models/index` - :doc:`../handling-models/pose-editing` for how to edit a posture including joints.
+.. note:: Since box1 in this example is a single-link model, we only needed to set the overall model position and orientation as the initial state. However, for multi-link models with joints, joint angles (or translational displacement for prismatic joints) are also subject to initial state configuration, so configure these as needed. See :doc:`../handling-models/index` - :doc:`../handling-models/pose-editing` for how to edit poses including joints.
 
 .. _simulation_creation_and_configuration_of_simulator_item:
 
-Creation and Configuration of Simulator Item
-----------------------------------------------
+Creating and Configuring a Simulator Item
+-----------------------------------------
 
-Create a simulator item that executes a simulation.
+Create a simulator item that will execute the simulation.
 
-Let's use "AIST Simulator", which is a standard simulator item of Choreonoid. Create it by selecting "File" under Main Menu - "New" - "AISTSimulator". Allocate it also as a child item of the world item as follows: ::
+Let's use the "AIST Simulator", which is Choreonoid's standard simulator item. Create it by selecting "File" - "New" - "AISTSimulator" from the main menu. Place this as a child item of the world item as follows: ::
 
  [ ] - World
  [/]   + box1
@@ -105,44 +102,50 @@ Let's use "AIST Simulator", which is a standard simulator item of Choreonoid. Cr
 
 .. images/simproject-item3.png
 
-You can configure the simulation via the property of the simulator item. When you select a simulator item, the following configuration items are displayed in the item property view:
+You can configure the simulation through the simulator item's properties. When you select the simulator item, the following configuration items are displayed in the item property view:
 
 .. image:: images/simpropertyview.png
 
-In this example, we make a simulation with these properties configured to the default setting. (If, however, "Sync to actual time" is set to false, change it to "true".)
+For this example, we'll run the simulation with these properties at their default settings. (However, if "Sync to actual time" is set to "false", change it to "true".)
 
-.. See :doc:`simulator-items` for the detail of the property.
+For details about the properties, see :doc:`simulator-items`.
 
 
-.. note:: AIST Simulator item is specification so that "all collisions between different body objects are detected and any self-collisions in each body object are not detected". It is possible to improve the simulation speed by putting self-collisions out of scope. However, this specification is just temporary. Actually, some cases require a self-collision, so we intend to improve the system so that it can be be switched to such configuration.
+.. With AIST Simulator item, collision detection follows the specification of "detecting all collisions between different body objects and not detecting self-collisions within body objects". By excluding self-collisions, simulation speed can be improved. However, this specification is provisional, as self-collision detection may be necessary in some cases, so we plan to improve this to allow switching to such configuration in the future.
 
 .. _simulation-time-step:
 
-Configuration of Time Resolution
------------------------------------
+Setting Time Resolution
+-----------------------
 
-In the simulation, the time is separated with a certain time resolution (time step) and one-time physical calculation calculates the state when the time has progressed for that part. By making this time resolution higher, the accuracy and the stability of the simulation can be improved, but the higher the time resolution, the longer the calculation time becomes. It is necessary to configure the proper time resolution considering the purpose of the simulation, the situation of the virtual world  and the characteristics of the simulator item.
+In simulation, time is typically divided by a certain time resolution (time step), and each physics calculation computes the state after that amount of time has progressed. While increasing the time resolution can improve simulation accuracy and stability, it also increases the computation time required for simulation. You need to set an appropriate time resolution considering the simulation purpose, target model conditions, simulator item characteristics, and other factors.
 
-This setting is configured using the configuration dialog of Time Bar. First, display the configuration dialog according to the description of :ref:`basics_timebar_config` .
+This setting is configured in the simulator item properties. First, select the "Time resolution type" from the following three options:
 
-Here, the value of "Internal frame rate" is used also as the time resolution of the simulation. As the value represents frame rate [frames/sec], if it is 100, the time step will be 10 [ms] and if it is 1000, the time step is 1 [ms].
+1. Time step
+2. Frame rate
+3. Time bar
 
-This time, let's conduct the simulation by setting it to 1000 [fps] (time step = 1 [ms])
+If you select "Time step", a "Time step" property becomes configurable in the simulator item properties, where you set the time step in seconds. For example, setting 0.001 means that 1 millisecond of time progresses with each physics calculation.
 
-.. note:: As one of the reasons for an unsuccessful simulation is insufficient time resolution, try to set as granular resolution as possible for the first time when starting a new simulation project. 1000 [fps] should be enough in most cases.
+If you select "Frame rate", a "Frame rate" property becomes configurable in the simulator item properties. This value represents how many physics calculations are performed per unit time (1 second). For example, setting 1000 here means a time step of 1 millisecond.
 
-Storing Project
+If you select "Time bar", the time resolution is configured through the time bar. In this case, display the time bar configuration dialog according to the instructions in :ref:`basics_timebar_config`. The "Internal frame rate" value in the dialog is used as the simulation frame rate.
+
+The default time resolution type is "Time step". We'll use this for our example, setting the "Time step" property to 0.001. This will run the simulation with a 1 millisecond time step.
+
+.. note:: Insufficient time resolution is often the cause of simulation failures, so when starting a new simulation project, initially set as fine a value as possible. Setting a time step of about 1 millisecond, as we're doing here, should work well in most cases.
+
+Saving the Project
 ------------------
 
-Now, all the preparations to execute the simulation project this time are done. Normally, this status is stored in a project file. By doing so, you need not repeat the above operations and can resume the simulation next time you use Choreonoid and cope with a fault occurrence without difficulty. See :ref:`basics_project_save` for how to store the setting in the project file.
+The simulation project is now ready to run. You should typically save this state to a project file. By doing so, you can immediately resume the simulation the next time you use Choreonoid without repeating the above operations, and it will be easier to handle any issues that arise. See :ref:`basics_project_save` for how to save to a project file.
 
-Execution of Simulation
----------------------------
+Running the Simulation
+----------------------
 
-You can execute a simulation by clicking the following button on the simulation bar:
+You can run the simulation by pressing the following button on the simulation bar:
 
 .. image:: ../basics/images/SimulationBar_StartButton.png
 
-For the simulation this time, it is OK if you can get the result that box1 model falls according to the gravity, strikes on the floor and stops there.
-
-
+For this simulation, you should see the box1 model fall due to gravity, hit the floor, and stop.

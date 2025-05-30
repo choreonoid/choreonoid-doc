@@ -1,42 +1,45 @@
+Building and Installing AGX Dynamics Plugin (Ubuntu Linux)
+==========================================================
 
-Installing and building AGX Dynamics plugin
----------------------------------------------
+.. highlight:: sh
 
-| AGX Dynamics plugin is included in the Choreonoid source code.
-| Set the following cmake option **ON** before building Choreonoid.
-| You can check the description of building Choreonoid at :ref:`build-ubuntu-cmake`.
+Enabling AGX Dynamics Plugin with CMake Options
+-----------------------------------------------
 
-* **BUILD_AGX_DYNAMICS_PLUGIN**      : AGXDynamicsPlugin - Enable rigid body simulation with AGX Dynamics
-* **BUILD_AGX_BODYEXTENSION_PLUGIN** : AGXBodyExtensionPlugin - Including dedicated models such as wire, breakable joint, etc. Only works with AGXDynamicsPlugin.
+The AGX Dynamics plugin is included in the Choreonoid source code.
+To enable it, set the following options to **ON** in the :ref:`build-ubuntu-cmake` when building Choreonoid:
 
-| Now, let's start building and installing.
-| First, move to the Choreonoid source directory and execute cmake and ccmake.
+* **BUILD_AGX_DYNAMICS_PLUGIN**      : AGX Dynamics Plugin - AGX Dynamics simulation plugin
+* **BUILD_AGX_BODYEXTENSION_PLUGIN** : AGX Body Extension Plugin - Dedicated model plugin (wires, etc.)
 
-.. code-block:: txt
+You can specify these as cmake command options::
 
-   cd choreonoid
-   cmake .
-   ccmake .
+ cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON
 
-Enable following options ON, then execute configure and generate.
+or you can switch these option values to ON in the menu displayed by the ccmake command.
 
-* BUILD_AGX_DYNAMICS_PLUGIN             ON
-* BUILD_AGX_BODYEXTENSION_PLUGIN        ON
+When you build Choreonoid with this CMake configuration, the AGX Dynamics plugin will be built simultaneously and become available for use.
 
-Make sure that CMake Errors are not occurred.
-Then execute make, make install as follows:
+.. note:: Since the AGX Body Extension Plugin depends on the AGX Dynamics Plugin, it will not be displayed in ccmake unless BUILD_AGX_DYNAMICS_PLUGIN is ON. Try turning BUILD_AGX_DYNAMICS_PLUGIN ON and running configure once.
 
-.. code-block:: txt
+.. note:: When you run configure in ccmake, the AGX Dynamics path AGX_DIR is automatically set, but if it is not set, please set it manually. The default path is /opt/Algoryx/AGX-<version>.
 
-   make -j4
-   make install
+.. _agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution:
 
-.. note::
+Option for AGX Dynamics Shared Library Reference Resolution
+----------------------------------------------------------
 
-   Since AGXBodyExtensionPlugin is depeneded on AGXDynamicsPlugin, ccmake will not show the option BUILD_AGX_BODYEXTENSION_PLUGIN when BUILD_AGX_DYNAMICS_PLUGIN is OFF.
-   Set BUILD_AGX_DYNAMICS_PLUGIN ON and execute configure once.
+The :ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` can also be resolved using CMake options when building Choreonoid.
 
-.. note::
+To do this, set the CMake option **ENABLE_INSTALL_RPATH_USE_LINK_PATH** to **ON**.
 
-   When ccmake configure is executed, the AGX Dynamics installation path AGX_DIR is automatically set.
-   In case that AGX_DIR is not set, please set it manually. The default path is /opt/Algoryx/AgX-<version>.
+In this case, the cmake command option setting would be as follows::
+
+ cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DENABLE_INSTALL_RPATH_USE_LINK_PATH=ON
+
+For the ccmake command, first press the "T" key to switch to advanced mode.
+Then navigate through the menu and set the ENABLE_INSTALL_RPATH_USE_LINK_PATH item to ON.
+
+When you build with this setting, the path to the AGX Dynamics shared libraries that are dynamically linked will be embedded in the AGX Dynamics plugin shared library file. This is achieved using the "RPATH" feature of shared libraries. Plugin files generated this way will use the embedded paths to dependent libraries for library reference resolution. In this case, even if the corresponding libraries do not exist in the OS shared library path, they can be linked and executed at runtime.
+
+When using the AGX Dynamics plugin, it is usually recommended to build with this option set to ON.

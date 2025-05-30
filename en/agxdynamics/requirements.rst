@@ -1,18 +1,14 @@
-
+========
 Requirements
-------------------
+========
 
-The followings are the requirements to use AGXDynamics plugin on Choreonoid.
+To use Choreonoid's AGX Dynamics plugin, you need to meet the following requirements:
 
-* **Purchase of runtime license of AGX Dynamics and aquire SDK**
-* **Install AGX Dynamics on executable environment**
-* **Place AGX Dynamics runtime license file in AGX Dynamics installed directry**
+* **Purchase AGX Dynamics runtime license and obtain SDK**
+* **Install AGX Dynamics on the execution environment**
+* **Place AGX Dynamics runtime license file in the AGX Dynamics installation directory**
 
 
-Please contact **VMC Incorporated (株式会社ブイエムシー)** for purchase of runtime license and more information.
-(Please contact event organizer if you join certain event and use this simulator for the event, like world robot summit. )
+For purchasing AGX Dynamics runtime licenses and obtaining the SDK, please contact **VMC Motion Technologies Co., Ltd.** Note that event participants such as World Robot Summit should contact the event organizer.
 
-  `About VMC Incorporated: 	AGX Dynamics Plugin for Choreonoid（コレオノイド）`__
-
-.. _VMC: http://www.vmc-motion.com/15135605209828
-__ VMC_
+* `VMC Motion Technologies Co., Ltd.: AGX Dynamics Plugin for Choreonoid <https://www.vmc-motion.com/商品・サービス/プラグインソリューション/plugin-for-choreonid/>`_

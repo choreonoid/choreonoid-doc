@@ -1,34 +1,33 @@
-
-Introduction of Controller
-==========================
+Introducing Controllers
+=======================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 
-.. contents::
+.. contents:: Table of Contents
    :local:
 
 .. highlight:: cpp
 
-Introduction of Controller
-----------------------------
+Introducing Controllers
+-----------------------
 
-It is necessary to introduce a controller to a simulation project to control a robot in the simulation. The basic flow of introduction is as follows:
+To control robots in simulation, you need to introduce controllers to your simulation project. The basic flow of introduction is as follows:
 
-1. Select a controller item type to be used.
-2. Prepare a controller itself that complies with the controller item type.
-3. Create a controller item and allocate it as a child item of the body item.
-4. Set the controller itself to the controller item.
+1. Select the controller item type to use
+2. Prepare a controller body compatible with the controller item type
+3. Create a controller item and place it as a child item of the body item
+4. Set the controller body to the controller item
 
-Here is a concrete explanation about the above operations:
+These steps are explained below through specific examples.
 
-Preparation of Simulation Project
-----------------------------------
+Preparing the Simulation Project
+--------------------------------
 
-First, according to the process described in :doc:`simulation-project` , let's create a project with other elements than the controller prepared.
+First, following the procedure explained in :doc:`simulation-project`, create a project with all elements except controllers prepared.
 
-This time, a model that can be the control target of the controller is prepared. In the :ref:`bodymodel_samplemodels` , there is a robot model called "SR1". Let's use it. Load "mode/SR1/SR1.yaml" in share directory.
+This time, we'll prepare a model that can be controlled by a controller. Among the :ref:`bodymodel_samplemodels`, there is a robot model called "SR1", so let's use it. Load "model/SR1/SR1.body" from the share directory.
 
-In addition, incorporate the floor model, the simulator item and the world item that unifies them and make the following project structure: ::
+Additionally, incorporate a floor model, simulator item, and a world item to organize them, creating the following project structure: ::
 
  [ ] - World
  [/]   + SR1
@@ -37,73 +36,75 @@ In addition, incorporate the floor model, the simulator item and the world item 
 
 .. images/controller-project1.png
 
-The robot will be displayed as follows in the scene view:
+The robot model should be displayed in the scene view as follows:
 
 .. image:: images/controller-scene1.png
 
-SR1 model is a multi-link model having 29 joints and can make different poses by moving its joints. By default, it stands erect, but you can start simulation from any other pose as the initial status. See :doc:`../handling-models/index` - :doc:`../handling-models/pose-editing` and :doc:`../handling-models/legged-model`  for how to edit the pose.
+The SR1 model is a multi-link model with 29 joints, capable of taking various poses by moving its joints. By default, it's in an upright pose as shown in the figure, but you can also start simulation from other poses as the initial state. See :doc:`../handling-models/index` - :doc:`../handling-models/pose-editing` and :doc:`../handling-models/legged-model` for how to edit poses.
 
-Don't forget :ref:`simulation-time-step` , too. This time, too, set it 1000 [fps] for the time being.
+Don't forget to set the :ref:`simulation-time-step`. For now, let's set the time step to 0.001 (1 millisecond).
 
 .. _controller-no-controller-case:
 
-In Case without Controller
-----------------------------
+Without a Controller
+--------------------
 
-To make clear the effect of the controller, let's do simulation as it is without a controller. What does become of the robot when the simulation starts?
+To clarify the effect of controllers, let's first run a simulation without any controller. What happens to the robot when the simulation starts?
 
 .. image:: images/nocontroller-falldown.png
 
-As shown in the figure, it falls down immediately after the start of the simulation.
+As shown in the figure, the robot immediately collapses to the floor after the simulation starts.
 
-Since there is no controller, no command is sent to the joints. So, no joint torque takes place and the robot is so weak that it cannot just stand. On the other hand, the gravity work by default, so all the links of the robot fall down according to the gravity.
+Without a controller, no commands are sent to the joints, so no joint torque is generated, leaving the robot in a powerless state. Meanwhile, since gravity is applied by default, each link of the robot falls to the floor following gravity.
 
-In this way, a robot cannot even stand still without a controller. So what we need first for a robot is a controller. To make it walk and work, we need a certain level of controller that can support such actions.
+Thus, without a controller, the robot cannot even stand. This shows that controllers are essential for robots. To make them walk or perform tasks, appropriate controllers are necessary.
 
 .. _simulation_select_controller_item_type:
 
-Selection of Controller Item Type
-----------------------------------
+Selecting Controller Item Type
+------------------------------
 
-In Choreonoid, controllers are introduced by "Controller Item". A controller item is an abstract item type that defines the base of outputs and inputs. Actually, an item type that inherits this is used. Generally speaking, the controller itself is implemented separately from the controller item. So we have to prepare it as well.
+In Choreonoid, controllers are introduced through "controller items". A controller item is an abstract item type that defines the foundation for input/output, and in practice, you use item types that inherit from it. Generally, the controller body is implemented separately from the controller item, so you need to prepare that as well.
 
-This mechanism allows the controller itself to have any implementation format. In fact, there are various controller formats for robot. Some of them are unique to each robot and others are created according to the specification of middleware such as ROS and OpenRTM. A controller item works as a mediator between its respective implementation format and the virtual robot on Choreonoid. By employing a controller item that can support the controller itself that you want to use, the controller itself is introduced.
+This mechanism allows controller bodies to take any implementation format. In reality, there are various formats for robot controllers. Some are unique to specific robots, while others are created according to specifications of robot middleware like ROS or OpenRTM. Controller items function as intermediaries between these implementation formats and virtual robots in Choreonoid. By using a controller item that corresponds to the desired controller body format, you can introduce the controller body.
 
-For this purpose, it is necessary to have the controller items that can support the controller format to be used. Currently, the following types of controller items are included in the main part of Choreonoid:
+This requires having controller items available that support the controller format you want to use. Currently available controller item types in Choreonoid include:
 
-* **SimpleController Item**
+* **Simple Controller Item**
 
- It is a controller item that supports "Simple Controller" format, which is a unique controller implementation format. This format is designed focusing on the simplicity of the controller implementation for the purpose to implement mainly samples. However, the versatility is not well focused and is not assumed to be applied to an actual robot system. Simple controller items are available with "SimpleController-Plugin", which is introduced by default.
+ A controller item that supports the "Simple Controller" format, which is Choreonoid's proprietary controller implementation format. It's included in the Choreonoid main body. This format is designed with emphasis on simplicity of controller implementation. While it doesn't include features like network communication with other modules, it's suitable for efficiently implementing less complex controllers.
 
-* **BodyROS Item**
+* **BodyROS Item / BodyROS2 Item**
 
- It is a controller item that allows the access to the robot sensor data using ROS, which is a kind of robot infrastructure software system. BodyROS items are made available by the `choreonoid_ros <https://github.com/choreonoid/choreonoid_ros>`_ package.
+ Controller items that enable integration with ROS / ROS 2, robot middleware. They're included in the `choreonoid_ros <https://github.com/choreonoid/choreonoid_ros>`_ package. Using these allows you to retrieve sensor data from virtual robots.
 
-* **BodyIoRTC Item**
+.. * **BodyIoRTC Item**
+..
+.. A controller item that enables integration with OpenRTM, robot middleware. It's made available through the "OpenRTM Plugin" included in `Choreonoid-OpenRTM <https://github.com/OpenRTM/Choreonoid-OpenRTM>`_. Using this allows you to control virtual robots using RT Components, which are components of OpenRTM.
 
- A BodyIoRTC item is a controller item that enables co-operating with "OpenRTM", which is middleware for robot. By using this, it becomes possible to control a virtual robot using "RT-Component", which is a component of OpenRTM. BodyIoRTC items are available by the OpenRTM plugin provided by `Choreonoid-OpenRTM <https://github.com/OpenRTM/choreonoid-openrtm>`_ .
+To use controllers in formats not supported by existing controller items, you need to develop a new Choreonoid plugin that provides the appropriate controller item.
 
-To use a controller that no existing controller item can support, it will be necessary to develop a new Choreonoid plugin that can provide such a controller item.
+.. For ROS, which has become increasingly popular in recent years, we are currently developing controller items to support it.
 
-As for ROS, which have been used a lot recently, the development of the controller items that can support ROS are ongoing.
+.. note:: As a method of introducing controllers, you can also implement the controller body directly as a controller item inheritance type. This method allows direct use of native APIs for accessing virtual robots, maximizing controller flexibility and efficiency. However, such controllers can only be used in Choreonoid and require the effort of implementing them as plugins, so this method is not common.
 
-.. note:: As a method of introducing a controller, you can implement the controller itself as it is as the controller item inheriting type. With this method, you can directly use the native API that accesses to the virtual robot, so the flexibility and the efficiency of the controller can be maximized. However, the controller cannot be used in Choreonoid only and it is not easy to implement it as a plugin. So, this method is generally not used.
+Preparing the Controller Body
+-----------------------------
 
-Preparation of Controller Itself
------------------------------------
+Prepare a controller body in a format compatible with the selected controller item type. You can use existing controllers or develop new ones as needed.
 
-Prepare a controller itself that complies with the selected controller item type. You may use an existing controller, but you can also develop a new one if necessary.
+For this example, we'll use a Simple Controller Item. In this case, we prepare a controller body implemented in the Simple Controller format. In the Simple Controller format, you implement control code by defining a class that inherits from the "SimpleController" class in C++ and overriding several virtual functions. The controller body is the compiled result as a shared library (.so) or dynamic link library (.DLL) file. See :doc:`howto-implement-controller` for implementation details.
 
-This time, let's use a simple controller item. In this case, we prepare the controller itself implemented with the simple controller format. In the simple controller format, the control codes are implemented by defining in a C++ class that inherits "SimpleController" class and overriding some virtual functions. What is compiled and made into a shared library file (.so) or a dynamic link library file (.DLL) is the controller itself. See :doc:`howto-implement-controller`  for detail.
+Choreonoid includes several Simple Controller samples, and we'll use one of them here. Samples are generated when the CMake option **BUILD_SIMPLE_CONTROLLER_SAMPLES** is ON during Choreonoid build. This option is ON by default, but if it's not, turn it ON and build Choreonoid to make the Simple Controller samples available.
 
 .. _simulation-create-controller-item:
 
-Creation of Controller Item
--------------------------------
+Creating a Controller Item
+--------------------------
 
-Select the controller item type to be used from "File" in Main Menu - "New" and create a controller item. Place the created item as a child item of the body item to be controlled. You can create a control item by selecting the body item in advance, or you can drag the created item to this position. This item placement is necessary for the system to identify the control target of the controller item.
+Select the controller item type to use from the main menu's "File" - "New" and create it. Place the created item as a child item of the body item to be controlled. You can either select the body item beforehand and then create the controller item, or create it first and then drag it to this position. This arrangement is necessary for the system to identify the controller item's control target.
 
-In the example this time, we create a simple controller item by selecting "SimpleController" under "New" menu and allocate it under SR1 item as illustrated below: ::
+In this example, select "Simple Controller" from the "New" menu to create a Simple Controller Item, and arrange it under the SR1 item as shown below: ::
 
  [ ] - World
  [/]   + SR1
@@ -111,35 +112,36 @@ In the example this time, we create a simple controller item by selecting "Simpl
  [/]   + Floor
  [ ]   + AISTSimulator
 
-
 .. images/controller-project2.png
-
-.. note:: To use simple controller item, the CMake option when building Choreonoid "BUILD_SIMPLE_CONTROLLER_PLUGIN" must be set to ON. This setting is ON by default.
 
 .. _simulation-set-controller-to-controller-item:
 
-Setting of Controller Itself
--------------------------------
-
-Set the controller itself to the controller item.
-
-In case of a simple controller item, this can be done by specifying the file name of the controller itself in the property "controller module".
-
-Note that, when you omit the directory name and specify the file name only, the file will be searched from the standard directory of the system. The standard directory is "simplecontroller" under the "plugin directory", which was introduced in :doc:`../install/directories` . Therefore, by storing the file of the controller itself, you can specify the controller only with the file name. Also, the extensions like ".so" and ".DLL" can be omitted. Omission of extensions will make the project available in any OS.
-
-For example, let's set "SR1MinimumController", which is a sample of a simple controller targeting SR1 model. It's a very simple controller that only maintains the current posture of a robot. First, verify that the file of this controller is stored in the system's standard directory and then configure the "controller module" of the simple controller item with "SR1MinimumController".
-
-.. note:: The sample controller is created if the CMake option when building Choreonoid "BUILD_SIMPLE_CONTROLLER_PLUGIN" is set to ON. (This setting is ON by default.)
-
-.. note:: How to set the controller itself is specifically different from a controller item type to another. Based on the basic flow of introduction of a controller stated in this section, read the document of the controller item to be used actually and configure it. In case of a Body RTC item, for example, you can configure the controller by combining multiple RT components, but you cannot realize it by just specifying one file name of the controller but a more complicated configuration is required.
-
-Execution of Simulation
+Setting the Controller Body
 ---------------------------
 
-The above configuration done, execute the simulation. If the configuration is successful, the robot can maintain its posture without falling down this time. This is because the torque order to maintain the posture is output to each of the joints by PD control code implemented in "SR1MinmumController".
+Set the controller body to the controller item.
 
-If it is not successful, check the message view. If there is a problem in the configuration or the operation of the controller, a message informing this may be output when the simulation is started.
+For Simple Controller Items, this is done by setting the controller body's filename in the "Controller module" property.
 
-As for a body item in which only one controller is configured, :ref:`simulation-result-item-output` is not a child item of the body item but a child item of the controller item. This is to make the item tree easy to read but the result of replay or other operations is not particularly different in case without controller.
+When setting this property, you can also use a file selection dialog box. When editing the property value, a dialog box icon appears to the right of the value. Click this icon to open the dialog box and select the controller file.
 
-Other controller samples are available: See  :ref:`basics_sample_project` and try other samples, too. For the samples targeting SR1 model, we have projects like "SR1Walk.cnoid", which makes the robot walk and "SR1Liftup.cnoid", which makes the robot lift up a box. You can verify how the robot acts differently depending on the controllers.
+By default, it opens the standard directory for storing Simple Controllers. The standard directory is the "simplecontroller" directory under the "plugin directory" introduced in :doc:`../install/directories`. Simple Controller samples are also stored in this directory.
+
+As an example, let's set "SR1MinimumController", a Simple Controller sample for the SR1 model. This is a very simple controller that only maintains the robot's current posture. The file is "SR1MinimumController.so" (or "SR1MinimumController.dll" on Windows) stored in the standard directory, so select this file from the dialog. The property value should then be set to "SR1MinimumController". If it's in this state, you're good to go.
+
+Note that you can also set the controller module by directly entering the filename without using the file selection dialog box.
+
+.. note:: When setting the controller module, file extensions can be omitted. In that case, the appropriate extension for the running OS is automatically added internally. This allows settings to be valid on any OS. When selecting from the file selection dialog, the extension is omitted as shown above.
+
+.. note:: The actual file is stored in the directory specified by the Simple Controller Item's "Base directory" property. You can specify either "Controller directory" or "Project directory" as properties. The default is "Controller directory", which loads files from the Simple Controller's standard directory. With "Project directory", files are loaded from the directory containing the currently loaded project file. When specifying the filename with a full path, the base directory becomes "None".
+
+Running the Simulation
+----------------------
+
+Run the simulation with the above settings completed. If the settings are successful, this time the robot should maintain its posture without collapsing. This is because the PD control code written in "SR1MinimumController" outputs torque commands to each joint to maintain the posture.
+
+If it doesn't work, check the message view as well. If there are problems with the controller settings or operation, messages informing you of this may be output when the simulation starts.
+
+.. note:: For body items with only one controller configured, the :ref:`simulation-result-item-output` becomes a child item of the controller item rather than the body item. This is to make the item tree easier to read, and result playback operations don't particularly change compared to cases without controllers.
+
+Other controller samples are also available. Refer to :ref:`basics_sample_project` and try other samples. For samples targeting the SR1 model, there are projects like "SR1Walk.cnoid" that makes it walk, and "SR1Liftup.cnoid" that lifts a box, allowing you to see how robot behavior changes with different controllers.

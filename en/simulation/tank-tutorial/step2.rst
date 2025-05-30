@@ -1,9 +1,9 @@
-Step 2: Implementing a controller
-=================================
+Step 2: Creating and Introducing a Controller
+==============================================
 
-In Step 1, there was no controller, so we were unable to maintain the orientation of the gun barrel when simulating the Tank model. In Step 2, we will be learning how to implement controllers by creating the bare minimum controller needed to maintain the orientation of a model.
+In Step 1, there was no controller, so we couldn't maintain the attitude of the Tank model's gun barrel during simulation. So in Step 2, we'll learn the basics of introducing a controller by creating a minimal controller to maintain the attitude.
 
-.. contents:: 目次
+.. contents:: Table of Contents
    :local:
    :depth: 2
 
@@ -11,19 +11,21 @@ In Step 1, there was no controller, so we were unable to maintain the orientatio
    :linenothreshold: 5
 
 
-Controller format
------------------
+About Controller Formats
+------------------------
 
-Generally speaking, there are many different ways in which controllers can be implemented. Typically, this is done by way of formats set by specific robot systems and simulators, or through a form of a robot middleware such as ROS.
+Generally, there can be various implementation formats for controllers. There are formats specified by specific robot systems and simulators, and it's also common to implement controllers in formats specified by middleware such as ROS.
 
-In this tutorial, we will implement controllers in Choreonoid's original "Simple Controller" format. The Simple Controller makes use of C++ and Choreonoid’s internal data structure to implement itself. Compared to using middleware such as ROS, it has the advantage that you do not have to learn much and the code is relatively simple.
+Regarding this, in this tutorial, we'll implement controllers in Choreonoid's original "SimpleController" format. SimpleController implements controllers using the C++ language and Choreonoid's internal data structures, and has advantages such as requiring less to learn compared to using middleware like ROS, and resulting in relatively simple code.
 
-Note that this is Choreonoid's original format, and therefore is less ubiquitous or versatile than general middlewares such as ROS. Furthermore, it does not include the communication features that middlware such as ROS provides. In fact Choreonoid can be integrated with ROS by using the `choreonoid_ros package <https://github.com/choreonoid/choreonoid_ros>`_ , and make use of it if necessary.
+However, since this is Choreonoid's original format, it is inferior to middleware like ROS in terms of versatility. It also doesn't provide communication functions like those offered by middleware such as ROS. Choreonoid has features to cooperate with ROS, so please use those as needed. Methods for using ROS are explained in :doc:`../../ros/index`.
 
-Implementing the “TurretController1” controller
--------------------------------------------------
+.. _tank_tutorial_step2_src:
 
-The SimpleController format implements the controller using a C++ class. Here we’ll implement a simple TurretController1, the purpose of which is solely to maintain the pitch axis of the gun turret. The source code to the controller is seen below. ::
+Implementing the "TurretController1" Controller
+-----------------------------------------------
+
+In the SimpleController format, controllers are implemented as C++ classes. Here we'll implement "TurretController1" which only maintains the turret's pitch axis. First, here's the source code for this controller: ::
 
  #include <cnoid/SimpleController>
  
@@ -67,274 +69,295 @@ The SimpleController format implements the controller using a C++ class. Here we
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(TurretController1)
 
-Below, we import this controller as a simulation project and then describe the steps up to running the simulation. Then, we discuss the details of how the controller is specifically implemented and break that down.
+Below, we'll explain how to introduce this controller into the simulation project and run the simulation. After that, we'll explain the implementation details of the controller.
 
-Creating a project directory
-----------------------------
-
-First, create a directory in which to save the output of the above, which you will be entering into a text file. You could create a directory named “tank” and then save the above source code to a file named TurretController1.cpp. Going forward, other files in the tutorial should be saved in this directory. We refer to this as the project directory.
-
-The files we created in Step 1 when learning about :ref:`tank-tutorial-step1-save-project` can also be stored here to put everything in one place.
-
-.. note:: If you are unsure of what text editor to use on Ubuntu, for the time being, try using the default text editor, “gedit.” From the Dash, type “gedit” and click the text editor icon that appears. You can also enter “gedit” directly on the command line.
-
-.. note:: The source code files can be found under /sample/tutorial/Tank in the Choreonoid directory. If you don’t want to type everything in yourself, you can refer to this file. The other files referenced in this tutorial can also be found in this directory, so you can make use of them as needed.
 
 .. _tank_tutorial_step2_compile:
 
-Building the controller
------------------------
+How to Build Controllers
+------------------------
 
-Broadly speaking, there are two ways of building (compiling) the source code written in C++.
+There are mainly two methods for building (compiling) controller source code written in C++:
 
-1. Building alongside Choreonoid
-2. Building separately from Choreonoid
+1. Build together with Choreonoid itself
+2. Build separately from Choreonoid itself
 
-If you are building Choreonoid from source, method 1 is easier. In this tutorial, we describe method 1.
+If you're building Choreonoid from source, method 1 is easier, so we'll proceed with method 1 in this tutorial.
 
-For details on build methods, see the section on :doc:`../howto-build-controller` . When actually developing your own controller, you will probably use both methods depending on your intended objectives and the environment being used.
+For details on build methods, please refer to :doc:`../howto-build-controller`. In actual controller development, you'll probably use both methods depending on your environment and purpose.
 
-When using method 1, we have to make Choreonoid’s build system recognize the project directory we just created. There are also two ways of doing this.
+In either case, you first need a directory to store the controller source code. We'll call this the *"project directory"*. (We'll also store other files created in this tutorial in the project directory.)
 
-A. Place the corresponding directory below the /ext directory in the Choreonoid source directory
-B. Pass the path to the directory using ADDITIONAL_EXT_DIRECTORIES in the Choreonoid CMake file
+When building using method 1 above, you need to make Choreonoid's build system recognize the project directory. There are also two methods for this:
 
-If adopting method A, move the “tank” project directory we just created to be below /ext. You could also opt to create the project directory below /ext ahead of time. Either way is fine.
+A. Place the target directory in the "ext" directory within Choreonoid's source directory
+B. Specify the target directory in "ADDITIONAL_EXT_DIRECTORIES" in Choreonoid's CMake settings
 
-If using method B, specify the corresponding directory path using the above setting. If there are multiple directories in question, delimit them with a semicolon.
+If adopting A, create the project directory under the ext directory.
+If adopting B, create the project directory somewhere and then specify the path to that directory in the above configuration item. If there are multiple target directories, you can input them separated by semicolons.
 
-Unless you have reason to do so, we suggest using method A. In this case:
+Unless there's a specific reason, it's probably best to use method A. We'll proceed with that method below.
 
-* Create the “tank” project directory below the “ext” directory in the Choreonoid source directory.
-* Save the TurretController1 source code from the previous paragraph as a file named TurretController1.cpp in the “tank” directory.
+Creating the Project Directory
+------------------------------
 
+Let's create a project directory under ext. The directory name can be anything, but here we'll use the directory name "tank". For example, in the Choreonoid source directory:
 
-CMakeLists.txt notation
------------------------
+.. code-block:: sh
 
-Next, create CMakeLists.txt, a text file, in the project directory and notate the controller compile settings therein.
+ cd ext
+ mkdir tank
 
-That being said, the details for this example are quite simple. All you have to do is add the single line below.
+etc.
+
+In this "tank" directory, create the source code file shown in :ref:`tank_tutorial_step2_src` at the beginning of this step. Let's name the file "TurretController1.cpp".
+
+At this point, the project directory and its files have the following structure:
+
+.. code-block:: text
+
+ Choreonoid source directory
+  + ext
+    + tank
+      - TurretController1.cpp
+
+Note that it would be good to also save the file from :ref:`tank-tutorial-step1-save-project` in Step 1 to this "tank" directory. This is also why we call this directory the "project directory" - with the intention of keeping all files related to this tutorial's simulation project together.
+
+.. note:: If you don't know which text editor to use on Ubuntu, try using the standard "gedit" text editor for now. You can launch it by searching for "gedit" in the application search and clicking the "Text Editor" icon. You can also type "gedit" from the command line.
+
+.. note:: The source code files are stored under "sample/tutorial/Tank/" in the Choreonoid source. If you find it tedious to type them yourself, you can use these files. Other files mentioned in this tutorial are also stored in this directory, so please use them as needed.
+
+Writing CMakeLists.txt
+----------------------
+
+Next, create a new text file called "CMakeLists.txt" in the "tank" project directory, and write the compilation settings for the controller here.
+
+However, the content to write this time is very simple - just add the following line to the newly created "CMakeLists.txt" file:
 
 .. code-block:: cmake
 
- add_cnoid_simple_controller(TankTutorial_TurretController1 TurretController1.cpp)
+ choreonoid_add_simple_controller(TankTutorial_TurretController1 TurretController1.cpp)
 
-The add_cnoid_simple_controller function we have used here is a function already defined in the CMake file for Choreonoid. You simply need to add the name and source file of the controller you wish to generate to compile the controller.
+The "choreonoid_add_simple_controller" function used here is a function pre-defined in Choreonoid's CMake descriptions. You can compile the controller just by giving this function the name of the controller to be generated and the source file.
 
-We have prepended the prefix “TankTutorial” to the controller name. This is not required, but it is done to easily distinguish it from controllers you develop for other projects.
+This time we've added the prefix "TankTutorial" to the controller name. This is not required, but we've added it to make it easier to distinguish from controllers developed for other projects.
 
-Controller compilation
-----------------------
+At this point, the project directory and its files have the following structure:
+
+.. code-block:: text
+
+ Choreonoid source directory
+  + ext
+    + tank
+      - CMakeLists.txt
+      - TurretController1.cpp
+
+Building the Controller
+-----------------------
 
 .. highlight:: sh
 
-You can now compile it. We are using the same build method as when we built Choreonoid proper. All you need to do is build Choreonoid again. There is a new CMakeLists.txt file now, so reissue CMake to ensure it detects it properly. For the device in Step 1, the current directory should be the Choreonoid source directory. If this is not the case, use: ::
+Let's build the controller. Since we're using the method of building together with Choreonoid itself, just build Choreonoid again. Since CMakeLists.txt has been added this time, first re-run CMake to recognize it. The terminal opened in Step 1 should have Choreonoid's source directory as the current directory. If not, use ::
 
- cd [path to Choreonoid source directory]
+ cd [Path to Choreonoid source directory]
 
-to navigate to the source directory.
+to move to Choreonoid's source directory.
 
-If you are using the source directory as-is as a build directory, run ::
-
- cmake .
-
-to run CMake again in the current working directory. If your build and source directories are separate, navigate to the build directory and pass the source directory as a parameter to cmake. For example, if you have created a build directory called “build” directly below the source directory, you would do the following: ::
+Usually you would have created a "build" directory for building, so move there and re-run CMake. ::
 
  cd build
  cmake ..
 
-.
-
-Next, go to the build directory and issue this command: ::
+Next, continue in the build directory with ::
 
  make
 
-(For details on compiling, please refer to the Choreonoid build section of the :doc:`../../install/build-ubuntu`  documentation.)
+Please enter this. (For details on the build method, see :ref:`install_build-ubuntu_build` in :doc:`../../install/build-ubuntu`.)
 
-If the A and B conditions described in the section on :ref:`tank_tutorial_step2_compile` are met, the above CMakeLists.txt will be output, and its content is executed.
+At this time, if conditions A or B mentioned in :ref:`tank_tutorial_step2_compile` are met, the above CMakeLists.txt will be detected and its contents will be executed.
 
-If the compile process succeeds, you will find a file named:
+If the build succeeds, a file called:
 
 * **TankTutorial_TurretController1.so**
 
-under lib/choreonoid-x.x/simplecontroller (where x.x is the Choreonoid version number). 
+should be generated in the build directory's "lib/choreonoid-x.x/simplecontroller" (x.x is Choreonoid's version number).
 
-This is the base file for the controller. As the extension indicates, this is a shared library file that defines the controller. Going forward, we describe the directory in which the controller was generated as the controller directory.
+This is the controller itself. As you can see from the extension, the controller is actually a shared library file. From now on, we'll refer to the directory where the controller was generated as the *"controller directory"*.
 
-If you get a compile error, refer to the error message and adjust the source code and/or CMakeLists.txt.
+If you get a compilation error, refer to the error message and review your source code and CMakeLists.txt descriptions.
 
+.. note:: If you execute "make install" after this, the generated controller file "TankTutorial_TurretController1.so" will also be copied to the installation destination. However, in this tutorial, as mentioned in :ref:`simulation-tank-tutorial-invoke-choreonoid` in Step 1, we're explaining under the assumption of executing files in the build directory without executing "make install", so please be aware of this.
 
 .. _simulation-tank-tutorial-introduce-controller:
 
-Introducing a controller
-------------------------
+Introducing the Controller
+--------------------------
 
-Introduce the built controller into the simulation project.
+Let's introduce the built controller into the simulation project.
 
 .. _simulation-tank-tutorial-create-controller-item:
 
-Controller item creation
-~~~~~~~~~~~~~~~~~~~~~~~~
+Generating a Controller Item
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now we import the SimpleController that we created into Choreonoid as a SimpleController item.
+SimpleController is designed to be introduced into projects through "SimpleController Items", so first let's generate the corresponding item. Select "SimpleController" from "File" - "New" in the main menu to generate it. The item name can be anything, but it would be good to name it "TurretController" to match the controller.
 
-First begin by generating the SimpleController item. From the Main Menu, select File, new, then SimpleController. The item can take any name. It is best to ensure consistency with the controller by naming it something like TurretController.
-
-The resulting item will be positioned, as seen below, as a sub-item of the Tank item, which is what we intend to control with it.
+Place the generated item as a child item of the Tank item to be controlled, as shown in the figure below.
 
 .. image:: images/controlleritem.png
 
-This positioning indicates that the control target of the controller is the Tank. Achieving this can be done by first selecting the Tank item and then generating the controller item, or by dragging into position after generation.
+This placement specifies that the controller's control target is the Tank model. To achieve this, you can either select the Tank item before generating the controller item, or drag it to this position after generation.
 
 .. _simulation-tank-tutorial-set-controller:
 
-Setting the controller itself
+Setting the Controller Module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Next, we set the controller we just created onto the SimpleController item.
+Next, set the controller module we created earlier to the SimpleController item.
 
-This is done by way of the controller module property that the SimpleController item possesses. Begin by selecting TurretController on the Item Tree. The item’s properties list will appear on the Item Properties View. From there, look for the Controller Module property. Double-clicking on the property value field (by default, it will be empty) lets you input the name of the module file.
+This is done using the "Controller module" property of the SimpleController item. First, select "TurretController" in the item tree. Then the property list for this item will be displayed in the item property view, so look for the "Controller module" property among them. Double-clicking on the value part of that property (which is blank by default) allows you to input the module file.
 
-Using the file input dialog that appears is a fast and convenient way to do so. When giving input to the controller module, as shown in the figure below, there is an icon at the right which is used to enter a value.
+At this time, it's convenient to use the file dialog for input. When inputting the controller module, there's an icon at the right edge of the value input area as shown in the figure below.
 
 .. image:: images/controller-module-property.png
 
-Clicking this icon will display a file selection dialog. Ordinarily, this dialog points to the default directory used to store the SimpleController. You should find the TankTutorial_TurretController1.so that we just created. Select it.
+Clicking this icon displays a file selection dialog. This dialog usually points to the standard directory for storing SimpleControllers. The "TankTutorial_TurretController1.so" we created earlier should be stored there, so select it.
 
-With this, the controller is now set on the SimpleController item. Now we can imbue the controller with functionality.
+Now the controller module is set to the SimpleController item. With this, we can make the controller function.
 
-Take a moment to save your work on the project thus far. Save the filename as step2.cnoid and save it into the project directory.
+Once you've configured up to this point, save the project again. It would be good to save it with the filename "step2.cnoid" in the project directory.
 
-Launching a simulation
+Running the Simulation
 ----------------------
 
-Now that you have completed the above, try running the simulation. While the gun barrel fell due to gravity in Step 1, now it properly faces forward. This is because the TurretController1 controller is applying the requisite torque to the gun turret pitch axis to maintain the proper orientation.
+After performing the above settings, run the simulation. The gun barrel that pointed downward due to gravity in Step 1 should now remain facing forward. This is because the "TurretController1" controller is applying the torque necessary to maintain the attitude to the turret pitch axis.
 
-If you have trouble, look at the Message View for logs. If there are issues with the controller settings or operation, the Message View will output debug messages upon starting the simulation.
+If it doesn't work well, also check the message view. If there are problems with the controller settings or operation, messages to that effect may be output when starting the simulation.
 
-Note that this controller does not control the yaw axis of the gun turret, so no force is applied there. As with Step 1, :doc:`../interaction` to drag the gun turret and see that the yaw axis is free-moving.
+Note that this controller doesn't control the turret yaw axis, so no force is applied there. Similar to Step 1, if you drag the turret part using :doc:`../interaction`, you can see that it moves freely with respect to the yaw axis.
 
 .. _tank_tutorial_step2_implementation:
 
-How this implementation works
------------------------------
+Explanation of Implementation Details
+-------------------------------------
 
-The TurretController1 controller we just created works as follows.
+The implementation details of the "TurretController1" controller we created are as follows.
 
-The SimpleController Class
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+SimpleController Class
+~~~~~~~~~~~~~~~~~~~~~~
 
-The SimpleController is designed to inherit the SimpleController class defined in Choreonoid. Begin by writing ::
+.. highlight:: C++
+
+First, SimpleController is designed to be implemented as a class that inherits from the "SimpleController" class defined in Choreonoid. So first, ::
 
  #include <cnoid/SimpleController>
 
-to include the header defined for this class. The header files provided by Choreonoid are stored in the “cnoid” subdirectory of the source directory, and you can specify this as a path from the cnoid directory. A file extension is not required.
+includes the header where this class is defined. Header files provided by Choreonoid are stored in the "cnoid" subdirectory of the include directory, and are written as paths from the cnoid directory like this. No extension is needed.
 
-All of the classes defined in Choreonoid belong to the “cnoid” namespace. Here, we use ::
+Also, all classes defined in Choreonoid belong to a namespace called "cnoid". Here, ::
 
  using namespace cnoid;
 
-to abbreviate the namespace.
+allows us to omit the namespace.
 
-The controller class is defined by using: ::
+The controller class definition is done by: ::
 
  class TurretController1 : public SimpleController
  {
      ...
  };
 
-You can see how the TurretController1 is defined to inherit the SimpleController attributes.
+You can see that TurretController1 is defined by inheriting from SimpleController.
 
-The SimpleController class defines several functions as virtual functions; overriding these functions in the succeeding item lets you implement controller-internal processing. Normally, the below two functions are overridden.
+Several functions are defined as virtual functions in the SimpleController class, and you implement the controller's processing by overriding these functions in the inherited class. Usually you override the following two functions:
 
 * **virtual bool initialize(SimpleControllerIO* io)**
 * **virtual bool control()**
 
-Implementing the initialize function
+Implementing the initialize Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-The initialize function is used to initialize the controller and is only issued once immediately before the simulation begins.
+The initialize function is a function that initializes the controller and is executed only once just before the simulation starts.
 
-SimpleControllerIO is applied to this function as an argument. This class contains a variety of integrated functionality needed for controller I/O. For details, refer to the :ref:`simulator-simple-controller-io` referenced in the section on :doc:`../howto-implement-controller` . You will see that: ::
+The SimpleControllerIO type given as an argument to this function is a class that consolidates the functions necessary for controller input/output. For details, see :ref:`simulator-simple-controller-io` in :doc:`../howto-implement-controller`. Here, first ::
 
  joint = io->body()->link("TURRET_P");
 
-is used to obtain a Link object to handle I/O for the gun turret pitch axis, and the joint variable is stored there.
+obtains the Link object for input/output of the turret pitch axis and stores it in the joint variable.
 
-Using io->body() lets you poll the Body object used for Tank model I/O, as well as the item named TURRET_P from the Link object owned by this object. This corresponds to the joint for the :ref:`gun turret pitch axis<modelfile_yaml_TURRET_P_description>`  discussed in the section on :doc:`creating the Tank model<../../handling-models/modelfile/modelfile-newformat>` .
+io->body() obtains the Body object for Tank model input/output, and then obtains the one with the name "TURRET_P" from the Link objects that this object has. This corresponds to the joint of the :ref:`turret pitch axis section <modelfile_yaml_TURRET_P_description>` described in :doc:`Creating the Tank Model <../../handling-models/modelfile/modelfile-newformat>`.
 
 Next, ::
 
  joint->setActuationMode(Link::JOINT_TORQUE);
 
-applies the joint torque for the :ref:`simulation-implement-controller-actuation-mode` used for this joint. This allows for issuing joint torque as a command value.
+sets the :ref:`simulation-implement-controller-actuation-mode` of this joint to joint torque. This enables control using joint torque as the command value.
 
-Also, using ::
+Also, ::
 
  io->enableIO(joint);
 
-enables I/O for the joint. This code is used to enable the default input/output for the joint. The current ActuationMode is set to joint torque, so you can input a joint angle and output the torque. This enables you to execute PD control of joints.
+enables input/output for this joint. This description enables the default input/output for the joint. Since the actuation mode is now joint torque, it will input joint angle and output joint torque. This makes it possible to perform PD control on this joint.
 
-Note: if you do not configure the above ActuationMode settings or enable input/output, you will be unable to control the given joint.  Other functions used to configure input and output are enableInput, which only controls input, and enableOutput, which only controls output.
+Please note that if you don't set the above actuation mode or enable input/output for a joint, you cannot control that joint. Other functions available for setting input/output include enableInput which sets only input, and enableOutput which sets only output.
 
-.. note:: Other functions that have the same functionality in SimpleControllerIO are setLinkInput, setJointInput, setLinkOutput, and setJointOutput. These have been retained to keep compliance with older specifications and should not be used; going forward, please use the enableXXX function.
+.. note:: Functions that do similar things include SimpleControllerIO's setLinkInput, setJointInput, setLinkOutput, and setJointOutput, but these are old specification functions kept for compatibility, so please use the enableXXX functions from now on.
 
-Other values required for PD control are: ::
+Other values necessary for PD control include: ::
 
  q_ref = q_prev = joint->q();
   
-This lets you obtain the initial joint angle and substitute it with the q_ref and q_prev variables. q_ref is the variable for calculating target joint angle, while q_prev is the variable for calculating joint angular velocity. Also, using ::
+which obtains the initial joint angle and assigns it to variables q_ref and q_prev. q_ref is the target joint angle, and q_prev is a variable for calculating joint angular velocity. Also, ::
 
  dt = io->timeStep();
 
-lets you substitute a time step for the dt variable. This describes the internal time interval for each physics calculation of the simulation. At each step, the next control function is called.
+assigns the time step to variable dt. This represents the internal time to advance per physics calculation of the simulation, and the next control function will be called at this time interval.
   
-Lastly, true is returned for the initialize function, telling the system that the initialization process succeeded.
+Finally, it returns true as the return value of the initialize function to inform the system that initialization was successful.
 
-Implementing the control function
+Implementing the control Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The control function is used to indicate the actual control code and is executed on a loop in the simulation.
+The control function is the part where the actual control code is written, and is executed repeatedly during simulation.
 
-This only contains the PD control code for the gun turret pitch axis. ::
+Here, only PD control code for the turret pitch axis is written. ::
 
  static const double P = 200.0;
  static const double D = 50.0;
 
-The above corresponds to values for P gain and D gain. The current joint angle is input into the below: ::
+are the P gain and D gain values, and ::
 
  double q = joint->q(); // input
 
-And the current angular velocity is calculated with: ::
+inputs the current joint angle, ::
    
  double dq = (q - q_prev) / dt;
 
-Next, ::
+calculates the current angular velocity, ::
 
  double dq_ref = 0.0;
   
-sets the target velocity to 0, and ::
+sets the target angular velocity to 0, ::
 
  joint->u() = P * (q_ref - q) + D * (dq_ref - dq); // output
 
-outputs the torque value calculated with PD control to the joint. Finally, ::
+outputs the torque value calculated by PD control to the joint, and ::
    
  q_prev = q;
 
-is used to update q_prev for the next calculation.
+updates q_prev for the next calculation.
 
-In this way, the key takeaway is that input and output make use of Link object variables. joint->q() and joint->u() respectively correspond to joint angle and torque variables.
+In this way, the key point is that input/output is performed using Link object variables. joint->q() and joint->u() correspond to joint angle and joint torque variables, respectively.
 
-Lastly, the “true” value is returned to indicate that the process completed correctly. This continues the control loop.
+Finally, it returns true as the return value to indicate normal termination. This continues the control loop.
 
-Defining the factory function
+Defining the Factory Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once you define the SimpleController class, you must define the factory function, used to generate the object, per the prescribed method. This is needed so that the SimpleController item will read in the shared controller libraries at runtime and generate the controller object from there.
+Once you've defined the SimpleController class, you also need to define a "factory function" that generates that object in the prescribed format. This is necessary for the SimpleController item to load the controller's shared library at runtime and generate the controller object from it.
 
-This is achieved by using a macro: ::
+This can be written using a macro as: ::
 
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(TurretController1)
 
-Give it the controller class name as an argument, as above.
+Please provide the controller class name as an argument like this.

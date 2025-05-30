@@ -1,9 +1,9 @@
 World Robot Summit 2018
 =======================
 
-At the robotics event `"World Robot Summit (WRS) 2018" <http://worldrobotsummit.org/>`_  held in October 2018, there was an event featuring a robotics competition in a virtual environment simulated by Choreonoid. This competition was one of the events held in the `infrastructure and disaster response category  <http://worldrobotsummit.org/wrc2018/disaster/>`_   under the title, “Tunnel Disaster Response and Recovery Challenge”. (`World Robot Challenge (WRC) 2018 <http://worldrobotsummit.org/wrc2018/guideline/>`_, a robotics competition consisting of four categories in total, was held at WRS.)
+At the `World Robot Summit (WRS) <http://worldrobotsummit.org/>`_ 2018 robot event held in October 2018, robot competitions were also held in virtual environments simulated with Choreonoid. This competition was titled "Tunnel Disaster Response and Recovery Challenge" and was held as one of the competitions in the Infrastructure and Disaster Response category. (WRS hosted the World Robot Challenge (WRC) 2018, a robot competition consisting of four categories in total.)
 
-This document is a summary of the technical information required for participating in this event. The models and simulation settings required for the competition are included as Choreonoid samples, so anyone who did not participate in the competition can also try them out. These samples are useful in learning how to make practical use of Choreonoid.
+This document compiles the technical information necessary for participating in this competition. The models and simulation settings required for the competition are included as Choreonoid samples, allowing even those who did not participate in the competition to try them out. These serve as valuable samples for learning practical applications of Choreonoid.
 
 .. toctree::
    :maxdepth: 2

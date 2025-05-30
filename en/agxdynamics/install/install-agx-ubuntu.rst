@@ -1,72 +1,74 @@
-
-Installation of AGX Dynamics(Ubuntu Linux)
-================================================
+==========================================
+Installation of AGX Dynamics (Ubuntu Linux)
+==========================================
 
 .. contents::
    :local:
    :depth: 1
 
-| This section describes the installation of AGX Dynamics Ubuntu version.
-| Before installation, you should download the deb package from the AGX Dynamics download site and locate it in the /var/tmp directory.
-| In this description, agx-setup-2.19.1.2-x64-ubuntu-16.04-double.deb is used for explanation.
+This section explains how to install AGX Dynamics for Ubuntu.
 
-Installation
+Package Installation
+--------------------
+
+Please download the deb package from the AGX Dynamics download site.
+Here we introduce an example of installing AGX Dynamics version 2.30.4.0 on Ubuntu 20.04.
+
+First, install the downloaded deb file using the dpkg command.
+
+.. code-block:: sh
+
+ dpkg -i agx-2.30.4.0-amd64-ubuntu_20.04.deb
+
+However, the dpkg command does not resolve dependencies on other packages. To resolve dependencies, you can use the following methods:
+
+1. Double-click the deb file from the file manager and install using the displayed GUI tool
+2. Install using the gdebi command
+
+Method 1 is convenient, but some deb files may not be installable this way.
+
+For method 2, do the following:
+
+.. code-block:: sh
+
+ sudo apt install gdebi-core
+ sudo gdebi agx-2.30.4.0-amd64-ubuntu_20.04.deb
+
+Upon successful installation, it will be installed in the /opt/Algoryx/AGX-<version> directory.
+
+License Installation
+--------------------
+
+Next, place the AGX execution license file (agx.lic) in the installation directory to enable execution of AGX Dynamics.
+
+Loading Environment Settings
 ----------------------------
 
-| AGX Dynamics is installed by executing the following command. By default it is installed in the /opt/Algoryx/AgX-<version> directory.
-| Next, place the AGX license file(agx.lic) in the installation directory so that you can run AGX Dynamics.
-| Add the execution command of setup_env.bash in .profile file.
-| The script will set environment variables of AGX automatically when you login in to the OS.
+Finally, load the AGX environment variable settings.
+This can be achieved by executing "setup_env.bash" in the AGX directory.
 
-.. code-block:: txt
+Usually, add the following line to the .bashrc file in your home directory:
 
-   # Installation
-   cd /var/tmp
-   sudo dpkg -i agx-setup-2.19.1.2-x64-ubuntu_16.04-double.deb    // Install the AGX Dynamics package
-   ls -al /opt/Algoryx/AgX-2.19.1.2                               // Check AGX Dynamics is installed in the /opt/Alogrxy directory
+.. code-block:: sh
 
-   # Locate the AGX license file
-   sudo cp -i agx.lic  /opt/Algoryx/AgX-2.19.1.2
+ source /opt/Algoryx/AGX-2.30.4.0/setup_env.bash
 
-   # Set the environment variables of AGX
-   cd ~                                                           // Move to home dir
-   cp -p .profile .profile_20171010                               // Backup .profile file for safety
-   echo "source /opt/Algoryx/AgX-2.19.1.2/setup_env.bash" >> .profile
-   diff .profile .profile_20171010                                // Check diff
-   source .profile                                                // Set environment variables on this shell
-   env | grep -i agx                                              // Check that AGX_DIR and AGX_BINARY_DIR are sat correctly
+Replace the directory "AGX-2.30.4.0" part with the version of AGX you are actually using.
 
+With this setting, terminals launched thereafter will have the AGX environment settings applied.
 
-Running test
-----------------------------
+.. _agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem:
 
-Execute the AGX Dynamics sample as follows to check AGX Dynamics is installed correctly.
+AGX Shared Library Reference Resolution Issues
+----------------------------------------------
 
-.. code-block:: txt
+In recent AGX versions (confirmed with 2.30.4.0), unlike previous versions, it appears that the path to AGX shared libraries is no longer set by the above script. Without modification, the references to AGX shared libraries cannot be resolved, and the AGX Dynamics plugin may fail to load when running Choreonoid.
 
-   cd /opt/Algoryx/AgX-2.19.1.1/bin
-   ./tutorial_trackedVehicle
+Shared library paths can be set using the LD_LIBRARY_PATH environment variable.
+To add AGX shared libraries to the path, set this environment variable as follows:
 
+.. code-block:: sh
 
-.. note::
-   On a virtual machine such as VMWare, the application window may not opened and failed.
+ export LD_LIBRARY_PATH=/opt/Algoryx/AGX-2.30.4.0/lib:$LD_LIBRARY_PATH
 
-   .. code-block:: txt
-
-      $ ./tutorial_trackedVehicle
-         AGX Library 64Bit AgX-2.19.1.1-81db33e Algoryx(C)
-         Tutorial Tracked Vehicle (agxVehicle::Track)
-        --------------------------------
-      Caught exception: Failed to find window with number: 0
-   ..
-
-   In this case please check with the following command. --agxOnly is without graphics, --stopAt 5 is stop simulation after 5 seconds.
-
-   .. code-block:: txt
-
-      ./tutorial_trackedVehicle --agxOnly --stopAt 5
-         AGX Library 64Bit AgX-2.19.1.1-81db33e Algoryx(C)
-         Tutorial Tracked Vehicle (agxVehicle::Track)
-         --------------------------------
-      Loading scene took 0.236783 sec
-      Stepping 301 timesteps (5.01667 sec simulated time) took 1.69487 sec
+However, from Choreonoid development version commit b71e314d098eb24e0beaf571f6ae0fe9fdb618a2 onwards, this can also be resolved through Choreonoid build settings without setting this environment variable. This may be preferable as it has less impact on other systems. That method is explained in the next section.

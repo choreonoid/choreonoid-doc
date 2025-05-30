@@ -1,110 +1,116 @@
-
-Basic Concept
-===============
-
-.. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
+Basic Concepts
+==============
 
 .. contents::
    :local:
    :depth: 1
 
 
-Simulation Function
-----------------------
+Simulation Functionality
+------------------------
 
-Choreonoid is equipped with the simulation function, which can be used as a robot simulator. The function simulates how a robot and environment objects move though calculations and presents the result in animation by 3DCG or output as data. Using this function, it becomes possible to perform hardware design and software-related verifications as well as practice operations or use for training.
+Choreonoid is equipped with simulation capabilities and can be used as a robot simulator. It simulates how robots and environmental objects move through calculations and displays the results as 3D CG animations or outputs them as data. Using this functionality, it becomes possible to verify hardware design and software without operating actual robots, as well as practice operations and procedures.
 
-The simulation targets are the "body models", which were introduced in :doc:`../handling-models/index` . By importing body models as body items and make them belong to a virtual world as world items, it will be possible to make simulations targeting this virtual world.
+The targets of simulation are the "body models" introduced in :doc:`../handling-models/index`. By loading body models as body items and having them belong to a single virtual world through a world item, simulation of this virtual world becomes possible.
 
 
 Physics Engine
------------------------------
+--------------
 
-The core part of the simulator is referred to as "Physics Engine", which is the part that calculates how an object moves physically. Various algorithms for physical calculations are devised and many different physics engines, which are the implementations of such algorithms, have been developed. Models and physical phenomena that can be simulated depend on the engine and the simulation characteristics including the accuracy, the stability and the calculation speed also varies depending on the engine. So, it is important to use a proper engine for the target and the purpose of the simulation. From this point of view, Choreonoid is so designed that various physics engines can be used.
-
+The core part of a simulator is the component that calculates how objects physically move, which is called a "physics engine". Various algorithms for physics calculations have been devised, and many physics engines implementing these algorithms have been developed. The models and physical phenomena that can be simulated depend on the engine, and characteristics such as simulation accuracy, stability, and calculation speed also vary by engine. Therefore, it is important to use different engines according to the simulation target and purpose. From this perspective, Choreonoid is designed to utilize various physics engines.
 
 .. _simulation_simulator_item:
 
-Simulator Items
---------------------
+Simulator Item
+--------------
 
-In Choreonoid, a physics engine is represented as a project item called a "simulator item". It is an item to incorporate physics engines to the simulation function of Choreonoid and is equipped with APIs, which is the base for this purpose. What will be actually used is an item that inherits a simulator item and a corresponding simulator item is defined for each physics engine. In concrete terms, the following simulator items are available:
+In Choreonoid, physics engines are represented as project items called "simulator items". These are designed to integrate physics engines into Choreonoid's simulation functionality and provide the foundational API for this purpose. What you actually use are items that inherit from simulator items, with corresponding simulator items defined for each physics engine. Specifically, the following simulator items are available:
 
 * **AIST Simulator Item**
 
- It is a standard simulator item of Choreonoid, which makes simulations using its unique physics engine.
+ Choreonoid's standard simulator item that performs simulation using its own physics calculation engine.
 
-* **ODE Simulator Item**, **Bullet Simulator Item**, **PhysX Simulator Item**
 
- These are simulator items that utilize `Open Dynamics Engine (ODE) <http://www.ode.org/>`_ , `Bullet Physics Library <http://bulletphysics.org>`_ and `PhysX <https://developer.nvidia.com/gameworks-physx-overview>`_ respectively, which are physics engines that can be used externally as a library. They become available by installing the corresponding library and building ODE plug-in, Bullet plug-in or PhysX plug-in.
+* **ODE Simulator Item**
 
-.. note:: For physical calculations, it is necessary to detect collisions that occur between the objects to be simulated. Normally, the collision detector that performs such operations is also included in a physics engine. On the other hand, as was described in  :doc:`../handling-models/collision-detection` under :doc:`../handling-models/index`, the function to detect collisions is prepared as a basic function of Choreonoid and various collision detectors are available there. (:ref:`handling-models_switch-collision-detector`) With some simulator items, any collision detector of the collision detection function as the basic function can be used.
+ A simulator item that uses the open-source physics engine `Open Dynamics Engine (ODE) <http://www.ode.org/>`_. It becomes available by installing ODE and building the ODE Plugin.
+
+* **AGX Simulator Item**
+
+ A simulator item that uses the commercial physics engine `AGX Dynamics <https://www.algoryx.se/products/agx-dynamics/>`_ developed by Algoryx Simulation AB of Sweden. It becomes available through :doc:`../agxdynamics/index`.
+
+* **Other Simulator Items**
+
+ Support for physics engines `Bullet Physics Library <http://bulletphysics.org>`_ and `PhysX <https://developer.nvidia.com/gameworks-physx-overview>`_ is also being developed. However, these are currently experimental implementations.
+
+.. note:: Physics calculations also require detecting interference between simulated objects, and collision detectors that perform this are typically included in physics calculation engines. On the other hand, as explained in :doc:`../handling-models/collision-detection` in :doc:`../handling-models/index`, there is also collision detection functionality provided as a basic feature of Choreonoid, with various collision detectors available (:ref:`handling-models_switch-collision-detector`). Some simulator items allow the use of any collision detector from the basic functionality.
 
 .. _simulation_subsimulator:
 
 Sub-simulator
-----------------
+-------------
 
-A physical calculation is basically performed by a simulator item, but "sub-simulators" are also available as an item that can realize diversified simulation functions supplementary thereto.
+In addition to simulator items that perform basic physics calculations, "sub-simulators" are also available as items to supplement these and implement various simulation features.
 
-For example, you may simulate a robot equipped with cameras or laser range sensors and retrieve their image data even during the simulation. As a sub-simulator that adds this function, :ref:`simulation-gl-vision-simulator` item is available. This simulates the sensor outputs by performing internally a drawing process similar to 3DCG view from the perspectives of a camera or a laser range sensor. In contrast to a "physics engine", such a sub-simulator can be called as a "vision engine". This function is not dependent on a physical calculation algorithm and can be used in combination with any simulator item.
+For example, you may want to simulate the functionality of cameras and range sensors mounted on robots to obtain camera images and range images during simulation. The :ref:`simulation-gl-vision-simulator` item is provided as a sub-simulator that adds this functionality. This sub-simulator simulates sensor output by internally performing rendering similar to 3D CG display from the viewpoint of cameras and range sensors. In contrast to the "physics engine", this could be called a "vision engine". Since this functionality does not depend on physics calculation algorithms, it can be used in combination with any simulator item.
 
-Sub-simulators can realize many other different functions in the framework where the situation of a virtual world is monitored so that the corresponding outputs can be provided or the virtual world can be modified.
+Sub-simulators can implement various other features within the framework of monitoring the virtual world situation and providing corresponding output or modifying the virtual world.
 
 .. _simulation_controller:
 
 Controller
 ----------
 
-To move a robot, a program to control it is required. Such a program is called a "Controller". In a simulation, a controller is also required to move a virtual robot. In general, the same controller is used for both a real robot and a simulated robot. By doing so, we aim to carry out the development and the verification of a controller efficiently on the simulation. Also, by doing so, it will be possible for users to practice the operation and maneuver of the robot system developed on the simulator.
+To operate a robot, a control program is required, which is called a "controller". Controllers are also necessary in simulations to operate robots. Generally, the same controller is used for both operating actual robots and for simulations. This approach enables efficient development and verification of controllers on simulators. Additionally, this allows users of the developed robot system to practice its operation and procedures on the simulator.
 
-Anyway, a controller is required to move a robot and also is a main element of a simulation.
+In any case, controllers are necessary to operate robots and are one of the main components of simulation.
 
 .. _simulation-concept-controller-item:
 
 Controller Item
 ---------------
 
-In the simulation function of Choreonoid, a controller is represented as a project item called a "controller item". Actually, a main controller module implemented separately from the controller item is operated using an item type that inherits the base "ControllerItem" class. There can be various formats of controller module, and controllers in a certain format can be used as long as a controller item type that supports the format is prepared. For example, for "RT Component", which is a software component of RT-middleware, the corresponding controller item "Body RTC Item" can be used.
+In Choreonoid's simulation functionality, controllers are represented as project items called "controller items". In practice, item types that inherit from this are used to operate controller bodies implemented separately from controller items. There are various formats for controller bodies, and if a controller item corresponding to a particular format is available, controllers in that format can be used.
 
-How to use controller items will be described in :doc:`howto-use-controller` .
+For example, the :ref:`ros2_control_item` for using controllers from ROS2's control framework "ros2_control" is made available through the :doc:`../ros2/ros2-plugin`.
+
+The usage of controller items is explained in :doc:`howto-use-controller`.
 
 
-Input and Output between Robot and Controller
----------------------------------------------
+Input/Output Between Robot and Controller
+-----------------------------------------
 
-What is necessary first for a controller to control a robot is to input and output various data with the robot. That is to say, the controller retrieves the status of the robot or its environment from the input from the different sensors mounted to the robot first and then it outputs the command value decided as a result of the control calculation based on the input to the actuator, etc. of the robot.
+The first thing necessary for a controller to control a robot is to perform input/output of various data with the robot. That is, the controller first obtains the state of the robot and environment from input from various sensors mounted on the robot, performs control calculations based on this, and then outputs the determined command values to the robot's actuators.
 
-In concrete, the following elements can be the actual input:
+Specifically, the following elements are targets for input:
 
-* Joint angle of revolute joint
-* Joint displacement of prismatic joint
-* Force sensor
-* Acceleration sensor
-* Angular acceleration sensor (rate gyro)
-* Camera image
-* Range sensor distance image
+* Joint angles of rotational joints
+* Joint translation of linear joints
+* Force sensors
+* Acceleration sensors
+* Angular acceleration sensors (rate gyros)
+* Camera images
+* Range sensor distance images
 
-The following elements are the output targets:
+The following elements are targets for output:
 
-* Torque at revolute joint
-* Force at prismatic joint
-* Command of various devices (ex. on/off of a light)
+* Torque applied to rotational joints
+* Force applied to linear joints
+* Operation commands for various devices (lights, etc.) (on/off, etc.)
 
-You may well regard a controller item as something that defines the interface for input/output.
+You can think of controller items as defining the interfaces for these inputs and outputs.
 
-The actual input and output methods will be described under :doc:`howto-implement-controller` .
+The actual input/output methods are explained in :doc:`howto-implement-controller`.
 
-Utilization of Plugin
----------------------
+Utilizing Plugins
+-----------------
 
-It is possible to add an inheriting item type to a simulator item, a sub-simulator item and a controller item using a plugin. Using a plugin,
+For simulator items, sub-simulator items, and controller items, their inherited item types can be added through plugins. This enables:
 
-* Addition of a physics engine available;
-* Expansion of a simulation function; and/or
-* Addition of a supportable controller format
+* Adding available physics engines
+* Extending simulation functionality
+* Adding supported controller formats
 
-can be supported. In other words, Choreonoid is a platform on which the simulation function per se can be expanded.
+Choreonoid can be said to be a platform for extending simulation functionality itself in this way.
 
-.. See :doc:`../plugin-development/ode-plugin` under :doc:`../plugin-development/index` for how to implement a simulator item.
-
+For information on implementing simulator items, :doc:`../plugin-development/ode-plugin` in :doc:`../plugin-development/index` may be helpful.

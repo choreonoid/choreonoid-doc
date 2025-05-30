@@ -1,74 +1,74 @@
-
-Interaction Function
-========================
+Interaction Functions
+=====================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 
-.. contents:: 
+.. contents:: Table of Contents
    :local:
 
 .. highlight:: cpp
 
-What is Interaction Function
+What are Interaction Functions?
 --------------------------------
 
-You may well operate a robot or a substance in a virtual world that are being simulated by applying force or moving. Choreonoid has the function that allows users to perform such operations interactively on the GUI. This function is called an "interactive function".
+There are times when you want to interact with robots and objects in the virtual world during simulation, such as applying forces or moving them. Choreonoid has functions that allow users to perform such interactions interactively through the GUI, which we call "interaction functions".
 
 How to Operate
-------------------
+--------------
 
-Interactive operations are performed on the scene view. In case:
+Interaction operations are performed on the scene view.
 
-* Simulation is ongoing;
-* Scene view is in edit mode;
+The following operations become available when:
 
-The following operations are enabled.
+* A simulation is in progress
+* The scene view is in edit mode
 
 
 Pulling Operation
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
-It is an operation to apply force to the model. By pressing the left button on the mouse and dragging the part to which you want to apply force, a pulling force is applied to the dragged direction. The magnitude of the force is proportional to the length of the drag. It looks as if the model were pulled with a virtual rubber string.
+This is an operation to apply force to a model. When you drag a part where you want to apply force with the left mouse button on the scene view, a pulling force is applied in the direction of the drag. The magnitude of the force is proportional to the length of the drag. Think of it as pulling with a virtual rubber band.
 
-During this operation, a line that connects the point of action of the force with the drag end point is displayed. This line can be likened to a rubber string, which helps you understand how the force is applied.
+During this operation, a line connecting the point of force application and the drag destination is displayed, which you can think of as a rubber band to help visualize how the force is being applied.
 
-This operation is illustrated in the following figure:
+This operation is shown in the following figure:
 
 .. image:: images/interaction-force.png
 
-Here, the mouse cursor is placed on the head of the robot and then drag is started. In this example, it is dragged to the right and a line is shown to the drag end point. As a result, the robot is pulled to this direction and about to fall.
+Here, we first position the mouse cursor on the robot's head and start dragging from there. In this case, we're dragging to the right, and you can see a line extending to the drag destination. As a result, the robot is being pulled in this direction and is about to fall over.
 
-By combining this with the keyboard operation, the magnitude of the force can be changed. If you drag with a Shift key kept pressed, the magnitude of the force becomes ten times. Additionally, if you drag with Ctrl + Shift keys kept pressed, the magnitude of the force becomes a hundred times as much as the original force. If the model is not moved successfully by dragging, try the above operations.
+You can change the scale of the force magnitude by combining keyboard operations. If you drag while holding the Shift key, the force magnitude becomes 10 times larger. Furthermore, if you drag while holding Ctrl + Shift, the force magnitude becomes 100 times the original. If the model doesn't move well when you try to drag it, try these operations.
 
-Note that the magnitude of the base force is determined suitably from the mass of the model, but it can be too little or too much. Users cannot configure this part arbitrarily for the time being. We will improve that in the future.
+Note that the base force magnitude is automatically determined from the model's mass, but it may be too small or too large for the force you want to apply. Currently, users cannot arbitrarily set this value, but we plan to improve this in the future.
 
 
 Forced Movement and Holding Operations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These operations are only valid to the root link of a model. If you right click the root link of the model that you want to move in the above state, the menu items:
+These operations are only valid for a model's root link. When you right-click on the root link of the model you want to move in the above state, the following menu items appear:
 
 * Move forcibly
-* Hold forcible
+* Hold forcibly
 
-appear (See the picture below)
+(See the figure below)
 
 .. image:: images/interaction-move1.png
 
-If "Move forcibly" is selected, this item is checked and the forced movement mode is enabled. When you drag the root link in this state, you can move the model forcibly regardless of the physical laws. For example, you can move the robot floating above the floor as illustrated in the figure below:
+When you select "Move forcibly", this item becomes checked and enters forced movement mode. When you drag the root link in this state, you can forcibly move the model ignoring physical laws. For example, you can move the robot floating above the floor as shown below:
 
 .. image:: images/interaction-move2.png
 
-If you click on the root link once, then the drag marker is also displayed. You may drag it, too. In that case, you can rotate the model.
-
-When you finish dragging in this operation, the behavior will follow the physical laws again. If you were making the robot floating over the floor by dragging it and then release drag, the robot will fall onto the floor.
-
-For "Hold forcibly", operations similar to those of "Move forcibly" are supported. However, the behavior when you finish dragging is different and the position of the root link is kept as it is dragged. To release the held state, you can release the forced holding mode by unchecking the menu item.
+Once you click on the root link, a drag marker is also displayed, which you can drag as well. In that case, you can also rotate the model.
 
 
-Synchronization between Simulation and Display
-----------------------------------------------
+In this operation, when you finish dragging, the behavior returns to following physical laws. For example, if you were dragging the robot to float above the floor, when you release the drag, the robot will fall to the floor.
 
-As stated in the beginning, interaction operations are valid for ongoing simulation only. They cannot be applied when replaying the result of a completed simulation or verifying a choreographic motion. So, you need to know whether the behavior of the model currently displayed is due to the ongoing simulation or some other function.
+"Hold forcibly" allows similar operations to "Move forcibly". However, the behavior when dragging ends is different, and the root link position remains held in the dragged state. To release the held state, simply uncheck the menu item to exit forced holding mode.
 
-Further, it is necessary that the simulation progress be synchronized with the display. As an interaction operation by user is performed to the display on the scene view and the content of the operation is fed back to the physical calculation in the simulator, a time lag will cause a bad operation. Normally, the simulation progress and the display are synchronized unless "sync with ongoing update”on Time Bar is disabled. See  :ref:`simulation_playback_ongoing_simulation` for detail.
+
+About Synchronization Between Simulation and Display
+----------------------------------------------------
+
+As mentioned at the beginning, interaction operations are only valid for ongoing simulations. They cannot be applied during playback of completed simulation results or when checking choreographed motions. You need to be aware of whether the currently displayed model behavior is from an ongoing simulation or from other functions.
+
+Furthermore, the simulation progress and its display need to be synchronized. Since user interaction operations are performed on the scene view display and that content is fed back to the physics calculations inside the simulator, if there is a timing discrepancy between them, you won't be able to operate as intended. Normally they are synchronized, but this is not the case when "Sync with ongoing update" in the time bar is turned off. For details, see :ref:`simulation_playback_ongoing_simulation`.

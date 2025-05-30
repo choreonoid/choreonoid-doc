@@ -1,80 +1,79 @@
+Handling Legged Models
+======================
 
-Operating a Leg-Type Model
-==========================
-
-Choreonoid provides useful functions to operate the posture of a leg-type robot, including a biped humanoid robot. This section introduces these functions.
+Choreonoid includes useful features for manipulating the posture of legged robots such as bipedal humanoid robots. This section introduces these features.
 
 .. contents::
    :local:
    :depth: 1
 
 
-Sample Models
---------------
+Sample Model
+------------
 
-As a sample to introduce the functions, we use the model of the biped humanoid robot "GR001" here. The model is stored as the "GR001.yaml" file in the "model/GR001" directory in the share directory of Choreonoid. In addition, the project file "project/GR001Sample.cnoid" is available as a sample project to handle the model.
+As a sample for introducing the features, we will use a model of the bipedal humanoid robot "GR001". This model is stored in the "model/GR001" directory in Choreonoid's share directory as a file named "GR001.body". A sample project for handling this model is also provided as "project/GR001Sample.cnoid".
 
-Load the project file as a preparation. Then, the following model of the GR001 robot should be displayed in the scene view.
+As preparation, please load this project file. You should see the GR001 robot model displayed in the Scene View as shown below.
 
 .. image:: images/GR001Scene.png
 
 
-Operating the Waist Using Preset Kinematics
--------------------------------------------
+Manipulating the Waist with Preset Kinematics
+----------------------------------------------
 
-When editing the posture of a leg-type model, sometimes you want to move the position of the waist or the posture while the grounding positions of the legs are fixed. If only one leg needs to be fixed, this can be achieved using normal inverse kinematics (moving the waist using the leg as the base link). However, you often want to move the waist while multiple legs are fixed.
+When editing the posture of legged models, there are cases where you want to move the waist position or orientation while keeping the feet grounded in place. If you only need to fix one foot, this can be achieved with normal inverse kinematics (moving the waist with the foot as the base link), but there are often situations where you want to move the waist while keeping multiple feet fixed.
 
-Actually, moving the waist of a leg-type model in "preset kinematics mode" (see :ref:`model_kinematics_mode` ) is normally an inverse kinematics operation that moves the waist while multiple legs are fixed. This enables you to efficiently edit the position of the waist or the posture.
+In fact, for legged models, if you move the waist in "Preset Kinematics Mode" (see :ref:`model_kinematics_mode`), it becomes inverse kinematics that moves the waist while keeping multiple feet fixed. This allows you to efficiently edit the waist position and orientation.
 
-Displaying the Center of Gravity
---------------------------------
+Displaying the Center of Mass
+------------------------------
 
-When editing the posture of a leg-type model, sometimes you want to check whether the robot is balanced by viewing the position of the center of gravity of the whole robot. The scene view can display markers for this purpose.
+When editing the posture of legged models, you may want to check whether the robot is balanced by looking at the position of the overall center of mass. The Scene View allows you to display markers for this purpose.
 
-You can switch the display from the context menu of the scene view. Right-click in edit mode while the mouse cursor points to the target model. The following menu appears.
+You can toggle the display from the context menu of the Scene View. Right-click while the mouse cursor is pointing at the target model in edit mode, and the following menu will appear.
 
 .. image:: images/GR001_context_menu.png
 
-You can see that there is the "Gravity Center" and "Projected Gravity Center Point" items in the "Marker" sub-menu. Click an item to check the item and to turn on the display of the marker. (Click the item again to remove the check and to turn off the display.)
+Here you can see that there are items called "Center of Mass" and "Center of Mass Projection" in the "Markers" submenu. You can turn on the display by clicking on the item to add a check mark. (Clicking again will remove the check mark and turn off the display.)
 
-When the "Gravity Center" is checked, the position of the center of gravity is displayed as green cross lines (the intersection point represents the position of the center of gravity). The "Projected Gravity Center Point" item displays the point of the center of gravity projected onto the floor surface (point where Z = 0). This is used when, for example, you check whether the center of gravity is within the sole area.
+Checking "Center of Mass" displays the center of mass position with a green crosshair (the intersecting point is the center of mass position). Also, "Center of Mass Projection" displays the projection point of the center of mass onto the floor surface (the point where Z=0). This is used when checking whether the center of mass is within the foot sole region.
 
 .. _legged_model_zmp:
 
 Zero Moment Point (ZMP)
-----------------------------
+-----------------------
 
-As with the marker for the center of gravity, you can also display the marker for "zero moment point (ZMP)" by checking "Marker" - "ZMP" in the context menu. The marker, which consists of a green ball and cross lines, normally is located near the feet of the robot. 
+Similar to the center of mass marker, you can also display a marker representing the "Zero Moment Point (ZMP)" by checking "Markers" - "ZMP" in the context menu. This is a marker consisting of a green sphere and crosshair shown in the figure below, typically positioned near the robot's feet.
 
 .. image:: images/GR001_context_menu_ZMP.png
 
-.. note:: The ZMP is a point at which the moment the sole receives from the floor surface is zero (center of pressure of floor reaction force), which is one of the basic concepts of biped walking control. Since the ZMP of an actual robot is present in the "specified area" consisting of the convex hull of the sole ground plane, you can use this condition for target motion trajectory planning and walking stabilization control. For details, see relevant documents, such as `"Humanoid Robot" by Shuuji Kajita. <http://www.amazon.co.jp/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8E%E3%82%A4%E3%83%89%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88-%E6%A2%B6%E7%94%B0-%E7%A7%80%E5%8F%B8/dp/4274200582>`_
+.. note:: ZMP is the point where the moment received by the foot soles from the floor surface becomes zero (the center of pressure of ground reaction force), and is one of the fundamental concepts in bipedal walking control. In a real robot, ZMP exists within the "support polygon" formed by the convex hull of the foot sole contact area, so this condition can be used in planning target motion trajectories and walking stabilization control. For details, please refer to literature such as `"Humanoid Robot" edited by Shuuji Kajita <https://www.amazon.co.jp/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8E%E3%82%A4%E3%83%89%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88-%E6%94%B9%E8%A8%822%E7%89%88-%E6%A2%B6%E7%94%B0-%E7%A7%80%E5%8F%B8/dp/4274226026/ref=sr_1_1?crid=EEUOQDS14522&dib=eyJ2IjoiMSJ9.R_UAWCVlCn3r8FVqkntUMzdRyiHmskSphNVPShpStvGg1lwBvWm_SP-ufcM1gEKB6HJkYilNE39HvHpxWnYjdeDnE0BFCB2UptC82KVLM66yhukmfZmZLOBrvja8zGcwflg2Hc26XlrcL31tnP3lAdMD9dFZcrbzOaLqFpUSyyG2R9FbrJ3NvYB5YDrvk-TKuiSULT62yhdI66BH9dPWEK_e6c3eNnuNjmDuDAShf88.on_TjkDcBHvhLRQNEabheuSjccKLqrlLpvdfyLoIPDg&dib_tag=se&keywords=%E3%83%92%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8E%E3%82%A4%E3%83%89%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88&qid=1749546642&s=books&sprefix=%E3%83%92%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8E%E3%82%A4%E3%83%89%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88%2Cstripbooks%2C152&sr=1-1>`_.
 
-In Choreonoid, the ZMP marker is used in the following two ways:
+In Choreonoid, the ZMP marker is used for two purposes.
 
-One use is to display the ZMP calculated from certain motion trajectory data or obtained from the state of a sensor of the actual machine. This enables you to check whether the motion trajectory data or the state of the actual machine is normal.
+The first purpose is to display the ZMP calculated from motion trajectory data or obtained from actual robot sensor states. This allows you to verify whether the motion trajectory data or actual robot state is normal.
 
-The other use is for the user to give the target position of the ZMP (target ZMP) when editing the posture or motion of a model. In this case, the user can arbitrarily set the position of the ZMP marker.
+The second purpose is for users to provide a target ZMP position (target ZMP) when editing model postures or motions. In this case, users can arbitrarily set the position of the ZMP marker.
 
-One of the methods to move the ZMP marker is to directly drag the ZMP marker with the mouse in the scene view. In this case, you can change the two-dimensional position (X and Y coordinates) of the ZMP on the floor surface while the vertical position is fixed onto the floor surface (Z = 0).
+One way to move the ZMP marker is to directly drag it with the mouse on the Scene View. In this case, you can change the 2D position (X, Y coordinates) on the floor surface while keeping the vertical position of the ZMP fixed on the floor surface (Z=0).
 
-Or, you can also change the position of the ZMP using the following "ZMP panel" displayed in the :ref:`model_body_link_view` for a leg-type model.
+Alternatively, for legged models, the following "ZMP Panel" is displayed on the :ref:`model_body_link_view`, which can also be used to change the ZMP position.
 
 .. image:: images/BodyLinkView_ZMP.png
 
-In this case, you can precisely check and change the position of the ZMP using coordinate values.
+In this case, you can accurately check and change the ZMP position using coordinate values.
 
 
 .. _model_legged_body_bar:
 
-Leg-type Body Bar
------------------
+Legged Body Bar
+---------------
 
-The following "leg-type body bar", which is useful for editing the posture of a leg-type model, is provided as a toolbar for a set of operations related to the markers for the center of gravity, ZMP, etc.
+The following "Legged Body Bar" is provided as a toolbar that consolidates convenient operations for editing the posture of legged models, including center of mass and ZMP markers.
 
 .. image:: images/LeggedBodyBar.png
 
-.. note:: This toolbar is not displayed by default. To use it, first display it by following the description in :ref:`basics_show_toolbar` .
+.. note:: This toolbar is not displayed by default, so please display it according to the instructions in :ref:`basics_show_toolbar` before using it.
 
 .. |i0| image:: ./images/center-cm.png
 .. |i1| image:: ./images/zmp-to-cm.png
@@ -84,7 +83,7 @@ The following "leg-type body bar", which is useful for editing the posture of a 
 .. |i5| image:: ./images/left-zmp.png
 .. |i6| image:: ./images/stancelength.png
 
-The function of each icon is as follows:
+The functions of each icon are as follows:
 
 .. tabularcolumns:: |p{2.0cm}|p{13.0cm}|
 
@@ -93,11 +92,11 @@ The function of each icon is as follows:
  :header-rows: 0
 
  * - |i0|
-   - Horizontally moves the center of gravity in such a way that the projected gravity center point matches the center of both soles.
+   - Moves the center of mass horizontally so that the center of mass projection coincides with the center of both foot soles.
  * - |i1|
-   - Horizontally moves the center of gravity in such a way that the projected gravity center point matches the ZMP.
+   - Moves the center of mass horizontally so that the center of mass projection coincides with the ZMP.
  * - |i2|
-   - Sets the ZMP at the position of the projected gravity center point.
+   - Sets the ZMP at the position of the center of mass projection.
  * - |i3|
    - Sets the ZMP at the center of the right foot.
  * - |i4|
@@ -105,40 +104,40 @@ The function of each icon is as follows:
  * - |i5|
    - Sets the ZMP at the center of the left foot.
  * - |i6|
-   - Adjusts the width between both feet. Set the length of the width in the numerical value input box next to the icon.
+   - Adjusts the width between both feet. The width is set in the adjacent numerical input box.
 
-You can also set a posture in which the center of gravity is put over either the left or right foot by combining the function to set the ZMP at the center of the right or left foot with the function to match the projected gravity center point with the ZMP.
+By combining the functions to set the ZMP at the center of the right or left foot with the function to align the center of mass projection with the ZMP, you can also set a posture with the center of mass on either the left or right foot.
 
-Operations Related to Sole Grounding
-------------------------------------
+Operations Related to Foot Sole Contact
+---------------------------------------
 
-When you edit the posture of a leg-type robot, it becomes necessary to ground the soles pm the floor surface. This section describes points to note when performing such a operation.
+When editing the posture of legged robots, it becomes necessary to make the foot soles contact the floor surface. This section explains the key points for performing such operations.
 
-In some cases, you want to make the sole surfaces parallel to the floor surface when grounding the soles or moving the part above the floor. If the original postures of the sole surfaces are tilted at this time, you must correct them so that they become parallel. Although you can correct a posture by directly dragging it in the scene view, it is hard to exactly match it with the desired posture using this method.
+First, when grounding the foot soles or moving them on the floor, you may want to keep the foot sole surface parallel to the floor surface. If the original orientation of the foot sole surface is tilted, you must correct it to be parallel. While you can correct the orientation by directly dragging on the Scene View, it is difficult to accurately match the desired orientation with this method.
 
-If you want to make a sole parallel, simply execute "To horizontal posture" of the context menu on the link of the foot in the scene view. Also, if the floor is tilted, you should be able to obtain the posture of a sole parallel to the floor surface in a relatively easy manner by adjusting the roll (R) and pitch (pitch) values of the link in the :ref:`model_body_link_view` .
+If you just need to make the foot sole horizontal, you can execute "Set Level" from the context menu for the foot link on the Scene View. Even if the floor is tilted, you can relatively easily obtain a foot sole orientation parallel to the floor surface by adjusting the roll (R) and pitch (P) values of the link using the :ref:`model_body_link_view`.
 
-When you ground the soles, it becomes necessary to tightly fit the soles to the floor surface by setting not only the postures of the soles but also the altitude of them to the same as those of the floor surface. To do so, simply use the  :ref:`collision_detection_penetration_block` introduced in :doc:`collision-detection` .
+Also, when grounding the foot soles, in addition to the foot sole orientation, you need to make the height the same as the floor surface to fit perfectly on the floor surface. To do this, you can use the :ref:`collision_detection_penetration_block` introduced in :doc:`collision-detection`.
 
-Enable collision detection and the penetration block function. Adjust the sole surfaces to make them parallel to the floor surface by performing the above operation. Lower the links of the feet toward the floor surface. When the sole surfaces contact with the floor surface, you cannot move them any further toward the floor surface. In this way, you can set the altitude of the sole surfaces to almost the same as that of the floor surface. You can perform an operation to lower the link of a foot toward the floor surface by directly dragging it in the scene view or decreasing the Z coordinate value in the body/link view. In the latter way, you can more easily adjust the horizontal position on the floor surface.
+First, configure the settings so that collision detection and penetration blocking functions are enabled. Next, adjust the foot sole surface to be parallel to the floor surface using the operations described above. Then lower the foot link toward the floor surface. When the foot sole surface contacts the floor surface, it will no longer be able to move in the direction of the floor surface, so the foot sole surface can be set at a height that almost matches the floor surface. The operation of lowering the foot link toward the floor surface can be done by directly dragging on the Scene View, or by decreasing the Z coordinate value on the Body/Link View. In the latter case, it becomes easier to adjust the horizontal position on the floor surface as well.
 
 Floor Grid and Floor Model
 --------------------------
 
-The scene view displays the "floor grid" by default as shown in the figure below.
+By default, a "floor grid" as shown in the figure below is displayed on the Scene View.
 
 .. image:: images/floorgrid.png
 
-This assumes a floor surface of Z = 0 and is provided to enable you to easily perceive the position of the floor in the scene view.
+This assumes a floor surface at Z=0 and is provided to make it easier to grasp the position of the floor surface on the Scene View.
 
-However, the floor grid is only displayed and not handled as the model of the floor surface by internal processing, that is, it is handled as if nothing is present there. Therefore, you cannot check collision with a Body model present in the scene. In this state, you also cannot use the penetration block function for the floor surface, and an object passes through and drops from the floor surface when a kinetics simulation is performed. Pay attention to this point before using the floor grid.
+However, the floor grid is only for display purposes and is not treated as a floor surface model in internal processing - it is treated the same as if nothing exists. Therefore, collision checking with body models existing in the scene cannot be performed, so the penetration blocking function for the floor surface cannot be used with this alone, and objects will fall through when performing dynamic simulation. When using the floor grid, it is necessary to be aware of this point.
 
-To make the floor surface effective for internal processing, you must load the model corresponding to the floor surface as a Body item beforehand. Floor models include, for example, the model file "model/misc/floor.wrl" in the share directory of Choreonoid. Load and display the file to display the blue floor as shown in the figure below.
+To make the floor surface effective in internal processing, you need to load a model corresponding to the floor surface as a body item. As a floor model, for example, there is a model file "model/misc/floor.wrl" in Choreonoid's share directory. When you load and display this, a blue floor is displayed as shown in the figure below.
 
 .. image:: images/floor_model_grid.png
 
-Installing such a floor model enables you to use functions related to collision with the floor surface. The GR001 sample project is also designed to load this floor model.
+By introducing such a floor model, functions related to collision with the floor surface become available. The GR001 sample project also loads this floor model.
 
-However, when a floor model is displayed in the scene view, sometimes it may be harder to perform operations to edit the posture of a robot. This is because, for example, you cannot view the condition of a sole from the underside since it is hidden by the backside of the floor, or you cannot change the viewpoint the way you want since the mouse cursor points to the floor surface. That is, the floor surface interferes with operations on a robot.
+However, displaying the floor model on the Scene View may make it difficult to edit the robot's posture. This is because, for example, when you want to see the situation of the foot soles from below, they are hidden behind the underside of the floor and cannot be seen, or the mouse cursor points to the floor surface, preventing viewpoint changes from working as desired. In other words, the floor surface can sometimes get in the way of robot operations.
 
-In such a case, there is an option to use only the floor grid to perceive the floor surface by only loading the model of the floor and leaving the display of it off. If this is done, the floor surface does not interferes with operations while collision with the floor surface is processed. This setup is recommended for work focused on editing the posture of a robot. The GR001 sample project also has this setup.
+In such cases, you can load the floor model but turn off its display, using only the floor grid to grasp the floor surface. With this setup, collisions with the floor surface are processed while the floor surface does not interfere with operations. This setting is recommended when working primarily on robot posture editing, and the GR001 sample project is also configured this way.

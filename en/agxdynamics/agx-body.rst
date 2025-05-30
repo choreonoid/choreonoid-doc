@@ -1,17 +1,16 @@
-Additional parameters for body model
-=======================================
+Additional Parameters for Body Models
+=====================================
 
-When user uses AGXDynamics plugin, user can use following additional parameters for his body model.
+When using the AGX Dynamics plugin, the following additional parameters are available for body models.
 
 .. contents::
    :local:
    :depth: 2
 
+Syntax
+------
 
-How to write
-----------------
-
-.. code-block:: txt
+.. code-block:: text
 
   links:
     -
@@ -45,125 +44,124 @@ How to write
         name: groupB
         links: [ linkZ, linkY, linkX, ... ]
     excludeSelfCollisionLinks: [ linkP ]
-    enableAGXWireContact: true
-    excludeLinksWireContact: [ linkQ, linkR, ... ]
+    excludeLinksWireCollision: [ linkQ, linkR, ... ]
 
 .. _agx_autosleep:
 
-Explanation of parameters
------------------------------
+Parameter Descriptions
+----------------------
 
-link
-~~~~~~~~~
+Link Parameters
+~~~~~~~~~~~~~~~
 
 .. list-table::
   :widths: 10,9,4,4,75
   :header-rows: 1
 
   * - Parameter
-    - Default value
-    - unit
-    - data type
-    - explanation
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - jointCompliance
     - 1e-8
     - m/N or rad/Nm
     - double
-    - compliance of joint. If value is large joint will be dislocation.
+    - Joint compliance. Smaller values make joints more rigid, larger values make them more flexible.
   * - jointSpookDamping
     - 0.0333
     - s
     - double
-    - spook damping of joint
+    - Joint spook damping
   * - jointMotor
     - false
-    - -\
+    - \-
     - bool
-    - activation of joint motor. It is automatically enabled when ActuationMode is JOINT_TORQUE or JOINT_VELOCITY.
+    - Enables joint motor. Automatically enabled when ActuationMode is JOINT_TORQUE or JOINT_VELOCITY.
   * - jointMotorCompliance
     - 1e-8
     - m/N or rad/Nm
     - double
-    - compliance of joint motor. It is used for speed control. If the value is reduced, it will output a large force/torque to reach the target speed. If it is enlarged, it becomes impossible to resist external force (gravity and contact force) and it will not reach the target speed.
+    - Joint motor compliance. Used for velocity control. Smaller values produce higher output to reach target velocity. Larger values may fail to resist external forces (gravity, contact forces) and not reach target velocity.
   * - jointMotorSpookDamping
     - 0.0333
     - s
     - double
-    - spook damping of joint motor
+    - Joint motor spook damping
   * - jointMotorForceRange
     - [ double_min, double_max ]
     - N or Nm
     - Vec2
-    - Maximum/Minimum force/torque of joint motor
+    - Maximum and minimum force/torque limits for joint motor
   * - jointRangeCompliance
     - 1e-8
     - m/N or rad/Nm
     - double
-    - compliance for limitation of joint position/angle. If the value is reduced, it will output a large force/torque to fit the limit position/angle. If it is enlarged, it may come out of the limit angle due to external force (gravity or contact force).
+    - Joint range limit compliance. Smaller values produce higher output to maintain joint limits. Larger values may allow exceeding limits due to external forces (gravity, contact forces).
   * - jointRangeSpookDamping
     - 0.0333
     - s
     - double
-    - spook damping of limitation of joint position/angle
+    - Joint range limit spook damping
   * - jointRangeForceRange
     - [ double_min, double_max ]
     - N or Nm
     - Vec2
-    - Maximum/Minimum force/torque of joint for limitation
+    - Maximum and minimum force/torque for joint range limits
   * - jointLock
     - false
-    - -\
+    - \-
     - bool
-    - activation of lock joint. It is used for position control. It is automatically enabled when ActuationMode is JOINT_ANGLE.
+    - Enables joint locking. Used for position control. Automatically enabled when ActuationMode is JOINT_ANGLE.
   * - jointLockCompliance
     - 1e-8
     - m/N or rad/Nm
     - double
-    - compliance for lock joint. If the value is reduced, it will output a large force/torque to reach the target position/angle. If it is enlarged, it becomes impossible to resist external force (gravity and contact force) and it will not reach the target position/angle.
+    - Joint lock compliance. Smaller values produce higher output to reach target position. Larger values may fail to resist external forces (gravity, contact forces) and not reach target position.
   * - jointLockSpookDamping
     - 0.0333
     - s
     - double
-    - spook damping of lock joint
+    - Joint lock spook damping
   * - jointLockForceRange
     - [ double_min, double_max ]
     - N or Nm
     - Vec2
-    - Maximum/Minimum force/toque for lock joint
+    - Maximum and minimum force/torque for joint lock
   * - convexDecomposition
     - false
-    - -\
+    - \-
     - bool
-    - activation/deactivation of convex decomposition by true/false
+    - Enable/disable convex decomposition. Specify true or false.
   * - AMOR
     - false
-    - -\
+    - \-
     - bool
-    - Merge the relatively resting rigid bodies together and reduce the amount of solver calculation. Specify true or false. Also required to set AMOR of :doc:`agx-simulator-item`.
+    - Merges relatively stationary rigid bodies to reduce solver computational load. Specify true or false. Also requires setting the corresponding property in :doc:`agx-simulator-item`.
   * - autoSleep
     - false
-    - -\
+    - \-
     - bool
-    - activation/disactivation of auto sleep by true/false. It provides the function of removing non-moving solid from the solver, then reduce the calculation amount.property of :doc:`agx-simulator-item` needs to be changed to true.
+    - Enable/disable auto sleep. Specify true or false. Removes stationary rigid bodies from solver to reduce computational load. The AutoSleep property in :doc:`agx-simulator-item` must also be set to true.
 
 
-Settings of collision detection
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Collision Detection Settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. list-table::
   :widths: 15,7,4,6,75
   :header-rows: 1
 
   * - Parameter
-    - Default value
-    - unit
-    - data type
-    - explanation
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - excludeLinksDynamic
     - \-
     - \-
     - string list
-    - disable collision of selected link
+    - Disables collision detection for specified links. However, collisions with special objects like wires remain enabled.
   * - | excludeLinkGroups:
       | -
       |   name
@@ -174,41 +172,42 @@ Settings of collision detection
       |
       | string
       | string list
-    - | disable collisions between the links registered in group
+    - | Disables collisions between links registered in the group.
       |
-      | name of group
-      | name of link
+      | Group name (optional)
+      | Link names
   * - excludeSelfCollisionLinks
     - \-
     - \-
     - string list
-    - disable self-collision of selected link and body.
+    - Disables self-collision between specified links and the body
   * - excludeLinksWireCollision
     - \-
     - \-
     - string list
-    - disable collision between selected link and AGXWire.
+    - Disables collision between specified links and AGXWire
+
+The standard Choreonoid :ref:`modelfile_yaml_collision_detection` parameters "excludeTreeDepth" and "excludeLinks" can also be specified.
 
 
-Convex Decomposition(divide concave to convexes)
--------------------------------------------------------------
+Convex Decomposition
+--------------------
 
-AGX Dynamics has a function to divide tri-mesh into convex object.
-Set true in convexDecomposition for link paramaeter, convex decomposition (from tri-mesh) is activated.
-It will contribute to improve the perormance of collision detection.
+AGX Dynamics includes functionality to decompose triangular mesh shapes into convex shapes.
+When convexDecomposition is set to true for a link parameter, convex decomposition of triangular mesh shapes is performed.
+Convex decomposition can potentially improve collision detection performance.
 
 .. note::
-  Complex object/shape may be failed.
+  Convex decomposition may fail for complex shapes.
 
 .. note::
-  It may cause different behavior when collides, because the contact point(s) is(are) different between tri-mesh and convex decomposite object.
+  Contact points may differ between triangular meshes and convex decomposed shapes, potentially resulting in different collision behavior.
 
-Samples are available in below directory.
+Samples are available at:
 
-* Project file: chorenoid/sample/AGXDynamics/agxConvexDecomposition.cnoid
-* Body file: chorenoid/sample/AGXDynamics/vmark.body
+* Project file: choreonoid/sample/AGXDynamics/agxConvexDecomposition.cnoid
+* Body file: choreonoid/sample/AGXDynamics/vmark.body
 
-If you run a sample, convex decomposition is activated and the object is divided into some convex objects.
+When you run the sample, convex decomposition is executed and the shape is composed of multiple convex shapes.
 
 .. image:: images/convexdecomposition.png
-   :scale: 70%

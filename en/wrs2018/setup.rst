@@ -1,24 +1,24 @@
-Structure of the simulation environment
-=======================================
+Setting Up the Simulation Environment
+=====================================
 
 .. contents::
    :local:
 
 .. highlight:: sh
 
-Preparing the simulation PC
+Preparing the Simulation PC
 ---------------------------
 
-First, prepare the simulation PC and install Choreonoid.
+First, prepare a PC for simulation and install Choreonoid.
 
-In the actual competition, Ubuntu 16.04 was used as OS, but if you want to run the samples, it will work with the latest environment. In the following, we will assume the use of Ubuntu 18.04.
+While the actual competition used Ubuntu 16.04 as the OS, the samples should run on more recent environments as well. The following explanation assumes the use of Ubuntu 18.04.
 
-Note that you should use a native install of Ubuntu. It’s not that it won’t work on a virtual machine, but the simulation may be slow or other problems may occur.
+Please use a native installation of Ubuntu. While it may run on a virtual machine, the simulation will be slower and some issues may occur.
 
 Installing Git
 --------------
 
-You will need a Git of the version control system in order to proceed with the work described below. If you don’t have it installed yet, use the following command to install it. ::
+The version control system Git is required for the following work. If you haven't installed it yet, install it with the following command: ::
 
  sudo apt install git
 
@@ -27,83 +27,92 @@ You will need a Git of the version control system in order to proceed with the w
 Installing AGX Dynamics
 -----------------------
 
-If you have an AGX Dynamics license, you should install AGX Dynamics in advance. Download the package for the corresponding Ubuntu version from the AGX Dynamics download site indicated by the vendor. Also, if you have been provided with a USB dongle, insert it into the PC.
+If you have an AGX Dynamics license, install AGX Dynamics beforehand. Download the package for your corresponding Ubuntu version from the AGX Dynamics download site provided by the vendor. If you have been provided with a USB dongle, make sure to plug it into your PC.
 
-Once the package has downloaded, install it by following the instructions for :doc:`../agxdynamics/install/install-agx-ubuntu` .
+Once you've downloaded the package, install it following the instructions in :doc:`../agxdynamics/install/install-agx-ubuntu`.
 
-If you don’t have an AGX Dynamics license, skip this task.
+If you don't have an AGX Dynamics license, skip this step.
 
-.. _wrs2018_install_openrtm:
+.. _wrs2018_install_choreonoid:
 
 Installing Choreonoid
 ---------------------
 
-Following the `Choreonoid latest version (development version) manual  <../index.html>`_  section on `Building and installing from source code (Ubuntu Linux version) <../install/build-ubuntu.html>`_, install the latest `development version  <../install/build-ubuntu.html#id4>`_ of Choreonoid.
+Install the latest `development version <../install/build-ubuntu.html#id4>`_ of Choreonoid following the `Building and Installing from Source Code (Ubuntu Linux) <../install/build-ubuntu.html>`_ section of the `Choreonoid Latest Version (Development Version) Manual <../index.html>`_.
 
-First, get the Choreonoid source code from the Git repository. ::
+For installation details, please refer to the above document. For Ubuntu 18.04, execute the following commands:
+
+First, obtain the Choreonoid source code from the Git repository: ::
 
  git clone https://github.com/choreonoid/choreonoid.git
 
-Move to the directory where the source code is saved. ::
+Move to the directory of the obtained source code: ::
 
  cd choreonoid
 
-Install the dependency packages. ::
+Install the dependency packages: ::
 
  misc/script/install-requisites-ubuntu-18.04.sh
 
-Configure build settings with CMake If you are using only the default features of Choreonoid, run the command ::
+Configure the build with CMake. If you only want to use Choreonoid's default features, execute: ::
 
  cmake .
 
-However, in order to execute the WRS2018 sample, the following options must also be enabled (ON).
+However, to run the WRS2018 samples, you need to enable (turn ON) the following options:
 
-* WRS2018 sample
+* WRS2018 samples
 
  * BUILD_WRS2018
 
-* If you are using AGX Dynamics
+* Competition support plugin
+
+ * BUILD_COMPETITION_PLUGIN
+
+* When using AGX Dynamics
 
  * BUILD_AGX_DYNAMICS_PLUGIN
  * BUILD_AGX_BODYEXTENSION_PLUGIN
+ * ENABLE_INSTALL_RPATH_USE_LINK_PATH (see :ref:`agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution`)
 
-* When reproducing smoke and flames
+* To reproduce smoke and flames
 
  * BUILD_SCENE_EFFECTS_PLUGIN
 
-* When using the multicopter
+* When using multicopters
 
  * BUILD_MULTICOPTER_PLUGIN
- * BUILD_MULTICOPTER_SAMPLES
 
-You can set these options interactively using the ccmake command, but you can also give the cmake command the -D option. For example, to set BUILD_SCENE_EFFECTS_PLUGIN to ON, input the following. ::
+These options can be set interactively using the ccmake command, but you can also pass -D options to the cmake command. For example, to enable all the above options, enter: ::
 
- cmake -DBUILD_SCENE_EFFECTS_PLUGIN=ON
+ cmake -DBUILD_WRS2018=ON -DBUILD_COMPETITION_PLUGIN=ON -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DENABLE_INSTALL_RPATH_USE_LINK_PATH=ON
 
-This option can be added multiple times. If you want to enable all the above options, input the following. ::
+If you haven't installed AGX Dynamics, remove the corresponding options from the above command line arguments.
 
- cmake -DBUILD_AGX_DYNAMICS_PLUGIN=ON -DBUILD_AGX_BODYEXTENSION_PLUGIN=ON -DBUILD_SCENE_EFFECTS_PLUGIN=ON -DBUILD_MULTICOPTER_PLUGIN=ON -DBUILD_MULTICOPTER_SAMPLES=ON
-
-If you do not have AGX Dynamics installed, remove the corresponding option from the above command line parameters and execute it.
-
-Next, perform the build with the make command. ::
+Next, build with the make command: ::
 
  make
 
-If you are using a multi-core CPU, it is a good idea to parallelize the build by adding the -j option to the make command. For example, as follows. ::
+If you're using a multi-core CPU, it's recommended to parallelize the build by adding the -j option to the make command. For example: ::
 
  make -j 8
 
-In this case, up to 8 build processes will be run simultaneously. It’s a good idea to input this if the CPU has 4 cores and 8 threads. Usually, specify the number of logical cores in the CPU.
+In this case, the build will execute up to 8 processes simultaneously. For a 4-core 8-thread CPU, this would be appropriate. Generally, specify the number of logical cores of your CPU.
 
-Even after installation, you can always use the latest version of Choreonoid by executing the following commands in the source directory where the above operation was done. ::
+Even after installation, you can always use the latest version of Choreonoid by executing the following in the source directory where you performed the above work: ::
 
  git pull
  make -j 8
 
-Preparing the gamepad
----------------------
+Setting Up the Graphics Environment
+-----------------------------------
 
-With this sample, you can operate the robot using a gamepad. To do so, prepare a gamepad and connect it to a PC.
+Since the WRS2018 simulation requires advanced rendering capabilities, please refer to :doc:`../install/setup-gpu` and set up the best graphics environment possible. If possible, use high-end GPUs such as NVIDIA's GeForce or Quadro, and make sure to execute :ref:`setup_gpu_ubuntu_gpu_driver`. For :ref:`setup_gpu_3d_rendering_engine`, use the default new rendering engine (GLSL rendering engine). (Unless there's a specific reason, don't switch to the old rendering engine.) If these conditions aren't met, rendering speed may be insufficient, and representations of lights, shadows, smoke, and flames may not be displayed.
 
-For details about what gamepads can be used, refer to the  :doc:`../simulation/tank-tutorial/index` section on  :ref:`simulation-tank-tutorial-gamepad` . We recommend the  `DUALSHOCK4 <http://www.playstation.com/en-us/explore/accessories/gaming-controllers/dualshock-4/>`_ controller for PlayStation 4. The DUALSHOCK4 can be used wirelessly using a  `USB wireless adapter <https://support.playstation.com/s/article/DUALSHOCK-4-USB-Wireless-Adapter?language=en_US>`_ .
+It's also desirable to properly configure :ref:`build_ubuntu_qt_style`.
+
+Preparing a Gamepad
+-------------------
+
+In these samples, you can control the robot with a gamepad. To do this, prepare a gamepad and connect it to your PC.
+
+For information about compatible gamepads, refer to :ref:`simulation-tank-tutorial-gamepad` in :doc:`../simulation/tank-tutorial/index`. The recommended option is the `DUALSHOCK4 <http://www.playstation.com/en-us/explore/accessories/gaming-controllers/dualshock-4/>`_ controller for PlayStation 4. The DUALSHOCK4 also supports wireless connection via a `USB wireless adapter <https://support.playstation.com/s/article/DUALSHOCK-4-USB-Wireless-Adapter?language=en_US>`_.

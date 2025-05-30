@@ -1,47 +1,50 @@
-
 Environment Settings
-====================
+==================
+
+.. contents::
+   :local:
+   :depth: 1
 
 Overview
 --------
 
-Choreonoid is designed to save the following setting items to the environment configuration file as user-specific setting items and take over the previous settings when it starts.
+In Choreonoid, the following configuration items are saved as per-user settings in the environment configuration file, and the previous settings are inherited when Choreonoid starts.
 
 * Whether the window is maximized
 * Window size
-* Current directory in a file load and save dialog
-* Whether to enable the saving/loading of the layout of project files (see :ref:`basics_layout_save` )
+* Current directory in file load and save dialogs
+* Whether to enable layout save/load for project files (see :ref:`basics_layout_save`)
 
-On the other hand, the state of the item, toolbar, and view is not saved as environment settings. If you want to take over the current state, you must save it to the project file and load it the next time you use it.
+On the other hand, the states of items, toolbars, and views are not saved as environment settings, so if you want to inherit the current state, you need to save it to a project file and load it the next time you use it.
 
 Environment Configuration File
 ------------------------------
 
-An environment configuration file is created for each OS user account. The file is located in ".config/Choreonoid/Choreonoid.conf" under the home directory on a Unix OS. Therefore, you can clear or copy environment settings by deleting or copying this file. Since settings are written to the file in YAML text format, you can also try to solve a problem by directly editing the file if any problem occurs in environment settings.
+One environment configuration file is created for each OS user account. On Unix-based operating systems, the file location is ".config/Choreonoid/Choreonoid.conf" in the home directory. Therefore, you can clear or copy environment settings by deleting or copying this file. Additionally, since the configuration content is written to this file as text in YAML format, if any problems occur with the environment settings, it is possible to directly edit this file to attempt problem resolution.
 
 
 .. _basics_project_pathset:
 
-Project Path Variable
---------------------
+Project Path Variables
+----------------------
 
-The "project path variable", which is one of the environment setting items, is a mechanism to load related files in a portable way when a project is loaded. This function enables you to load a project from an environment different from one where the project file is saved, even as for a project consisting of various files stored in different directories.
+"Project path variables," which are one of the environment configuration items, is a mechanism that makes the loading of related files portable when loading projects. By utilizing this feature, it becomes possible to load projects composed of various files stored in different directories in environments different from where the project file was saved.
 
-Generally, a project consists of not only the project file but also other files. For example, in the :ref:`basics_project_sr1walk` , two models, robot and floor, were loaded as items of the BodyItem type from the model files "SR1.yaml" and "floor.wrl", respectively. The project file only records the paths to the model files, and they must also be ready to be loaded when the project file is loaded.
+Generally, projects are composed of files other than the project file. For example, in :ref:`basics_project_sr1walk`, two models (robot and floor) are loaded as body item type items, which are loaded from model files called "SR1.body" and "floor.wrl" respectively. In the project file, only the paths to those model files are recorded, and the model files themselves need to be in a loadable state when loading the project.
 
-However, directories that store model files may vary depending on the environment. For example, user A may store model files in /home/userA/models and user B may store them in /home/userB/robots. In this case, if the project file saved in the environment of user A is configured to reference directories under /home/userA/models, model loading fails because model files are not stored in such directories in the environment of user B.
+However, the directory where model files are stored may differ depending on the environment. For example, user A might store model files under /home/userA/models, while user B might store them under /home/userB/robots. In this case, if a project file saved in user A's environment references /home/userA/models, the models cannot be loaded in user B's environment because model files are not stored in such a directory.
 
-Therefore, Choreonoid records references from a project file to external files under the following rules:
+Therefore, Choreonoid records references to external files in project files according to the following rules:
 
-1. If an external file is in the same directory as the project file or its subdirectory, Choreonoid records it as a path relative to the directory of the project file.
-2. If 1 is not applicable, and if a directory registered as "path variable" is included in the path to the external file, Choreonoid replaces the part corresponding to the directory with the variable name and records the path.
-3. If 2 is not also applicable, Choreonoid records the external file as the absolute path from the root directory.
+1. If an external file is in the same directory as the project file or in a subdirectory, record it as a relative path from the directory containing the project file
+2. If rule 1 does not apply, and the path to the external file contains a directory registered as a "path variable," replace the corresponding part of that directory with the variable name
+3. If rule 2 also does not apply, the external file is recorded as an absolute path from the root directory
 
-First, if a set of files constituting the project is stored in the same directory as the project file, rule 1 allows you to load the files without any problem even in a different environment by copying the directory as is.
+First, with rule 1, when all files composing a project are gathered in the same directory as the project file, they can be loaded without problems in different environments by simply copying that directory.
 
-However, since there may be cases in which various projects need to share model files or you want to use them independently of Choreonoid projects, it is common to store model files in different directories from the project file. In such a case, you can utilize the "path set" mechanism, which is rule 2.
+However, model files are often shared among various projects and may also be used independently of Choreonoid projects, so it is common to store model files in directories different from the project file. In such cases, the "path set" mechanism of rule 2 can be utilized.
 
-The path set is a function to register directories by putting labels. You can register as many directories as you like. For example, in the above case of user A and user B, register directories beforehand in the following way.
+Path set is a function that registers directories with labels, and you can register as many as needed. In the case of user A and user B mentioned above, for example, they would register as follows:
 
 .. tabularcolumns:: |p{2.0cm}|p{2.0cm}|p{4.0cm}|
 
@@ -50,7 +53,7 @@ The path set is a function to register directories by putting labels. You can re
  :header-rows: 1
 
  * - User
-   - Variable Name 
+   - Variable Name
    - Directory
  * - User A
    - MODEL
@@ -59,14 +62,14 @@ The path set is a function to register directories by putting labels. You can re
    - MODEL
    - /home/userB/robots
 
-If you register directories beforehand in this way and "SR1.yaml", for example, is stored in either of the above directories, the path is written to the project file in the form of "${MODEL}/SR1.yaml", where the variable name is used. Then, at load time, the ${MODEL} part is expanded to the registered actual directory, which enables loading from either of the user A and user B environments.
+With this registration, for example, if "SR1.body" is stored in the above directory, it will be described in the project file as "${MODEL}/SR1.body" using the variable name. Then, during loading, the ${MODEL} part is expanded to the actual registered directory, making it loadable in both user A's and user B's environments.
 
-In Choreonoid, the "PROGRAM_TOP" variable, which indicate the top directory of the Choreonoid installation destination, and the "SHARE" variable, which indicates the share directory, are registered by default. Therefore, simply placing files in the installation destination or directories under the share directory is enough to make the project file that uses the files portable.
+By default, Choreonoid registers a variable called "PROGRAM_TOP" that indicates the top directory of Choreonoid's installation destination, and a variable called "SHARE" that indicates the share directory. Therefore, by placing files somewhere under the installation destination or its share directory, you can make project files that use those files portable.
 
-If you want to define a path variable other than them, configure settings in the following dialog, which is displayed by selecting the main menu "File" - "Project File Options" - "Path Variable Settings".
+If you want to define other path variables, configure them in the following dialog that appears when you select "File" - "Project File Options" - "Path Variable Settings" from the main menu.
 
 .. image:: images/PathVariableEditor.png
 
-First, enter the added variable name in the text box labeled "Variable" on the left of the "Add" button. The variable name "MODEL" is entered in this example. Then, click the "Add" button to add the variable to the variable list in the upper part. This makes the "path" field editable. Enter the actual directory in the field. This example assumes user A, and "/home/userA/models" is entered.
+First, enter the variable name you want to add in the text box labeled "Variable" to the left of the "Add" button. Here, we are entering the variable name "MODEL". When you press the "Add" button, this variable is added to the variable list at the top, and the "Path" part becomes editable, so enter the actual directory there. Here, assuming user A, we are entering "/home/userA/models".
 
-When you finish editing, click the "Apply" button to record the contents of the edit as environment settings.
+When editing is finished, press the "Apply" button to record the edited content as environment settings.

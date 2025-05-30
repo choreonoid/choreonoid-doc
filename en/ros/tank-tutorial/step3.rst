@@ -1,7 +1,7 @@
-Step 3: Subscribe to the JointState topic to display the state of Tank
-======================================================================
+Step 3: Displaying Tank State by Subscribing to JointState Topics
+==================================================================
 
-In Step 3, we will create a program that subscribes to and uses the ROS topic of the joint state.
+In Step 3, we'll create a program that subscribes to and uses the joint state ROS topics.
 
 .. contents::
    :local:
@@ -10,48 +10,43 @@ In Step 3, we will create a program that subscribes to and uses the ROS topic of
 Overview
 --------
 
-In Step 2, we implemented a function that publishes the joint state of the Tank robot as a JointState type ROS topic and outputs it to the outside. In step 3, we will create a program that subscribes to this topic and uses it. Specifically, we start another Choreonoid separate from the simulation, and implement a viewer-like function to visualize the current state of the joints. Such a function can be applied to monitoring and teleoperation of the robot.
+In Step 2, we implemented functionality to publish the Tank robot's joint states as JointState ROS topics for external output. In Step 3, we'll create a program that subscribes to and utilizes these topics. Specifically, we'll launch a second Choreonoid instance separate from the simulation and implement viewer functionality to visualize the current joint states. This type of functionality can be applied to robot monitoring and teleoperation.
 
 .. At the end of this tutorial, we will also introduce the remote communication method that leads to such applications.
 
-Creating a Choreonoid project for state visualization
------------------------------------------------------
+Creating a State Visualization Choreonoid Project
+-------------------------------------------------
 
-In this step, we will start another Choreonoid process and use it for visualizing the robot's status.
-To prepare the Choreonoid used for this visualization, let's create a project template.
+In this step, we'll launch a second Choreonoid instance for visualizing the robot's state. Let's first create a template project for this visualization.
 
-All you need to do is to create a project with one Tank model loaded, which is the same model used for the simulation.
-A simulator item is not neccessary since simulations are not carried out, and environment models are not necessary as well since our goal is to display the state of the Tank's joints. You also don't need a world item to organize them.
+This is quite simple - just create a project with a single Tank model loaded, the same model used for simulation. Since we're not running simulations, no simulator item is needed. Environment models are also unnecessary since our goal is to display the Tank's joint states. A world item to organize them is not required either.
 
-Therefore, the item tree of the project template is simply as follows.
+Therefore, the template project's item tree is simply:
 
 .. code-block:: none
 
  - Tank
 
-You can start the Choreonoid node without a project and load the body items, or you can copy the project file up to step 2 and create it by deleting all items except the Tank model from it. The screen of this project will look like this
+You can start the Choreonoid node without a project and load the body item, or copy the project file from Step 2 and delete all items except the Tank model. The project screen will look like this:
 
 .. image:: images/step3project1.png
     :scale: 50%
 
-You may want to adjust the zoom of the Tank model so that it appears a little larger like this.
+It's good to adjust the zoom so the Tank model appears somewhat larger like this.
 
-Save this project in the "project" directory with the file name "step3.cnoid".
+Save this project in the "project" directory as "step3.cnoid".
 
-Introducing a controller for state visualization
-------------------------------------------------
+Introducing the State Visualization Controller
+----------------------------------------------
 
-It is not possible to visualize the state of the Tank robot only with the project template.
-In order to achieve the visualization, you need to introduce a process somewhere to subscribe to the JointState topic and update the state of the Tank model for visualization based on it.
+The project template alone cannot visualize the Tank robot's state. To achieve visualization, we need to introduce a process that subscribes to the JointState topic and updates the visualization Tank model's state based on it.
 
-There are various ways to implement this process, but in this tutorial, we will use a simple controller that is also used in the simulation. The simple controller is designed to be flexible, and can be used not only to control the robot in the simulation, but also to process models that are just loaded and displayed as body items.
+While there are various implementation approaches, this tutorial uses a simple controller, the same type used in simulations. The simple controller has a flexible design, capable of processing not only robots being simulated but also models simply loaded and displayed as body items.
 
-In this section, we will first present the source code of the controller for state visualization.
-Let's build it, introduce it to the project, and try to run the joint state visualization first.
-By doing so, you will be able to understand the function of this controller first, and then the implementation details are explained.
+We'll first present the state visualization controller's source code. Let's build it, introduce it to the project, and run the joint state visualization. This approach allows you to understand the controller's functionality first, making the subsequent implementation details easier to comprehend.
 
-Source code
-~~~~~~~~~~~~
+Source Code
+~~~~~~~~~~~
 
 .. highlight:: c++
    :linenothreshold: 7
@@ -118,80 +113,77 @@ The source code of the controller for state visualization is shown below. ::
 
 .. _ros_tank_tutorial_step3_build:
 
-Building the controller
+Building the Controller
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Create this source code in the src directory with the file name **"RttJointStateSubscriber.cpp"** . Then write the following build process in CMakeLists.txt in the src directory.
+Create this source code in the src directory with the filename **"RttJointStateSubscriber.cpp"**. Then add the following build configuration to CMakeLists.txt in the src directory:
 
 .. code-block:: cmake
 
  choreonoid_add_simple_controller(RttJointStateSubscriber RttJointStateSubscriber.cpp)
  target_link_libraries(RttJointStateSubscriber ${roscpp_LIBRARIES} Choreonoid::CnoidBodyPlugin)
 
-As a difference from the previous step 2, **Choreonoid::CnoidBodyPlugin** is added to target_link_libraries. This is called an "import library" in CMake, and it can be used as if this library is built in the same CMake project. In this example, the CnoidBodyPlugin library corresponding to the Choreonoid Body plugin is specified, and this will provide a link to the library and other settings necessary for the build (include directory, compile options, etc.). Such imported libraries provided by Choreonoid can be used by specifying choreonoid in find_package. They are all defined in the form **"Choreonoid::library name"**.
+Unlike Step 2, **Choreonoid::CnoidBodyPlugin** is added to target_link_libraries. This is what CMake calls an "imported library," allowing you to use it as if the library were built within the same CMake project. Here we specify the CnoidBodyPlugin library corresponding to Choreonoid's Body plugin, which provides linking to the library and other build settings (include directories, compile options, etc.). Such Choreonoid-provided imported libraries become available by specifying choreonoid in find_package. They're all defined in the format **"Choreonoid::LibraryName"**.
 
-Depending on the library of the Body plugin specified here, the classes and functions defined in the Body plugin and its dependent libraries can be used. In this controller, the BodyItem class and the callLater function related to the GUI of Choreonoid are used for visualization, and the above description is necessary.
-Note that the callLater function is defined in the Base library of Choreonoid, and if it is explicitly included, the description is as follows: ::
+Through the Body plugin library specified here, you can use classes and functions defined in the Body plugin and its dependencies. This controller uses Choreonoid's GUI-related BodyItem class and callLater function for visualization, making this specification necessary.
+Note that callLater is defined in Choreonoid's Base library. If explicitly included, it would be written as:
 
  target_link_libraries(RttJointStateSubscriber ${roscpp_LIBRARIES} Choreonoid::CnoidBase Choreonoid::CnoidBodyPlugin)
 
-However, since CnoidBodyPlugin depends on CnoidBase, the latter is automatically included by writing only the former.
+However, since CnoidBodyPlugin depends on CnoidBase, writing only the former automatically includes the latter.
 
-After creating the source file and writing the CMakeLists.txt file, let's build the program with catkin build. If the build is successful, a binary file of the simple controller will be generated with the file name "RttJointStateSubscriber.so".
+After creating the source file and updating CMakeLists.txt, build with catkin build. A successful build generates the simple controller binary file as "RttJointStateSubscriber.so".
 
-Introducing in the project
+Introducing to the Project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's introduce the built controller into the project to complete the project. As in the previous steps, create a simple controller item as a child item of the Tank item and specify "RttJointStateSubscriber.so" as the controller module. The item name should also be "RttJointStateSubscriber". The item tree will look like the following.
+Let's introduce the built controller to complete the project. As in previous steps, create a simple controller item as a child of the Tank item and specify "RttJointStateSubscriber.so" as the controller module. Name the item "RttJointStateSubscriber" as well. The item tree becomes:
 
 .. code-block:: none
 
  + Tank
    - RttJointStateSubscriber
 
-Save the project in this state by overwriting step3.cnoid.
+Save this project state by overwriting step3.cnoid.
 
 
-Running the simulation & visualization project
-----------------------------------------------
+Running the Simulation & Visualization Projects
+-----------------------------------------------
 
 .. highlight:: sh
 
-In this sample, the following two Choreonoid nodes are invoked.
+This sample launches two Choreonoid nodes:
 
-* **Choreonoid node for simulation** (step2.cnoid created in step 2)
-* **Choreonoid node for state visualization (viewer)** (step3.cnoid created in this step)
+* **Simulation Choreonoid node** (step2.cnoid created in Step 2)
+* **State visualization (viewer) Choreonoid node** (step3.cnoid created in this step)
 
-It should be noted that the duplication of node names must be avoided.
-When a Choreonoid node is invoked, the node name is usually "choreonoid". 
-However, if two Choreonoid nodes are invoked with the same name, it will be impossible to distinguish them in ROS communication.
-Therefore, the node name of one of the nodes must be different from the default.
+Importantly, we must avoid duplicate node names. When launching a Choreonoid node, the node name defaults to "choreonoid". However, if two Choreonoid nodes launch with the same name, ROS communication cannot distinguish between them. Therefore, one node must use a different name from the default.
 
-With this in mind, let's start the two Choreonoid nodes.
+With this in mind, let's launch both Choreonoid nodes.
 
-First, we start the Choreonoid node for simulation and its related nodes with the launch file for step 2. ::
+First, launch the simulation Choreonoid node and related nodes using the Step 2 launch file: ::
 
  roslaunch choreonoid_ros_tank_tutorial step2.launch
 
-The node name here is the default "choreonoid".
+This node uses the default name "choreonoid".
 
-Next, let's directly launch the Choreonoid node for visualization from another terminal with the rosrun command. ::
+Next, from another terminal, directly launch the visualization Choreonoid node using rosrun: ::
 
  roscd choreonoid_ros_tank_tutorial/project
  rosrun choreonoid_ros choreonoid step3.cnoid __name:=choreonoid2
 
-Here, the node name is changed to **"choreonoid2"** by **"__name:=choreonoid2"**, which is given as a startup option for the choreonoid node. This way of writing is the standard option when starting a ROS node; see the `"Nodes" section of the ROS Wiki <http://wiki.ros.org/Nodes>`_ for details on the options available for starting ROS nodes.
+Here, the launch option **"__name:=choreonoid2"** changes the node name to **"choreonoid2"**. This notation is the standard option format for launching ROS nodes. For details on available options when launching ROS nodes, see the `Nodes page on ROS Wiki <http://wiki.ros.org/Nodes>`_.
 
-After running this far, you may see two Choreonoid windows on your desktop screen as shown below.
+After executing these commands, you should see two Choreonoid windows on your desktop:
 
 .. image:: images/step3-projects.png
     :scale: 33%
 
-Now, from another terminal, run ::
+Now from another terminal, execute: ::
 
  rosnode list
 
-and the following will be displayed.
+This displays:
 
 .. code-block:: none
 
@@ -202,16 +194,16 @@ and the following will be displayed.
  /rqt_graph
  /rqt_plot
 
-Here, /choreonoid corresponds to the Choreonoid node for simulation and /choreonoid2 corresponds to the Choreonodi node for visualization. It is OK if the two Choreonoid nodes are displayed like this.
+Here, /choreonoid corresponds to the simulation Choreonoid node, and /choreonoid2 to the visualization Choreonoid node. If both Choreonoid nodes appear like this, everything is working correctly.
 
-Now, let's try moving the Tank robot with the gamepad. When the gun barrel is moved, the joint angle of the Tank model on the visualization Choreonoid will change along with the movement. In addition, when you move the Tank robot and hit the barrel against the wall, the joints of the barrel will move a little due to the reaction force, and this movement will also be displayed on the visualization Choreonoid. If this is the case, this project is working well.
+Now try moving the Tank robot with the gamepad. When you move the gun barrel, the joint angles of the Tank model in the visualization Choreonoid will change accordingly. Additionally, when you drive the Tank robot and hit the barrel against a wall, the barrel joints will move slightly due to reaction forces, and this movement will also appear in the visualization Choreonoid. If you see this behavior, the project is working successfully.
 
-Creating the launch file
-------------------------
+Creating a Launch File
+----------------------
 
 .. highlight:: xml
 
-Although the Choreonoid node for visualization was directly launched by the rosrun command in the previous section, let's put this operation into a launch file so that all the nodes used in the execution of this sample can be launched at once. Create a file named "step3.launch" in the launch directory with the following contents. ::
+While we directly launched the visualization Choreonoid node using rosrun above, let's consolidate this operation into a launch file to launch all nodes used in this sample at once. Create "step3.launch" in the launch directory with the following content: ::
 
  <launch>
    <node pkg="choreonoid_joy" name="choreonoid_joy" type="node" />
@@ -222,25 +214,27 @@ Although the Choreonoid node for visualization was directly launched by the rosr
          args="$(find choreonoid_ros_tank_tutorial)/project/step3.cnoid" />
  </launch>
 
-The description in the last node tag corresponds to the Choreonoid node for visualization. Here ::
+The last node tag corresponds to the visualization Choreonoid node. Here: ::
 
  name="choreonoid2"
 
-is used to rename this node. In this way, the node name change can be described concisely in the launch file.
+changes this node's name. Launch files allow such concise node name specification.
 
 .. highlight:: sh
 
-You can run this sample by using the launch file as ::
+Run this sample using the launch file with: ::
 
  roslaunch choreonoid_ros_tank_tutorial step3.launch
 
-Note that the rqt_plot node for displaying joint orbits, which was included in step2.launch, is not included in this launch file.
+Note that we've excluded the rqt_plot node for joint trajectory display that was included in step2.launch.
 
-After this process, the package for this tutorial will have the following file structure.
+After completing this work, the tutorial package has the following file structure:
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
      - step1.launch
      - step2.launch
@@ -255,134 +249,136 @@ After this process, the package for this tutorial will have the following file s
      - RttJointStatePublisher.cpp
      - RttJointStateSubscriber.cpp
 
-Source code description
+Source Code Explanation
 -----------------------
 
 .. highlight:: c++
 
-This section describes the source code of the RttJointStateSubscriber controller.
+Let's examine the RttJointStateSubscriber controller's source code.
 
-Like RttTankController in Step 1, this controller uses the Subscriber class in roscpp to subscribe to topics. Therefore, they are essentially the same in terms of coding subscribers in roscpp. However, while RttTankController controls the tank robot, RttJointStateSubscriber does not control the tank robot but directly updates the model state, which is different in the way it is used in Choreonoid, and there are some differences in the code in this respect. If you read this article with the awareness that Choreonoid can be used not only for controlling the robot to be simulated but also for visualization as shown in this article, the following explanation will be more useful.
+Like Step 1's RttTankController, this controller uses roscpp's Subscriber class to subscribe to topics. Therefore, they're essentially identical in terms of roscpp Subscriber coding. However, while RttTankController controls the Tank robot, RttJointStateSubscriber doesn't perform control but directly updates the model state. This different usage in Choreonoid leads to code differences. Understanding that Choreonoid can be used not only for controlling simulated robots but also for visualization like this will make the following explanation more valuable.
 
-Header inclusion
-~~~~~~~~~~~~~~~~
+Header Includes
+~~~~~~~~~~~~~~~
 
-In this source, two new headers are introduced. First ::
+This source introduces two new headers. First: ::
 
- #include <cnoid/BodyItem>.
+ #include <cnoid/BodyItem>
 
-enables the use of the BodyItem class, which is defined in the Body plugin, and is used to manipulate the body object corresponding to the robot model on the GUI of Choreonoid. Normally, controllers are implemented in such a way that they do not depend on a specific GUI, but in this case, BodyItem is used since the original purpose is to directly update the model on the GUI.
+enables use of the BodyItem class. BodyItem is defined in the Body plugin and allows manipulation of Body objects corresponding to robot models in Choreonoid's GUI. While controllers typically avoid depending on specific GUIs, here we use BodyItem since our purpose is to directly update the GUI model.
 
-In addition, we will use ::
+Additionally: ::
 
- #include <cnoid/LazyCaller>.
+ #include <cnoid/LazyCaller>
 
-to use the callLater function. This function is also related to GUI and is defined in the Base module of Choreonoid, which will be explained later.
+provides the callLater function. This GUI-related function is defined in Choreonoid's Base module and will be explained later.
 
-In order to use the class and function, the corresponding libraries must be additionally linked. Specifically, these libraries are libCnoidBase and libCnoidBodyPlugin. This is the reason why the libraries to be linked were added in :ref:`ros_tank_tutorial_step3_build` .
+Using these classes and functions requires linking corresponding libraries, specifically libCnoidBase and libCnoidBodyPlugin. This is why we added libraries to link in :ref:`ros_tank_tutorial_step3_build`.
 
 Member Variables
 ~~~~~~~~~~~~~~~~
 
-Among the member variables ::
+The member variables: ::
 
  std::unique_ptr<ros::NodeHandle> node;
  ros::Subscriber subscriber;
 
-are the same as those used in the RttTankController in Step 1, corresponding to the node handle and subscriber of ROS, and these objects are used to handle the subscribing process. ::
+are identical to those in Step 1's RttTankController, corresponding to ROS's node handle and subscriber that perform the subscription process.
+
+::
 
  BodyItemPtr bodyItem;
 
-is a pointer variable corresponding to the BodyItem described above; the pointer type of BodyItem is usually expressed as::
+is a pointer variable for the BodyItem described above. While BodyItem's pointer type is normally: ::
 
  BodyItem*
 
-. BodyItemPtr is a smart pointer version of this type, and by using this type, the pointed object is maintained. 
-Although it may not happen very often, the smart pointer version is used just in case the model update process may be called after deleting the Tank item on the Choreonoid node for visualization while communication is in progress, depending on the timing.
+BodyItemPtr is its smart pointer version. Using this type maintains the referenced object. Though unlikely, we use the smart pointer version as a precaution - if the Tank item is deleted from the visualization Choreonoid node during communication, the model update process might be called after deletion depending on timing.
 
-Initialization by the configure function
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Initialization via the configure Function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In this controller, the initialization process is performed by the "configure" function, which is one of the virtual functions of SimpleController. ::
+This controller performs initialization in the configure function, one of SimpleController's virtual functions: ::
 
  virtual bool configure(SimpleControllerConfig* config) override
  {
      ...
  }
 
-The configure function is called when a controller is introduced into the project and associated with the target body item.
-When controlling a robot during simulation, initialization is done with the "initialize" function, but in this case, instead, we will directly update the state of the model that is loaded as a body item. The initialization for this can be done with the configure function.
+The configure function is called when a controller is introduced to the project and associated with a target body item. When controlling robots during simulation, initialization uses the initialize function. However, here we directly update the state of a model loaded as a body item, and this initialization can be performed in the configure function.
 
-In this example,the body item to be updated is obtained by the following code. ::
+First, we obtain the body item to update: ::
 
  bodyItem = static_cast<BodyItem*>(config->bodyItem());
 
-This part is a bit tricky to write using static_cast, but this is because the simple controller is originally defined as a class that does not depend on the GUI. Even for such a simple controller, it is sometimes useful to be able to work with the GUI as in this example. Therefore, although it is an exception, the "bodyItem" function of SimpleControllerConfig can be used to acquire the BodyItem object. However, since it is not possible to return the types contained in libraries that do not directly depend on it, this function returns a pointer to the base Reference type, and the user must cast it to the BodyItem type. It is a little complicated, but if you want to use BodyItem from a simple controller, you will have to write it like this for now. ::
+This code uses static_cast in a somewhat tricky way because the simple controller is originally defined as a GUI-independent class. Even so, it's sometimes useful for simple controllers to work with the GUI, as in this example. Therefore, as an exception, SimpleControllerConfig's bodyItem function can obtain the BodyItem object. However, since it cannot directly return types from libraries it doesn't depend on, this function returns a pointer to the base Referenced type, requiring users to cast it to BodyItem. While somewhat complicated, this is currently how you must write code to use BodyItem from a simple controller.
+
+::
 
  node.reset(new ros::NodeHandle(bodyItem->name()));
 
-As in the previous steps, we are creating a handle for the ROS node.
-Next, we create a subscriber. ::
+As in previous steps, we create a ROS node handle.
+Next, we create a subscriber: ::
 
  subscriber = node->subscribe(
      string("/") + bodyItem->name() + "/joint_state",
      1,
      &RttJointStateSubscriber::jointStateCallback, this);
 
-The topic name given as the first argument is "/Tank/joint_state", which matches the name of the topic to be published by RttJointStatePublisher in Step 2. The reason why the topic name is determined based on the name of the target Body item is so that it can be applied to other models.
+The first argument's topic name becomes "/Tank/joint_state", matching the topic name published by Step 2's RttJointStatePublisher. We generate the topic name based on the target Body item's name to enable application to other models.
 
-The second argument is the queue size, which, as in Step 1, is set to 1 as long as the latest information is available.
+The second argument is the queue size, set to 1 as in Step 1, since we only need the latest information.
 
-As in Step 1, the third argument is a callback function in the form of a member function. The callback function is implemented as follows ::
+The third argument, as in Step 1, specifies a callback function in member function form. The callback function is implemented as: ::
 
  void jointStateCallback(const sensor_msgs::JointState& state)
  {
      callLater([this, state](){ updateJointState(state); });
  }
 
-This function is called every time a new JointState is subscribed to.
+This function is called whenever a new JointState is subscribed.
 
-This is where the process differs from that of RttTankController in Step 1: in RttTankController, the control function that performs control is called periodically, so the callback function only updates the variables for data exchange. In RttTankController, the control function is called periodically, so the callback function only updates the variables for data exchange, but this controller updates the model regardless of the robot control, so the process for that needs to be executed from here. However, the update process must not be done directly in this function. The reason is that the thread where the callback is called is different from the normal (main) thread. Subscribing is an asynchronous process triggered by input to the receiving port, and is handled by a dedicated thread for that purpose. On the other hand, the model for visualization is managed in the main thread running the GUI. In this case, the thread of the callback function cannot directly access objects in the main thread.As a solution to this problem, the main thread has an event loop to run the GUI, and by throwing an event into it, you can transfer the process from another thread to the main thread. The function to do this is callLater, which can be executed from any thread, and the function given as an argument will be executed on the main thread via the event loop.
+Here the processing differs significantly from Step 1's RttTankController. In RttTankController, the control function for robot control is called periodically, so the callback function merely updates data exchange variables. However, this controller updates the model independent of robot control, so that processing must be executed from here. Yet the update process must not be performed directly in this function. This is because the callback executes in a different thread from the normal (main) thread. Subscribing is an asynchronous process triggered by input to the receive port, handled by a dedicated thread. Meanwhile, the visualization model is managed in the main thread running the GUI. The Subscribe thread cannot directly access main thread objects. The solution is to use the main thread's event loop for running the GUI - by posting an event to it, we can transfer processing from another thread to the main thread. The callLater function performs this operation, executable from any thread, with the provided function executed on the main thread via the event loop.
 
-The subscribed data of the JointState type is captured by the lambda expression given to callLater, and the data is copied to another variable used for the capture. Due to this copy process, there is no need to perform exclusive control for JointState data.
+The subscribed JointState data is captured by the lambda expression passed to callLater, with the data copied to separate variables during capture. This copy operation eliminates the need for exclusive control of JointState data.
 
-.. note:: When controlling the robot under simulation, the robot model to be controlled cannot be accessed in the same way. This is because the physics calculations in the simulation are also handled in a separate thread, and the body object used there is copied from the main thread during simulation initialization. The body object used in the simulation is copied from the main thread during simulation initialization, which is different from the body object managed by the main thread, and thus cannot be processed from the main thread. For this reason, the simple controller accesses the body object via dedicated :ref:`simulation-implement-controller-simple-controller-io` .
+.. note:: When controlling robots during simulation, the controlled robot model cannot be accessed this way. Physics calculations in simulation are also handled in a separate thread, and the Body object used there is copied from the main thread during simulation initialization. Since this differs from the Body object managed in the main thread, it cannot be processed from the main thread. Therefore, simple controllers access Body objects via dedicated :ref:`simulation-implement-controller-simple-controller-io`.
 
-Updating the model state
-~~~~~~~~~~~~~~~~~~~~~~~~
+Model State Updates
+~~~~~~~~~~~~~~~~~~~
 
-Let's take a look at the model state update process executed from the main thread. This process is implemented in the following function. ::
+Let's examine the model state update process executed from the main thread. This is implemented in the following function: ::
 
  void updateJointState(const sensor_msgs::JointState& state)
  {
      ...
  }
 
-First, the body object to be updated is obtained. ::
+First, we obtain the Body object to update: ::
 
  auto body = bodyItem->body();
 
-By the way, this body object is the same as the one obtained from the config object in the configure function as ::
+Incidentally, this Body object is the same as what you'd obtain from the config object in the configure function using: ::
 
  config->body()
 
-.
-
-Next ::
+Next: ::
 
  auto& names = state.name;
  auto& positions = state.position;
 
-defines references to the array of names and the array of joint displacements that the data of the JointState type has.
-This is simply to make the following code more concise. ::
+defines references to the name array and joint displacement array contained in the JointState data. This simply makes the subsequent code more concise.
+
+::
 
  int size = std::min(names.size(), positions.size());
  int n = std::min(body->numJoints(), size);
 
-In this code, we determine the number of joints to be updated. Of course, the number of joints is fixed for the same model, and in the case of the Tank model, there are two axes, yaw and pitch, for moving the gun barrel. So it is possible to fix the number to 2, but to avoid crashing when the size of each data is unexpected, we try to access the data within the minimum value of each data size.
+This code determines the number of joints to update. Of course, the joint count is fixed for a given model - the Tank model has two axes (yaw and pitch) for moving the gun barrel. While we could hard-code this as 2, we access data within the range of each data size's minimum value to avoid crashes when data sizes are unexpected.
 
-In reality, we don't know what's in the data we get as ROS topics; there may be a glitch on the part of the publisher, the model used may not be exactly the same, or we may have subscribed to the wrong target in the first place.
-In a system like ROS, where multiple components are connected via network communication, it is desirable to have a program that is as robust as possible in consideration of this point. ::
+In reality, we cannot know what's contained in data received as ROS topics. The publisher might have bugs, the models might not be identical, or we might have subscribed to the wrong target. In systems like ROS where multiple components connect via network communication, it's desirable to write programs as robustly as possible with these considerations.
+
+::
 
  for(int i=0; i < n; ++i){
      auto joint = body->joint(i);
@@ -391,19 +387,21 @@ In a system like ROS, where multiple components are connected via network commun
      }
  }
 
-The loop is run for the number of joints n determined in the above code, and the current value of the joint angle of each joint is set in the model. Here, the names of the joints are also checked to make sure they are the same, which is another measure to make the program as robust as possible. If the received data is for a different model than expected, applying the joint angles as they are does not make much sense, and often results in an impossible posture. ::
+We loop for the number of joints n determined above, setting each joint's current angle value in the model. We also verify that joint names match, another measure for program robustness. If received data targets a different model than expected, directly applying joint angles lacks meaning and often results in impossible postures.
+
+::
 
  bodyItem->notifyKinematicStateChange(true);
 
-This notifies the GUI of Choreonoid that the model state has been updated. The reason why the BodyItem object is obtained in the configure function is to perform this notification. The first argument, true, also applies the forward kinematics calculation before the notification. This is same as the following code. ::
+This notifies Choreonoid's GUI that the model state has been updated. By doing this, various GUI components in Choreonoid, including scene rendering, will reflect the model updates. We obtained the BodyItem object in the configure function to perform this notification. The first argument true also applies forward kinematics calculation before notification. This is equivalent to: ::
 
  body->calcForwardKinematics();
  bodyItem->notifyKinematicStateChange();
 
-Finalization Process
-~~~~~~~~~~~~~~~~~~~~
+Termination Processing
+~~~~~~~~~~~~~~~~~~~~~~
 
-The finalization process of the controller is done by the "unconfigure" function. ::
+Controller termination is handled by the unconfigure function: ::
 
  virtual void unconfigure() override
  {
@@ -412,6 +410,6 @@ The finalization process of the controller is done by the "unconfigure" function
      subscriber = ros::Subscriber();
  }
 
-This is another virtual function of SimpleController, which is called when the controller is detached from the target model or the entire project. The finalization process corresponding to the initialization process done in the configure function is usually written in this function.
+This is another SimpleController virtual function, called when the controller is detached from the target model or entire project. Termination processing corresponding to the configure function's initialization is typically written in this function.
 
-After the controller is finalized, there is no need to subscribe to the topic anymore, so the subscriber is cleared and the pointers to the related objects are also cleared. It is advisable to implement this kind of cleanup process properly.
+After controller termination, topic subscription is no longer needed, so we clear the subscriber and related object pointers. It's advisable to properly implement such cleanup processing.

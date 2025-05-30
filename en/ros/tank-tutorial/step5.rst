@@ -1,7 +1,7 @@
-Step 5: Enhance the Tank state display by subscribing to sensor information topic
+Step 5: Enhancing Tank State Display by Subscribing to Sensor Information Topics
 =================================================================================
 
-In Step 5, we will create a program that subscribes to the sensor information topic.
+In Step 5, we'll create a program that subscribes to and utilizes sensor information topics.
 
 .. contents::
    :local:
@@ -9,15 +9,15 @@ In Step 5, we will create a program that subscribes to the sensor information to
 Overview
 --------
 
-In Step 4, we implemented a function that outputs the states of the accelerometer and rate gyro that the Tank robot is equipped with as a ROS topic of the sensor_msgs/Imu type. By subscribing to this topic, it is possible to obtain the states of the sensors via the network and utilize it in various processes.
-In Step 5, as an example of this, we will make the Choreonoid node for state visualization constructed in Step 3 subscribe to the sensor information topic to enhance the display of the Tank state.
+In Step 4, we implemented functionality to output the Tank robot's acceleration sensor and rate gyro states as sensor_msgs/Imu ROS topics. By subscribing to these topics, you can obtain sensor states via the network and utilize them in various processes.
+In Step 5, we'll demonstrate this by having the state visualization Choreonoid node from Step 3 subscribe to sensor information topics, enhancing the Tank's state display.
 
-Controller for obtaining sensor states
---------------------------------------
-  
-First, we implement the function to subscribe to the sensor information topic in the Choreonoid node for state visualization.
-This function can be realized by a simple controller in the same way as the joint state visualization introduced in Step 3.
-The source code is shown below.
+Sensor State Acquisition Controller
+-----------------------------------
+
+First, we'll implement functionality to subscribe to sensor information topics in the state visualization Choreonoid node.
+We can achieve this using a simple controller, similar to the joint state visualization introduced in Step 3.
+Here's the source code:
 
 .. code-block:: c++
  :linenos:
@@ -134,27 +134,27 @@ The source code is shown below.
 
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttImuStateSubscriber)
 
-Create this source code in the src directory with the file name "RttImuStateSubscriber.cpp" and build it by adding the following description to CMakeLists.txt in the same directory.
+Create this source code in the src directory as "RttImuStateSubscriber.cpp" and build it by adding the following to CMakeLists.txt in the same directory:
 
 .. code-block:: cmake
 
  choreonoid_add_simple_controller(RttImuStateSubscriber RttImuStateSubscriber.cpp)
  target_link_libraries(RttImuStateSubscriber ${roscpp_LIBRARIES} Choreonoid::CnoidBodyPlugin)
 
-You need to specify "Choreonoid::CnoidBodyPlugin" as a library to link for the same reason as in step 3.
+You need to specify "Choreonoid::CnoidBodyPlugin" as a library to link for the same reason as in Step 3.
 
-If the build is successful, a binary file of the simple controller with the file name "RttImuStateSubscriber.so" is generated.
+A successful build generates the simple controller binary file "RttImuStateSubscriber.so".
 
-Introducing the controller for obtaining sensor states
-------------------------------------------------------
+Introducing the Sensor State Acquisition Controller
+---------------------------------------------------
 
-This controller is introduced and used in the Choreonoid node for state visualization created in Step 3.
-The Choreonoid node for simulation used in combination with it is the one in Step 4.
+This controller is introduced to the state visualization Choreonoid node created in Step 3.
+It works in combination with the simulation Choreonoid node from Step 4.
 
-First, copy the project file of step 3, "step3.cnoid", to a file named "step5.cnoid" for this step.
+First, copy the Step 3 project file "step3.cnoid" as "step5.cnoid" for this step.
 
-Then, create a launch file with the file name "step5.launch" to start the project together with "step4.cnoid" for simulation.
-The contents of this file should be as follows.
+Then create a launch file "step5.launch" to start both the simulation "step4.cnoid" and visualization projects together.
+The content should be:
 
 .. code-block:: xml
 
@@ -167,11 +167,13 @@ The contents of this file should be as follows.
 	 args="$(find choreonoid_ros_tank_tutorial)/project/step5.cnoid" />
  </launch>
 
-After working up to this point, the package for this tutorial will have the following file structure.
+After completing this work, the tutorial package has the following file structure:
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
      - step1.launch
      - step2.launch
@@ -192,14 +194,14 @@ After working up to this point, the package for this tutorial will have the foll
      - RttImuStatePublisher.cpp
      - RttImuStateSubscriber.cpp
 
-Launch the created launch file for step 5 with the following command.
+Launch the Step 5 launch file with:
 
 .. code-block:: sh
 
  roslaunch choreonoid_ros_tank_tutorial step5.launch
 
-Then the main windows corresponding to the two Choreonoid nodes are displayed.
-The project structure of each Choreonoid node should be as follows.
+This displays main windows for both Choreonoid nodes.
+Each Choreonoid node's project structure should be:
 
 **Choreonoid node for simulation (step4.cnoid)**
 
@@ -220,8 +222,8 @@ The project structure of each Choreonoid node should be as follows.
  + Tank
    - RttJointStateSubscriber
 
-Introduce the above "RttImuStateSubscriber" to the Choreonoid node for state visualization in the same way as the "RttJointStateSubscriber" was introduced in step 3. Select the Tank item, and create a SimpleController item from the main menu "File" - "New" - "SimpleController", and specify "RttImuStateSubscriber.so" in its "Controller module".
-This will make the item tree look like the following.
+Introduce "RttImuStateSubscriber" to the state visualization Choreonoid node just as you introduced "RttJointStateSubscriber" in Step 3. Select Tank, create a SimpleController item from the main menu "File" - "New" - "SimpleController", and specify "RttImuStateSubscriber.so" as its "Controller Module".
+The item tree becomes:
 
 .. code-block:: none
 
@@ -229,51 +231,51 @@ This will make the item tree look like the following.
    - RttJointStateSubscriber
    - RttImuStateSubscriber
 
-Now, the acceleration sensor and rate gyro states are reflected in the Tank model for state visualization.
-Be sure to perform the project saving operation on the Choreonoid node for state visualization to save this configuration in step5.cnoid.
+Now the acceleration sensor and rate gyro states are reflected in the visualization Tank model.
+Save the project in the state visualization Choreonoid node to store this configuration in step5.cnoid.
 
-Displaying sensor state values by the body state view
------------------------------------------------------
+Displaying Sensor State Values with Body State View
+----------------------------------------------------
 
-Although the sensor states are now reflected in the Tank model for state visualization by the above operations, the sensor states cannot be checked only by this operation. The the joint states we targeted in Step 3 could be confirmed from their appearance by reflecting the joint angles in the model. However, the sensors we are interested in this time only have their own internal state values, and they do not directly affect the appearance of the model itself.
+While sensor states are now reflected in the visualization Tank model, you cannot verify these states through this operation alone. The joint states targeted in Step 3 could be confirmed visually by reflecting joint angles in the model's appearance. However, the sensors we're working with only have internal state values that don't directly affect the model's appearance.
 
-There are many ways to present the states of the sensors, but first we will try to display the state values of the sensor as they are. This can be achieved by using the "Body state view" provided by Choreonoid as a standard feature (via the Body plugin).
+There are various ways to present sensor states. Let's first display the sensor state values numerically. We can achieve this using the "Body State View" that Choreonoid provides as standard (through the Body plugin).
 
-In the Choreonoid node for state visualization, select "View" - "Show View" - "Body State" from the main menu to show this view. By default, this view is mounted in the area overlapping the message view in the lower center of the main window. If necessary, move it to another area to achieve a better view.
+In the state visualization Choreonoid node, select "View" - "Show View" - "Body State" from the main menu. By default, this view appears in the area overlapping the message view at the bottom center of the main window. Move it to another area if needed for better visibility.
 
-The following figure shows the state in which this view is displayed in the Choreonoid node for state visualization.
+Here's the state visualization Choreonoid node with this view displayed:
 
 .. image:: images/step5-bodystateview.png
     :scale: 60%
 
-As shown in this figure, the state values of the rate gyro "GYRO" and the acceleration sensor "ACCEL_SENSOR" of the Tank robot are displayed on the body state view.
+As shown, the Body State View displays state values for the Tank robot's rate gyro "GYRO" and acceleration sensor "ACCEL_SENSOR".
 
-Now try to move the chassis of the Tank robot by operating the gamepad. You will see the values of the sensors change. As in :ref:`ros_tank_tutorial_step3_check_topic_values` in Step 4, turning the chassis and moving it back and forth will change the Z-axis element of GYRO (the third column element in the body state view) and the X-axis element of ACCEL_SENSOR (the first column), respectively. These changes will be relatively easy to understand, so please check them out.
+Try moving the Tank robot's chassis using the gamepad. You'll see the sensor values change. As in :ref:`ros_tank_tutorial_step3_check_topic_values` from Step 4, turning the chassis and moving it forward/backward changes GYRO's Z-axis component (third column in Body State View) and ACCEL_SENSOR's X-axis component (first column), respectively. These changes are relatively easy to observe, so please verify them.
 
-In this way, we can see that the sensor state can actually be obtained by "RttImuStateSubscriber", the controller for obtaining the sensor states. This is internally achieved by subscribing to the sensor states published by "RttImuStatePublisher" from the Tank robot being simulated in the Choreonoid node for simulation.
+This demonstrates that "RttImuStateSubscriber", the sensor state acquisition controller, successfully obtains sensor states. Internally, this works by subscribing to sensor states published by "RttImuStatePublisher" from the Tank robot being simulated in the simulation Choreonoid node.
 
-Now that the view has been added, let's save the project so that the body state view will be displayed the next time it is started. For saving the view layout, it is necessary to check the "Project File Options" - "Perspective" item in the "File" menu, so please make sure that is checked as well.
+Now that we've added the view, save the project so the Body State View displays on next startup. To save the view layout, ensure "Project File Options" - "Perspective" in the "File" menu is checked.
 
-Action on collision
--------------------
+Collision Behavior
+------------------
 
-In this controller for obtaining the sensor statest, we have included a function to present the collisions of the robot in animation as an example of using the obtained sensor information. This function judges a situation where a large acceleration is applied to the robot as a collision, and vibrates the position of the Tank model for visualization randomly for a certain period of time.
+This sensor state acquisition controller includes a feature that presents robot collisions through animation, demonstrating practical use of obtained sensor information. This feature detects situations where large accelerations are applied to the robot as collisions, then randomly vibrates the visualization Tank model's position for a set period.
 
-Let's try this feature in practice. Using the gamepad, move the Tank robot on the Choreonoid node for simulation and make it intentionally collide with the pipes or equipment in the environment model. It is easier to trigger this function if the collision is made at a certain speed. If the collision causes an acceleration of 20 [m/s^2] or more in the horizontal direction of the tank body, this function will be activated and the Tank model for visualization will shake as if it has collided in the Choreonoid node for state visualization.
+Let's test this feature. Using the gamepad, move the Tank robot in the simulation Choreonoid node and intentionally collide it with pipes or equipment in the environment model. The feature triggers more easily with higher-speed collisions. When a collision causes horizontal acceleration of 20 [m/s²] or more in the tank body, the feature activates and the visualization Tank model shakes as if it had collided.
 
-Since we are using a simple controller to obtain the sensor state, this kind of state presentation is also possible by implementing the processing in the controller. The implementation details for this function will be explained later.
+Since we're using a simple controller for sensor state acquisition, we can implement this kind of state presentation by adding processing to the controller. We'll explain the implementation details later.
 
-Introducing the sensor visualizer item
+Introducing the Sensor Visualizer Item
 --------------------------------------
 
-As a further way to present sensor information, let's display the acceleration and angular velocity information obtained by the sensor visually on the scene view.
-Choreonoid also provides "sensor visualizer item" as a standard feature (via the Body plugin) to achieve this.
+As an additional way to present sensor information, let's visually display the acceleration and angular velocity data in the scene view.
+Choreonoid provides the "Sensor Visualizer Item" as a standard feature (through the Body plugin) for this purpose.
 
-The sensor visualizer item can be created from "File" - "New" - "SensorVisualizer" in the main menu.
-This item works by placing it as a child item of the target body item.
-So, please create this item with Tank item selected in the item tree view so that it can be placed as a child item of the Tank item. The name of the item can be the default one.
+Create a Sensor Visualizer Item from the main menu "File" - "New" - "SensorVisualizer".
+This item functions by placing it as a child of the target body item.
+Select the Tank item in the item tree view when creating this item so it becomes a child of Tank. You can keep the default item name.
 
-When this item is introduced to the Choreonoid node for state visualization, the item tree will look like this.
+After introducing this item to the state visualization Choreonoid node, the item tree becomes:
 
 .. code-block:: none
 
@@ -282,7 +284,7 @@ When this item is introduced to the Choreonoid node for state visualization, the
    - RttImuStateSubscriber
    + SensorVisualizer
 
-The SensorVisualizer item is designed to work as a composite item, which generates a corresponding sub-item for each sensor in the target model. So, let's expand the SensorVisualizer item in the item tree view and show its sub-items. You can see that the tree structure is actually as follows.
+The Sensor Visualizer Item functions as a composite item, generating corresponding sub-items for each sensor in the target model. Expand the SensorVisualizer item in the item tree view to display its sub-items. The actual tree structure is:
 
 .. code-block:: none
 
@@ -297,110 +299,110 @@ The SensorVisualizer item is designed to work as a composite item, which generat
      - Kinect-Image Theta
      - VLP-16
 
-The first two sub-items shown here correspond to the acceleration sensor and rate gyro. Below that are the sub-items corresponding to the vision sensors, where each vision sensor on the Tank robot is assigned a name. When each of these sub-items is checked, the item will be visualized. However, since the controller does not obtain data for the visual sensors, nothing will be displayed even if these items are checked. The visualization of visual sensor data will be introduced in another article.
+The displayed sub-items include acceleration sensor and rate gyro items first, followed by vision sensor items corresponding to each vision sensor mounted on the Tank robot. Checking each sub-item enables its visualization. However, since our controller doesn't acquire vision sensor data, nothing displays even when these items are checked. We'll cover vision sensor data visualization separately.
 
-Since we will be visualizing the acceleration sensor and rate gyro this time, check the corresponding checkboxes of "AccelerationSensor" and "RateGyro". Then the current acceleration and angular velocity will be visualized as arrow-shaped markers in the scene view.
+For this tutorial, we'll visualize the acceleration sensor and rate gyro, so check the "AccelerationSensor" and "RateGyro" items. This visualizes current acceleration and angular velocity as arrow-shaped markers in the scene view.
 
-Note that these markers overlap with the Tank model, and when the values are not very large, they are hidden in the Tank model.
-To make it easier to see the markers, let's switch the scene view to wireframe view.
-To do this, turn on the "Wireframe rendering" button in the scene view toolbar as shown below.
+Note that these markers overlap with the Tank model and become hidden inside it when values are small.
+To improve marker visibility, switch the scene view to wireframe rendering.
+Turn on the "Wireframe rendering" button in the scene view toolbar:
 
 .. image:: images/wireframe-setting.png
 
-To make the markers even easier to see, you may also want to change the background color of the scene view.
-This can be changed in the configuration dialog that appears by clicking the configuration button on the right side of the scene view toolbar.
-Click on the "Background color" button on the dialog to display the color selection dialog, and select a suitable color.
-In this case, it is best to set it to white.
+To further improve marker visibility, consider changing the scene view's background color.
+Access this through the configuration dialog by clicking the settings button on the right side of the scene view toolbar.
+Click the "Background color" button in the dialog to open the color selection dialog and choose an appropriate color.
+White works well for this purpose.
 
-The item tree view and scene view with the above configurations applied are shown below.
+Here are the item tree view and scene view with these settings applied:
 
 .. image:: images/sensor-visualization-views1.png
     :scale: 60%
 
-Now let's move the Tank robot in the simulation by using the gamepad.
-You will see red and blue arrows in the scene view.
-The red one corresponds to acceleration, and the blue one to angular velocity.
-For example, when you accelerate forward while turning left, the marker will look like this.
+Now move the simulating Tank robot using the gamepad.
+You'll see red and blue arrows appear in the scene view.
+Red represents acceleration, blue represents angular velocity.
+For example, when accelerating forward while turning left, the markers appear like this:
 
 .. image:: images/sensor-visualizer-markers.png
     :scale: 70%
 
-The direction and length of the red arrow corresponds to the direction and magnitude of acceleration.
-Here, you can visually grasp the fact that you are accelerating forward at a glance.
-The angular velocity indicated by the blue arrow is the so-called rotation vector. The direction of the arrow is the direction of the right-hand screw of rotation, and the length corresponds to the angular velocity magunitude of rotation.
+The red arrow's direction and length correspond to acceleration's direction and magnitude.
+Here you can instantly see that the robot is accelerating forward.
+The blue arrow shows angular velocity as a rotation vector. The arrow direction follows the right-hand rule for rotation, and its length represents the rotation's angular velocity magnitude.
 
-Note that in the acceleration visualization, an offset corresponding to the gravitational acceleration is given in the Z-axis direction by default. This ensures that the length of the arrow marker (the magnitude of acceleration) becomes zero when the accelerometer is stationary. This is configured in the "Offset" propertiy of the AccelerationSensorVisualizer item, which defaults to
+Note that acceleration visualization includes a default Z-axis offset corresponding to gravitational acceleration. This ensures the arrow marker length (acceleration magnitude) becomes zero when the accelerometer is stationary. This is configured in the AccelerationSensor item's "Offset" property, which defaults to:
 
 .. code-block:: none
 
  0.0 0.0 -9.8
 
-. These values correspond to the X, Y, and Z axes of the sensor local coordinates, respectively, and adding an offset of -9.8 to the Z axis cancels the acceleration component measured by gravity.
+These values correspond to the sensor's local X, Y, and Z axes. The -9.8 offset on the Z axis cancels the gravity-measured acceleration component.
 
-The sub-items for sensor visualization have the following three properties related to visualization, including the the offset.
-By adjusting these properties as needed, the sensor status can be displayed in a more visible manner.
+Sensor visualization sub-items have three visualization-related properties, including offset.
+Adjust these properties as needed for clearer sensor state display:
 
 * Display ratio
 
-  * Specify the ratio of the length of the marker on the scene view to the magnitute of a sensor state vector.
+  * Sets the ratio between the sensor state vector magnitude and the marker length in the scene view.
 
 * Display threshold
 
-  * The marker is displyaed only when the magnitude of a sensor state vector is greater than or equal to this threshold.
+  * Displays the marker only when the sensor state vector magnitude meets or exceeds this threshold.
 
 * Offset
 
-  * Specify the offset vector above.
+  * Sets the offset vector described above.
 
-Apply project save to the state after the SensorVisualizer item is introduced, and save this state to the project file.
+Save the project after introducing the Sensor Visualizer Item to preserve this configuration in the project file.
 
-Source Code Description
+Source Code Explanation
 -----------------------
 
-The following is a description of the source code of the controller RttImuStateSubscriber that we introduced.
+Let's examine the source code of the RttImuStateSubscriber controller we introduced.
 
-The basic structure of the source code is the same as the RttJointStatePublisher in Step 3.
-In RttJointStatePublisher, the input is a JointState topic that stores joint displacements, etc., and the joint displacements of the body model for visualization are the target of updates.
-On the other hand, in this controller, the input target is a topic of type Imu that stores angular velocity and acceleration, and the device object of the body model for visualization is the target of update.
-In addition to this process, a process to vibrate the body model is added when an acceleration of a certain magnitude is detected.
+The basic source code structure matches RttJointStateSubscriber from Step 3.
+In RttJointStateSubscriber, the input was JointState topics containing joint displacements, and the update targets were the visualization body model's joint displacements.
+In this controller, the input is Imu type topics containing angular velocity and acceleration, and the update targets are the visualization body model's device objects.
+Additionally, this controller includes processing to vibrate the body model when detecting acceleration above a certain magnitude.
 
 .. highlight:: c++
 
-Header inclusion
-~~~~~~~~~~~~~~~~
+Header Includes
+~~~~~~~~~~~~~~~
 
-First of all, since the acceleration sensor and the rate gyro are to be updated by the controller, the corresponding headers are included. ::
+First, since we're updating the acceleration sensor and rate gyro, we include their corresponding headers:
 
- #include <cnoid/AccelerationSensor>.
- #include <cnoid/RateGyroSensor>.
+ #include <cnoid/AccelerationSensor>
+ #include <cnoid/RateGyroSensor>
 
-Also, the header of the Imu type, which is the message type to be subscribed, is included. ::
+We also include the Imu type header for the message type we're subscribing to:
 
  #include <sensor_msgs/Imu.h>
 
-These headers are the same as Step 4 in which the target data type and object are the same.
+These are the same as Step 4, which uses the same data types and objects.
 
-In addition, since timers and random numbers are used in the process of vibrating the model, the corresponding headers are included. ::
+Additionally, we include headers for timers and random numbers used in the model vibration process:
 
- #include <cnoid/Timer>.
+ #include <cnoid/Timer>
  ...
 
  #include <random>
 
-The rest of the headers are required for subscribing to the topic as in step 3.
+The remaining headers are required for topic subscription, as in Step 3.
 
-Member variables
+Member Variables
 ~~~~~~~~~~~~~~~~
 
-There are some new member variables introduced for the controller in step 3, which will be explained below.
-First ::
+Let's explain the new member variables introduced beyond Step 3's controller.
+First:
 
  AccelerationSensorPtr accelSensor;
  RateGyroSensorPtr gyro;
 
-are variables that store the sensor object to be updated.
+store the sensor objects to be updated.
 
-In addition, the following variables are necessary for the process of vibrating the model at the time of collision detection. ::
+Additionally, these variables are needed for the collision detection model vibration process:
 
  Timer bodyShakeTimer;
  double bodyShakeDuration;
@@ -408,18 +410,18 @@ In addition, the following variables are necessary for the process of vibrating 
  mt19937 mt;
  uniform_real_distribution<> rand;
 
-These details will be explained later.
+We'll explain these in detail later.
 
-Initialization process
+Initialization Process
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The initialization process is implemented in the "configure" function as in Step 3.
+The initialization process is implemented in the configure function, as in Step 3.
 
-The acceleration sensor is obtained by the following code. ::
+We obtain the acceleration sensor with:
 
  accelSensor = body->findDevice<AccelerationSensor>();
 
-If the acceleration sensor is found, prepare for the model vibration process. ::
+If an acceleration sensor is found, we prepare for the model vibration process:
 
   if(accelSensor){
       auto sigTimeout = bodyShakeTimer.sigTimeout();
@@ -429,28 +431,28 @@ If the acceleration sensor is found, prepare for the model vibration process. ::
       }
   }
 
-bodyShakerTimer is an object of the Timer type.
-It is an extension of Qt's QTimer class to be able to use Choreonoid's signal type.
-The sigTimeout used here is a signal that is emitted when the timer reaches the specified time interval.
-(This signals corresponds to the original "timeout" signal of QTimer.)
-Here this signal is connected to the onBodyShakeTimerTimeout function so that it will be called when the timer times out.
-We also set the time interval of the timer to 20 milliseconds.
-This timer will vibrate the model at regular intervals to create an animation to show that the model has collided.
+bodyShakeTimer is a Timer type object.
+This extends Qt's QTimer class to work with Choreonoid's signal types.
+The sigTimeout used here is a signal emitted when the timer reaches its specified time interval.
+(This signal corresponds to QTimer's original "timeout" signal.)
+We connect this signal to the onBodyShakeTimerTimeout function, which will be called on timeout.
+We set the timer interval to 20 milliseconds.
+This timer creates an animation showing model collision by vibrating the model at regular intervals.
 
-Note that this initialization process only needs to be done once after the generation of this controller, so if the controller has already been initialized, this process is skipped.
-To check if it has already been initialized or not, the following condition is used. ::
+Note that this initialization only needs to occur once after controller creation, so we skip it if already initialized.
+We check initialization status with:
 
  if(!sigTimeout.hasConnections()){
      ...
  }
 
-This judgment is necessary because the configure function may be called multiple times as controller items are moved.
+This check is necessary because the configure function may be called multiple times when controller items are moved.
 
-The rate gyro is also obtained by the following code. ::
+We also obtain the rate gyro:
 
  gyro = body->findDevice<RateGyroSensor>();
 
-Create a node handle and then create a subscriber using the handle. ::
+We create a node handle and then create a subscriber:
 
  node.reset(new ros::NodeHandle(bodyItem->name()));
  subscriber = node->subscriber(
@@ -458,24 +460,24 @@ Create a node handle and then create a subscriber using the handle. ::
      1,
      &RttImuStateSubscriber::imuStateCallback, this);
 
-This process is the same as step 3.
+This process matches Step 3.
 
-The topic name is "/(model name)/imu", which is actually "/Tank/imu".
-This is the same name as the topic that the controller created in Step 4 publishes.
+The topic name is "/(model name)/imu", which becomes "/Tank/imu".
+This matches the topic name published by the controller created in Step 4.
 
-The following function is specified as a callback function when the topic is subscribed. ::
+The callback function for topic subscription is:
 
  void imuStateCallback(const sensor_msgs::Imu& state)
  {
      callLater([this, state](){ updateImuState(state); });
  }
 
-Here, the callLater function is used to call the updateImuState function from the main thread.
+This uses callLater to ultimately execute the updateImuState function from the main thread.
 
-Updating the states of sensor objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Updating Sensor Object States
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The updateImuState function is executed when the topic is subscribed, and updates the states of the sensor objects that the model for visualization has. ::
+The updateImuState function executes when topics are subscribed and updates the visualization model's sensor object states:
 
  if(accelSensor){
      auto& dv = state.linear_acceleration;
@@ -483,10 +485,12 @@ The updateImuState function is executed when the topic is subscribed, and update
      accelSensor->notifyStateChange();
      ...
 
-If there is an acceleration sensor, update its acceleration value with the subsribed value.
-After the update, the notifyStateChange function of the sensor object will be executed to notify this update.
-The notification of the update is done using the sigStateChanged signal of the sensor object.
-The body state view and the sensor visualizer item are observing this signal, and their displays will be updated along with the notification. ::
+If an acceleration sensor exists, we update its acceleration value with the subscribed value.
+After updating, we execute the sensor object's notifyStateChange function to notify of this update.
+Update notification uses the sensor object's sigStateChanged signal.
+The Body State View and Sensor Visualizer Item are connected to this signal and update their displays upon notification.
+
+::
 
      ...
 
@@ -495,9 +499,9 @@ The body state view and the sensor visualizer item are observing this signal, an
      }
  }
 
-If the magnitude of the horizontal (X, Y) element vector of the acceleration is greater than 20.0 [m/s^2], the Tank robot is assumed to have collided and the animation to shake the model for visualization is started.
+If the horizontal (X, Y) acceleration vector magnitude exceeds 20.0 [m/s²], we assume the Tank robot has collided and start the visualization model shaking animation.
 
-The same update process is applied to the rate gyro. ::
+We apply the same update process to the rate gyro:
 
   if(gyro){
       auto& w = state.angular_velocity;
@@ -505,12 +509,12 @@ The same update process is applied to the rate gyro. ::
       gyro->notifyStateChange();
   }
 
-There is no additional processing here as with the acceleration sensor.
+Unlike the acceleration sensor, there's no additional processing here.
 
-Model vibration animation
+Model Vibration Animation
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The animation to vibrate the model is started by executing the following function. ::
+The model vibration animation starts by executing this function:
 
  void startBodyShake()
  {
@@ -522,18 +526,20 @@ The animation to vibrate the model is started by executing the following functio
      }
  }
 
-bodyShakeDuration is the duration of the animation. Here, it is set to 0.5 seconds.
+bodyShakeDuration is the animation duration, set to 0.5 seconds here.
 
-Next, the timer is checked to see if it is running or not. If the timer's isActive function returns true, then the timer is active and the animation is currently running, so it will continue.
+Next, we check if the timer is running. If the timer's isActive function returns true, the timer is active and animation is currently running, so we let it continue.
 
-If the isActive function returns false, the timer is not running yet, and the timer's start function is executed to activate the timer. At that time, the bodyPosition, which stores the center position of the vibration, is initialized with the current model position, and the random number object used to determine the relative position of the vibration is also initialized. The random number object is configured to return a double type value in the range of -0.02 to 0.02. ::
+If isActive returns false, the timer isn't running yet, so we execute the timer's start function to activate it. At this point, we initialize bodyPosition (which stores the vibration center position) with the current model position, and also initialize the random number object used to determine relative vibration positions. The random number object is configured to return double values between -0.02 and 0.02.
+
+::
 
  void onBodyShakeTimerTimeout()
  {
      ...
  }
 
-This function is called periodically by the timer for the animation. This is where we actually shake the model. ::
+This function is called periodically by the animation timer and actually shakes the model:
 
  if(bodyShakeDuration > 0.0){
      auto T = bodyPosition;
@@ -541,7 +547,9 @@ This function is called periodically by the timer for the animation. This is whe
      bodyItem->body()->rootLink()->setPosition(T);
  } ...
 
-If the animation is in progress, a position shifted by a randomly generated value for each of the X, Y, and Z axes from the vibration center position is generated, and the model position is updated at that position. This is repeated every 20 milliseconds for 0.5 seconds, so that the model appears to be vibrating. ::
+During animation, we generate a position offset from the vibration center by random values for each X, Y, and Z axis, then update the model to that position. Repeating this every 20 milliseconds for 0.5 seconds creates the appearance of vibration.
+
+::
 
      ...
 
@@ -550,22 +558,26 @@ If the animation is in progress, a position shifted by a randomly generated valu
      bodyItem->body()->rootLink()->setPosition(bodyPosition);
  }
 
-When bodyShakeDuration becomes less than or equal to 0, the animation will be stopped.
-At this time, the timer is stopped and the position of the model is restored to the original position (the vibration center position). ::
+When bodyShakeDuration reaches 0 or below, we end the animation.
+We stop the timer and restore the model to its original position (the vibration center).
+
+::
 
  bodyItem->notifyKinematicStateChange();
 
-This notifies the system that the model has been updated. ::
+This notifies of the model update.
+
+::
 
  bodyShakeDuration -= 0.02;
 
-This decreases the time contained in bodyShakeDuration until the end of the animation by the period of the timer.
-When this value is less than 0 or equal to 0, as shown above, the animation will be stopped.
+This decreases the remaining animation time by the timer period.
+When this reaches 0 or below, the animation ends as described above.
 
-Finalization process
-~~~~~~~~~~~~~~~~~~~~
+Termination Processing
+~~~~~~~~~~~~~~~~~~~~~~
 
-As in Step 3, the "unconfigure" function is used to finalize the controller. ::
+As in Step 3, we handle controller termination in the unconfigure function:
 
  virtual void unconfigure() override
  {
@@ -577,4 +589,4 @@ As in Step 3, the "unconfigure" function is used to finalize the controller. ::
      bodyShakeTimer.stop();
  }
 
-This function stops subscribing and clears the pointers of the related objects, and stops the timer for animation.
+This stops subscription, clears related object pointers, and stops the animation timer.

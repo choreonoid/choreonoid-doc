@@ -1,10 +1,9 @@
-
 Directory Structure
-================
+==================
 
-Choreonoid is installed approximately in the following directory structure. ::
+Choreonoid is generally installed with the following directory structure: ::
 
- + installation destination
+ + Installation destination
    + bin
    + lib
      + choreonoid-x.x
@@ -13,9 +12,9 @@ Choreonoid is installed approximately in the following directory structure. ::
        + project
        + model
 
-In case of Windows: ::
+For Windows, it looks like this: ::
 
- + installation destination
+ + Installation destination
    + bin
    + lib
      + choreonoid-x.x
@@ -24,21 +23,21 @@ In case of Windows: ::
      + model
 
 
-"x.x" part of "choreonoid-x.x" represents the version of Choreonoid. Actually, it will be a number like "1.5".
+Here, the "x.x" part of "choreonoid-x.x" represents the version number of Choreonoid, which would actually be a number like "1.6".
 
-The content of each of the directories is as follows:
+The contents of each directory are as follows:
 
 **bin**
- It contains the execution file.
+ Contains executable files.
 
 **lib**
- It contains the libraries.
+ Contains library files.
 
 **lib/choreonoid-x.x**
- It contains plug-in files. Any other file related to the system execution will be placed in a sub-folder for each type.
+ Contains plugin files. Also, if there are other files related to system execution, they are placed in subfolders according to their type. This directory is called the **"plugin directory"**.
 
 **share/choreonoid-x.x or share**
- Different data files like documents and samples will be placed here. This directory is called **"share directory"** . The actual files will be placed in sub-folders like "project" and "model" according to their type.
+ Contains various data files such as documentation and samples. This directory is called the **"share directory"**. The actual files are placed in subfolders such as "project" and "model" according to their type.
 
 
-Note that the share directory has the same folder in the source archive, too, and it contains sample data and other. You may use it for using the sample. In case of building from source codes in Linux, bin and lib directories will be generated in the build directory and the binary files that are generated there are also executable.
+Note that the share directory also exists in the source archive with the same folder structure, containing sample data and other files, so you can use those when working with samples. Also, when building from source code on Linux, bin and lib directories are generated within the build directory, and the binary files generated there are also executable.

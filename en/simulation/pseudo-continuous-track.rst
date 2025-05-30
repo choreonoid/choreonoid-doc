@@ -1,139 +1,168 @@
-
-Simplified Simulation of Crawler
-================================
+Simplified Simulation of Continuous Tracks
+==========================================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 
-.. contents:: 
+.. contents:: Table of Contents
    :local:
 
 .. highlight:: cpp
 
 
-What is Crawler
----------------
+What are Continuous Tracks?
+---------------------------
 
-"Crawler" is a mechanism that is used to move a vehicle. It is also called "caterpillar" or "continuous track". Crawlers are generally used for heavy machines and tanks and they are widely used for the transfer mechanism. Systems like belt conveyors are also a type of this mechanism.
+"Continuous Track" is used as a general term for mobility mechanisms such as "caterpillars" and "crawlers" commonly used in tanks and heavy machinery. These are also widely used as mobility mechanisms for robots. Additionally, devices like belt conveyors can be considered a type of this mechanism.
 
-Choreonoid is equipped with the function that makes simplified simulation of a crawler. The function does not reproduce an actual crawler but can simulate to some extent a movement on a comparably flat ground. How to use this function is described below:
+Choreonoid has a function to perform simplified simulation of continuous track mechanisms. While this does not precisely reproduce the actual mechanism, it can perform simulation to some extent for movement on relatively flat ground. Below we explain how to use this function.
 
-Creation of Crawler Model
--------------------------
+Creating a Continuous Track Model
+---------------------------------
 
-First, it is necessary to define the crawler mechanism in the model to be used. This can be done as follows:
+First, you need to define the links that will serve as continuous track mechanisms in the model you will use. This is done as follows:
 
-* Model a crawler part as a single link.
-* Specify "pseudoContinuousTrack" as the joint type of this link.
-* Specify the rotation axis of the crawler to the joint axis parameter.
+* Model the entire continuous track as a single link
+* Specify "pseudo_continuous_track" as the joint type for this link
+* Specify the rotation axis direction of the continuous track in the joint axis parameters
+* Specify "Link::JointVelocity" as the :ref:`simulation-implement-controller-actuation-mode`
 
-As a sample of the model including a crawler, the "Crawler" model is available. This sample is defined in the file "crawler.wrl" under "model/misc/" in the share directory and has the appearance as follows:
+As a sample model including continuous tracks, we have prepared a model called "Crawler". This is defined in a file called "crawler.body" under "model/misc/" in the share directory, and has the following appearance:
 
 .. image:: images/crawler-model.png
 
-The black part of the model corresponds to the crawler and there are two crawlers on the right and left each.
+The black parts of the model correspond to the continuous tracks, with one on each side (left and right) for a total of two. Below we will refer to these parts as "crawlers".
 
-The entire model consists of three links and forms the joint mechanisms as follows:
+The entire model consists of three links with the following joint structure:
 
-| + BODY (root link）
+| + BODY (root link)
 |   + CRAWLER_TRACK_L (left crawler)
 |   + CRAWLER_TRACK_R (right crawler)
 
-First, a root link called BODY is defined. This corresponds to the green part in the center of the model. As a root link cannot be made a crawler, define the root link that becomes the base as above.
+First, we define a root link called BODY. This corresponds to the green part in the center of the model. Since a crawler cannot be a root link, please define a base root link like this first.
 
-"CRAWLER_TRACK_L", which corresponds to the left crawler, is defined in the model file as follows: ::
+The "CRAWLER_TRACK_L" corresponding to the left crawler is defined in the model file as follows:
 
- DEF CRAWLER_TRACK_L Joint {
-   translation 0.0 0.15 0
-   jointType "pseudoContinuousTrack"           
-   jointAxis 0 1 0
-   jointId 0
-   children [
-     DEF CRAWLER_TRACK_L_LINK Segment {
-       ...
-     }
-   ]
- }
+.. code-block:: yaml
 
-"crawler" is specified in "jointType" field, which specifies the joint type. It shows explicitly that this link is a crawler.
+ -
+   name: CRAWLER_TRACK_L
+   parent: BODY
+   translation: [ 0.0, 0.15, 0 ]
+   jointType: pseudo_continuous_track
+   jointAxis: [ 0, 1, 0 ]
+   jointId: 0
+   elements:
+     ...
 
-Specify the rotation axis of the crawler in "jointAxis" field. The rotation axis of a crawler is, assuming the internal wheels that drive the crawler, a vector that matches their axis of rotation. Here, "0 1 0" is specified to match the Y-axis.
+The "jointType" field that specifies the joint type is set to "pseudo_continuous_track".
 
-The shape of the crawler is described in the Segment node. It is necessary to model this part so that the origin of the local coordinate is a point inside the crawler. Any point that is inside the crawler will do, but if you match it with one of the wheels, you may easily understand the mechanism as you may well model a general revolute joint.
+The "jointAxis" field specifies the rotation axis of the crawler. The rotation axis of a crawler is a vector that matches the rotation axis of the internal wheels that drive the crawler. Here we specify "0 1 0" to match the Y-axis.
 
-The origin and the rotation axis defined here are meddling assuming that the crawler moves the longitudinal direction of the model.
+The crawler shape is described with a Segment node. This part must be modeled so that the origin of the local coordinates is a point inside the crawler.
 
-"CRAWLER_TRCK_R", which corresponds to the right crawler is described in a similar way.
+The crawler origin and rotation axis defined here are modeled assuming that the crawler moves in the front-back direction of the model.
 
+The "CRAWLER_TRACK_R" corresponding to the right crawler is described similarly.
 
-Supporting Simulator Items
+Compatible Simulator Items
 --------------------------
 
-It is necessary for the simulator item to be used to support simplified simulation of a crawler when the crawler is used.
+To perform simplified simulation of continuous tracks, the simulator item you use must support this function.
 
-For the time being,
+Currently, the following support this function:
 
-* AISTSimulatorItem
-* ODESimulatorItem
-* BulletSimulatorItem
+* AIST Simulator Item
+* ODE Simulator Item
+* Bullet Simulator Item
+* AGX Dynamics Simulator Item
 
-support this function.
 
-Simplified Simulation Overview
-------------------------------
+Overview of Simplified Simulation
+---------------------------------
 
-Simulation of a crawler using this function is nothing but a simplified simulation. It is different from a real crawler in the following points:
+The continuous track simulation by this function is only a simplified simulation. It differs from actual mechanisms in the following ways:
 
-* The surface of the crawler does not rotate; and
-* The surface of the crawler does not transform.
+* The surface of the continuous track does not rotate
+* The surface of the continuous track does not deform
 
-The driving force by the crawler is realized by directly adding force between the surface of the crawler and the environment. This force is calculated from the binding condition that makes the relative velocity at each contact point become the target value. Be careful that this is quite different from the driving mechanism of a real crawler.
+The driving force from the continuous track is realized by directly applying force between the continuous track surface and the environment. This force is calculated from constraint conditions that make the relative velocity at contact points equal to the target value. Note that this differs from the actual driving mechanism of continuous tracks.
 
-While a real crawler achieves high stability and running performance as its surface transforms depending on the environment, a simplified simulation does not transform at all. As a result, the stability and the running performance on a rough ground is much inferior to the real one.
+Also, while real continuous tracks enhance stability and traversability by deforming their surface according to the environment, the simplified simulation does not produce such deformation. As a result, stability and traversability on uneven terrain are much inferior to real ones.
 
-The direction of the force to be added to each contact point shall be the direction of the vector product of the rotation axis of the crawler and the normal vector of the contact surface. When the crawler of the sample model makes contact with the environment as follows, the vectors are as follows:
+The direction of force applied to contact points is the direction of the cross product of the continuous track's rotation axis and the contact normal. When the sample model's crawler is in contact with the environment as shown below, these vectors are as follows:
 
 .. image:: images/crawler-vectors.png
 
-The rotation axis of the crawler is the vector that points the front side of the figure (the direction of Y axis). Given the normal vectors at the contact points with the environment being the blue arrows, the vector products of the rotation axis and the normal vectors will be the red arrows, and when a positive command value is specified, the driving force is generated to this direction. As a result, the entire crawler will move to the left side of the figure (to the direction of X axis) and cross over the steps, too.
+The crawler's rotation axis is a vector pointing toward the front of the figure (Y-axis direction). With the contact normals at environmental contact points shown as blue arrows, the cross product of the rotation axis and contact normals gives the red arrows, and when a positive command value is input, driving force is generated in this direction. As a result, the entire crawler moves to the left side of the figure (X-axis direction) and can climb over steps.
 
-How to Give Command Value
--------------------------
 
-In a simplified simulation of a crawler, a command value to the crawler shall be given as the magnitude of the driving velocity (the relative velocity that should be realized at the contact points) of the crawler. The command value can be output by specifying the joint velocity value of the corresponding Link object.
+How to Give Command Values
+--------------------------
 
-For example, in the case of driving the crawler of the sample model with SimpleController, you can have the control loop process as follows: ::
+In simplified simulation of continuous tracks, command values to the continuous track are given as the magnitude of the driving velocity (relative velocity to be achieved at contact points). This value can be output as the joint velocity value for the joint corresponding to the continuous track.
 
- // ioBody is the Body object obtained by io->body()
- ioBody->joint("CRAWLER_TRACK_L")->dq() = 1.0;
- ioBody->joint("CRAWLER_TRACK_R")->dq() = 1.0;
+For example, when driving the sample model's crawler using SimpleController, first in the initialize function:
 
-By doing so, the right and the left crawlers are given the equal driving force and the entire model moves to the front at the velocity of 1.0 [m/s].
+ Link* crawlerL = io->body()->link("CRAWLER_TRACK_L");
 
-By giving different command values to the right and the left crawlers as follows, you can make the model turn. ::
+to get the crawler link, then:
 
- ioBody->joint("CRAWLER_TRACK_L")->dq() =  1.0;
- ioBody->joint("CRAWLER_TRACK_R")->dq() = -1.0;
+ crawlerL->setActuationMode(Link::JointVelocity);
+ io->enableOutput(crawlerL);
 
-In this case, the model turns to the right.
+to enable output to the simplified crawler.
 
+The above is for the left crawler. Do the same for the right side.
+
+Then, perform the following in the control function:
+
+ crawlerL->dq_target() = 1.0;
+ crawlerR->dq_target() = 1.0;
+
+This gives the same driving force to both left and right crawlers, making the entire model move forward at a speed of 1.0[m/s]. (The variable ioBody used here is the Body object for input/output obtained by io->body().)
+
+Also, by giving different command values to left and right as follows, you can make the model turn:
+
+ crawlerL->dq_target() =  1.0;
+ crawlerR->dq_target() = -1.0;
+
+In this case, the model rotates to the right.
+
+.. note:: While dq_target normally gives joint angular velocity, for simplified crawlers this is not the "angular velocity of the wheel axis" that would correspond to it, but rather the relative velocity at contact points. Note that the simplified crawler itself is physically impossible and specific to the simulator, so we do this for convenience to accommodate it.
 
 Simulation Sample
 -----------------
 
-We have a project "SampleCrawler.cnoid" as a sample to move the sample crawler model. When we execute a simulation in this project, the crawler model crawls as illustrated in the figure while crossing over a bump on the floor.
+As a sample to move the sample crawler model, there is a project called "SampleCrawler.cnoid". When you run simulation in this project, the crawler model moves while climbing over floor steps as shown in the figure.
 
 .. image:: images/SampleCrawlerProject.png
 
-The controller used is implemented in the SimpleController format. The source file is "src/sample/SimpleController/SampleCrawlerController.cpp", which you can refer to.
+The controller used here is implemented in the SimpleController format. The source file is "src/sample/SimpleController/SampleCrawlerController.cpp", which you can refer to.
 
-Also, with "SampleCrawlerJoystick.cnoid", you can operate the crawler model with a USB-connected joystick (gamepad). As for the first analogue stick of the joystick, its up-down-right-left corresponds to forward-back-right-left movement of the crawler model.
+Also, "SampleCrawlerJoystick.cnoid" allows you to operate the crawler model with a USB-connected joystick (gamepad). For the first analog stick of the joystick, its up/down/left/right corresponds to the crawler model's forward/backward/left turn/right turn.
 
-If a joystick is not connected, the use of "Virtual Joystick View" as follows can realize the same operation as a real joystick.
+If you don't have a joystick connected, you can use the "Virtual Joystick View" below for the same operation as a joystick.
 
 .. image:: images/VirtualJoystickView.png
 
-The first analogue stick of the joystick is allocated on "E", "D", "S", and "F" keys on the keyboard and they correspond to the up, down, left and right on the stick respectively. When you start the simulation, click inside this view to enable the keyboard focus. Then, you can operate the crawler model by pressing these keys.
+The first analog stick of the joystick is mapped to keyboard keys "E", "D", "S", "F", corresponding to up, down, left, and right of the stick respectively. After starting the simulation, click inside this view to give it keyboard focus. Then you can operate the crawler model by pressing these keys.
 
-The source of this controller is "sample/SimpleController/CameraSampleController.cpp".
+The source for this controller is "src/sample/SimpleController/SampleCrawlerJoystickController.cpp".
 
 
+Notes
+-----
+
+In previous versions of Choreonoid, the procedure for performing simplified simulation of continuous tracks was to specify Link::JOINT_SURFACE_VELOCITY as the actuation mode.
+
+To make this specification, the standard usage was to write the following for the corresponding link in the model file:
+
+.. code-block:: yaml
+
+ actuationMode: jointSurfaceVelocity
+
+(Note that setting the control command value to Link::dq_target() is the same as before.)
+
+However, we judged that specifying the mechanism of continuous tracks is more appropriate through joint type rather than actuation mode, so the method described above is now the standard. (The previous method is still usable for now.)
+
+.. In fact, the current method was the one adopted in even earlier versions of Choreonoid, so we have returned to that. We apologize for the back-and-forth changes in the standard method, but we hope you understand.

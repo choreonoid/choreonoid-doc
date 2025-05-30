@@ -1,151 +1,157 @@
-
-Simulation of Vision Sensor
-===========================
+Vision Sensor Simulation
+========================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 
-.. contents::
+.. contents:: Table of Contents
    :local:
 
 .. highlight:: cpp
 
 .. _simulation-gl-vision-simulator-sensor:
 
-Vision Sensor
--------------
+Vision Sensors
+--------------
 
-The following device types are defined in Choreonoid for vision sensors:
+In Choreonoid, the following device types are defined as vision sensors:
 
 * Camera
 * RangeCamera
 * RangeSensor
 
-Camera is a device that corresponds to a video camera. It retrieves two-dimensional image data continuously at a constant frame rate.
+Camera is a device corresponding to a video camera. It continuously acquires 2D image data at a constant frame rate.
 
-RangeCamera is an extended camera and retrieves, in addition to two-dimensional image, the corresponding depth map that contains information relating to the distance of the surfaces of scene objects from a viewpoint. An example of this type of sensor is Kinect.
+RangeCamera is an extension of Camera that acquires not only 2D images but also the corresponding depth map (which stores the distance from the viewpoint to object surfaces in the image). An example of a sensor of this type is the Kinect.
 
-RangeSensor is a device assuming a three-dimensional measurement device using laser. Normally, it outputs one-dimensional distance data equivalent to one line measurement. Some devices are capable of outputting a two-dimensional distance data like a depth map output from RangeCamera.
+RangeSensor is a device that assumes a 3D measurement device using lasers. It typically outputs one-dimensional distance data measured for one line. Some can output two-dimensional distance data similar to the depth map of RangeCamera.
 
-These vision sensors are common sensors that are mounted in a robot and have a great demand for simulations. How to simulate these sensors in Choreonoid is explained below:
+These types of vision sensors are common sensors mounted on robots, and there is high demand for their simulation. Below, we explain how to simulate these sensors in Choreonoid.
 
-Addition of Vision Sensor
--------------------------
+Adding Vision Sensors
+---------------------
 
-To use a vision sensor, the sensor that you want to use in the body model must be defined as a device.
+To use vision sensors, the sensors you want to use must first be defined as devices in the body model.
 
-In a model file in OpenHRP format, the sensor should be described according the specification of  :ref:`oepnrhp_modelfile_sensors` . The correspondence between the different sensors and the nodes in the model file is as follows:
-
-.. list-table::
- :widths: 40,60
- :header-rows: 1
-
- * - Device type in body model
-   - Node type in OpenHRP model file
- * - Camera
-   - VisionSensor (with the type being "COLOR")
- * - RangeCamra
-   - VisionSensor (with the type being "COLOR_DEPTH")
- * - RangeSensor
-   - RangeSensor
+In Choreonoid model files (with extension .body), describe the sensors according to the :ref:`body-file-reference-devices` specifications.
 
 .. _simulation-gl-vision-simulator:
 
 Vision Simulator
 ----------------
 
-A function to simulate vision sensors is normally implemented as a :ref:`simulation_subsimulator` and used in combination with a simulator item. Such a sub-simulator is called "vision simulator" in Choreonoid. Actually, as a vision simulator that is available as standard, "GL Vision Simulator" is provided. It generates data of vision sensors using the same rendering function as the one used to render on the scene view. As the rendering function is implemented using the OpenGL API, it has the name GL.
+Vision sensor simulation functionality is usually implemented as a :ref:`simulation_subsimulator` and used in combination with a simulator item. Such subsimulators are called "vision simulators" in Choreonoid. The "GL Vision Simulator" is available as a standard vision simulator. This generates vision sensor data using the same rendering functionality used for drawing the scene view. Since this rendering functionality is implemented using an API called OpenGL, it is named GL Vision Simulator.
 
-A vision simulator works by allocating it as a child item of a simulator item. As GL Vision Simulator can be created by "File" under Main Menu - "New" - "GLVisionSimulator", place it as a child item of the target simulator item.
+The vision simulator functions by placing it as a child item of the simulator item. When using the GL Vision Simulator, you can generate its item from the main menu "File" - "New" - "GL Vision Simulator", and place it as a child item of the target simulator item.
 
-By doing so, the simulation of vision sensors can be performed to the virtual world that the simulator item is targeting. In concrete terms, the image data of Camera devices, the depth map data of RangeCamera devices, and the distance data of RangeSensor devices are updated at the frame rate configured to the devices.
+By doing so, vision sensor simulation will also be performed for the virtual world targeted by the simulator item. Specifically, the image data of Camera devices, depth maps of RangeCamera, and distance data of RangeSensor will be updated at the frame rate set for each device.
 
 .. _simulation-gl-vision-simulator-property:
 
-Properties of GL Vision Simulator
----------------------------------
+GL Vision Simulator Settings
+----------------------------
 
-The basic configuration for simulating vision sensors is as described above, but the detailed part can be configured by the properties of the vision simulator item. GL Vision Simulator's properties related to the configuration are as follows:
+In addition to the basic settings for vision sensor simulation explained so far, you can configure detailed settings through the properties of the GL Vision Simulator item. The contents of each property related to settings are shown below.
 
 .. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
 
 .. list-table::
- :widths: 24,86
+ :widths: 25,75
  :header-rows: 1
 
  * - Property
    - Meaning
  * - Target bodies
-   - It specifies the body models that become the target of the vision sensor. More than one body models can be specified by delimiting with a comma. If nothing is specified, all the models become the target. This property should be configured only when limiting the body models of the simulation target. By limiting the target models, the simulation speed may improve.
+   - Specify by name the body models to be targeted for vision sensor simulation. Multiple models can be specified by separating with commas. If nothing is specified, all models are targeted. Set this item only when you want to limit the simulation target body models. Limiting target models may improve simulation speed.
  * - Target sensors
-   - The vision sensors subject to simulation are specified by names. More than one vision sensor can be specified by delimiting with a comma. This property should be configured only when limiting the sensors of the simulation target.
+   - Specify by name the vision sensors to simulate. Multiple sensors can be specified by separating with commas. Similar to "Target bodies", set this item only when you want to limit the simulation target sensors.
  * - Max frame rate
-   - The value specified here will be the maximum frame rate for all the sensors regardless of the specification values of the sensors. This property should be configured in case you want to improve the simulation speed by decreasing the frame rate.
+   - For all sensors, regardless of the sensor specification values, the frame rate set here becomes the maximum. Set this item when you want to improve simulation speed by reducing the frame rate.
  * - Max latency
-   - The maximum value is set for the time (latency) from the time when a sensor starts measurement till the result can be output as data. For all the sensors, data can be output if this time is elapsed regardless of the specification of the sensors. Decreasing this value may make a simulation slower.
+   - Sets the maximum time (latency) from when a sensor starts measurement until its result becomes available as data. For all sensors, regardless of sensor specifications, data becomes available after this time elapses. Reducing this value may slow down the simulation.
  * - Record vision data
-   - It configures whether or not to perform :ref:`simulation-device-state-recording` in :ref:`simulation-result-recording` for the data obtained by the vision sensor such as image data and distance data. The size of these data is generally large and recording them just for a short time consumes large memory space. So, they should usually not included.
- * - Threads for sensors
-   - It configures whether or not to use a dedicated thread for each sensor instance when multiple vision sensors are simulated. It should usually be true, but setting it to false may improve the simulation speed depending on the number of the sensors and the GPU being used.
+   - Sets whether to include vision sensor data such as camera images and distance data in :ref:`simulation-device-state-recording` for :ref:`simulation-result-recording`. These data are generally large in size and consume a lot of memory even for short recordings, so they are usually not included.
+ * - Use sensor threads
+   - In situations where multiple vision sensors are simulated, sets whether to assign a dedicated thread to each sensor. Usually keep this true, but depending on the number of sensors and the GPU being used, setting it to false may improve simulation speed.
  * - Best effort
-   - A vision sensor is configured with a frame rate and data are updated at the interval of that frame rate. If the best effort is set to true, data update may not be in time for the frame rate. The actual interval depends on the internal data generation process in the simulator. If it is set to false, on the contrary, data will be updated according to the frame rate configured. However, as it is necessary to wait for the completion of the data generation process even if it is not completed in time, the simulation speed can become slower. Therefore, if you prioritize improvement of the simulation speed over keeping of the frame rate, this property should be set to true.
+   - Vision sensors have a frame rate setting and are supposed to update data at intervals of that frame rate. When best effort is set to true, it allows updates to not be completed within that frame rate. The actual interval depends on the data generation processing inside the simulator. Conversely, when set to false, updates are performed according to the set frame rate. However, if the data generation processing does not finish within that time, it needs to wait for completion, which may slow down the simulation speed accordingly. Therefore, if improving simulation speed is more important than maintaining the frame rate, set this item to true.
  * - All scene objects
-   - Objects that can be displayed as 3DCG are called "scene objects". Project items that are displayed on the scene view by checking in Item Tree View correspond to the scene objects. This property configures whether or not to include scene objects other than body items in the virtual world seen by vision sensors. An example of a scene object other than a body item is a scene item. It does not influence on the physical behavior in the simulation but can be used as an appearance element of a virtual world.
- * - Precision ratio of range sensors
-   - The distance data of a range sensor is simulated using the depth buffer of OpenGL. This property configures the resolution of the depth buffer to the resolution of the distance sensor. The higher the value, the more accurate the distance data.
+   - Objects that can be displayed as 3DCG are called "scene objects". For project items, those that are displayed in the scene view when checked in the item tree view are "scene objects". This item sets whether to include scene objects other than body items in the virtual world visible to vision sensors. Scene objects other than body items include, for example, scene items. These do not affect the dynamic behavior in the simulation but can be used as visual elements of the virtual world.
+ * - Range sensor precision ratio
+   - Range sensor distance data is generated using OpenGL's depth buffer. This item sets the ratio of the depth buffer resolution to the range sensor resolution. Increasing the value improves the accuracy of distance data.
  * - Depth error
-   - It adds a certain offset to the distance data of the range sensor. Please refrain from using this property proactively as it is still in the experimental stage.
+   - Adds a constant offset to range sensor distance data. This item is still experimental, so please refrain from active use.
  * - Head light
-   - "Head light" is the light source that always beams the light to the vision line direction from the view point and this property configures whether or not to enable this light source in simulating camera images.
+   - A light source that always illuminates from the viewpoint in the direction of the line of sight is called a "headlight". This sets whether to enable this light source in camera image generation.
  * - Additional lights
-   - "Additional lights" are the light sources that are included in body models and this property configures whether or not to enable these light sources in simulating camera images. It should be set to true if you want to make simulation of the lights.
+   - Light sources (lights) included in body models are called "additional lights". This sets whether to enable these light sources in camera image generation. Set this to true if you want to simulate lights.
 
-By default, simulation of vision sensors works properly, so the above properties may be configured depending on the necessity.
+Vision sensor simulation functions fully with the default settings, so it's OK to set the above items only as needed.
 
-Utilization of Sensor Information
----------------------------------
+Simulating Multiple Sensors
+---------------------------
 
-Image data and distance data that are simulated are stored as data of the corresponding device objects internally in the simulator. By retrieving these data in a certain way, the sensor data can be utilized.
+When the virtual world to be simulated contains multiple vision sensors, preparing one GL Vision Simulator item will simulate all of them by default. If you want to limit the sensors to simulate, set the "Target bodies" or "Target sensors" properties mentioned above.
 
-It is usually the controller of the robot that actually utilizes the sensor information. For the controller, each controller item specifies the access method to the devices. So, get the data for the vision sensors according to this method. This is similar to other sensors like a force sensor, a rate gyro and an acceleration sensor. Refer to the manual, etc. of each controller item for the actual access method.
+There may be cases where you want to set the properties mentioned above independently for each sensor. For example, you might want to use best effort mode for cameras to minimize impact on simulation speed, but measure range sensors without dropping the frame rate. In such cases, prepare multiple GL Vision Simulator items, separate their "Target bodies" and "Target sensors", and make the necessary settings for each. If both are placed as child items of the simulator item, they will be processed simultaneously during simulation.
 
-Example of Utilization of Vision Sensor
----------------------------------------
 
-As an example of utilizing a vision sensor, we introduce below a sample where a camera of a robot is accessed from the controller and its image data is output to a file.
+Using Sensor Information
+------------------------
 
-Preparation of Robot Model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The simulated image data and distance data are stored internally in the simulator as data of the corresponding Device objects. By obtaining this data through some method, you can use the sensor data.
 
-Prepare a robot model that has a Camera device. Any robot model having a camera can be used, but let's use SR1 model in this sample.
+What actually uses sensor information is usually the robot's controller. For controllers, each controller item specifies its own method for accessing devices, so obtain data for vision sensors according to that method. This is the same as for other sensors such as force sensors, rate gyros, and acceleration sensors. For actual access methods, refer to the manual for each controller item.
 
-In SR1 model, the vision sensors are defined as follows in its model file "SR1.wr1". ::
 
- DEF LeftCamera VisionSensor {
-   translation   0.15 0.05 0.15
-   rotation      0.4472 -0.4472 -0.7746 1.8235
-   name          "LeftCamera"
-   type          "COLOR_DEPTH"
-   sensorId      0
-   ...
- }
- 
- DEF RightCamera VisionSensor {
-   translation   0.15 -0.05 0.15
-   rotation      0.4472 -0.4472 -0.7746 1.8235
-   name          "RightCamera"
-   type          "COLOR_DEPTH"
-   sensorId      1
-   ...
- }
+Example of Vision Sensor Usage
+------------------------------
 
-The above defines two VisionSensor nodes corresponding the left eye and the right eye of the robot. Since the "type" is set to "COLOR_DEPTH", the sensors actually become a "RangeCamera" device in Choreonoid. Note that a RangeCamera device contains all the data of a Camera device because RangeCamera is a type inheriting the Camera type.
+As an example of using vision sensors, we'll introduce a sample that accesses cameras owned by a robot from a controller and outputs their image data to files.
 
-Creation of Simulation Project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Preparing the Robot Model
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Next, let's create a simulation project targeting this model. Anything will do, but let's use "SR1Liftup.cnoid", one of SR1 sample projects, as the base.
+First, prepare a robot model that has Camera devices as the target robot model. As an example of such a model, we'll use the SR1 model below.
 
-When the project is loaded, select "File" under Main Menu then "New" and "GLVisionSimulator" and create a GLVisionSimulator item. The default name is "GLVisionSimulator". Allocate it in Item Tree View as follows:
+In the SR1 model, vision sensors are defined as follows in its model file "SR1.body":
+
+.. code-block:: yaml
+
+ -
+   type: Camera
+   name: LeftCamera
+   translation: [ 0.15, 0.05, 0.15 ]
+   rotation: [ [ 0, 1, 0, -90 ], [ 0, 0, 1, -90 ] ]
+   id: 0
+   format: COLOR
+   nearClipDistance: 0.1
+   elements: &CameraShape
+     Transform:
+       rotation: [ 1, 0, 0, 90 ]
+       elements:
+         Shape:
+           geometry: { type: Cylinder, radius: 0.02, height: 0.025 }
+           appearance:
+             material: { diffuseColor: [ 1, 0, 0 ] }
+ -
+   type: Camera
+   name: RightCamera
+   translation: [ 0.15, -0.05, 0.15 ]
+   rotation: [ [ 0, 1, 0, -90 ], [ 0, 0, 1, -90 ] ]
+   id: 1
+   format: COLOR
+   nearClipDistance: 0.1
+   elements: *CameraShape
+
+Here, nodes for two Camera devices corresponding to the robot's left and right eyes are defined. Their format is "COLOR", allowing them to acquire color camera images.
+
+Creating a Simulation Project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, let's create a simulation project for this model.
+As an example, we'll use "SR1Liftup.cnoid", one of the SR1 sample projects, as a base.
+
+After loading the project, select "GL Vision Simulator" from the main menu "File" - "New" to generate a GL Vision Simulator item. The default name is "GLVisionSimulator". Place it in the item tree view as follows:
 
 | + World
 |   + SR1
@@ -155,16 +161,16 @@ When the project is loaded, select "File" under Main Menu then "New" and "GLVisi
 |   + AISTSimulator
 |     + **GLVisionSimulator**
 
-In this way, allocate the GL vision simulator item as a child item of the simulator item. By doing so, the vision sensor simulation function is enabled by the GL vision simulator. With this configuration, image data of the corresponding device object will be updated for the two cameras of SR1 model: "LeftCamera" and "RightCamera".
+In this way, place the GL Vision Simulator item as a child item of the simulator item. This enables the vision sensor simulation functionality by the GL Vision Simulator. When you run the simulation with this setting, the image data of the corresponding Device objects for the two cameras "LeftCamera" and "RightCamera" that the SR1 model has will be updated.
 
 Sample Controller
 ~~~~~~~~~~~~~~~~~
 
-As a sample of the controller accessing the camera images, let's use "CameraSampleController". This controller lists the Camera devices that the robot has and then outputs their image data to files every second.
+We'll use "CameraSampleController" as a sample controller that accesses camera images. This controller first displays a list of Camera devices that the robot has, and outputs their image data to files every second.
 
-.. note:: The source of this controller is "sample/SimpleController/CameraSampleController.cpp". If other samples of SimpleController are built, this sample must have been built, too.
+.. note:: The source for this controller is "sample/SimpleController/CameraSampleController.cpp". If other SimpleController samples have been built, this sample should also be built.
 
-Add this controller to the project. Create a "simple controller" item as in the examples of :ref:`simulation-create-controller-item` , :ref:`simulation-set-controller-to-controller-item` and allocate it as follows:
+Add this controller to the project. Similar to the examples in :ref:`simulation-create-controller-item` and :ref:`simulation-set-controller-to-controller-item`, generate a "Simple Controller" item and arrange it as follows:
 
 | + World
 |   + SR1
@@ -175,48 +181,48 @@ Add this controller to the project. Create a "simple controller" item as in the 
 |   + AISTSimulator
 |     + GLVisionSimulator
 
-The name of the controller item added is "CameraSampleController" in this example.
+The name of the added controller item is "CameraSampleController" here.
 
-Note that this item is allocated as a child item of "SR1LiftupController". By doing so, two controllers can work in combination. CameraSampleController is a controller specialized for the use of cameras. With this controller only, the robot would fall, so it is used in combination in this way. The part of SR1LiftupController can be replaced with any given controller that controls the body of the robot.
+Note that this item is placed as a child item of "SR1LiftupController". By doing this, you can operate the two controllers in combination. CameraSampleController is a controller specialized for camera use, and the robot would collapse with just this controller, so we're combining them this way. The SR1LiftupController part can be replaced with any controller that controls the robot's body.
 
-.. note:: It is the function unique to a simple controller item that makes the nested controller items work in combination in this way. By adding a child or a grand child to the base controller item, it is possible to combine any given number of controllers. Internally, the control functions of those controllers are executed in the order of traversing the item tree by the depth-first search and the inputs/outputs between them are consolidated, too.
+.. note:: This functionality of operating nested controller items together is specific to the Simple Controller item. By adding them as children or grandchildren of the base controller item, you can combine any number of controllers. Internally, the control functions of these controllers are executed in tree traversal order (depth-first), and input/output between them is integrated.
 
-.. note::  It is also possible to execute multiple controller items in combination by allocating them directly under a body item in parallel. This method supports any types of controllers to be combined. However, be careful that inputs/outputs may not be consolidated well as they are performed by each controller independently.
+.. note:: You can also execute multiple controllers in combination by placing multiple controller items in parallel directly under the body item. This method supports any controller item type. However, in this case, input/output is performed independently by each controller and may not be integrated well, so caution is needed.
 
-Next, set "CameraSampleController" to the "controller" property of the added controller item to specify the controller itself.
+Next, write "CameraSampleController" in the "Controller" property of the added controller item to set the controller body.
 
-Execution of Simulation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running the Simulation
+~~~~~~~~~~~~~~~~~~~~~~
 
-Start simulation with the above setting: Then, the following message will first be displayed in the message view: ::
+Start the simulation in the above state. First, the following messages will be displayed in the message view: ::
 
- Sensor type: RangeCamera, id: 0, name: LeftCamera
- Sensor type: RangeCamera, id: 1, name: RightCamera
+ Sensor type: Camera, id: 0, name: LeftCamera
+ Sensor type: Camera, id: 1, name: RightCamera
 
-It is a list of Camera devices that the target model has and the actual type, the device id and the name of each are listed.
+This lists the Camera devices that the target model has, displaying the actual type, device ID, and name of each.
 
-Then, during the simulation the following information is displayed: ::
+Then during the simulation, ::
 
  The image of LeftCamera has been saved to "LeftCamera.png".
  The image of RightCamera has been saved to "RightCamera.png".
 
-and the camera image of each is stored to a file. The file is output to the current directory where Choreonoid is started up and the name is "[sensor name].png" The file is updated every second to the latest image.
+is displayed and each camera image is saved as a file. The save location is the current directory where Choreonoid was started, and the name is "sensor_name.png". This is updated with the latest image every second.
 
-Display the image files in an image viewer. The images to be saved are simulated camera images that correspond to the robot's right eye and the left eye. Examples of the images are shown below:
+Try displaying the saved images with an appropriate image viewer. The saved images simulate the camera images corresponding to the robot's left and right eyes. Examples of each are shown below.
 
 .. image:: images/camera-simulation.png
 
-We can see that the camera images are successfully simulated and are retrieved by the controller.
+This shows that camera image simulation is working and that the controller can obtain them.
 
-.. note:: Some image viewers are equipped with the function that automatically detects a file update and updates the display. For example, image viewer "gThumb", which is available in Linux, has such a function. (In Ubuntu, you can install it by "apt-get install gthumb".) If such a viewer is used, you can check how the camera image is updated as the simulation goes on.
+.. note:: Some image viewers have a function to automatically detect file updates and update the display. For example, the image viewer "gThumb" that runs on Linux has this function. (On Ubuntu, you can install it with "apt-get install gthumb".) Using such a viewer, you can see how camera images are updated as the simulation progresses.
 
-As the target sensor this time is RangeCamera, the depth map data is generated in addition to the normal image data. It is also accessible just like the normal image data. So, you can try and modify the sample controller if that interests you.
+In addition to the regular Camera type targeted this time, by specifying COLOR_DEPTH for format in the Camera node in the model file, you can make it a RangeCamera that can also acquire distance image data. In that case, you can access distance image data in the same way as image data, so if you're interested, try modifying the SR1 model and sample controller.
 
 
-Implementation of Sample Controller
------------------------------------
+Sample Controller Implementation Details
+----------------------------------------
 
-The source code of CameraSampleController is as follows: ::
+The source code for CameraSampleController is shown below: ::
 
  #include <cnoid/SimpleController>
  #include <cnoid/Camera>
@@ -228,26 +234,30 @@ The source code of CameraSampleController is as follows: ::
      DeviceList<Camera> cameras;
      double timeCounter;
      double timeStep;
-     
+     std::ostream* os;
+ 
  public:
-     virtual bool initialize(SimpleControllerIO* io)
+     virtual bool initialize(SimpleControllerIO* io) override
      {
+         os = &io->os();
+ 
          cameras << io->body()->devices();
  
          for(size_t i=0; i < cameras.size(); ++i){
              Device* camera = cameras[i];
-             os() << "Device type: " << camera->typeName()
-                  << ", id: " << camera->id()
-                  << ", name: " << camera->name() << std::endl;
+             io->enableInput(camera);
+             *os << "Device type: " << camera->typeName()
+                 << ", id: " << camera->id()
+                 << ", name: " << camera->name() << std::endl;
          }
-         
+
          timeCounter = 0.0;
          timeStep = io->timeStep();
-         
+
          return true;
      }
- 
-     virtual bool control()
+
+     virtual bool control() override
      {
          timeCounter += timeStep;
          if(timeCounter >= 1.0){
@@ -255,7 +265,8 @@ The source code of CameraSampleController is as follows: ::
                  Camera* camera = cameras[i];
                  std::string filename = camera->name() + ".png";
                  camera->constImage().save(filename);
-                 os() << "The image of " << camera->name() << " has been saved to \"" << filename << "\"." << std::endl;
+                 *os << "The image of " << camera->name()
+                     << " has been saved to \"" << filename << "\"." << std::endl;
              }
              timeCounter = 0.0;
          }
@@ -265,28 +276,30 @@ The source code of CameraSampleController is as follows: ::
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(CameraSampleController)
 
-
-As for the use of the Camera device: ::
+For using Camera devices, ::
 
  #include <cnoid/Camera>
 
-imports the definition of the Camera type.
-
-The variable to store camera devices is defined as follows: ::
+includes the Camera class definition, and ::
 
  DeviceList<Camera> cameras;
 
-For this variable, ::
+with ::
 
  cameras << io->body()->devices();
 
-extracts all the camera devices that the robot model has. If the model has RangeCamera devices, they are also extracted because RangeCamera is a type derived from the Camera type.
+obtains all Camera devices that the robot model has.
 
-For each camera device obtained as above, its information is output in initialize() function to the message view and its image data is output by ::
+For the Camera devices obtained this way, in the for loop in the initialize function ::
+
+ io->enableInput(camera);
+
+enables input from each camera. It also outputs camera information as text messages.
+
+In the control function ::
 
  camera->constImage().save(filename);
 
-in control() function to the file. In this sample, the constImage() function is used to obtain the image data. This function can be used to avoid unnecessary copy of the original image data when the image data is not edited.
+outputs the camera's image data to a file. Here we use the constImage() function because we don't edit the acquired image data.
 
-That's all about the part related to the Camera device. As many of the other parts are common to  :doc:`howto-implement-controller`, please refer to the description there.
-
+The above covers the parts related to Camera devices. For other parts, there are many commonalities with :doc:`howto-implement-controller`, so please refer to that explanation.

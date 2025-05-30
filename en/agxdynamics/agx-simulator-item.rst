@@ -1,8 +1,7 @@
-
 AGXSimulator Item
 =======================
 
-The following properties can be used in AGXSimulator Item.
+The following additional properties are available in the AGXSimulator item.
 
 .. .. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
 
@@ -13,45 +12,50 @@ The following properties can be used in AGXSimulator Item.
   * - Parameter
     - Default Value
     - Unit
-    - Data type
-    - Explanation
+    - Type
+    - Description
   * - NumThreads
     - 1
-    - thread
+    - threads
     - unsigned int
-    - The number of thread AGX Dynamics uses, which activate the function of parallelization for solver and collision detection. It can be confimed by checking CPU usage via top command etc.
+    - Number of threads used by AGX Dynamics. Parallelizes internal calculations (collision detection, solver). You can verify if it's working by checking CPU usage with tools like top.
   * - ContactReduction
     - true
     - \-
     - bool
-    - activate/disable for contact reduction function by true/false. The benefit of ContactReduction is reduction of calcuration by reduction of unnecessary contacts.
+    - Enable/disable contact reduction feature. Specify true or false. Reduces solver computational load by eliminating unnecessary contact points.
   * - ContactReductionBinResolution
     - 3
-    - piece
+    - bins
     - unsigned int
-    - number of bin for contact reduction. (1-10). It is used for 6-dimensional binning algorithm.
+    - Number of bins for contact reduction. Specify 1-10. Number of bins used in the 6-dimensional bin packing algorithm.
   * - ContactReductionThreshold
     - 12
-    - piece
+    - points
     - unsigned int
-    - threshold for starting contact reduction. Once the number of contacts are more than designated threshold, contact reduction is activated.
+    - Threshold for starting contact reduction. When contact points between links exceed the specified threshold, contact reduction begins.
   * - ContactWarmstarting
     - false
     - \-
     - bool
-    - If the status of contact is the same as the last step, using the solution of the last solver, the calculation can be converged quickly.
+    - When contact state is unchanged from the previous step, uses the previous solver solution to accelerate convergence calculations.
   * - AMOR
     - false
     - \-
     - bool
-    - Merge the relatively resting rigid bodies together and reduce the amount of solver calculation. Specify true or false. Each link needs to be set AMOR. Details in to :doc:`agx-body`.
-  * - AutoSleep(deprecated)
+    - Merges stationary rigid bodies together to reduce solver computational load. Specify true or false. Each link must also be configured. See :doc:`agx-body` for details.
+  * - AutoSleep (deprecated)
     - false
     - \-
     - bool
-    - Automatic sleeping function for resting rigid body from the solver, which contributes to reducing calculation by true/faulse. Each link needs to be set autoSleep. Details in :doc:`agx-body` .
+    - Removes stationary rigid bodies from the solver to reduce computational load. Specify true or false. Each link must also have autoSleep configured. See :doc:`agx-body` for details.
   * - SaveToAGXFileOnStart
     - false
     - \-
     - bool
-    - Save the simulation in .agx file format when simulation starts. The stored directry is the one that executable binary is saved or current directry when executed. It can be used for debugging of AGXDynamics and performance checking.
+    - Saves the scene in AGX Dynamics file format (.agx) when simulation starts. Save location is the directory where Choreonoid's executable binary is located or the current directory at runtime. Can be used for debugging and performance verification with AGX Dynamics standalone.
+  * - DebugMessageOnConsole
+    - warning
+    - \-
+    - debug, info, warning, or error
+    - Sets the type of messages output by AGXSimulator. debug: Displays AGX debugging messages. info: Shows forces applied to agxBreakableJoint, etc. warning: When shapes are incorrect, materials are missing from material table, etc. error: Fatal errors when simulation stops or crashes.

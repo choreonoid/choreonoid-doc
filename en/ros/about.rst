@@ -1,8 +1,11 @@
-Cooperation between Choreonoid and ROS
-======================================
+Choreonoid and ROS Integration
+===============================
 
-Choreonoid can cooperate with with ROS. This section describes how to do it.
+Choreonoid can be integrated with ROS. This section describes how to set up and use this integration.
 
-The target OS is Ubuntu Linux, and the operation of Choreonoid has been tested on Ubuntu Linux versions 20.04, 18.04, and 16.04 of the 64-bit architecture.
+The target OS is Ubuntu Linux. The software has been tested on Ubuntu Linux 20.04 (64-bit).
 
-Please note that the contents of this section are based on ROS1, and ROS2 is not officially supported.
+This documentation covers ROS version 1 (ROS 1).
+For ROS 2 integration, please see `ROS 2 Integration <../ros2/index.html>`_.
+
+.. note:: Official support for ROS 1 ended on May 31, 2025. Please consider using ROS 2 for new projects.

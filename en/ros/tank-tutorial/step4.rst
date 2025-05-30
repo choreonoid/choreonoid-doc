@@ -1,7 +1,7 @@
-Step 4: Output the state of the acceleration sensor and rate gyro
-=================================================================
+Step 4: Outputting Acceleration Sensor and Rate Gyro States
+============================================================
 
-In step 4, we will create a program that outputs the state of the acceleration sensor and rate gyro in the Tank robot as a ROS topic.
+In Step 4, we'll create a program that outputs the Tank robot's acceleration sensor and rate gyro states as ROS topics.
 
 .. contents::
    :local:
@@ -11,18 +11,17 @@ In step 4, we will create a program that outputs the state of the acceleration s
 Overview
 --------
 
-In addition to the joint states such as joint angles of a robot, which is one of the basic state values that the robot has, the robot has various other state values that can be obtained from various sensors. As an example, in Step 4, we will learn how to output the state values of the acceleration sensor and rate gyro of the Tank robot.
+Joint states such as joint angles are fundamental robot state values, but robots also have various other state values obtainable from different sensors. In Step 4, we'll learn how to output state values from the Tank robot's acceleration sensor and rate gyro as examples.
 
-These sensors are usually modeled as the object type called "device" inside Choreonoid, and by publishing the state of the corresponding device object, it is possible to output the sensed state values.
-ROS defines the standard message type sensor_msgs/Imu as an appropriate type for outputting these sensor values, so this step will use it to publish the state this time.
+These sensors are typically modeled as "device" objects within Choreonoid. By publishing the corresponding device object's state, you can output the sensed values. ROS provides the standard message type sensor_msgs/Imu as appropriate for outputting these sensor values, so we'll use it to publish the states in this step.
 
-Once you have learned this method, you will be able to output the status of other sensors and devices in the same way.
+Once you master this method, you'll be able to output other sensors' and devices' states using the same approach.
 
-Controller for outputting sensing values
-----------------------------------------
+Sensor Value Output Controller
+------------------------------
 
-The process in this step will also be realized by creating a simple controller for this purpose.
-The source code is shown below.
+We'll implement this step's processing by creating a simple controller.
+Here's the source code:
 
 .. code-block:: c++
  :linenos:
@@ -128,20 +127,18 @@ The source code is shown below.
 
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttImuStatePublisher)
 
-The following sections describe the key points of the implementation of this controller, and the contents of the code is explained accordingly.
+The following sections explain the key implementation points of this controller and describe the code content accordingly.
 
-sensor_msgs/Imu type message
-----------------------------
+sensor_msgs/Imu Type Messages
+-----------------------------
 
-In this step, we will use a message of the `sensor_msgs/Imu <http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Imu.html>`_ type, which is one of the ROS standard message types.
-This message type is used to store the state values of the Inertial Measurement Unit (IMU).
-The IMU is basically a three-axis gyroscope and accelerometer that determine three-dimensional angular velocity and acceleration, and is also used for further estimation of posture and position.
+This step uses the `sensor_msgs/Imu <http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/Imu.html>`_ message type, one of ROS's standard message types. This type stores state values from an Inertial Measurement Unit (IMU). An IMU fundamentally consists of three-axis gyroscopes and accelerometers that measure three-dimensional angular velocity and acceleration, and is also used for estimating attitude and position.
 
-The contents of the Imu type can also be checked using the following command. ::
+You can check the Imu type's contents with this command: ::
 
  rosmsg show sensor_msgs/Imu
 
-As shown in this command, this type is defined as follows: ::
+This command displays the following type definition: ::
 
  std_msgs/Header header
    uint32 seq
@@ -164,25 +161,23 @@ As shown in this command, this type is defined as follows: ::
    float64 z
  float64[9] linear_acceleration_covariance
 
-In this step, we will use the "angular_velocity" field for the gyro and the "linear_acceleration" field for the acceleration sensor. The state values of the corresponding sensors are stored into the x, y, and z components of those fields. 
-In the "angular_velocity_covariance" and "linear_acceleration_covariance" fields, the covariance matrix corresponding to each element is stored, but we will assume that these values are unknown and fill the elements with 0.
+We'll use the "angular_velocity" field for the gyro and the "linear_acceleration" field for the acceleration sensor, storing the corresponding sensor state values in their x, y, and z components. The "angular_velocity_covariance" and "linear_acceleration_covariance" fields store covariance matrices for each element, but we'll assume these values are unknown and fill the elements with 0.
 
-In the "orientation" field, the estimated values of the orientation is store, but we assume that this section is not covered by the IMU on the Tank robot.
-According to the reference manual, this can be expressed by setting the first element of orientation_covariance to -1.
+The "orientation" field stores orientation estimates, but we'll assume the Tank robot's IMU doesn't provide this. According to the reference manual, setting orientation_covariance's first element to -1 indicates this.
 
-In the source of the above controller, first the definition of the Imu type is included so that it can be used in the code. ::
+In the controller source above, we first include the Imu type definition to use it in the code: ::
 
  #include <sensor_msgs/Imu.h>
 
-Then, to publish messages of this type, the following variable is defined as a member variable of the controller. ::
+To publish messages of this type, we define the following member variable in the controller: ::
 
  sensor_msgs::Imu imu;
 
-Then, in the "configure" function, a publisher to output the topic "imu" of this message type is created. ::
+In the configure function, we create a publisher for the "imu" topic of this message type: ::
 
  imuPublisher = node->advertise<sensor_msgs::Imu>("imu", 1);
 
-In the following code of the "initialize" function, we set the values to invalidate the part of the Imu type elements that are not used this time. ::
+In the initialize function, the following code sets values to invalidate unused Imu type elements: ::
 
  for(int i=0; i < 9; ++i){
      imu.orientation_covariance[i] = 0.0;
@@ -195,14 +190,14 @@ In the following code of the "initialize" function, we set the values to invalid
  imu.orientation.z = 0.0;
  imu.orientation.w = 0.0;
 
-The covariance matrix is set to unknown by filling each covariance element with 0, and the entire value of orientation is also set to unknown by setting -1 to the first element of covariance for orientation.
+We set the covariance matrices to unknown by filling each covariance element with 0, and set the entire orientation value to unknown by setting orientation_covariance's first element to -1.
 
-Getting the sensor device
--------------------------
+Obtaining Sensor Devices
+------------------------
 
-The angular velocity and linear acceleration values to be stored in the Imu message are obtained from the rate gyro and acceleration sensor devices provided by the Tank robot.
+The angular velocity and acceleration values stored in the Imu message come from the Tank robot's rate gyro and acceleration sensor devices.
 
-First of all, these devices are defined as child elements of CHASSIS links in "TankBody.body", which is a part of the model file of the Tank robot, as follows.
+These devices are defined as child elements of the CHASSIS link in "TankBody.body", part of the Tank robot's model file:
 
 .. code-block:: yaml
 
@@ -224,100 +219,93 @@ First of all, these devices are defined as child elements of CHASSIS links in "T
          id: 0
     ...
 
-By this description, an acceleration sensor and a rate gyro sensor are mounted one by one as devices at the origin (center) of the Tank robot body. The states of these devices are acquired in the simple controller using the method described in :ref:`simulation-device` .
+This defines one acceleration sensor and one rate gyro as devices at the Tank robot body's origin (center). We obtain these devices' states in the simple controller using the method described in :ref:`simulation-device`.
 
-First, the corresponding device objects are obtained by the method described in :ref:`simulation-obtain-device-object` .
+First, we obtain the corresponding device objects using the method in :ref:`simulation-obtain-device-object`.
 
-For this purpose, the headers of the device types to be used are included. ::
+We include the necessary device type headers: ::
 
- #include <cnoid/AccelerationSensor>.
- #include <cnoid/RateGyroSensor>.
+ #include <cnoid/AccelerationSensor>
+ #include <cnoid/RateGyroSensor>
 
-These headers make available the definitions of the AccelerationSensor type and the RateGyroSensor type, respectively.
+These headers provide the AccelerationSensor and RateGyroSensor type definitions.
 
-In the definition of the controller class, smart pointer variables to hold the objects of these sensor types are defined as a member variables. ::
+In the controller class definition, we define smart pointer member variables to hold these sensor type objects: ::
 
  AccelerationSensorPtr accelSensor;
  RateGyroSensorPtr gyro;
 
-Then, in the "initialize" function of the controller, these variables are initialized with the corresponding device objects for input and output (I/O). ::
+In the controller's initialize function, we obtain the I/O device objects: ::
 
  accelSensor = io->body()->findDevice<AccelerationSensor>();
  gyro = io->body()->findDevice<RateGyroSensor>();
 
-As in the previous controller, the body object for I/O is obtained from the :ref:`simulation-implement-controller-simple-controller-io` . By specifying the device type to be acquired in the findDevice function, the corresponding sensor device is acquired.
+As in previous controllers, we obtain the I/O Body object from :ref:`simulation-implement-controller-simple-controller-io`. By specifying the device type in the findDevice function, we acquire the corresponding sensor device.
 
-In this part, if there are multiple devices of the same type, the device name must be specified as follows. ::
+If multiple devices of the same type exist, you must specify the device name: ::
 
  accelSensor = io->body()->findDevice<AccelerationSensor>("ACCEL_SENSOR");
 
-In this way, the device object must be identified by its attribute such as name.
-However, this is not necessary for the Tank robot.
+This identifies the device object by attributes such as name. However, this isn't necessary for the Tank robot since each device type appears only once.
 
-For these devices, ::
+For these devices: ::
 
  io->enableInput(accelSensor);
  io->enableInput(gyro);
 
-enable the input.
+enables input. This allows the I/O device objects to reflect the corresponding sensors' states as they update during simulation.
 This enables the device I/O objects to reflect the state of the corresponding sensors as they are updated during the simulation.
 
-Obtaining sensor state values
+Obtaining Sensor State Values
 -----------------------------
 
-The state values of the sensors are obtained in the control function of the controller.
-First, the value of the acceleration sensor is obtained by the following code. ::
+Sensor state values are obtained in the controller's control function.
+First, we obtain the acceleration sensor value with: ::
 
  dv_sum += accelSensor->dv();
 
-Here, the value of member variable dv_sum is updated.
-dv_sum is a Vector3 type variable that stores the accumulated acceleration values.
-The acceleration value for each control loop is accumulated here until the next publish.
+This updates the member variable dv_sum. dv_sum is a Vector3 variable that accumulates acceleration values. Each control loop's acceleration value accumulates here until the next publish.
 
-The acceleration value may change significantly at each time step of the simulation, and if it is output as is, the change may be noisier than that of a real sensor. Also, the frequency of publishing topics is generally longer than the simulation time step.
-Considering this, one way to stabilize the output acceleration value is to average the values from one publish to the next. The variable dv_sum is used for this purpose.
+Acceleration values can change significantly at each simulation timestep. Outputting them directly could result in noisier changes than real sensors produce. Additionally, topic publishing frequency is generally lower than the simulation timestep frequency. Considering this, one stabilization method averages values between publications. The dv_sum variable serves this purpose.
 
-For the rate gyro, the angular velocity values are obtained and accumulated in a similar manner.
-This will result in the following code. ::
+For the rate gyro, we obtain and accumulate angular velocity values similarly: ::
 
  w_sum += gyro->w();
 
-Then, the number of times of accumulations is recorded in the sensingSteps member variable of integer type. ::
+We then record the accumulation count in the integer member variable sensingSteps: ::
 
  ++sensingSteps;
 
-The actual averaged values to be output can be calculated by dividing each accumulated value by sensingSteps.
-This calculation is represented by the following code. ::
+The averaged output values are calculated by dividing accumulated values by sensingSteps: ::
 
  auto dv = dv_sum / sensingSteps;
  auto w = w_sum / sensingSteps;
 
-Publishing these values will be explained later.
+We'll explain publishing these values later.
 
-Note that The values of these variables are all initialized to zero in the following code in the initialize function. ::
+Note that these variables are initialized to zero in the initialize function: ::
 
  dv_sum.setZero();
  w_sum.setZero();
  sensingSteps = 0;
 
-.. note:: The averaging method applied here is designed to stabilize the output value with minimum implementation, and is not necessarily the best method. Real IMU sensors may include various correction processes to improve accuracy, and it may be better to introduce the same correction processes as those used in real sensors, if necessary. It is possible to introduce such processing into the simulation process inside Choreonoid as part of the simulation of the sensor devices, but since such processing is not included in the current version, it is necessary to process the values appropriately on the side where the values are used as in this example.
+.. note:: The averaging method applied here provides basic output stabilization with minimal implementation but isn't necessarily optimal. Real IMU sensors may include various correction processes for accuracy improvement. If necessary, implementing similar correction processes might be beneficial. While such processing could be integrated into Choreonoid's sensor device simulation, the current version doesn't include it, so users must process values appropriately as shown in this example.
 
-Publishing sensing values
--------------------------
+Publishing Sensor Values
+------------------------
 
-In publishing the sensing values, as in :ref:`ros_tank_tutorial_publish_joint_state` in Step 2, it is necessary to properly handle the time-related aspects such as the timestamp to be given to the message and the timing (cycle) of the publication.
-This part is handled in the same way as in Step 2, but we will explain this part of the code again in this step.
+When publishing sensor values, as with :ref:`ros_tank_tutorial_publish_joint_state` in Step 2, we must properly handle time-related aspects such as message timestamps and publication timing (cycles). While this is handled similarly to Step 2, we'll explain this code portion again.
 
-First, the following four member variables are defined to store the time-related information for publishing. ::
+First, we define four member variables for time-related publishing information: ::
 
  double time;
  double timeStep;
  double cycleTime;
  double timeCounter;
 
-time is the elapsed time after the controller starts running, timeStep is the time step of the control loop, cycleTime is the cycle in which publishing is performed, and timeCounter is the time counter that determines if the next publishing cycle has been reached.
+Here, time is the elapsed time since controller startup, timeStep is the control loop's timestep, cycleTime is the publishing cycle, and timeCounter determines whether the next publishing cycle has been reached.
 
-These variables are first initialized in the initialize function as follows. ::
+These variables are initialized in the initialize function: ::
 
   time = 0.0;
   timeStep = io->timeStep();
@@ -325,12 +313,9 @@ These variables are first initialized in the initialize function as follows. ::
   cycleTime = 1.0 / frequency;
   timeCounter = 0.0;
 
-Here, we set the cycleTime to publish 20 times per second.
-This value should be adjusted appropriately in consideration of the communication environment and the use of the topic.
+Here we set cycleTime to publish 20 times per second. Adjust this value appropriately considering the communication environment and topic usage.
 
-Publishing is done in the "control" function.
-Note that, instead of publishing every time the control function is executed, the timing should be adjusted so that it publishes in the cycle of the cycleTime specified above.
-The code for this adjustment is as follows. ::
+Publishing occurs in the control function. Rather than publishing every control function execution, we adjust timing to match the specified cycleTime. The timing adjustment code is: ::
 
   time += timeStep;
   timeCounter += timeStep;
@@ -342,28 +327,27 @@ The code for this adjustment is as follows. ::
       timeCounter -= cycleTime;
   }
 
-By doing this, the cycle of publishing will be adjusted to match the cycleTime.
+This adjusts the publishing cycle to match cycleTime.
 
-In this if block, the contents of the Imu type variable are updated and the publishment is performed.
-First, the time information contained in the header is updated. ::
+Within this if block, we update the Imu type variable's contents and perform publishing. First, we update the header's time information: ::
 
   imu.header.stamp.fromSec(time);
 
-Then, for acceleration, we calculate the averaged value using the method described above. ::
+For acceleration, we calculate the averaged value using the previously described method: ::
 
   auto dv = dv_sum / sensingSteps;
 
-Assign the value of dv to each element of linear_acceleration of the Imu type variable. ::
+We assign dv's values to the Imu variable's linear_acceleration elements: ::
 
   imu.linear_acceleration.x = dv.x();
   imu.linear_acceleration.y = dv.y();
   imu.linear_acceleration.z = dv.z();
 
-Clear the value of dv_sum for the next publishment. ::
+We clear dv_sum for the next publication: ::
 
   dv_sum.setZero();
 
-Perform the same process for angular velocity as for acceleration. ::
+We perform the same process for angular velocity: ::
 
   auto w = w_sum / sensingSteps;
   imu.angular_velocity.x = w.x();
@@ -371,29 +355,27 @@ Perform the same process for angular velocity as for acceleration. ::
   imu.angular_velocity.z = w.z();
   w_sum.setZero();
 
-For the next publishment, the value of sensingSteps is cleared. ::
+We also clear sensingSteps for the next publication: ::
 
   sensingSteps = 0;
 
-Now the contents of the Imu message variable have been updated to the latest state.
-Finally, the message is actually published by the following code. ::
+The Imu message variable now contains the latest state. Finally, we publish the message: ::
 
   imuPublisher.publish(imu);
 
-Introducing the controller
+Introducing the Controller
 --------------------------
 
-As in the previous steps, build the controller corresponding to the above source code and introduce it into the simulation project.
+As in previous steps, build the controller from the above source code and introduce it to the simulation project.
 
-First, create the above source code in the src directory with the file name "RttImuStatePublisher.cpp".
-Then, add the following description to CMakeLists.txt in the same directory.
+First, create the source code in the src directory as "RttImuStatePublisher.cpp". Then add the following to CMakeLists.txt in the same directory:
 
 .. code-block:: cmake
 
  choreonoid_add_simple_controller(RttImuStatePublisher RttImuStatePublisher.cpp)
  target_link_libraries(RttImuStatePublisher ${roscpp_LIBRARIES})
 
-Then executing the "catkin build" command will build RttImuStatePublisher. If the build is successful, add the RttImuStatePublisher to the project as in the previous steps. Specifically, add this controller to the project created in step 2, and configure the item tree as follows.
+Execute catkin build to build RttImuStatePublisher. After successful building, add RttImuStatePublisher to the project as in previous steps. Specifically, add this controller to the Step 2 project, configuring the item tree as:
 
 .. code-block:: none
 
@@ -405,9 +387,9 @@ Then executing the "catkin build" command will build RttImuStatePublisher. If th
    - Labo1
    - AISTSimulator
 
-The RttImuStatePublisher to be added here is a SimpleController type item, and specify "RttJointStatePublisher.so" as its "controller module". Save this project with the file name "step4.cnoid".
+The RttImuStatePublisher added here is a SimpleController item. Specify "RttImuStatePublisher.so" as its "Controller Module". Save this project as "step4.cnoid".
 
-Also, create a launch file to run this project with the following contents as "step4.launch".
+Also create a launch file "step4.launch" with the following content:
 
 .. code-block:: xml
 
@@ -418,11 +400,13 @@ Also, create a launch file to run this project with the following contents as "s
    <node pkg="rqt_graph" name="rqt_graph" type="rqt_graph" />
  </launch>
 
-After this step, the package for this tutorial will have the following file structure.
+After completing this work, the tutorial package has the following file structure:
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
      - step1.launch
      - step2.launch
@@ -442,27 +426,26 @@ After this step, the package for this tutorial will have the following file stru
 
 .. _ros_tank_tutorial_step3_check_topic_values:
 
-Checking the output topics
---------------------------
+Verifying Output Topics
+-----------------------
 
 .. highlight:: sh
 
-When you run step4.launch, the simulation will start and the IMU topics will be added by RttImuStatePublisher.
-To confirm this, execute ::
+Running step4.launch starts the simulation with RttImuStatePublisher adding IMU topics. To verify this, execute: ::
 
  rostopic list 
 
-and the following item should be displayed.
+You should see:
 
 .. code-block:: none
 
  /Tank/imu
 
-This is the IMU topic. Then execute ::
+This is the IMU topic. Next, execute: ::
 
  rostopic info /Tank/imu
 
-and you will see
+This displays:
 
 .. code-block:: none
 
@@ -473,12 +456,11 @@ and you will see
  
  Subscribers: None
 
-This confirms that the message type is actually "sensor_msgs/Imu".
-If you execute ::
+This confirms the message type is actually "sensor_msgs/Imu". Execute: ::
 
  rostopic echo /Tank/imu
 
-, it will continue to display the sensor status values as follows.
+to continuously display sensor state values:
 
 .. code-block:: none
 
@@ -506,25 +488,21 @@ If you execute ::
  linear_acceleration_covariance: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
  ---
 
-Try to move the chassis of the Tank robot in this state, and you will see the values of angular_velocity and linear_acceleration change. The units are [rad/sec] and [m/s^2], respectively.
+Move the Tank robot's chassis in this state to see angular_velocity and linear_acceleration values change. Units are [rad/sec] and [m/s²], respectively.
 
-The turning velocity of the tank corresponds to the z-element of angular_velocity, and the acceleration of the tank in the forward/backward direction corresponds to the x-element of linear_acceleration, so it is relatively easy to understand the changes in these values caused by turning the tank or moving it forward/backward.
+The tank's turning velocity corresponds to angular_velocity's z-component, and forward/backward acceleration corresponds to linear_acceleration's x-component, making these value changes relatively easy to understand when turning the tank or moving it forward/backward.
 
-Displaying acceleration / angular velocity graph
---------------------------------------------------
+Displaying Acceleration and Angular Velocity Graphs
+---------------------------------------------------
 
-Similar to the joint angles in Step 2, let's display the acceleration and angular velocity in a graph.
-With the simulation of this step running, enter the following command from a terminal. ::
+Similar to Step 2's joint angles, let's graph the acceleration and angular velocity. With this step's simulation running, enter from a terminal: ::
 
  rosrun rqt_plot rqt_plot /Tank/imu/linear_acceleration
 
-This will plot the X, Y, and Z axis elements of acceleration on a graph.
-It is easy to see the change in the X-axis element when the tank chassis is moved back and forth.
-You can also see a large change in acceleration on the graph when the tank collides with the environment.
+This plots acceleration's X, Y, and Z axis components on a graph. The X-axis component changes are easily visible when moving the tank chassis forward and backward. You'll also see large acceleration changes when the tank collides with the environment.
 
-In the same way, angular velocity can be plotted using the following command. ::
+Similarly, plot angular velocity with: ::
 
  rosrun rqt_plot rqt_plot /Tank/imu/angular_velocity
 
-This will plot the X, Y, and Z axis elements of the angular velocity on a graph.
-It is easy to see the change in the Z-axis element caused by turning the Tank chassis.
+This plots angular velocity's X, Y, and Z axis components. The Z-axis component changes are easily visible when turning the Tank chassis.

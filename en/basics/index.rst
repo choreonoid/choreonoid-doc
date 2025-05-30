@@ -1,6 +1,5 @@
-
-Basic Concept and Operations
-============================
+Basic Concepts and Operations
+========================
 
 .. toctree::
    :maxdepth: 2
@@ -13,5 +12,3 @@ Basic Concept and Operations
    plugin
    config
    termination
-
-   

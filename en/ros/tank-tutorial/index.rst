@@ -1,13 +1,9 @@
-Tank Tutorial for ROS
-=======================
+ROS Tank Tutorial
+=================
 
-This tutorial explains how to use ROS for input/output in simulations for the "Tank" model, which is one of the sample models of Choreonoid. 
-This tutorial is an extension of the :doc:`../../simulation/tank-tutorial/index` , which is based on the basic functions of Choreonoid, for ROS, and this tutorial is structured so that you can refer to the related pages as necessary.
-If you have not yet learned the basics of simulations using Choreonoid, it is recommended that you go through the basic :doc:`../../simulation/tank-tutorial/index` first, and then move on to this tutorial.
+This tutorial explains how to perform input/output using ROS in simulations with the "Tank" model, one of Choreonoid's sample models. This is a ROS-oriented extension of the :doc:`../../simulation/tank-tutorial/index`, which is based on Choreonoid's basic functionality. Throughout this tutorial, we'll reference relevant pages from the basic tutorial as needed. If you haven't yet mastered the basics of simulation with Choreonoid, we recommend first completing the basic :doc:`../../simulation/tank-tutorial/index` before proceeding with this tutorial.
 
-This tutorial uses C++ to implement the control programs, and uses ROS functions with the roscpp library.
-Once you learn this method, you will be able to utilize various functions and assets of ROS by coding using the roscpp library.
-For more information on the roscpp library, please refer to the roscpp manual and other explanatory documents separately.
+This tutorial uses C++ for implementing control programs and utilizes ROS functionality through the `roscpp library <http://wiki.ros.org/roscpp>`_. By mastering this approach, you'll be able to leverage various ROS features and resources through coding with the roscpp library. For details about the roscpp library, please refer to the roscpp manual and related documentation separately.
 
 .. toctree::
    :maxdepth: 3
@@ -18,5 +14,4 @@ For more information on the roscpp library, please refer to the roscpp manual an
    step3
    step4
    step5
-
-..   step6 リモート通信も説明する
+..   step6 Explain remote communication

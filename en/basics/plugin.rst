@@ -1,99 +1,94 @@
-
 Plugin System
-=============
+==================
 
 .. contents::
    :local:
    :depth: 1
 
-
 What is a Plugin
-----------------
+--------------
 
-Choreonoid allows you to add a new function by installing an additional program module. Such a module is called a "plugin". Actually, many of the standard functions of Choreonoid are implemented as plugins.
+Choreonoid allows you to add new functions by introducing additional program modules, which are called "plugins". In fact, many of the standard features that Choreonoid provides are also implemented as plugins.
 
-Although there may be various types of functions added by plugins, you can generally consider a plugin as something that adds a new type item, view, or toolbar to enable you to handle new data or to use a new operation/edit interface.
+The functions that plugins add can take various forms. Generally, you can think of them as adding new types of items, views, and toolbars, which enable you to handle new data or use new operation and editing interfaces.
 
+Plugin Examples
+--------------
 
-Example of Plugins
-------------------
-
-The following table lists some of the plugins provided by Choreonoid as standard. As you can see, a wide range of functions are provided as plugins, ranging from basic functions to special functions.
+Below are some of the plugins that Choreonoid provides as standard. As you can see, various functions from basic to specialized features are provided as plugins.
 
 .. tabularcolumns:: |p{4.0cm}|p{11.0cm}|
 
 .. list-table::
- :widths: 30,70
+ :widths: 25,75
  :header-rows: 1
 
  * - Plugin
    - Overview
- * - BodyPlugin
-   - Plugin that provides basic functions for handling the models of robots and objects. It defines the item classes and views related to displaying robot models, editing positions and postures, kinetics simulation, etc.
- * - PoseSeqPlugin
-   - Plugin that is a collection of functions for robot motion choreography by keyframing.
- * - BalancerPlguin
-   - Plugin that adds an automatic balance correction function for biped robots to motion choreography by PoseSeqPlugin.
- * - PythonPlugin
-   - Plugin to execute Python scripts in Choreonoid. Python scripts can automate Choreonoid operations.
- * - PythonSimScriptPlugin
-   - Plugin to synchronize the execution of Python scripts with simulations
- * - MediaPlugin
-   - Plugin to play audio and video files in Choreonoid.
+ * - Body Plugin
+   - A plugin that provides basic functions for handling robot and object models. It defines item classes and views related to displaying robot models, editing positions and orientations, dynamics simulation, etc.
+ * - PoseSeq Plugin
+   - A plugin that provides functions for choreographing robot motions using keyframes.
+ * - Balancer Plugin
+   - A plugin that adds automatic balance correction functions for bipedal robots to the motion choreography by the PoseSeq plugin.
+ * - Python Plugin
+   - A plugin for executing Python scripts on Choreonoid. You can automate Choreonoid operations using Python scripts.
+ * - PythonSimScript Plugin
+   - A plugin for linking Python scripts with simulation execution.
+ * - Media Plugin
+   - A plugin for playing audio and video files on Choreonoid.
 
 
-Dependencies between Plugins
-----------------------------
+Plugin Dependencies
+----------------------
 
-Some plugins require functions of other plugins. In this case, there are dependencies between plugins. For example, the following figure shows dependencies between the above plugins.
+Some plugins require functions from other plugins. In this case, dependencies arise between plugins. For example, the dependency relationships for the above plugins can be illustrated as follows:
 
 .. figure:: images/plugin-dependencies.png
 
-The directions of the arrows in the figure indicate the directions of dependence. For example, PoseSeqPlugin is dependent on BodyPlugin, and thus BodyPlugin must also be loaded to use PoseSeqPlugin. BalancerPlugin is dependent on PoseSeqPlugin, and thus PoseSeqPlugin and BodyPlugin are required to use BalancerPlugin. On the other hand, BodyPlugin, PythonPlugin and MediaPlugin themselves can be loaded without requiring other plugins.
+Here, the arrows indicate the direction of dependency. For example, the PoseSeq plugin depends on the Body plugin, so the Body plugin must also be loaded when using it. Also, since the Balancer plugin depends on the PoseSeq plugin, both the PoseSeq plugin and Body plugin are required when using it. The PythonSimScript plugin depends on both the Body plugin and Python plugin in parallel. On the other hand, the Body plugin, Python plugin, and Media plugin can be loaded without requiring other plugins themselves.
 
-Users do not need to pay particular attention to plugin dependencies because, normally, dependent plugins are also built when a plugin is built. However, being aware of these dependencies may be useful because it may be possible that a dependent plugin has not been installed correctly, when a plugin cannot be loaded normally.
+Regarding plugin dependencies, you usually don't need to worry about them because dependent plugins are also built when building a plugin. However, when a plugin fails to load properly, it may be because the dependent plugins are not properly installed, so it's good to be aware of these dependency relationships.
 
-.. note:: For this, it would be desirable if Choreonoid could provide a function to display a list of available plugins and the dependencies between them. However, since Choreonoid has not provided such a function yet, users must obtain such information through manuals for now. In the future, we would like to realize a function to display plugin information.
+.. note:: For this purpose, it would be good if Choreonoid had a function to display a list of available plugins and the dependencies between plugins, but such a function does not exist yet, so for now you need to learn such information through the manual. We plan to implement a function to display plugin information in the future.
 
-As you can see from plugin dependencies, Choreonoid can provide additional functions while a plugin uses functions of other plugins. Thus, new functions can be developed efficiently and it can be expected that users can operate the developed functions in the same way as the existing functions.
+As you can see from the plugin dependencies, Choreonoid allows plugins to provide additional functions while using functions from other plugins. This enables efficient development of new functions and can be expected to make the developed functions operate in the same way as existing functions for users.
 
 .. _basics_plugin_files:
 
-Plugin File
------------
-
-A plugin is a binary file in the form of a "shared library" or "dynamic link library", and is normally stored in the plugin directory of Choreonoid. The plugin directory is "lib/choreonoid-x.x" in the build and installation directories of Choreonoid. A version number of Choreonoid is displayed in x.x.
-
-For Linux, the file name of a plugin file of Choreonoid is "libCnoid" followed by the plugin name and then ".so", which is the shared library extension. For example, the file name of the above BodyPlugin is "libCnoidBodyPlugin.so".
-
-For Windows, the file name is "Cnoid" followed by the plugin name and then the extension ".dll". Therefore, in the case of BodyPlugin, the file name is "CnoidBodyPlugin.dll".
-
-Plugin files stored in the plugin directory are automatically loaded and become available when Choreonoid starts. If prescribed plugins are not loaded normally, check whether the plugins (including dependent plugins, if any) are located in the plugin directory correctly.
-
-.. note:: If you use Choreonoid built from source, be careful when rebuild and install it by updating the source. There is no problem if all the plugins built previously are updated and installed. In some cases, however, plugins may be discontinued or renamed. Also, the configuration of plugins to be built with the build settings of CMake may be changed. In such a case, the files of plugins that are no longer built remain in the build and installation directories, resulting in being loaded when Choreonoid starts. However, their contents are obsoleted, and thus may cause problems, such as a Choreonoid crash. Therefore, when the configuration of plugins to be built is changed, especially when the behavior of Choreonoid becomes abnormal, it is recommended to delete all the plugin files from the plugin directory and then perform re-installation. 
-
-
-Building Plugins
-----------------
-
-Although several plugins are built and installed in Choreonoid as standard, there are other plugins available as options. In addition, in some cases, you want to use plugins distributed separately from the Choreonoid main unit. In such a case, you must build and install beforehand the plugin you want to use.
-
-For plugins that come with the Choreonoid main unit, see the description in :doc:`../install/install` - :doc:`../install/options` to build them. Basically, you should simply turn on the "ENABLE_XXX_PLUGIN" option (XXX is the plugin name) to build the plugin when configuring settings for CMake at build time.
-
-For plugins distributed separately from the main unit, build and install them by following the description of them.
-
-Developing Plugins
+Plugin Files
 ------------------
 
-You can also add a new function to Choreonoid by developing a plugin.
+Plugins are binary files in the format of "shared libraries" or "dynamic link libraries", and are usually stored in Choreonoid's plugin directory. The plugin directory is the "lib/choreonoid-x.x" directory in Choreonoid's build directory or installation directory.
+Here, x.x is replaced with Choreonoid's version number.
 
-.. For information on how to develop a plugin, see the :doc:`../plugin-development/index` in this manual.
+On Linux, Choreonoid plugin files have names that start with "libCnoid" followed by the plugin name, and end with the shared library extension ".so". For example, the Body plugin has the filename "libCnoidBodyPlugin.so".
 
-The following functions have actually been achieved or applied by users' actual development of new plugins:
+On Windows, the name starts with "Cnoid" followed by the plugin name, with the extension ".dll". Therefore, the Body plugin has the filename "CnoidBodyPlugin.dll".
 
-* Operation interface for the biped humanoid robots "HRP-2" and "HRP-4C"
-* Function to capture human postures acquired by Kinect into a model in Choreonoid
-* Function to perform simulation by connecting with a ROS node
-* Research and development of a new simulation engine
-* Function to make a motion plan focused on gripping in Choreonoid ( `graspPlugin <http://choreonoid.org/GraspPlugin/>`_ )
-* Research and development of techniques for applying motion data of humans whose motions are captured
+Plugin files stored in the plugin directory are automatically loaded and become available when Choreonoid starts. If a particular plugin fails to load properly, check whether the plugin file (including any dependent plugins) is correctly placed in the plugin directory.
+
+.. note:: When using Choreonoid built from source, care is needed when updating the source and rebuilding/installing. There is no problem if all previously built plugins are updated and installed. However, in some cases, plugins may be discontinued or renamed. Also, you may change the configuration of plugins to build in the CMake build settings. In such cases, files of plugins that are no longer built may remain in the build directory or installation directory and be loaded when Choreonoid starts. However, since their content is outdated, they may cause problems such as Choreonoid crashes. Therefore, when the configuration of plugins to build changes after updating the source, especially if Choreonoid behaves strangely, it is recommended to delete all plugin files in the plugin directory once and then reinstall.
+
+Building Plugins
+------------------
+
+In addition to the plugins that are built and installed by default with Choreonoid, there are also optional plugins available. You may also want to use plugins distributed separately from the Choreonoid main body. In such cases, you need to build and install the plugins you want to use.
+
+For plugins included with the Choreonoid main body, please refer to :doc:`../install/index` - :doc:`../install/options` for instructions on building them. Basically, when configuring CMake during build, you just need to turn on the "ENABLE_XXX_PLUGIN" option (where XXX is the plugin name) and build.
+
+For plugins distributed separately from the main body, please follow their instructions for building and installation.
+
+Plugin Development
+----------------
+
+By developing plugins, you can add new functions to Choreonoid. For information on how to develop plugins, please refer to :doc:`../plugin-development/index` in this manual.
+
+In practice, users have developed new plugins to realize and apply the following functions:
+
+* Operation interface for bipedal humanoid robots "HRP-2" and "HRP-4C"
+* Function to import human postures captured with Kinect into models on Choreonoid
+* Function to connect with ROS nodes and perform simulation
+* Research and development of new simulation engines
+* Function to perform motion planning centered on grasping on Choreonoid (`graspPlugin <http://www.hlab.sys.es.osaka-u.ac.jp/grasp/ja/>`_)
+* Research and development of methods to apply motion-captured human movement data to robots

@@ -6,61 +6,55 @@ Preparation
 
 .. _ros_tank_tutorial_package_setup:
 
+Setting Up ROS and Choreonoid-related Packages
+-----------------------------------------------
 
-Setup of ROS and Choreonoid related packages
----------------------------------------------
+To proceed with this tutorial, you must first complete :doc:`../install-ros` and :doc:`../build-choreonoid`. Follow the procedures on those pages to install and build the necessary components, ensuring you can perform :doc:`../run-choreonoid`.
 
-In order to follow this tutorial, it is necessary to do :doc:`../install-ros` and  :doc:`../build-choreonoid` first.
-Follow the steps in these pages for installation and building so that you can do :doc:`../run-choreonoid` .
-
-When adding package sources, it is OK if the following three Choreonoid-related packages are installed.
+Regarding :ref:`ros_choreonoid_add_package_sources`, you need to have the following three Choreonoid-related packages installed:
 
 * choreonoid
 * choreonoid_ros
 * choreonoid_joy
 
-In the above page, choreonoid_ros_samples is also installed, but it is not necessary for this tutorial. 
-(Of course thare is no problem even if it is installed.)
+While the referenced page also introduces choreonoid_ros_samples, it's not required for this tutorial. (Of course, having it installed won't cause any issues.)
 
 .. _ros_tank_tutorial_make_package:
 
-
-Creating a package for the tutorial
------------------------------------
+Creating a Tutorial Package
+---------------------------
 
 .. highlight:: sh
 
-Basically, data and programs to be created/developed and used on ROS are built in Catkin "packages".
-Therefore, in this tutorial, let's first create a package to store the programs and data to be created in the tutorial.
+Data and programs newly created and developed for use on ROS are fundamentally built in units called Catkin "packages". Therefore, in this tutorial, we'll first create a package to store the programs and data we'll be creating.
 
-A package can be created by executing the following command on the catkin workspace. ::
+Create a package by executing the following command in your catkin workspace: ::
 
  catkin create pkg choreonoid_ros_tank_tutorial
 
-This will create a package named "choreonoid_ros_tank_tutorial". The corresponding directory will be created in the "src" directory in the workspace, and some files related to the package will be added to it.
+This creates a package named "choreonoid_ros_tank_tutorial". A corresponding directory is generated in the workspace's "src" directory, containing several package-related files.
 
-In this tutorial, we will use the package name "choreonoid_ros_tank_tutorial". It is a little long, but please understand that this is to make it consistent with other Choreonoid related packages. You may use any other name, but in that case, please replace all the corresponding parts in the tutorial.
+This tutorial uses the package name "choreonoid_ros_tank_tutorial". While it's somewhat long, this maintains consistency with other Choreonoid-related packages. You may use a different name if you prefer, but in that case, be sure to replace all corresponding references throughout the tutorial.
 
-The source of the package for this tutorial is available on Github. By cloning the repository, you can try this tutorial without typing the source code. In this case, instead of the above command, execute the following. ::
+Note that the source code for this tutorial package is publicly available on GitHub. By cloning this repository, you can try the tutorial without manually entering the source code. To do this, execute the following instead of the above command: ::
 
  cd ~/catkin_ws/src
  git clone https://github.com/choreonoid/choreonoid_ros_tank_tutorial.git
 
-You will now be in the same situation as if you had created the package and created all the files required for this tutorial.
+This puts you in the same state as if you had created the package and all necessary files for this tutorial.
 
 .. _ros_tank_tutorial_edit_package_xml:
-
 
 Editing package.xml
 -------------------
 
 .. highlight:: xml
 
-With the above operation, an XML file called "package.xml" has been added to the package directory. This file is used to describe the package information and is required for every package.
+The above operation adds an XML file called "package.xml" to the package directory. This file describes package information and is required for all packages.
 
-The contents of package.xml can be configured by the command line options when executing the package creation command. Please refer to the `catkin create manual <https://catkin-tools.readthedocs.io/en/latest/verbs/catkin_create.html>`_ for details.
+You can configure the contents of package.xml through command-line options when executing the package creation command. For details, refer to the `catkin create manual <https://catkin-tools.readthedocs.io/en/latest/verbs/catkin_create.html>`_.
 
-The contents of package.xml can also be edited directly using a text editor. Therefore, it is possible to generate the package without any options and then manually modify the package.xml to make it appropriate. It may be easier to edit the package.xml manually, as the command line options can be complicated. In this tutorial, we will not discuss the options of the package generation command, but will explain the contents of package.xml that should be created for this tutorial. The actual contents of package.xml should look like this ::
+Alternatively, you can directly edit package.xml using a text editor. This allows you to first generate the package without options, then manually modify package.xml as needed. Since command-line option specification can become complex, manual editing might be more straightforward. Here, without delving into package generation command options, we'll explain the package.xml content needed for this tutorial. The actual package.xml should contain the following: ::
 
  <?xml version="1.0"?>
  <package format="2">
@@ -86,74 +80,72 @@ The contents of package.xml can also be edited directly using a text editor. The
    </export>
  </package>
 
-Please refer to the `package.xml manual <http://wiki.ros.org/catkin/package.xml>`_ for the details of the description.
-We will explain some important parts here.
+For detailed descriptions, please refer to the `package.xml manual <http://wiki.ros.org/catkin/package.xml>`_. Here we'll explain some important elements.
 
-First, the following tag starts the package description and specifies that the format of the description is version 2. ::
+First, the tag: ::
 
- <package format="2">.
+ <package format="2">
 
-There are two implementations of Catkin, an old one and a new one, each with slightly different usage (see :ref:`ros_make_catkin_workspace`_ ). In this tutorial, we will use the new implementation, and this description is provided to accommodate it.
+starts the package description and explicitly states that the description format is version 2.
 
-Next, the following description specifies the package name. ::
+Catkin has both old and new implementations with slightly different usage (see :ref:`ros_make_catkin_workspace`). This tutorial uses the new implementation, and this notation accommodates that.
 
- <name>choreonoid_ros_tank_tutorial</name>
+Next: ::
 
-This must not overlap with any other package.
+  <name>choreonoid_ros_tank_tutorial</name>
 
-The other important part is the following part. ::
+specifies the package name. This must be unique and not conflict with other packages.
 
-   <buildtool_depend>catkin</buildtool_depend>
-   <depend>choreonoid</depend>
-   <depend>choreonoid_ros</depend>
-   <depend>choreonoid_joy</depend>
-   <depend>std_msgs</depend>
-   <depend>sensor_msgs</depend>
-   <depend>image_transport</depend>
+Also important is: ::
 
-This specifies the other packages that this package depends on.
-Here we describe the dependencies on the following packages.
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>choreonoid</depend>
+  <depend>choreonoid_ros</depend>
+  <depend>choreonoid_joy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>image_transport</depend>
 
-* choreonoid: Choreonoid itself
-* choreonoid_ros: ROS integration function of Choreonoid
-* choreonoid_joy: Joystick node for Choreonoid 
-* std_msgs: Standard message types for ROS
-* sensor_msgs: Message types corresponding to standard sensors
-* image_transport: A function for image data communication.
+This section explicitly declares dependencies on other packages:
 
-Of course, the packages for Choreonoid and the ROS integration function are required, and the other packages will be explained in this tutorial as needed.
+* choreonoid: Choreonoid core
+* choreonoid_ros: Choreonoid's ROS integration features
+* choreonoid_joy: Joystick node for Choreonoid
+* std_msgs: ROS standard message types
+* sensor_msgs: Message types for standard sensors
+* image_transport: Features for image data communication
 
-Finally, the folowing describtion is given. ::
+Each package except Choreonoid core and ROS integration features will be explained as needed throughout this tutorial.
 
-   <export>
-     <build_type>cmake</build_type>
-   </export>
+Finally: ::
 
-This is actually not very common in ROS. This "build_type" is an option for how to describe the package build with CMake. There are two options, each described in the `supported build types section of catkin tools <https://catkin-tools.readthedocs.io/en/latest/build_types.html>`_  as follows:
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+
+This is actually not a standard notation in ROS. The "build_type" is an option related to how CMake describes package building. There are two choices, explained in `Catkin tools' Supported Build Types <https://catkin-tools.readthedocs.io/en/latest/build_types.html>`_ as follows:
 
 * **catkin**: CMake packages that use the Catkin CMake macros
 * **cmake**: "Plain" CMake packages
 
-The default type is "catkin", which uses the CMake macros customized by Catkin to build the package.
-On the other hand, if you set it to "cmake", it will not use such macros, but will use the normal CMake writing method.
+The default is "catkin", which builds using CMake macros customized by Catkin.
+Setting it to "cmake" uses standard CMake notation without those macros.
 
-Normally, the default is fine, but it seems to assume that the built files are placed in the filesystem locations determined by Catkin. For example, there are specific locations for node executables, library files, and so on.
+The former assumes built files are placed in Catkin-determined locations.
+For example, specific locations are designated for node executables and library files.
 
-On the other hand, there may be cases where you want to place the built files in other locations. For example, Choreonoid has the dedicated directories for plugins and controller binaries written in C++, and they are usually stored there. However, as far as the author tried, it is not clear how to do this with the default "catkin" build option. 
-So the author tried the "cmake" build option and found out that it is possible to do so.
-Since this tutorial will be developing controllers, the "cmake" build option will be used.
+However, you might want to place built files elsewhere. For instance, Choreonoid has dedicated directories for C++ plugins and controller binaries, where they're typically stored. However, based on the author's testing, it's unclear how to achieve this with the default "catkin" build option.
+Testing the "cmake" build option revealed this was possible. Since this tutorial involves controller development, we'll use the "cmake" build option.
 
-By changing this option, the description of the CMake file for building the package may be slightly different.
-However, since these parts are basically described in the CMake macros of Choreonoid itself and choreonoid_ros package,
-the users of those packages do not need to worry about it too much. 
+Changing this option may slightly alter the CMake file descriptions for building packages.
+However, since these aspects are primarily described in CMake macros within Choreonoid core and the choreonoid_ros package, users of these packages shouldn't need to worry much about this.
 
-.. note:: The above explanation is based on the author's own trial and error, and there is no proof that this is the right way.
-While ROS is easy to use when used in the prescribed way, when you try to do something a little different from the prescribed way, there is not much information or it may be difficult to realize. There doesn't seem to be much explanation about this issue in the manual or discussion in the forums either. If you know anything about this, it would be great if you could let me know.
+.. note:: The above explanation is based on the author's trial and error, and there's no certainty this is the best approach. While ROS is convenient when used as prescribed, attempting something slightly outside the standard can be challenging due to limited information or implementation difficulties. There seems to be little manual explanation or forum discussion on this particular issue. If you have any knowledge about this topic, your input would be greatly appreciated.
 
-File structure of the package
------------------------------
+Package File Structure
+----------------------
 
-The source of the package will have the following file structure after this step.
+At this point, the package source has the following file structure:
 
 .. code-block:: none
 
@@ -161,18 +153,18 @@ The source of the package will have the following file structure after this step
    - CMakeLists.txt
    - package.xml
 
-Starting the ROS master
+Starting the ROS Master
 -----------------------
 
 .. highlight:: sh
 
-Open a terminal and type the following command to start the ROS master. ::
+Open a terminal and enter the following to start the ROS master: ::
 
   roscore
 
-If you use roslaunch command, it will be started automatically if ROS master is not present. Since we will be using roslaunch in the tutorial, it may not be necessary to explicitly start the ROS master, but in general, you should do this beforehand.
+When using the roslaunch command, the ROS master starts automatically if not already running. Since we'll use roslaunch in this tutorial, explicitly starting the ROS master may not always be necessary, but it's generally good practice to do this beforehand.
 
-Start the working terminal
---------------------------
+Launching a Work Terminal
+-------------------------
 
-Apart from launching the ROS master, open a terminal for working on the tutorial, and move it to the tutorial directory above. Note that you may need more than one terminal to proceed with the tutorial.
+Separate from the ROS master terminal, open a terminal for tutorial work and navigate to the tutorial directory mentioned above. Note that you may need multiple terminals as you progress through the tutorial.

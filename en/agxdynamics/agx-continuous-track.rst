@@ -6,7 +6,6 @@ AGXVehicleContinuousTrack is a crawler model using AGX Dynamics.
 agxVehicle modulus is used for implementation.
 
 .. image:: images/continuous-track.png
-   :scale: 70%
 
 .. contents::
    :local:
@@ -140,14 +139,13 @@ Link composition of sample model is as below.
 #. Set parameters of crawler belt tie referring to :ref:`agx_continous_track_stabilize` .
 
 .. image:: images/continuous-track-detail.png
-   :scale: 70%
 
-Explanation of parameters
--------------------------------
+Parameter Descriptions
+----------------------
 .. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
 
-MUST
-~~~~
+Required
+~~~~~~~~
 
 .. list-table::
   :widths: 20,8,4,4,75
@@ -214,8 +212,8 @@ MUST
     - string
     - material of crawler belt
 
-Probably MUST
-~~~~~~~~~~~~~~~~
+Almost Required
+~~~~~~~~~~~~~~~
 .. list-table::
   :widths: 20,8,4,4,75
   :header-rows: 1
@@ -461,7 +459,6 @@ Stabilization of crawler belt
     nodeDistanceTension: 2.0e-4
 
 .. image:: images/continuous-track-hinge.png
-   :scale: 50%
 
 6. Throughout above processes the crawler could move smooth back and forth.
    However the vibration may happen if user tries to pivot turn or spin turn, the crawler belt may start to vibrate.
@@ -494,7 +491,6 @@ Stabilization of crawler belt
     nodesToWheelsSplitThreshold: -0.05   # Unmerge when the angle of two vector is larger than 1.62rad(92.7deg)
 
 .. image:: images/continuous-track-merge-tracks-wheels.png
-   :scale: 50%
 
 
 Performance Tuning
@@ -527,7 +523,6 @@ Inprove the stability
   * If the node thickness is not thick enough, it becomes easy to penetrate into the ground, and cause instability for contact responces.
 
 .. image:: images/continuous-track-replace-wheels-with-box.png
-   :scale: 70%
 
 
 Merging nodes

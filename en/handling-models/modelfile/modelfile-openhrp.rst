@@ -1,6 +1,11 @@
+OpenHRP Model Files
+===================
 
-OpenHRP Model File
-=====================
+Choreonoid can also load model files in OpenHRP format.
+
+OpenHRP is an open architecture robot simulator that originated from the "Humanoid Robotics Project" by the Ministry of Economy, Trade and Industry from 1998 to 2002. Since the release of `OpenHRP3 <https://github.com/fkanehiro/openhrp3>`_ in 2007, it has been published as open source software. It has been widely used particularly in the research and development of bipedal robots, and has been utilized in the development of AIST's bipedal humanoid robots including HRP-2. Choreonoid's simulation functionality was developed based on the achievements of OpenHRP3.
+
+Since the current standard format for Choreonoid is the Body format, it is preferable to use that format unless there is a specific reason not to. However, you may want to use model files developed for OpenHRP, so we summarize the specifications of OpenHRP format model files here.
 
 .. contents::
    :local:
@@ -9,56 +14,56 @@ OpenHRP Model File
 Overview
 --------
 
-Model files in OpenHRP format is based on "VRML97", which is a language to describe three-dimensional models. One robot or environment model is described per model file. The VRML97 extension of ".wrl" is appended as the file extension.
+OpenHRP format model files are based on "VRML97", a language for describing 3D models. Each model file describes one robot or environment model. The file extension should be ".wrl", which is the VRML97 extension.
 
-The basic configuration of a model file consists of:
+The basic structure of a model file consists of:
 
-* PROTO declaration part (structure declaration part)
-* Real-model definition part (instance notation part using PROTO)
+* PROTO declaration section (structure declaration section)
+* Actual model definition section (instance notation section using PROTO)
 
-The PROTO declaration part uses the node called "PROTO", which corresponds to the structure in C language, to define new nodes that are not defined by VRML97. The following nodes are defined as PROTO nodes. A model is created by building up these instances.
+In the PROTO declaration section, we use nodes called "PROTO", which correspond to structures in C language, to define new nodes not defined in VRML97. The following PROTO nodes are defined, and models are created by assembling instances of these.
 
-The following nodes are defined as nodes that define the link structure and kinetics/mechanical parameters. (These nodes are extended/modified from ones established by the "h-anim1.1" format, which is for description of human figures.)
+The following nodes are defined for defining link structures and dynamics/mechanism parameters. (These nodes are extensions/modifications based on those established in the "h-anim1.1" format for describing human figures.)
 
 * Humanoid node
 * Joint node
 * Segment node
 * ExtraJoint node
 
-A model is created through the creation of a hierarchy structure by combining instances of these nodes in the real-model definition part. For example, a humanoid robot has a structure as shown below. ::
+In the actual model definition section, models are created by combining instances of these nodes to create hierarchical structures. For example, in the case of a humanoid robot, the structure would be as follows::
 
- Humanoid sample（The root node of the whole model）
-   + Joint Waist (The center of the humanoid. A free point floats in the s)
+ Humanoid sample (root of the model)
+   + Joint WAIST (center of humanoid. Floating non-fixed point in the air)
    |　....
    |
-   |  + Joint Chest
-   |    + Joint Head
-   |    + Joint Left Arm
-   |    + Joint Right Arm
+   |  + Joint CHEST
+   |    + Joint HEAD
+   |    + Joint LARM
+   |    + Joint RARM
    |
-   + Joint Left Leg
+   + Joint LLEG
    |
-   + Joint Right Leg
+   + Joint RLEG
 
-This is a structure where "Waist" has a chain connected to "Left Leg" and "Right Leg" and a chain connected to "Chest", and "Chest" has a chain connected to "Head", "Left Arm", and "Right Arm".
+In other words, there is a "WAIST" floating in the air, with chains corresponding to "left leg" and "right leg" connected to it, as well as a chain leading to the "CHEST", and from the "CHEST", chains of "HEAD", "left arm", and "right arm" are connected.
 
-In addition, the following PROTO nodes are available to define various sensors.
+The following PROTO nodes are also available for defining various sensors:
 
 * AccelerationSensor node
 * GyroSensor node
 * VisionSensor node
 * ForceSensor node
-* RangeSensor node 
+* RangeSensor node
 
-You can include sensor information in a model by using these nodes.
+Using these nodes, it is possible to include sensor information in the model.
 
-The following describes the details of each node.
+The details of each node are explained below.
 
-Nodes that Define the Link Structure and Kinetics/Mechanical Parameters
------------------------------------------------------------------------
+Nodes for defining link structure and dynamics/mechanism parameters
+-------------------------------------------------------------------
 
-Humanoid Node
-~~~~~~~~~~~~~~
+Humanoid node
+~~~~~~~~~~~~~
 
 The Humanoid node is the root node of the model. ::
 
@@ -101,51 +106,52 @@ The Humanoid node is the root node of the model. ::
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: Humanoid Node Fields
+.. list-table:: Fields of Humanoid node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - bboxCenter
    - Not used in OpenHRP.
  * - bboxSize
    - Not used in OpenHRP.
  * - center
-   - See "center" described for the Joint node.
+   - Please refer to "center" of Joint node.
  * - humanoidBody
-   - Field which child nodes belong to. 0 or more Joint nodes and 0 or 1 Segment nodes belong to this field.
+   - Field for attaching child nodes. Attach 0 or more Joint nodes and 0 or 1 Segment node.
  * - info
-   - Field that describes comment regarding the model.
+   - Field for describing comments about the model.
  * - joints
-   - Field that stores a list of defined Joints.
+   - Field for storing a list of defined Joints.
  * - name
-   - Field that specifies the name of the model.
+   - Field for specifying the model name.
  * - rotation
-   - See "rotation" described for the Joint node.
+   - Please refer to "rotation" of Joint node.
  * - scale
-   - See "scale" described for the Joint node.
+   - Please refer to "scale" of Joint node.
  * - scaleOrientation
-   - See "scaleOrientation" described for the Joint node.
+   - Please refer to "scaleOrientation" of Joint node.
  * - segments
-   - Field that stores a list of defined Segments.
+   - Field for storing a list of defined Segments.
  * - sites
    - Not used in OpenHRP.
  * - translation
-   - See "translation" described for the Joint node.
+   - Please refer to "translation" of Joint node.
  * - version
-   - Field that specifies the version number of the model.
+   - Field for specifying the model version number.
  * - viewpoints
-   - Field that specifies the positions of viewpoints in a virtual environment.
+   - Field for specifying viewpoint positions in the virtual environment.
 
 
-.. note:: Ensure that there is only one Humanoid node, which is the root node of the model. Also ensure that the joints and segments fields of the Humanoid node list all the Joint and Segment names, respectively, that are used in the model.
+.. note::
+	There should be only one Humanoid node that serves as the root node of the model. Also, in the joints field and segments field of the Humanoid node, list all Joint names and Segment names used in the model, respectively.
 
 
-Joint Node
-~~~~~~~~~~~
+Joint node
+~~~~~~~~~~
 
-A Joint node defines a link frame. ::
+The Joint node defines link frames. ::
 
 	PROTO Joint [
 	  exposedField     SFVec3f      center              0 0 0
@@ -184,80 +190,81 @@ A Joint node defines a link frame. ::
 
 .. tabularcolumns:: |p{2.5cm}|p{12.5cm}|
 
-.. list-table:: Joint Node Fields
+.. list-table:: Fields of Joint node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - name
-   - Field that specifies the Joint name.
+   - Field for specifying the Joint name.
  * - translation
-   - Field that sets the position in the local coordinate system. Specify an offset value relative to the parent node.
+   - Field for setting the position of the local coordinate system. Specify the offset value from the parent node.
  * - rotation
-   - Field that sets the posture in the local coordinate system. Specify an offset relative to the parent node.
+   - Field for setting the orientation of the local coordinate system. Specify the offset from the parent node.
  * - center
-   - Field that specifies the position of the joint rotation center. Specify an offset relative to the origin of the local coordinate system.
+   - Field for specifying the position of the joint rotation center. Specify as an offset from the local coordinate system origin.
  * - children
-   - Field which child nodes belong to. 0 or more Joint nodes and 0 or 1 Segment nodes belong to this field.
+   - Field for attaching child nodes. Attach 0 or more Joint nodes and 0 or 1 Segment node.
  * - jointType
-   - Field that is used to set the joint type. Specify free, slide, rotate, or fixed. "free" enables translation along any axis and rotation around any axis. This value is set for the root link of a model for which the root link is not fixed (6 degrees of freedom). "rotate" enables rotation only around the axis specified in jointAxis (1 degree of freedom). "slide" makes the joint a linear motion joint that translates only along the axis specified in jointAxis (1 degree of freedom). "fixed" fixes the joint (0 degrees of freedom).
+   - Field for setting the joint type. Specify one of free, slide, rotate, fixed, or crawler. "free" allows translation in any axis direction and rotation around any axis, and is set for the root link of models where the root link is not fixed (6 degrees of freedom). "rotate" allows only rotation around the axis specified by jointAxis (1 degree of freedom). "slide" becomes a translational linear joint in the direction of the axis specified by jointAxis (1 degree of freedom). "fixed" fixes the joint (no degrees of freedom). Specifying "crawler" makes the associated link function as a simple crawler. For details, see :doc:`../../simulation/pseudo-continuous-track`.
  * - jointId
-   - Field that is used to specify the joint number. jointId is used when attribute values, such as joint angle, are arranged and stored in an array. It is used to specify in which element in the array an attribute value is stored. In many cases in robot controller development, only controllable joints allows their joint angles to be read or specified. Therefore, it can be considered that jointId is assigned such a joint (which is not an imperative). The following rules apply when assigning the Ids: jointIds start from 0. A continuous sequence of integers are used for jointIds. (There should be no gap or overlap.)
+   - Field for specifying the joint number. jointId is used to specify which element to put in when storing attribute values such as joint angles in array format. In many cases, since joint angles can only be read or specified for controllable joints in robot controller development, you can think of assigning jointId to such joints (though this is not absolutely necessary). The following are rules for assigning IDs. jointId starts from 0. Use consecutive integer values for jointId (no gaps or duplicates).
  * - jointAxis
-   - Field that is used to specify the axis of the joint. In OpenHRP version 2 or earlier, the axis is specified using a character string "X", "Y", or "Z". In OpenHRP 3 or later, however, an axis of any direction can be specified using a vector. Although the specification method for earlier versions is also supported, use the new specification method from now on.
+   - Field for specifying the joint axis. Until OpenHRP version 2, the axis was specified by one of the strings "X", "Y", or "Z", but from OpenHRP3 onwards, it is possible to specify an axis in any direction using a vector. While the old specification method is still supported, please use the new specification method from now on.
  * - ulimit
-   - Field that specifies the upper limit [rad] of the joint rotation angle. (Default value: "+∞")
+   - Field for specifying the upper limit of joint rotation angle [rad]. (Default value: "+∞")
  * - llimit
-   - Field that specifies the lower limit [rad] of the joint rotation angle. (Default value: "-∞")
+   - Field for specifying the lower limit of joint rotation angle [rad]. (Default value: "-∞")
  * - uvlimit
-   - Field that specifies the upper limit [rad/s] of the joint rotation angular velocity. (Default value: "+∞")
+   - Field for specifying the upper limit of joint rotation angular velocity [rad/s]. (Default value: "+∞")
  * - lvlimit
-   - Field that specifies the lower limit [rad/s] of the joint rotation angular velocity. (Default value: "-∞")
+   - Field for specifying the lower limit of joint rotation angular velocity [rad/s]. (Default value: "-∞")
  * - gearRatio
-   - Gear ratio: If the reduction ratio from the motor to the joint is 1/100, write 100.
+   - Gear ratio: If the reduction ratio from motor to joint is 1/100, write 100
  * - gearEfficiency
-   - Efficiency of the decelerator. If the efficiency is 60%, write 0.6. If this field is not present, a decelerator with an efficiency of 100% is assumed.
+   - Efficiency of the reducer. If the efficiency is 60%, write 0.6. If this field is absent, a reducer with 100% efficiency is assumed.
  * - rotorInertia
-   - Moment of inertia of the motor rotor [kgm^2].
+   - Moment of inertia of motor rotor [kgm^2]
 
-.. note:: Normally, ulimit, llimit, uvlimit, and lvlimit are not used in a simulation. These are parameters defined for the controller to read the values to control the joint not to exceed the limits.
 
-A joint is defined by using the Joint node. The Joint node contains link frame information. The parent-child relationship of joints directly corresponds to the parent-child relationship of Joint nodes. For example, consider a human arm. Joints of a human arm are arranged the order of "shoulder -> elbow -> wrist". In this case, the link structure is defined using Joint nodes as shown in the figure below.
+.. note:: ulimit, llimit, uvlimit, lvlimit are not normally used in simulation. They are parameters defined for the controller to read these values and control so as not to exceed the limit values.
+
+Joints are defined using Joint nodes. Joint nodes contain link frame information. The parent-child relationship of joints corresponds directly to the parent-child relationship of Joint nodes. For example, when considering a human arm, joints exist in the order of "shoulder → elbow → wrist", so the link structure in this case is defined using Joint nodes as shown in the figure below.
 
 .. figure:: images/joint1.png 
 	:align: center
 
-	Arm Link Structure
+	Link structure of an arm
 
-When you want to assign n degrees of freedom (where n is equal to or greater than 2) to a joint, you can consider that the joint consists of n number of joints that share the same origin. In this case, define n number of Joints, using common origin for link frames. For example, a human elbow can be considered to have two degrees of freedom as shown in the figure below. In this case, the definition should be as follows.
+When you want to give n degrees of freedom (n≧2) to one joint, that joint can be thought of as being composed of n joints with coincident origins. In this case, define n Joints so that the origins of the link frames overlap. For example, the human elbow can be considered to have 2 degrees of freedom as shown in the figure below, so in this case, it is defined as shown below.
 
 .. figure:: images/joint2.png
 	:align: center
 
-	Elbow Link Structure
+	Link structure of elbow
 
-In this case, the definition should be as follows.
+In this case, it is defined as follows.
 
-.. code-block:: yaml
+.. code-block:: text
 
- DEF Elbow0 Joint {      #← Elbow bending motion
-   children [
-     DEF Elbow1 Joint {  #← Elbow twisting motion
+	DEF ELBOW0 Joint {      #← Elbow bending
+	  children [
+	    DEF ELBOW1 Joint {  #← Elbow twisting
 
-       :
-       :
-       :
-     }
-   ]
-   translation 0 0 0  #← Place all joints at origin
- } 
+		:
+		:
+		:
+	    }
+	  ]
+	  translation 0 0 0  #← Align coordinate origins
+	}
 
 
-Segment Node
-~~~~~~~~~~~~~
+Segment node
+~~~~~~~~~~~~
 
-A Segment node defines a link shape.
+The Segment node defines link shapes.
 
 .. code-block:: yaml
 
@@ -287,39 +294,39 @@ A Segment node defines a link shape.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: Segment Node Fields
+.. list-table:: Fields of Segment node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - bboxCenter
    - Not used in OpenHRP.
  * - bboxSize
    - Not used in OpenHRP.
  * - centerOfMass
-   - Field that specifies the position of the center of gravity.
+   - Field for specifying the center of mass position.
  * - children
-   - Field which child nodes belong to. Add here a node for which the shape to be defined.
+   - Field for attaching child nodes. Add nodes that define shapes here.
  * - coord
    - Not used in OpenHRP.
  * - displacers
    - Not used in OpenHRP.
  * - mass
-   - Field that specifies the mass.
+   - Field for specifying mass.
  * - momentsOfInertia
-   - Field that defines the tensor of inertia around the position of the center of gravity.
+   - Field for specifying the inertia tensor around the center of mass position.
  * - name
-   - Field that specifies the Segment name.
+   - Field for specifying the Segment name.
  * - addChildren
    - Not used in OpenHRP.
  * - removeChildren
    - Not used in OpenHRP.
 
 
-A link shape is defined by a Segment node. Multiple Segment nodes can be set as child nodes of a Joint node. A Segment node can also be written as a child node of a Transform node.
+Link shapes are defined in Segment nodes. Multiple Segment nodes can be set as child nodes of Joint nodes, and can also be described as child nodes of Transform nodes.
 
-.. code-block:: yaml
+.. code-block:: text
 
 	DEF JOINT1 Joint {
 	  children [
@@ -341,25 +348,25 @@ A link shape is defined by a Segment node. Multiple Segment nodes can be set as 
 	}
 
 
-For example, if you want to define a shape of the part from the human shoulder to elbow and the shape belongs to a shoulder link frame, the link fame should be as shown in the figure below.
+For example, if you want to define the shape from the shoulder to the elbow of a human, and this shape belongs to the shoulder link frame, it would be as shown in the figure below.
 
 .. figure:: images/joint3.png
 	:align: center
 
-	Elbow Link Frame
+	Elbow link frame
 
-.. code-block:: yaml
+.. code-block:: text
 
-	DEF Shoulder Joint {
+	DEF SHOULDER Joint {
 	  children [
-	    DEF ShoulderToelbow Segment {
+	    DEF SHOULDER_TO_ELBOW Segment {
 	      children [
 		:
-		:    #←Specify the actual shape.
+		:    #← Describe the actual shape here
 		:
 	      ]
 	    }
-	    DEF Elbow Joint {
+	    DEF ELBOW Joint {
 		:
 		:
 		:
@@ -368,12 +375,15 @@ For example, if you want to define a shape of the part from the human shoulder t
 	}
 
 
-Define the actual shape in the children field of the Segment node. It is recommended to use a modeling tool to define a shape. For a simple shape, you can also edit the file manually using a text editor.
+Define the actual shape under the children field of the Segment node. We recommend using modeling tools to define shapes. Simple shapes can be edited manually using a text editor.
 
-ExtraJoint Node
-~~~~~~~~~~~~~~~~
+.. note::
+	Using a definition called "Inline", the shape of each Segment can also be described in different files.
+	
+ExtraJoint node
+~~~~~~~~~~~~~~~
 
-An ExtraJoint node defines a closed link mechanism. Supposing that a joint of a closed link is connected with a ball joint, generate restricting force so that two links are not separated from each other.
+The ExtraJoint node defines closed-link mechanisms. Considering that one joint of the closed link is connected by a ball joint, it generates constraint forces so that the two links do not separate.
 
 .. code-block:: yaml
 
@@ -391,36 +401,37 @@ An ExtraJoint node defines a closed link mechanism. Supposing that a joint of a 
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: ExtraJoint Node Fields
+.. list-table:: Fields of ExtraJoint node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - link1Name
-   - Specifies the name of the joint receiving the ball joint.
+   - Specify the joint name that receives the ball joint.
  * - link2Name
-   - Specifies the name of the joint to which the ball joint is attached.
+   - Specify the joint name to which the ball joint is attached.
  * - link1LocalPos
-   - Specifies the restricting position of the link1Name joint in terms of the local coordinates of the joint.
+   - Specify the constraint position of the link1Name joint in the local coordinates of that joint.
  * - link2LocalPos
-   - Specifies the restricting position of the link2Name joint in terms of the local coordinates of the joint.
+   - Specify the constraint position of the link2Name joint in the local coordinates of that joint.
  * - jointType
-   - Specifies the number of axes to be restricted. xyz: 3 axes that are at right angles to one another; xy: 2 axes that are at right angles to the axis specified by jointAxis; z: 1 axis specified by jointAxis
+   - Specify the number of axes to constrain. xyz: 3 axes perpendicular to each other, xy: 2 axes perpendicular to the axis specified by jointAxis, z: 1 axis specified by jointAxis
  * - jointAxis
-   - Specifies the unit vector in terms of the local coordinates of the link1Name joint. The meaning of the vector varies depending on the value of jointType.
+   - Specify a unit vector in the local coordinates of the link1Name joint. The meaning of the vector changes depending on the jointType specification.
 
-As a sample of a closed link mechanism, "model/misc/ClosedLinkSample.wrl" is in the share directory. Use it as a reference.
+	
+As a sample of closed-link mechanism, "model/misc/ClosedLinkSample.wrl" is available in the share directory, so please refer to it.
 
 .. _oepnrhp_modelfile_sensors:
 
-Nodes that Define Various Sensors
----------------------------------
+Nodes for defining various sensors
+----------------------------------
 
-AccelerationSensor Node
-~~~~~~~~~~~~~~~~~~~~~~~~
+AccelerationSensor node
+~~~~~~~~~~~~~~~~~~~~~~~
 
-An AccelerationSensor node defines a 3-axis acceleration sensor.
+The AccelerationSensor node defines a 3-axis acceleration sensor.
 
 .. code-block:: yaml
 
@@ -440,25 +451,25 @@ An AccelerationSensor node defines a 3-axis acceleration sensor.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: AccelerationSensor Node Fields
+.. list-table:: Fields of AccelerationSensor node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - maxAcceleration
-   - Specifies the maximum acceleration that can be measured.
+   - Specify the maximum measurable acceleration.
  * - translation
-   - Specifies the position in the local coordinate system, using an offset value relative to the parent node coordinate system.
+   - Specify the position of the local coordinate system as an offset value from the parent node coordinate system.
  * - rotation
-   - Specifies the posture in the local coordinate system, using an offset value relative to the parent node coordinate system.
+   - Specify the orientation of the local coordinate system as an offset value from the parent node coordinate system.
  * - sensorId
-   - Specifies the ID of the sensor. Assign a continuous sequence of sensor ID numbers in the order from 0 to the sensors of the same type in a model, ensuring that there is no gap or overlap. These IDs are used to determine the order in which data from sensors of the same type is arranged.
+   - Specify the sensor ID. Sensor IDs should be set sequentially starting from 0 for the same type of sensors within one model, without gaps or duplicates. This ID is used to determine the order when arranging data from the same type of sensors.
 
 	
-Put a sensor node under the Joint node to which the corresponding sensor is attached. For example, if an acceleration sensor is attached to the WAIST of the sample model, write as follows:
+Various sensor nodes are attached under the Joint node to which the sensor is attached. For example, if an acceleration sensor is attached to the waist (WAIST) of the sample model, it is described as follows.
 
-.. code-block:: yaml
+.. code-block:: text
 
 	DEF WAIST Joint
 	{
@@ -473,10 +484,10 @@ Put a sensor node under the Joint node to which the corresponding sensor is atta
 	}
 
 
-GyroSensor Node
-~~~~~~~~~~~~~~~~
+GyroSensor node
+~~~~~~~~~~~~~~~
 
-A Gyro node defines a 3-axis angular velocity sensor.
+The Gyro node defines a 3-axis angular velocity sensor.
 
 .. code-block:: yaml
 
@@ -493,10 +504,28 @@ A Gyro node defines a 3-axis angular velocity sensor.
 	  }
 	}
 
-VisionSensor Node
-~~~~~~~~~~~~~~~~~~
+.. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
+	
+.. list-table:: Fields of GyroSensor node
+ :widths: 15,85
+ :header-rows: 1
 
-An VisionSensor node defines a vision sensor.
+ * - Field
+   - Content
+ * - maxAngularVelocity
+   - Specify the maximum measurable angular velocity.
+ * - translation
+   - Specify the position of the local coordinate system as an offset value from the parent node coordinate system.
+ * - rotation
+   - Specify the orientation of the local coordinate system as an offset value from the parent node coordinate system.
+ * - sensorId
+   - Specify the sensor ID.
+
+	
+VisionSensor node
+~~~~~~~~~~~~~~~~~
+
+The VisionSensor node defines a vision sensor.
 
 .. code-block:: yaml
 
@@ -524,40 +553,40 @@ An VisionSensor node defines a vision sensor.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: VisionSensor Node Fields
+.. list-table:: Fields of VisionSensor node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - translation
-   - Specifies the position of the viewpoint relative to the parent node coordinate system.
+   - Specify the position of the viewpoint as a relative position from the parent node coordinate system.
  * - rotation
-   - Specifies the posture of the viewpoint relative to the parent node coordinate system. The posture of the viewpoint is defined as follows: Forward viewing direction: Negative direction of the Z-axis in the local coordinate system; Upper viewing direction: Positive direction of the Y-axis in the local coordinate system. Sight line vector
+   - Specify the orientation of the viewpoint as a relative orientation from the parent node coordinate system. The viewpoint orientation is defined as follows. Forward direction of view ... Negative Z-axis direction in local coordinate system, Upward direction of view ... Positive Y-axis direction in local coordinate system. View vector
  * - fieldOfView
-   - Specifies the viewing angle of the camera. The unit is rad, and a value of (0, pi) can be set.
+   - Specify the camera's field of view angle. The unit is rad, and values in (0, pi) can be set.
  * - name
-   - Specifies the name of the sensor.
+   - Specify the sensor name.
  * - frontClipDistance
-   - Specifies the distance from the viewpoint to the front clip surface.
+   - Specify the distance from the viewpoint to the front clip plane.
  * - backClipDistance
-   - Specifies the distance from the viewpoint to the rear clip surface.
+   - Specify the distance from the viewpoint to the back clip plane.
  * - type
-   - Specifies the type of information to be acquired from the sensor. "COLOR": Acquires color information. "DEPTH": Acquires depth information. "COLOR_DEPTH": Acquires color and depth information. "NONE": Does not acquire none of the information.
+   - Specify the type of information to acquire from the sensor. "COLOR" acquires color information. "DEPTH" acquires depth information. "COLOR_DEPTH" acquires both color and depth information. "NONE" does not acquire any information.
  * - sensorId
-   - Specifies the ID of the sensor.
+   - Specify the sensor ID.
  * - width
-   - Specifies the width of images.
+   - Specify the image width.
  * - height
-   - Specifies the height of images.
+   - Specify the image height.
  * - frameRate
-   - Specifies how many images the camera outputs per second.
-   
-	
-ForceSensor Node
-~~~~~~~~~~~~~~~~~
+   - Specify how many images per second the camera outputs.
 
-A ForceSensor node defines a force-torque sensor.
+	
+ForceSensor node
+~~~~~~~~~~~~~~~~
+
+The ForceSensor node defines a force/torque sensor.
 
 .. code-block:: yaml
 
@@ -577,28 +606,28 @@ A ForceSensor node defines a force-torque sensor.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 	
-.. list-table:: ForceSensor Node Fields
+.. list-table:: Fields of ForceSensor node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - maxForce
-   - Sets the maximum value of force that can be measured.
+   - Set the maximum measurable force value.
  * - maxTorque
-   - Sets the maximum value of torque that can be measured.
+   - Set the maximum measurable torque value.
  * - translation
-   - Specifies the position in the local coordinate system, using an offset value relative to the parent node coordinate system.
+   - Specify the position of the local coordinate system as an offset value from the parent node coordinate system.
  * - rotation
-   - Specifies the posture in the local coordinate system, using an offset value relative to the parent node coordinate system.
+   - Specify the orientation of the local coordinate system as an offset value from the parent node coordinate system.
  * - sensorId
-   - Specifies the ID of the sensor.
+   - Specify the sensor ID.
 	
 
-RangeSensor Node
-~~~~~~~~~~~~~~~~~
+RangeSensor node
+~~~~~~~~~~~~~~~~
 
-A RangeSensor node defines a range sensor.
+The RangeSensor node defines a range sensor.
 
 .. code-block:: yaml
 
@@ -622,24 +651,23 @@ A RangeSensor node defines a range sensor.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: RangeSensor Node Fields
+.. list-table:: Fields of RangeSensor node
  :widths: 15,85
  :header-rows: 1
 
  * - Field
-   - Description
+   - Content
  * - translation
-   - The position of the sensor relative to the link to which this sensor is attached.
+   - Position of this sensor relative to the link to which this sensor is attached
  * - rotation
-   - The posture of the sensor relative to the link to which this sensor is attached. In the sensor coordinate system, the Z-axis negative direction is the measurement front, and the measurement surface at the time of scanning is the X-Z plane. Since this is the same as for VisionSensor, if you modify a model for which VisionSensor has been used alternatively, the posture can be used without change.
+   - Orientation of this sensor relative to the link to which this sensor is attached. In the sensor coordinate system, the negative Z-axis direction is the measurement front, and the measurement plane when scanning is the XZ plane. This is the same as VisionSensor, so if you change a model that was previously substituted with VisionSensor, the position and orientation can be used as is.
  * - sensorId
-   - The serial number of RangeSensor. The serial numbers are assigned to RangeSensors attached to this robot.
+   - Serial number among RangeSensors attached to this robot
  * - scanAngle
-   - The angle at which the range is scanned [rad]. Angles in the range of scanAngle are measured in steps of an angle of multiples of scanStep in both directions from 0 degrees. If the sensor has no scan function, set a value of 0.
+   - Angle [rad] for scanning distance. Centered at 0 degrees, angles within the range of scanAngle at multiples of scanStep on both sides are measured. Set to 0 if the sensor does not have a scanning function.
  * - scanStep
-   - Step size in degrees with which distance measured during scanning.
+   - Angular increment [rad] at which distance is measured during scanning
  * - scanRate
-   - The number of scans to be performed per second [Hz].
+   - Number of scans per second [Hz]
  * - maxDistance
-   - The maximum distance that can be measured [m].
-
+   - Maximum measurable distance [m]

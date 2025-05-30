@@ -1,68 +1,76 @@
-Robot models
+Robot Models
 ============
 
-The :doc:`overview`  section gave an overview of the :ref:`wrs2018_overview_robots` . Here we will explain the model data used for handling each robot on Choreonoid.
+In :doc:`overview`, we introduced :ref:`wrs2018_overview_robots`. This section explains the model data for handling each robot in Choreonoid.
 
 .. contents::
    :local:
 
-Model files
+Model Files
 -----------
 
-Choreonoid's models are described as “Body format” files with the extension .body. Refer to the  :doc:`../handling-models/modelfile/index`  section of this manual for summarized details of the specifications, etc. of this format.
+Choreonoid models are typically described as "Body format" files with the "body" extension. The specifications of this format are detailed in the :doc:`../handling-models/modelfile/index` section of this manual, so please refer to that for details.
 
-When parameter adjustment or modification are performed on the standard robot model, or when a new robot model is being created, you need to edit this format model file. The model file is text data in YAML format, so it is usually edited with a text editor. Refer to  :doc:`../handling-models/modelfile/modelfile-newformat`  for information on how to edit the file.
+When adjusting parameters or modifying standard robot models, or creating new robot models, you need to edit model files in this format. Model files are text data in YAML format, so they are typically edited with a text editor. For information on how to edit them, please see :doc:`../handling-models/modelfile/modelfile-newformat`.
 
-The model file can be imported into Choreonoid as a “body item”. Refer to :doc:`../handling-models/index`  for information on how to handle body items.
+Model files can be loaded into Choreonoid as "body items." For information on handling body items, please see :doc:`../handling-models/index`.
 
 .. _wrs_standard_model_directory:
 
-Standard model directory
+Standard Model Directory
 ------------------------
 
-Choreonoid contains many model files as samples. They are stored under the “standard model directory” of Choreonoid. For the source code, the standard model directory is share/model. If make install was used for Choreonoid, the installation location will be share/choreonoid-x.x/model. (x.x is the version number. Refer to :doc:`../install/directories` .)
+Choreonoid includes numerous model files as samples. These are stored under Choreonoid's "standard model directory." In the source code, the standard model directory is "share/model". If you install Choreonoid using make install, it becomes "share/choreonoid-x.x/model" in the installation destination. (x.x is the version number. See :doc:`../install/directories`)
 
-The WRS2018 standard robot model is included as a sample model in Choreonoid, and it is stored under the standard model directory.
+The standard robot models for WRS2018 are also included as Choreonoid sample models and are stored under the standard model directory.
 
 WAREC-1
 -------
 
-The WAREC-1 model is stored in a subdirectory named WAREC1 in the standard model directory. The main file is WAREC1.body. By loading this file from Choreonoid, it is possible to simulate WAREC-1, etc.
+The WAREC-1 model is stored in a directory called "WAREC1" under the standard model directory. The main file is "WAREC1.body", and by loading this file from Choreonoid, you can perform simulations of WAREC1.
 
-Double-arm construction robot
+Double-Arm Construction Robot
 -----------------------------
 
-The Double-arm construction robot model is stored in a subdirectory named DoubleArmV7 in the standard model directory.
+The double-arm construction robot model is stored in a directory called "DoubleArmV7" under the standard model directory.
 
-This model uses tracks, and two versions are available: a version that performs a simple simulation of the tracks; and a version that uses AGX Dynamics to perform a simulation closer to the real machine. “S” for “simplified” or “A” for “AGX” are appended to the basic model name “DoubleArmV7”:
+This model uses crawlers, and we provide both a version that performs simplified crawler simulation and a version that performs more realistic simulation using AGX Dynamics. The base model name "DoubleArmV7" is suffixed with "S" for "Simplified" or "A" for "AGX":
 
-* simple track version:  DoubleArmV7S.body
-* AGX track version: DoubleArmV7A.body
+* Simplified crawler version: DoubleArmV7S.body
+* AGX crawler version: DoubleArmV7A.body
 
-and the files are stored using these names.
+The simplified crawler version can be used with Choreonoid's standard features, and WRS2018 samples are also available. This allows those without an AGX Dynamics license to try WRS2018 simulations. However, please note that the crawler behavior differs from the actual machine.
 
-The simple track version can be used with Choreonoid’s standard features, and a WRS2018 sample is also available. If you use these, you can try out the WRS2018 simulation even if you do not have an AGX Dynamics license. However, please note that the track movement will be somewhat different from that of the actual machine.
-
-With the AGX track version, the behavior of the tracks is close to that of the actual machine. If you have an AGX Dynamics license, you should use this. This is also used in the competition.
+The AGX crawler version provides crawler behavior closer to the actual machine. If you have an AGX Dynamics license, please use this version. This version is also used in the competition.
 
 Aizu Spider
 -----------
 
-The Aizu Spider robot model is stored in a subdirectory named AizuSpider in the standard model directory.
+The Aizu Spider model is stored in a directory called "AizuSpider" under the standard model directory.
 
-A total of 6 variations of this model are available. First, with regard to the arm mounted on the robot, three variations are available: with no arm (N), with one arm (S), and with two arms (D). This model is also equipped with tracks, and with regard to the tracks, there is a simple version (S) and an AGX version (A). Combining these, we get the following 6 variations.
+This model comes in six variations. First, regarding the arms mounted on the robot, we provide three variations: no arms (N), single arm (S), and dual arms (D). Additionally, this model is equipped with crawlers, which come in simplified (S) and AGX (A) versions. These combinations result in the following six models:
 
-* No arm, simple track version: AizuSpiderNS.body
-* No arm, AGX track version: AizuSpiderNA.body
-* One arm, simple track version: AizuSpiderSS.body
-* One arm, AGX track version: AizuSpiderSA.body
-* Two arms, simple track version: AizuSpiderDS.body
-* Two arms, AGX track version: AizuSpiderDA.body
+* No arms, simplified crawler version: AizuSpiderNS.body
+* No arms, AGX crawler version: AizuSpiderNA.body
+* Single arm, simplified crawler version: AizuSpiderSS.body
+* Single arm, AGX crawler version: AizuSpiderSA.body
+* Dual arms, simplified crawler version: AizuSpiderDS.body
+* Dual arms, AGX crawler version: AizuSpiderDA.body
 
-The arm mounted on this robot is the JACO2 arm made by Kinova, which is an existing product.
+Note that the arms mounted on this robot are commercial JACO2 arms from Kinova.
 
 Quadcopter
 ----------
 
-The quadcopter model is stored in a subdirectory named multicopter in the standard model directory under the file name quadcopter.body. The  :doc:`../multicopter/index`  is required in order to perform this model’s flight simulation.
+The Quadcopter model is stored in the "multicopter" directory under the standard model directory with the filename "quadcopter.body". To perform flight simulations of this model, the :doc:`../multicopter/index` is required.
 
+.. _wrs2018_model_creation_note:
+
+Notes on Model Creation/Modification
+------------------------------------
+
+When adjusting parameters or modifying standard robot models, or creating new robot models, please note the following:
+
+* When using AGX crawlers, appropriate material settings for the crawlers must be configured. For details, please see :ref:`agx_continous_track_material`. There's no problem if you use the sample models as-is, but if you change model or link names or create new crawlers, you need to prepare corresponding :ref:`agx_material_file`. AGX crawlers without appropriate material settings will not operate as expected.
+
+* When mounting/adding sensors such as cameras and range sensors, or devices such as lights, be careful about their quantity. Mounting numerous sensors and devices will slow down simulation and rendering accordingly. You need to keep the scale to a level that allows real-time simulation in the PC environment with the specifications expected at the competition.

@@ -1,34 +1,33 @@
 
 Performance Tuning
-=========================
+==================
 
-If the computational speed of the simulation is slow or the behavior seems to be unstable, it is a good idea to make adjustments referring to the following.
+If simulation execution speed is slow or behavior is unstable, try adjusting with the following references.
 
-Improve computation time performance
--------------------------------------
+Improving Calculation Time
+--------------------------
 
 * Reduce the number of objects (rigid bodies, joints)
 * Use primitive shapes (Box, Sphere, Cylinder, etc)
-* Avoid to use the triangle mesh shape (collision detection tends to slow)
+* Avoid using triangle meshes as much as possible (collision detection becomes slow due to brute-force checking)
 * Increase time step
-* Increase the number of threads
-* When direct solver is selected in friction model, increase surface Viscosity
+* Increase number of threads
+* When using direct solver in friction model, increase surfaceViscosity
 * Use Contact Warmstarting
 * Use AMOR
 
 
-Improve stability of collision response
-----------------------------------
+Improving Collision Response Stability
+--------------------------------------
 
-* Set mass properties appropriately
-* Avoid to use extremely small size shape
+* Set mass parameters appropriately
+* Avoid using extremely small shapes
 * Use primitive shapes (Box, Sphere, Cylinder, etc)
-* Avoid to use the triangle mesh shape
+* Avoid using triangle meshes as much as possible (collision response tends to be unstable)
 
 
-Improve stability of controlling (feedback controll)
------------------------------------------------------
+Improving Control Stability
+---------------------------
 
-* Set mass properties appropriately
-* Position control and velocity controll are more stable than torque control in the physics engine
-* The physics engine absorbs the integration error and suppresses divergence
+* Set mass parameters appropriately
+* Joints are less likely to oscillate with velocity or position/angle specification than torque specification (physics engine absorbs integration errors)

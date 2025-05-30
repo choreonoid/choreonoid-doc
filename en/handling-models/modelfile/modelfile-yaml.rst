@@ -1,31 +1,34 @@
-
 .. highlight:: yaml
 
-Writing Additional Information in YAML
-======================================
+Additional Information
+======================
 
-Choreonoid can load model files in OpenHRP format, and also is designed to enable you to write additional information in combination with a file in YAML format. If an additional information file is available for the model, load the file to make best use of the functions of Choreonoid.
+Body files can describe arbitrary YAML mappings at the top level, and their contents can be retrieved from the program side.
+The Choreonoid main body also has several features that utilize information described in this format.
+Here we introduce the main ones among them.
+
+Using this feature, it is also possible to perform :ref:`modelfile-yaml-add-information-to-another-model-format` for :doc:`modelfile-openhrp` and other formats.
+
+.. note:: Regarding the keys in the descriptions explained below, the format explained in :ref:`body-file-reference-key-style` applies. Many keys were previously in camel case, so please note this when looking at old model files.
 
 .. contents::
    :local:
    :depth: 1
 
-Additional Information of the SR1 Sample Model
-----------------------------------------------
+Additional Information for SR1 Sample Model
+-------------------------------------------
 
-The following is the contents of the additional information file (SR1.yaml) of the SR1 sample model. A specific writing method for additional information is described later through this example. ::
+The following shows the additional information described in the SR1 sample model ("share/model/SR1/SR1.body"). Through this example, we will explain the specific description method for additional information. ::
 
- modelFile: SR1.wrl
- 
- standardPose: [ 
-     0, -30, 0,  60, -30, 0,
-    20, -10, 0, -40,   0, 0, 0,
-     0, -30, 0,  60, -30, 0,
-    20,  10, 0, -40,   0, 0, 0,
-     0,   0, 0 
+ standard_pose: [ 
+    0, -30, 0,  60, -30, 0,
+   20, -10, 0, -40,   0, 0, 0,
+    0, -30, 0,  60, -30, 0,
+   20,  10, 0, -40,   0, 0, 0,
+    0,   0, 0 
  ]
  
- linkGroup:
+ link_group:
    - name: UPPER-BODY
      links:
        - WAIST_P
@@ -34,58 +37,39 @@ The following is the contents of the additional information file (SR1.yaml) of t
        - name: ARMS
          links:
            - name: R-ARM
-             links: [ RARM_SHOULDER_P, RARM_SHOULDER_R, RARM_SHOULDER_Y,
-                      RARM_ELBOW, 
+             links: [ RARM_SHOULDER_P, RARM_SHOULDER_R, RARM_SHOULDER_Y, RARM_ELBOW, 
                       RARM_WRIST_Y, RARM_WRIST_P, RARM_WRIST_R ]
            - name: L-ARM
-             links: [ LARM_SHOULDER_P, LARM_SHOULDER_R, LARM_SHOULDER_Y, 
-                      LARM_ELBOW, 
+             links: [ LARM_SHOULDER_P, LARM_SHOULDER_R, LARM_SHOULDER_Y, LARM_ELBOW, 
                       LARM_WRIST_Y, LARM_WRIST_P, LARM_WRIST_R ]
    - WAIST
    - name: LEGS
      links:
        - name: R-LEG
-         links: [ RLEG_HIP_R, RLEG_HIP_P, RLEG_HIP_Y, 
-                  RLEG_KNEE, 
-                  RLEG_ANKLE_P, RLEG_ANKLE_R ]
+         links: [ RLEG_HIP_R, RLEG_HIP_P, RLEG_HIP_Y, RLEG_KNEE, RLEG_ANKLE_P, RLEG_ANKLE_R ]
        - name: L-LEG
-         links: [ LLEG_HIP_R, LLEG_HIP_P, LLEG_HIP_Y,
-                  LLEG_KNEE, LLEG_ANKLE_P,
-                  LLEG_ANKLE_R ]
+         links: [ LLEG_HIP_R, LLEG_HIP_P, LLEG_HIP_Y, LLEG_KNEE, LLEG_ANKLE_P, LLEG_ANKLE_R ]
  
- footLinks:
+ foot_links:
    - link: RLEG_ANKLE_R
-     soleCenter: [ 0.05, 0.0, -0.055 ]
+     sole_center: [ 0.05, 0.0, -0.055 ]
    - link: LLEG_ANKLE_R
-     soleCenter: [ 0.05, 0.0, -0.055 ]
-
- defaultIKsetup:
+     sole_center: [ 0.05, 0.0, -0.055 ]
+ 
+ default_ik_setup:
    WAIST: [ RLEG_ANKLE_R, LLEG_ANKLE_R ]
    RLEG_ANKLE_R: [ WAIST ]
    LLEG_ANKLE_R: [ WAIST ]
  
- collisionDetection:
-   excludeTreeDepth: 3
-   excludeLinks: [ ]
+ collision_detection_rules:
+   - disabled_link_chain_level: 3
 
+Standard Pose Setting
+---------------------
 
-Specifying the Main Model File
-------------------------------
+The "standard pose" introduced in :ref:`model_body_bar` of :doc:`../pose-editing` is described as additional information in the Body file. This is done in the following part. ::
 
-Since the additional information file only adds information to the main model file, you must first clearly specify which file is the main model file.
-
-This is achieved by the following part. Write the file name after the "modelFile" key. ::
-
- modelFile: SR1.wrl
-
-If the additional information file is in the same directory as the main file, writing the name of the main file is enough. If it is in a different directory, write the path relative to the directory.
-
-Standard Posture Settings
--------------------------
-
-Actually, the "standard posture" introduced in  :ref:`model_body_bar` in :doc:`../pose-editing` is written in the additional information file. This is achieved by the following part. ::
-
- standardPose: [ 
+ standard_pose: [ 
      0, -30, 0,  60, -30, 0,
     20, -10, 0, -40,   0, 0, 0,
      0, -30, 0,  60, -30, 0,
@@ -93,22 +77,22 @@ Actually, the "standard posture" introduced in  :ref:`model_body_bar` in :doc:`.
      0,   0, 0 
  ]
 
-As you can see, joint angles corresponding to the standard posture are written under the "standardPose" key in the form of a list. The joint angles are arranged in the order of joint IDs, and the unit of joint angle is [degree] (for a linear motion joint, [m]).
+In this way, the joint angles corresponding to the standard pose are described as a list with the key "standard_pose". The order of joint angles is in joint ID order, and the unit of joint angles is [degree] ([m] for prismatic joints).
 
-Link Group Structure Settings
------------------------------
+Link Group Structure Setting
+----------------------------
 
-The "link view" introduced in :ref:`model_structure`  in :doc:`../bodymodel` displays a list of the links of a model, allowing you to check the structure of the model. You can also select the target link of an edit operation from the view.
+In the "Link/Device View" introduced in :ref:`model_structure` of :doc:`../bodymodel`, a list of links that the model has is displayed, and the structure of the model can be confirmed. Also, links that are the target of editing operations can be selected here.
 
-The link view allows you to switch the way how the model structure is displayed using the combo box at the upper part of the view. The combo box provides the display method "Body part tree" as one of its items. When the item is selected, the following display appears In the case of the SR1 model.
+In this Link/Device View, the way the model structure is displayed can be switched with a combo box at the top, and among them there is a display method called "Grouped Tree". When this is selected, the SR1 model is displayed as follows.
 
 .. image:: images/linkview_bodyparttree.png
 
-The view displays links that are broken down by hierarchically grouped body part. This enables you to understand the relationship between links and body parts. Therefore, this display method is also used for the choreography function with key poses.
+Here, links are displayed hierarchically grouped by body parts. This makes it easier to understand the relationship between links and body parts. For this reason, this display method is also used in the key pose choreography function.
 
-The following part beginning with the "linkGroup" key describes such a hierarchical group structure. ::
+This hierarchical group structure is described in the following part starting with the key "link_group". ::
 
- linkGroup:
+ link_group:
    - name: UPPER-BODY
      links:
        - WAIST_P
@@ -137,60 +121,119 @@ The following part beginning with the "linkGroup" key describes such a hierarchi
                   LLEG_ANKLE_R ]
 
 
-This part describes groups and the links categorized into each group using combinations of maps and lists. "name" indicates the group name, and links and subgroups belonging to the group are written under "links".
+Here, groups and links classified into them are described using a combination of maps and lists. "name" represents the group name, and links belonging to that group or sub-groups are described under "links".
 
-Leg Link Settings
+Foot Link Setting
 -----------------
 
-For a leg-type model, clearly specify which link is a leg link and write information on leg operations. This enables you to utilize functions for leg-type models provided by Choreonoid. This is achieved by the following part. ::
+For legged models, by specifying which links are foot links and describing information about foot operations, you can utilize functions provided by Choreonoid for legged models. This is done in the following part. ::
 
- footLinks:
+ foot_links:
    - link: RLEG_ANKLE_R
-     soleCenter: [ 0.05, 0.0, -0.055 ]
+     sole_center: [ 0.05, 0.0, -0.055 ]
    - link: LLEG_ANKLE_R
-     soleCenter: [ 0.05, 0.0, -0.055 ]
+     sole_center: [ 0.05, 0.0, -0.055 ]
 
-As you can see, information on links that correspond to legs (have soles that can be grounded on the floor) is listed under the "footLinks" key. Write information on each leg link by writing the link name after the "link" key and the center point of the sole after the "soleCenter" key using coordinates relative to the leg link. This enables you to use, for example, the :ref:`model_legged_body_bar` function.
+In this way, information about links corresponding to feet (having soles that can contact the floor) is listed with the key "foot_links". For each foot link information, the link name is described with the key "link", and the center point of the sole is described with the key "sole_center" in relative coordinates from the foot link. This enables functions such as :ref:`model_legged_body_bar`.
 
-.. note:: The center point write after "soleCenter" is assumed to be the most stable point when the projected gravity center point or the ZMP exists there, and need not necessarily be the geometric center. For example, if the stable point is near the ankle for the sake of control, set the position of the ankle in soleCenter even when the ankle is connected to a position off from the center of the sole.
+.. note:: The center point described in "sole_center" is intended to be the most stable point when the center of gravity projection point or ZMP is there, and does not necessarily need to be the geometric center. For example, if the ankle area is the stable point for control purposes, even if the ankle is connected at a position off-center from the sole, the ankle position should be set in sole_center.
 
 .. _modelfile_yaml_preset_kinematics:
 
-Preset Kinematics Settings
+Preset Kinematics Setting
 --------------------------
 
-In "preset kinematics mode", which was described in :doc:`../pose-editing` - :ref:`model_kinematics_mode` , the mode automatically switches between forward kinematics and inverse kinematics according to the link the user tries to move. Settings for this are configured in the following part of the additional information file. ::
+In the "preset kinematics mode" described in :doc:`../pose-editing` - :ref:`model_kinematics_mode`, forward kinematics and inverse kinematics are automatically switched according to the link the user is trying to move. This setting is done in the following part of the additional information file. ::
 
- defaultIKsetup:
+ default_ik_setup:
    WAIST: [ RLEG_ANKLE_R, LLEG_ANKLE_R ]
    RLEG_ANKLE_R: [ WAIST ]
    LLEG_ANKLE_R: [ WAIST ]
 
-The following two settings are configured here:
+The settings made here are as follows:
 
-* When the user tries to move the WAIST link (waist), inverse kinematics is performed with both the RLEG_ANKLE_R link (right leg) and the LLEG_ANKLE_R link (left leg) fixed as base links.
-* When the user tries to move the RLEG_ANKLE_R link, inverse kinematics is performed using the WAIST link as the base link.
-* When the user tries to move the LLEG_ANKLE_R link, inverse kinematics is performed using the WAIST link as the base link.
+* When moving the WAIST link (waist), perform inverse kinematics with both the RLEG_ANKLE_R link (right foot) and LLEG_ANKLE_R link (left foot) fixed as base links
+* When moving the RLEG_ANKLE_R link, perform inverse kinematics with the WAIST link as the base link
+* When moving the LLEG_ANKLE_R link, perform inverse kinematics with the WAIST link as the base link
 
-In this way, simply specify the link for which inverse kinematics is to be performed in preset kinematics mode, and the base link(s) to be used in that case.
+In this way, you just need to specify the links you want to use inverse kinematics for in preset kinematics mode and their base links.
 
-Collision Detection Settings
-----------------------------
+.. _modelfile_yaml_collision_detection:
 
-Settings related to collision detection are written under the "collisionDetection" key. ::
+Collision Detection Setting
+---------------------------
 
- collisionDetection:
-   excludeTreeDepth: 3
-   excludeLinks: [ ]
+Choreonoid can process collision detection between links. When collision detection is enabled in Choreonoid settings, basically all links become targets for collision detection. (However, collision detection can be enabled or disabled for each body through the properties of the body item. Self-collision detection can also be switched.)
 
-The "excludeTreeDepth" setting is used to exempt adjacent links in a parent-child relationship in the joint tree from self-collision. When a value of 0 is set, all pairs of links are checked for collision. When a value of 1 is set, the self-collision check is not performed on links that are directly connected each other. If you increase the value, links that are further apart from each other by the increment are also exempted from the collision check.
+For joints embedded in other links or joints that combine multiple rotation axes, collisions inside the joint should originally be designed not to occur within the movable range, but it can be time-consuming to create model file shapes in such detail. Conversely, for links covered with flexible surfaces, collisions may be allowed by design. In such cases, by excluding specific links or specific link pairs from collision detection targets, it becomes possible to appropriately handle collision detection in Choreonoid.
 
-In "excludeLinks", you can specify the names of links to be exempted from the collision check from the first.
+This setting can be described in "collision_detection_rules". In SR1, it is described as follows. ::
 
-For a joint that is embedded in another link or a joint that has a combination of multiple rotation axes, it is normally necessary to design to prevent collision inside the joint from occurring in the movable range. However, it may take time and effort to elaborate shapes in the model file to such a degree. In contrast, the design of links covered with soft surfaces may tolerate collision. In that case, specify links to be exempted from the collision check using the above setting. This enables you to perform operations efficiently in Choreonoid.
+ collision_detection_rules:
+   - disabled_link_chain_level: 3
 
+As elements directly under collision_detection_rules, YAML lists are described, and rules are described for each element of the list. This allows multiple rules to be combined.
 
-About Other Information Description
------------------------------------
+Regarding "disabled_link_chain_level", this is a setting that excludes links adjacent in parent-child relationships in the joint tree from self-collision. If this rule is not described or the value is set to 0, it checks for collisions among all link pairs included in the target body. On the other hand, if a value of 1 or more is set here, pairs whose distance between nodes in the link tree is less than or equal to that value are excluded from self-collision targets. For example, if 1 is set, links in direct parent-child relationships are excluded from self-collision checks, and if 2 is set, links that are grandparents, grandchildren, or siblings of a certain link are also excluded.
 
-Although main information written in the SR1 sample has been described so far, you can write any information in the additional information file, as long as it is in YAML format. The contents of the file can be read internally in Choreonoid, and each function can obtain required information through the file. If information required by a new plugin to be installed is written in the file, the functions of the plugin can be used. Even when a user develops a plugin, the user can use the file by defining required information. Thus, the additional information file in YAML can be handled flexibly and is designed to play a important role in enhancing the functions of Choreonoid.
+The available rules are shown in the table below.
+
+.. list-table:: Collision Detection Rules
+ :widths: 15,85
+ :header-rows: 1
+ :align: left
+
+ * - Rule (Key)
+   - Description
+ * - disabled_link_chain_level
+   - Distance in the link tree to disable collision detection for self-collision of the target body
+ * - disabled_links
+   - Describe links to disable collision detection in list format
+ * - disabled_link_group
+   - Describe groups of links to disable collision detection in list format. Collision detection between links described here will not be performed.
+ * - enabled_links
+   - Describe groups of links to enable collision detection in list format.
+ * - enabled_link_group
+   - Describe groups of links to enable collision detection in list format. Collision detection between links described here will be performed.
+
+As a basic rule, collision detection is enabled for all links by default.
+When collision detection is enabled for a link, collision detection is performed with all other links that have collision detection enabled.
+
+In contrast, by describing rules starting with disabled\_, you can set links to be excluded from collision detection targets.
+However, you may want to re-enable collision detection for some of the links that were excluded collectively by disabled_link_chain_level or disabled_link_group. In that case, you can additionally describe rules starting with enabled\_.
+When there are multiple such rules, they are applied in the order they are described.
+Therefore, the general description method is to first describe rules for disabling, and then describe rules for re-enabling part of them as needed.
+
+Other Information Description
+-----------------------------
+
+Above, we explained the main information described in the SR1 sample, but additional information can describe any information as long as it follows YAML syntax and does not conflict with existing keys in the model file. The content can be read inside Choreonoid, and each function can obtain necessary information from this. By describing information required by newly introduced plugins, the plugin functions become available, and even when users develop plugins, users can define and use necessary information. In this way, additional information using YAML can be handled flexibly and serve as an important mechanism for extending Choreonoid functionality.
+
+.. _modelfile-yaml-add-information-to-another-model-format:
+
+Adding Information to Other Format Model Files
+-----------------------------------------------
+
+In SR1.body, the model file is described in Choreonoid's standard Body format, and the above additional information is also described together within that file.
+
+However, when you want to use existing model files described in other formats as they are, you may want to set additional information for model files other than Body format.
+
+In that case, first prepare a YAML file that describes the additional information. The extension is usually set to .yaml.
+
+Then describe the additional information there.
+
+On top of that, make the following description in the YAML file. ::
+
+ model_file: model_file_name
+
+For example, if there is a model file "robot.wrl" described in OpenHRP format, ::
+
+ model_file: robot.wrl
+
+and so on.
+
+If the YAML file describing additional information and the main model file are in the same directory, only the filename of the main file is OK. If they are in different directories, describe with the relative path or absolute path to that directory.
+
+Then, when loading from Choreonoid, load the YAML file.
+
+By doing this, the main model information is loaded in other formats, while additional information for that model is also loaded.

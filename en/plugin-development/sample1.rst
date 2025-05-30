@@ -3,7 +3,7 @@ Description of the Sample1Plugin
 
 In this document, we will explain the implementation of **Sample1Plugin**, which is one of the sample plugins. This document is intended for anyone who has read the  :doc:`hello-world-sample` section, and it provides some additional explanations.
 
-.. contents:: 目次
+.. contents:: Table of Contents
    :local:
 
 
@@ -333,9 +333,8 @@ In the :doc:`hello-world-sample`  section, we introduced three  :ref:`hello-worl
 First, when :ref:`hello-world-build-together`  write the following code in CMakeLists.txt: ::
 
   set(target CnoidSample1Plugin)
-  add_cnoid_plugin(${target} SHARED Sample1Plugin.cpp)
+  choreonoid_add_plugin(${target} Sample1Plugin.cpp)
   target_link_libraries(${target} CnoidBodyPlugin)
-  apply_common_setting_for_plugin(${target})
 
 The description contents are almost the same as for the HelloWorld sample, but the details of target_link_libraries are a little different. This plugin is dependent on the Body plugin, so you should specify CnoidBodyPlugin instead of CnoidBase as the dependent library. Since it is a plugin, it is also dependent on CnoidBase, but you don’t need to explicitly describe it. This is because CnoidBodyPlugin is also dependent on CnoidBase, and CMake knows that due to this plugin’s dependency on CnoidBodyPlugin, it is also dependent on CnoidBase.
 

@@ -45,16 +45,16 @@ AGX Magnetic Joint can be described and used as follows.
           validDistance: 1.0
           validAngle: 20
 
-#. Set the link you want to connect with AGXMagneticJoint to **linkName**
+#. Set the links to connect with AGXMagneticJoint in linkName
 
-#. Set which part of the link you want to connect to **position** and **connectionAxis**
+#. Set which part of the link to connect in position and connectAxis
 
-#. Set how much force and speed to connect to **jointCompliacne** and **jointSpookDamping**
+#. Set the force and speed of connection in jointCompliance and jointSpookDamping
 
-#. Set the distance and angle at which the connection is valid to **validDistance** and **validAngle**
+#. Set the distance and angle at which connection becomes valid in validDistance and validAngle
 
-poistion is the relative position from the link coordinate and connectAxis is the connection direction of the joint.
-For example, if you set connectAxis in different directions as shown on the left in the figure below, the connection is made so that each connectAxis matches.
+position is the relative position from the link coordinate system, and connectAxis is the connection direction of the joint.
+For example, if you set each connectAxis to different directions as shown in the left figure below, the connection is made so that each connectAxis aligns.
 
 .. image:: images/magnetic_joint_detail.png
 

@@ -1,8 +1,7 @@
-
 Using external mesh files
 =========================
 
-Here we describe how to import as models into Choreonoid external mesh files created in CAD or other modeling tools. In this example, we use Blender, a free modeling tool, to create a mesh, but you can also import meshes created other tools using this same process.
+Here we describe how to import external mesh files created in CAD or other modeling tools as models into Choreonoid. In this example, we use Blender, a free modeling tool, to create a mesh, but you can also import meshes created with other CAD tools or modeling tools using the same process.
 
 .. contents::
    :local:
@@ -15,49 +14,66 @@ Here we describe how to import as models into Choreonoid external mesh files cre
 Tank model
 ----------
 
-First we import a mesh for the Tank model, which is a fleshed-out version of the :ref:`bodyfile-tutorial-simple-tank-model` . The tank model comprises the five parts seen in the figure below.
+Here we will look at mesh import for the Tank model, which is an advanced version of the :ref:`bodyfile-tutorial-simple-tank-model`. The Tank model consists of the five parts shown in the figure below.
 
 .. image:: images/basic_structure.png
 
-The base is composed of the tank body. On top of the body are installed the gun turret and gun barrel. This piece acts as a foundation for the turret and consists of a rotating yaw axis and, on top of this, the gun barrel and a separate pitch axis attached to the turret. The left and right sides of the tank body are respectively outfitted with crawlers.
+The base part is the chassis. On top of the chassis are the turret and gun barrel. This part consists of two sections: one that serves as the foundation for the turret and performs yaw axis rotation, and another section that is mounted on top with the gun barrel and performs pitch axis rotation.
+Crawlers are attached to the left and right sides of the chassis respectively.
 
-These five components are modeled. The tank body acts as the center of the model and is modeled as a parent object. Child objects of the tank body (the parent) are the gun turret yaw axis and crawlers. The child object of the gun turret yaw axis is the gun turret pitch axis. In addition, the gun barrel attached to the gun turret and camera light (a device) are also modeled.
+These five parts are modeled. The chassis part is the central part of the model and is modeled as the "parent object". The turret yaw axis part and crawler parts are modeled as child objects of the parent chassis,
+and the turret pitch axis part is modeled as a child object of the turret yaw axis part. In addition, the gun barrel mounted on the turret and devices such as cameras and lights are also modeled.
 
-The hierarchy of these objects (parent-child relationship) is as follows: ::
+The hierarchical structure (parent-child relationships) between these objects is as follows: ::
 
- - Body
-     + gun turret yaw axis
-            + gun turret pitch axis
-     + left crawler
-     + right crawler
+ - Chassis
+     + Turret yaw axis part
+            + Turret pitch axis part
+     + Left crawler
+     + Right crawler
 
-We use a modeling tool to create the model shape above. Please refer to :doc:`modelfile-blender`  for details on actual steps to modeling the Tank.
+First, create the shape of this model using CAD tools or 3D-CG tools such as Blender.
 
 Setting parent-child relationships
 ----------------------------------
 
-Select the child object. Next, select the parent object and, from the 3D View header, select Object > Parent > Object. The parent window will appear. Selecting Object will complete the parent-child relationship. Creating this relationship will show the hierarchy in the Outliner.
+Set the parent-child relationships between each shape that makes up the Tank model in the modeling tool.
+
+In the case of Blender, first select the object that will be the child. Next, select the object that will be the parent, then select "3D View Header" ⇛ "Object" ⇛ "Parent" ⇛ "Object".
+The parent target window will be displayed, so select "Object" to complete the parent-child relationship setting.
+When you set parent-child relationships, they will be displayed in a hierarchical structure in the "Outliner".
 
 .. image:: images/Parent.png
 
-Object name settings
---------------------
+Setting object names
+-------------------
 
-When importing model files created with Blender into Choreonoid, if you set an object name in Blender, you can then use the object name as-is in Choreonoid. Right-click on the object displayed in the Outliner, then select Change Name to change the object’s name.
+To import the shape of each link from Choreonoid, assign names to each shape in the modeling tool in advance.
+
+In the case of Blender, you can change the object name by "right-clicking" on an object displayed in the "Outliner" ⇛ "Rename".
 
 .. image:: images/Object.png
 
 Exporting model files
 ---------------------
 
-Once you finish creating your model file, export it in Collada (.dae) format. From the Menu Bar, select File, Export, then Collada (.dae, selected by default). Enter a filename and click Export to Collada.
+Once you have finished creating the model, export the model to a file format that can be read by Choreonoid.
+
+Formats that can be read include Collada (.dae) and VRML97.
+Other formats such as STL and OBJ can also be read by Choreonoid, but these formats do not include the model structure (parent-child relationships), so they cannot be used when exporting the entire model consisting of multiple links at once as in this case. (It is possible to import them if you export each link as separate files.)
+
+Here we will export the entire model created in Blender in Collada format (.dae).
+Select "Menu Bar" ⇛ "File" ⇛ "Export" ⇛ "Collada (Default) (.dae)", enter a filename, and press "Export COLLADA".
 
 .. image:: images/model_export.png
 
-Importing YAML-formatted model files
-------------------------------------
+Loading model files in YAML format files
+-----------------------------------------
 
-Adding the resource field underneath elements as per below lets you import the model file you created and display it in Choreonoid. The Collada (.dae) file contains the entirety of the Tank model data; specifying the object name you set in Blender for node lets you import the corresponding node parts and display them. Setting the node type as Visual lets you specify it as a display model. Setting the type as Collision lets you specify it as a collision model. ::
+By describing the resource under elements as shown below, you can load the created model file and display it in Choreonoid.
+The exported model file contains the contents of the entire Tank model. By specifying the object name set on the modeling tool side for the node key, you can import and display only the shape of the target object.
+
+Also, by specifying Visual for the node type, it can be described as a display model, and by specifying Collision, it can be described as a collision model. ::
 
  links:
    -

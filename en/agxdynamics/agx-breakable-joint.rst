@@ -1,8 +1,9 @@
+=================
 AGXBreakableJoint
-===========================
+=================
 
-| AGXBrekableJoint is a joint using AGX Dynamics, and when a certain condition is satisfied the joint will be broken(invalidated).
-| Hinge, Prismatic, LockJoint of AGX Dynamics are used for implementation.
+AGXBreakableJoint is a joint using AGX Dynamics that breaks (becomes disabled) when certain conditions are met.
+The implementation uses Hinge, Prismatic, and LockJoint from AGX Dynamics.
 
 .. _agx_breaking_door:
 
@@ -13,42 +14,37 @@ AGXBreakableJoint
    :depth: 2
 
 Sample
-------------
+------
 
-This section explains how to use samples. The sample project is below.
-Operate the robot DoubleArm and grasping and pulling the door.
-You will see that the hinge joint will be broken and the door comes off.
+Let's explain how to use this with a sample. The sample project is located at:
+By operating DoubleArm to grasp and pull the door, you can see the hinge constraint disappear and the door come off.
 
-* project file: chorenoid/sample/AGXDynamics/agxBreakableJoint.cnoid
-* body file: chorenoid/sample/AGXDynamics/agxBreakableJoint.body
+* Project file: chorenoid/sample/AGXDynamics/agxBreakableJoint.cnoid
+* Body file: chorenoid/sample/AGXDynamics/agxBreakableJoint.body
 
 
-Breaking condition
----------------------
+Break Conditions
+----------------
 
-As explained at the beginning, AGXBreakableJoint triggers destruction if certain conditions are met.
-These conditions are two types, specified by the breakType parameter.
+As explained at the beginning, AGXBreakableJoint triggers breaking when certain conditions are met.
+There are two types of conditions, specified by the breakType parameter.
 
-* **Receive force more than specified force continuously during specified time (breakType: force)**
+* **When receiving force above a certain level for a certain period of time (breakType: force)**
 
 .. image:: images/breakable_joint_breaklimitforce.png
-   :scale: 70%
 
-* **Receive impulse more than specified threshold (breakType: impulse)**
+* **When the received impulse exceeds a threshold (breakType: impulse)**
 
 .. image:: images/breakable_joint_breaklimitimpulse.png
-   :scale: 70%
 
-breakType is used properly depending on how to receive force.
-For example, in a scene ( :ref:`agx_breaking_door` ) that removing a hinged door, breakType: force is suitable.
-On the other hand, breakType: impulse is suitable for drilling scene.
-Because it is difficult to receive force more than the specified force continuously.
-The drill add the force periodically.
+breakType should be chosen based on how force is applied.
+For example, in :ref:`a scene where a hinged door is removed <agx_breaking_door>`, force is appropriate.
+On the other hand, for objects that receive periodic impacts from a drill, it's difficult to continuously receive force above a certain level, so impulse is appropriate.
 
-How to write
---------------
+Syntax
+------
 
-Write and use AGXBreakableJoint as follows.
+AGXBreakableJoint is written and used as follows:
 
 .. code-block:: yaml
 
@@ -68,106 +64,116 @@ Write and use AGXBreakableJoint as follows.
           jointAxis: [ 0, 0, 1 ]
           jointCompliance: 1e-6
           breakType: force
-          period: 3.0                 # More than 3sec,
-          breakLimitForce: 3000       # receive more than 3000N force continuously
-          validAxis: [0, 1, 0]        # on Y axis direction will break the joint
+          period: 3.0                 # For 3 seconds or more
+          breakLimitForce: 3000       # Apply force of 3000N or more
+          validAxis: [0, 1, 0]        # In Y-axis direction to break
 
-1. Set the link you want to connect with AGXBreakableJoint to **linkName**
-2. Set joint type to **jointType**
-3. Set joint position and axis to **position** and **jointAxis**
-4. Set break type to **breakType**
-  * breakType: force, required to set **breakLimitForce** and **period** additionally
-  * breakType: impulse, required to set **breakLimitImpulse** additionally
-5. If necessary, set compliance, spook damping to **jointCompliance** and **jointSpookDamping**
-6. If necessary, set **validAxis** . validAxis can specify which axis of the joint to use for calculating breakLimit.
-   For example, in the figure below, by setting validAxis to [0, 1, 0], it means that the forces applied in the XZ axis direction are not considered.
+1. Set the links to connect with AGXBreakableJoint in linkName
+2. Set the joint type in jointType
+3. Set the joint position and axis in position and jointAxis
+4. Set the break type in breakType
+
+  * For breakType: force, set breakLimitForce and period
+  * For breakType: impulse, set breakLimitImpulse
+
+5. Optionally set spring stiffness and damping in jointCompliance and jointSpookDamping
+6. Optionally set validAxis. validAxis can specify which axes of the joint to use for breakLimit calculation. For example, in the figure below, setting validAxis to [0, 1, 0] means that forces applied in the XZ-axis directions are not considered.
 
 .. image:: images/breakable_joint_validaxis.png
-   :scale: 50%
 
 
-Parameter descriptionExplanation of parameters
---------------------------------------------------
+Parameter Descriptions
+----------------------
 
-The parameters are described below.
+The following describes the parameters.
 
 .. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
 .. list-table::
   :widths: 20,9,4,4,75
   :header-rows: 1
 
-  * - parameter
-    - default value
-    - unit
-    - data type
-    - explanation
+  * - Parameter
+    - Default Value
+    - Unit
+    - Type
+    - Description
   * - type: AGXBreakableJointDevice
     - \-
     - \-
     - string
-    - declaration of using AGXBreakableJoint
+    - Declaration to use AGXBreakableJoint
   * - link1Name
     - \-
     - \-
     - string
-    - name of the link1
+    - Link name
   * - link2Name
     - \-
     - \-
     - string
-    - name of the link2
+    - Link name
   * - jointType
     - \-
     - \-
     - string
-    - joint type: revolute, prismatic, fixed
+    - Joint type: revolute, prismatic, fixed
   * - position
     - [ 0, 0, 0]
     - m
     - Vec3
-    - joint position at the link1 coordinate
+    - Joint position as seen from link1 coordinate system
   * - jointAxis
     - [ 0, 0, 1]
     - \-
     - Unit Vec3
-    - axis of the joint at the link1 coordinate
+    - Joint axis
   * - jointRange
     - [ -inf, inf ]
     - m or deg
     - Vec2
-    - range of the joint motion
+    - Joint motion range
   * - jointCompliance
     - 1e-8
-    - m/N or rad/Nm
+    - m/N
     - double
-    - compliance of the joint
+    - Joint compliance
   * - jointSpookDamping
     - 0.33
     - s
     - double
-    - spook damping of the joint
+    - Joint spook damper
   * - breakType
     - force
     - \-
     - string
-    - break type: force, impulse
+    - Break type: force, impulse
   * - breakLimitForce
     - double_max
     - N
     - double
-    - force threshold of joint broken
+    - Force threshold for joint breaking
   * - period
     - 0
     - s
     - double
-    - time threshold of joint broken
+    - Time threshold
   * - breakLimitImpulse
     - double_max
     - Ns
     - double
-    - impulse threshold of joint broken
+    - Impulse threshold for joint breaking
   * - offsetForce
     - 0
     - N
     - double
-    - offset force
+    - Offset force
+  * - validAxis
+    - [ 1, 1, 1 ]
+    - \-
+    - 3-element sequence
+    - Specifies which directions of X, Y, Z axes to enable. Setting 1 for a component enables force monitoring in that axis direction
+  * - signedAxis
+    - [ 0, 0, 0 ]
+    - \-
+    - 3-element sequence
+    - Sets the sign of force threshold for X, Y, Z axes. 0 means both ±, 1 means positive only, -1 means negative direction only

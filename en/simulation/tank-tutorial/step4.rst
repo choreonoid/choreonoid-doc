@@ -1,27 +1,26 @@
+Step 4: Controlling the Crawlers
+=================================
 
-Step 4: Controlling the crawlers
-=====================================
+Now that we can control the gun turret in Step 3, let's enable control of the crawler parts that move the vehicle body in Step 4.
 
-In Step 3, we learned how to control the gun turret. In this step, we will control the crawlers, which move the tank itself.
-
-.. contents:: 目次
+.. contents:: Table of Contents
    :local:
    :depth: 2
 
 .. highlight:: C++
    :linenothreshold: 7
 
-Simplified Tank model crawler
------------------------------------
+The Tank Model's Simplified Crawlers
+------------------------------------
 
-The crawlers on the left and right of the model are modeled as “simplified crawlers.” (See the section on :ref:`modelfile_yaml_crawlers` ). This structure applies additional driving force between the crawler and its point of contact with the environment; the treads do not actually move around the wheels. This simplified design allows for a pseudo-crawler behavior. The treads do not deform as they go across terrain, though, so its running power is not like that of an actual crawler. For details, please see the section on  :doc:`../pseudo-continuous-track` .
+The left and right crawlers of the Tank model are modeled as "simplified crawlers" (see :ref:`modelfile_yaml_crawlers`). This applies thrust at the contact points between the crawler parts and the environment, and while it doesn't actually have the treads moving around the wheels, it allows for crawler-like movement. However, since the tread parts don't deform along the terrain, the traversability doesn't match that of real crawlers. For details, see :doc:`../pseudo-continuous-track`.
 
-The Tank model is modeled with two separately-named links for the respective left and right crawlers. The left side is “TRACK_L,” while the right side is “TRACK_R.” These links are configured as the “pseudoContinuousTrack” axis used by the simplified crawler. In this tutorial, we use the gamepad to control these.
+In the Tank model, the link corresponding to the left crawler is modeled with the name "TRACK_L", and the link corresponding to the right crawler is named "TRACK_R". These links have axes of the "pseudoContinuousTrack" type corresponding to simplified crawlers, and we want to make it possible to control these axes with the gamepad.
 
-Simplified crawler controller
------------------------------------
+Simplified Crawler Controller
+-----------------------------
 
-The source code of the TrackController we will be building is below. ::
+The source code for the "TrackController" controller we'll create this time is shown below. ::
 
  #include <cnoid/SimpleController>
  #include <cnoid/Joystick>
@@ -63,8 +62,8 @@ The source code of the TrackController we will be building is below. ::
              }
          }
  
-         trackL->dq() = -2.0 * pos[1] + pos[0];
-         trackR->dq() = -2.0 * pos[1] - pos[0];
+         trackL->dq_target() = -2.0 * pos[1] + pos[0];
+         trackR->dq_target() = -2.0 * pos[1] - pos[0];
  
          return true;
      }
@@ -72,93 +71,93 @@ The source code of the TrackController we will be building is below. ::
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(TrackController)
 
-As before, save the above source code as a file named TrackController.cpp in the project directory and add the below to the CMakeLists.txt file in the same directory: ::
+As before, save the above source code with the filename "TrackController.cpp" in the project directory, and add the following to the CMakeLists.txt in the same directory: ::
 
- add_cnoid_simple_controller(TankTutorial_TrackController TrackController.cpp)   
+ choreonoid_add_simple_controller(TankTutorial_TrackController TrackController.cpp)   
 
-When finished, compile it.
+Then compile it.
  
-Deploying the controller
----------------------------------
+Introducing the Controller
+--------------------------
 
-While the controller is implemented here as we did previously, this new controller does not control the gun turret, so just setting this controller alone will not allow you to manipulate the turret. What we will do is make use of the gun turret controllers we have used so far, while adding to this controller.
+Regarding the introduction of the controller, we'd like to say "same as before," but since the controller we created this time doesn't have a part that controls the gun turret, if we set only this controller, we won't be able to move the gun turret. So we want to add this controller while keeping the previous gun turret controllers.
 
-.. note:: Naturally, another approach would be to include code to control the gun turret directly in the source code. In that case, you would simply specify the integrated controller file for the controller module of the SimpleController item. This tutorial is designed to explain how each step is added in a sequential fashion, so we deliberately only add the new step to each controller as it appears. Furthermore, breaking out the controller functionality in this way also improves the reusability of the controllers you develop.
+.. note:: Of course, there's also the option of including the gun turret control code in this source code itself. In that case, just specify the integrated controller file in the "Controller module" of the SimpleController item, same as before. In this tutorial, to clarify what's added at each step, we've deliberately written only the added parts in each step's controller. Also, dividing controllers by function in this way leads to improved reusability of the developed controllers.
 
-To add a controller, you need simply add the SimpleController item. Perform the same operations as you did in Step 2 to :ref:`simulation-tank-tutorial-create-controller-item` . It is best to give the name of the item generated one that corresponds to the controller, such as TrackController. For the properties of the controller module we generated, we assign the name of the controller file: TankTutorial_TankController.so.
+To add a controller, just add a SimpleController item. Perform the same operation as :ref:`simulation-tank-tutorial-create-controller-item` in Step 2 to generate the item. It's good to name the generated item to match the controller, such as "TrackController". For the "Controller module" property of the generated item, specify the controller file "TankTutorial_TrackController.so" created this time.
 
-Use caution here with respect to the placement of the additional controller items. As with the first controller item, one positioning would be as follows.
+What requires attention here is the placement of the added controller item. First, similar to the first controller item, it could be placed as follows:
 
 .. image:: images/trackcontrolleritem1.png
 
-When arranging multiple controller items in parallel as sub-items of the model to be controlled, they each control the model as standalone controllers. Specifically, it functions as follows.
+When multiple controller items are placed in parallel as child items of the model to be controlled like this, they control the model as independent controllers. Specifically, the behavior is as follows:
 
-* The SimpleControllerIO format objects (I/O objects) are treated as respectively different objects. The Body object used for input/output and obtained from the IO object also differs.
+* The SimpleControllerIO type objects (IO objects) passed to each controller are different objects. The Body objects for input/output obtained from the IO objects are also different.
 
-* The control functions for each controller are executed in parallel. Strictly speaking, if the controller thread property of the simulator item is set to “true,” separate threads are assigned to each controller’s control function, and these are executed in parallel.
+* The control functions of each controller are executed in parallel. To be precise, when the "Controller threads" property of the simulator item is true, separate threads are assigned for each controller's control function, and they are executed in parallel.
 
-Meanwhile, the two controller items in this step are positioned as follows.
+On the other hand, these two controller items can also be placed as follows:
 
 .. image:: images/trackcontrolleritem2.png
 
-The second controller is positioned as a sub-item of the first controller. In this case, the two controllers act in an integrated fashion. Specifically, it functions as follows.
+Here, the second controller is placed as a child item of the first controller. In this case, the two controllers operate as one unit. Specifically, the behavior is as follows:
 
-* IO objects passed to each controller are shared as the same object. Therefore, the Body objects used for input/output and obtained from each IO object are also shared.
+* The IO objects passed to each controller are shared as the same object. Therefore, the Body objects for input/output obtained from the IO objects are also shared.
 
-* The control functions for each controller are executed in series. The run order is based on a depth-first search of the tree.
+* The control functions of each controller are executed in series. The execution order follows depth-first search order in the tree.
 
-The controller we will be creating in this tutorial will function correctly in both cases, but, generally speaking, the latter (integrated format) is preferred. This allows for using fewer resources and easier integration between controllers. This tutorial makes use of the integrated format and, in this step, as shown in the second figure, the TrackController is positioned as a sub-item of the Turret Controller.
+The controllers created in this tutorial work correctly in either case, but generally it's preferable to use the latter integrated format. That requires fewer resources and makes coordination between controllers easier. This tutorial uses this integrated format, so in this step, please place the TrackController as a child item of the TurretController as shown in the second figure.
 
-One of the benefits of the parallel format of the former is that it lets you invoke multiple controllers in parallel. Only this format lets you use controller items of different types together. There may be times where you want to use different controller types for different purposes.
+Note that the former parallel format also has the advantage of being able to execute multiple controllers in parallel. Also, different types of controller items can only be used in this format. Therefore, use both formats appropriately depending on the situation.
 
-Operating the controller
------------------------------
+Operating the Crawlers
+----------------------
 
-Now, let’s run the simulation. Using the other (the left) analog stick of the gamepad, try moving the Tank model’s body. Pushing the stick forward causes the tank to move forward; pulling it backward causes the tank to move backward. Pushing it to the left or right causes the tank to rotate in that direction.
+Let's run the simulation. This time you can drive the Tank model's body with the other (left side) analog stick on the gamepad, so try it out. Push the stick forward to go forward, back to reverse, left to turn left, and right to turn right.
 
-We have retained the TurretController in place, so you can continue controlling the gun turret.
+Also, since we've kept the TurretController, you can continue to control the gun turret as well.
 
-When shown in the Virtual Joystick View, the components of the gamepad and its operations appear as below.
+The correspondence between each part of the gamepad and the operation content shown in the virtual joystick view is as follows:
 
 .. image:: images/joystickview-step4.png
 
-With this, all of the axes of the Tank model are now operational.
+Now you can operate all axes of the Tank model.
 
-How this implementation works
-------------------------------------
+Explanation of Implementation Details
+-------------------------------------
 
-We will use this space to talk specifically about aspects of the TrackController that are unique to it.
+Let's explain the implementation details of TrackController, focusing on the parts specific to this controller.
 
-First, use the initialize function: ::
+First, in the initialize function: ::
 
  trackL = io->body()->link("TRACK_L");
  trackR = io->body()->link("TRACK_R");
 
-to obtain the input and output links for the left and right crawlers. Next, ::
+obtains the input/output links corresponding to the left and right crawlers respectively. Next: ::
 
  trackL->setActuationMode(Link::JOINT_SURFACE_VELOCITY);
  trackR->setActuationMode(Link::JOINT_SURFACE_VELOCITY);
 
-is used to specify JOINT_SURFACE_VELOCITY as the :ref:`simulation-implement-controller-actuation-mode`  for each link. As described in the section on :ref:`modelfile_yaml_crawlers` , we specified the actuation mode in the Tank model file, so this notation can be omitted. However, the model file may or may not specify this accordingly, so explicitly setting the ActuationMode is considered best.
+specifies JOINT_SURFACE_VELOCITY as the :ref:`simulation-implement-controller-actuation-mode` for each crawler link. For the Tank model, as shown in :ref:`modelfile_yaml_crawlers`, the actuation mode is specified in the model file, so this description can be omitted. However, since it may not be specified that way in the model file, it's preferable to explicitly set the actuation mode like this.
 
-Next, use ::
+Then: ::
 
  io->enableOutput(trackL);
  io->enableOutput(trackR);
   
-to enable output to each crawler link.
+enables output to each crawler link.
 
-Where the ActuationMode is JOINT_SURFACE_VELOCITY, the command value outputted is not torque, but rather applies surface velocity to the crawler.  There is no particular need to set input here. Therefore, we use the enableOutput function, which only enables output. When using JOINT_SURFACE_VELOCITY, the link state variable “dq” is used to output the surface velocity.
+When the actuation mode is JOINT_SURFACE_VELOCITY, the command value to output is given not as torque but as the surface velocity of the crawler. Also, there's no particular need for input. Therefore, we use the "enableOutput" function which only enables output. In the case of JOINT_SURFACE_VELOCITY, the surface velocity is output using the link's state variable dq.
 
-Within the control function, you will find: ::
+In the control function: ::
 
  static const int axisID[] = { 0, 1 };
 
-This is used to set the axis ID for the gamepad used to operate the crawlers. Where using a gamepad other than those discussed in the section on :ref:`simulation-tank-tutorial-gamepad` , you may have to adjust the value for it to work correctly.
+is the setting for the gamepad axis IDs to correspond to the crawler axes. For this as well, if you're using a gamepad other than those mentioned in :ref:`simulation-tank-tutorial-gamepad`, you may need to modify the values for appropriate correspondence.
 
-The output is set using the “dq” variable, which stores the joint velocity.  Within the control function, using: ::
+The output is set to the variable dq which stores the joint velocity. In the control function: ::
 
- trackL->dq() = -2.0 * pos[1] + pos[0];
- trackR->dq() = -2.0 * pos[1] - pos[0];
+ trackL->dq_target() = -2.0 * pos[1] + pos[0];
+ trackR->dq_target() = -2.0 * pos[1] - pos[0];
 
-determines the speed of each crawler based on the axis state and outputs the result. The stick front and back axes assign the same drive velocity to both crawlers, while the left and right axes of the stick assign opposing driving force to the crawlers. This enables you to tilt the stick forward and back to move in those directions and left and right to rotate in either direction.
+determines the drive speed of each crawler from the axis state and outputs it. For the stick's forward/backward axis, the same drive speed is given to both crawlers, and for the stick's left/right axis, opposite drive speeds are given to both crawlers. This results in forward/backward movement with the forward/backward axis and turning with the left/right axis.

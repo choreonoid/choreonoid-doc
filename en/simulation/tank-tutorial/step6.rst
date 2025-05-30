@@ -1,78 +1,77 @@
+Step 6: Simulating and Obtaining Camera Images
+===============================================
 
-Step 6: Simulating and polling camera images
-===================================================
+The Tank model is also equipped with a camera. In Step 6, we'll enable simulation of this camera and learn how to obtain camera images from the controller side.
 
-The Tank model comes equipped with a camera. In Step 6, we will learn how to simulate this camera and poll camera images from the controller.
-
-.. contents:: 
+.. contents:: Table of Contents
    :local:
    :depth: 2
 
 .. highlight:: C++
    :linenothreshold: 7
 
-The project we created in Step 5 contained a variety of visual elements. This step picks up that project in the state we last left it. First, save the project anew as Step6.cnoid before you begin.
+The project created in Step 5 contains various visual elements, so let's proceed with this step starting from the state set in that project. First, save the project again with the name "Step6.cnoid" and proceed with the work in this step.
 
-Camera devices
-----------------------
+Camera Device
+-------------
 
-As with the light we used in Step 5, cameras are also defined as devices in Choreonoid. The camera installed on the Tank model is called “Camera.” This name is used to distinguish it from other devices. Access from the controller is the same as other devices, such as the light.
+Similar to the light handled in Step 5, the camera is also defined as one of the "devices" in Choreonoid. The camera mounted on the Tank model is named "Camera", and devices can be identified by this name. The access method from the controller is the same as for other devices including lights.
 
-You can refer to the remarks on  :ref:`modelfile-tank-camera` in the section on :doc:`creating a Tank model <../../handling-models/modelfile/modelfile-newformat>` to see how the camera is actually defined.
+For how the camera is actually defined in the model file, see :ref:`modelfile-tank-camera` in :doc:`Creating the Tank Model <../../handling-models/modelfile/modelfile-newformat>`.
 
-Changing cameras in the Scene View
-----------------------------------------------
+Changing the Camera in the Scene View
+-------------------------------------
 
-The Scene View also allows for you to display the point of view of the camera onboard the robot model. Use this functionality to see what sort of images are obtained from the camera installed on the Tank model.
+The scene view can also display from the viewpoint of a camera mounted on a robot model. Using this function, let's first check what kind of images can be obtained from the camera mounted on the Tank model.
 
-You can toggle the camera using the Camera Selection combo box on the Scene Bar below.
+Camera switching can be done with the "Camera selection" combo box on the scene bar below.
 
 .. image:: images/scenebar-camera.png
 
-Clicking here will display a list of the cameras defined by the system, as well as those contained in models displayed on the scene. The current project should display the below choices.
+Clicking here displays a list of cameras defined in the system and cameras included in models displayed in the scene. In the current project state, the following should be displayed as options:
 
 * Perspective - System
 * Orthographic - System
 * Camera - Tank
 
-Perspective - System and Orthographic - System are the default cameras provided in the Scene View; they allow the user to change the viewpoint using the mouse. These cameras respectively render using perspective projection and orthographic projection. By default, perspective is selected.
+"Perspective - System" and "Orthographic - System" are cameras that the scene view has by default, allowing users to change the viewpoint through mouse operations. They are cameras that perform perspective projection rendering and orthographic projection rendering respectively, with Perspective selected by default.
 
-“Camera - Tank” indicates that there is a camera named “Camera” installed on the Tank model. We want to see the scene from the perspective of this camera, so select it. While the outcome will vary based on the orientation of the Tank model and the render settings of the Scene View, you should see an image like the below on the Scene View.
+"Camera - Tank" is the camera named "Camera" mounted on the Tank model. Since we want to display the scene from this camera's viewpoint, let's select this. Then, depending on the direction the Tank model is facing and the scene view's rendering settings, an image like the following should be displayed in the scene view:
 
 .. image:: images/sceneview-tankcameraview.png
 
-Launch the simulation and try operating the Tank model with the gamepad. You should see that the image now moves in sequence with the movement of the Tank and gun turret. This video is sourced from the camera onboard the Tank model.
+Start the simulation in this state and try operating the Tank model with the gamepad. You should see the image moving in conjunction with the Tank's movement and turret motion. This is the video from the camera mounted on the Tank model.
 
-Simulations will also let you simultaneously display a camera image like this one and an overhead view of the original Scene View. Choreonoid allows for doing this by adding and enabling the display of a Scene View. Let’s give it a try now.
+Note that in simulations, you may want to display both such camera images and overhead views from the original scene view display simultaneously. This is possible in Choreonoid by adding and displaying additional scene views, so let's try it.
 
-From the Main Menu, select View, then Generate View, then Scene. This will bring up the Generate Scene View dialog. You can set a name for the View you intend to add, but if there is no particular need for a unique name, you can use the default. Clicking the Generate button will generate an additional Scene View and position it on top of the main window.
+From the main menu, select "View" - "Create View" - "Scene". This displays the "Generate SceneView" dialog. Here you can set the name of the view to add, but if there's no particular name you want to specify, the default is fine. Pressing the "Generate" button here generates an additional scene view and places it on the main window.
 
-The location where a view is generated is determined in advance for each view type. The new Scene View will likely appear to overlap where the prior Scene View was. You can manipulate the tabs to toggle between the current and former view, but this prevents you from seeing them simultaneously. For simultaneous display, carry out the steps described in the section on :ref:`basics_view_move` and move the newly-added view to a different part of the main window.
+The location where views are generated is determined for each view type, and this time the additional scene view will probably be displayed overlapping the area where the original scene view was displayed. You can switch to the original view by operating the tabs, but this doesn't achieve simultaneous display. To display simultaneously, perform the :ref:`basics_view_move` operation to move the additional view to another area on the main window.
 
-Once you have succeeded in moving the view, toggle the camera to be used for rendering. The respective Scene View cameras can be toggled independently of each other. In this case, the scene bar control is applied to the Scene View last in focus. First click the mouse within or otherwise gain control of the previous Scene View to put it in focus, then select Perspective - System from the camera combo bar on the scene bar. Next, focus on the newly-added Scene View and select Camera - Tank from the camera selection combo box. You can now tweak the view positions and sizes to get the right fit. This lets you get a display like, for example, the one below.
+Once you've moved the view, also switch the camera used for rendering. Each scene view's camera can be switched independently. In this case, scene bar operations are applied to the scene view that last had focus, so first click the mouse on the original scene view area to give it focus, then select "Perspective - System" in the scene bar's camera selection combo. Next, similarly give focus to the added scene view and select "Camera - Tank" in the camera selection combo. Also adjust the position and size of each view to make them easier to see. Through such operations, you can achieve a display like the following:
 
 .. image:: images/multisceneviews.png
 
-We arrange the new Scene View on the left side and then display the Tank model’s camera image there. On the Scene View on the right side, we display an overhead view from the default camera.
+Here, we've placed the added scene view on the left side to display the Tank model's camera image, and the right scene view displays an overhead view with the default camera.
 
-Simulating camera images
-----------------------------
+Simulating Camera Images
+------------------------
 
-We have learned how to use the Scene View to display camera images. However, this is limited to rendering in the GUI; this functionality is separate from the simulation functionality. You should have seen that this allows you to render camera images even without launching the simulation itself. To obtain camera images from the controller while running a simulation, you must run a camera image simulation as a device.
+We were able to display camera images using the scene view. However, this is for rendering on the GUI and is a function independent of simulation. In fact, you can see that camera image rendering is possible even without starting the simulation. To obtain camera images from the controller in simulation, you need to also simulate camera images as a device.
 
-To do so, you must add a GL Vision Simulator Item to your project. From the Main Menu, click File > New > then GL Vision Simulator to generate an item. Position it as a sub-item of the simulator item. The item layout should be as below.
+To do this, you need to introduce a "GL Vision Simulator Item" to the project. Generate this item from the main menu's "File" - "New" - "GL Vision Simulator" and place it as a child item of the simulator item. This results in the following item configuration:
 
 .. image:: images/visionsimulatoritem.png
 
-Running a simulation in this state will simulate camera images being taken within the simulator, letting you poll them from the controller.
+When you run the simulation in this state, camera images are simulated inside the simulator, making it possible to obtain them from the controller.
 
-For details on the GL Vision Simulator Item, see the section on  :doc:`../vision-simulation` .
+For details on the GL Vision Simulator Item, please refer to :doc:`../vision-simulation`.
 
 
-Controller source code 
---------------------------
+Controller Source Code
+----------------------
 
-We have learned how to simulate camera images by incorporating the GL Vision Simulator item into our project. To check the output, you need a controller to poll images from the camera device. Here we create a controller designed to export images polled from the devices as files to the local system. The source code follows: ::
+With the introduction of the GL Vision Simulator Item, we can now simulate camera images, but to confirm this, we need a controller to obtain images from the camera device. Here we'll create a controller that outputs the obtained images to files. The source code is shown below: ::
 
  #include <cnoid/SimpleController>
  #include <cnoid/Camera>
@@ -88,7 +87,7 @@ We have learned how to simulate camera images by incorporating the GL Vision Sim
      std::ostream* os;
      
  public:
-     virtual bool initialize(SimpleControllerIO* io)
+     virtual bool initialize(SimpleControllerIO* io) override
      {
          camera = io->body()->findDevice<Camera>("Camera");
          io->enableInput(camera);
@@ -97,7 +96,7 @@ We have learned how to simulate camera images by incorporating the GL Vision Sim
          return true;
      }
  
-     virtual bool control()
+     virtual bool control() override
      {
          joystick.readCurrentState();
  
@@ -120,67 +119,67 @@ We have learned how to simulate camera images by incorporating the GL Vision Sim
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(CameraController)
 
-As before, save the above source code in the project directory as a file named CameraController.cpp.
+As before, save the above source code with the filename "CameraController.cpp" in the project directory.
 
-Add the below to CMakeLists.txt and compile: ::
+Add to CMakeLists.txt: ::
 
- add_cnoid_simple_controller(TankTutorial_CameraController CameraController.cpp)
+ choreonoid_add_simple_controller(TankTutorial_CameraController CameraController.cpp)
 
-.
+and compile it.
 
-Deploying the controller
-----------------------------
+Introducing the Controller
+--------------------------
 
-As before, you can use the SimpleController item to implement the controller you created in your project and position it as a sub-item of the TurretController. This will cause the Item Tree View to be as follows.
+As before, introduce the created controller to the project using a SimpleController item and place it as a child item of the TurretController. This results in the following Item Tree View:
 
 .. image:: images/cameracontrolleritem.png
 
 
-Polling and displaying camera images
-------------------------------------------
+Obtaining and Displaying Camera Images
+--------------------------------------
 
-Now, let’s go ahead and run a simulation.
+Now let's run the simulation.
 
-Using the B button on a gamepad or in the virtual joystick view, you can control the camera. (On a PlayStation controller, this corresponds to the circle button.) Pressing this will save an image of the current camera view to a file. The Message View will display the following message: ::
+As a function of the Camera controller, pressing the B button on the gamepad or virtual joystick view (the ○ button on PlayStation gamepads) saves the current camera image to a file. At this time, the message view displays: ::
 
  The image of Camera has been saved to "Camera.png".
 
-The file export destination will be the current directory, and the file will be named Camera.png.
+The file is saved in the current directory with the filename "Camera.png".
 
-Try clicking the button and then opening the image file in your preferred image viewer. In Ubuntu, you can use the “eog” image viewer. It is opened by invoking the below on the command line: ::
+Try pressing the button and display the saved image file with an appropriate image viewer. On Ubuntu, there's a standard image viewer called "eog", and you can display the obtained camera image by entering on the command line: ::
 
  eog Camera.png
 
-This lets you view the camera image you created.
+etc.
 
-eog includes functionality to auto-update the displayed image if the image file is updated. This lets you keep the file open in eog and see the results each time it is changed.
+eog seems to have a function that updates the display when the loaded image file is updated. This allows you to confirm that the obtained image is updated each time you obtain a new image while keeping eog displayed.
 
 
-How this implementation works
----------------------------------
+Explanation of Implementation Details
+-------------------------------------
 
-As with the light discussed in Step 5, using the below initialize function: ::
+Similar to the light in Step 5, in the initialize function: ::
 
  camera = io->body()->findDevice<Camera>("Camera");
 
-lets you poll the Device object for Camera and store this as a camera variable.
+obtains the device object corresponding to Camera and stores it in the camera variable.
 
-Also, using ::
+Also: ::
 
  io->enableInput(camera);
 
-enables input from the device. The above notation is required if you want to enable device input.
+enables input from this device. This description is necessary when performing input from a device.
 
-.. note:: For device output, as discussed in Step 5, you must invoke notifyStateChange() against the device. Therefore, there is no function like enableOutput() against the device.
+.. note:: For output from devices, as explained in Step 5, it's done by executing "notifyStateChange()" on the device. Therefore, functions like enableOutput() are not provided for devices, so please be aware of this.
 
-The control function is used to check the state of the B button and, when it is pushed, save a file from the Camera device. In this process, the line below: ::
+The control function checks the state of the B button, and when the B button is pressed, it saves the Camera device's image at that time to a file. In this process, first: ::
 
  const Image& image = camera->constImage();
 
-polls the image data the Camera has. Provided this value is not empty, the below: ::
+obtains the Image type image data that the Camera device has. If this is not empty: ::
 
  camera->constImage().save(filename);
 
-will save the image file as-is.
+saves the image directly to a file.
 
-In the actual controller, image processing could be performed against the image data, or the image data obtained could be forwarded to another device remotely, among other potential applications.
+In an actual controller, you would perform image recognition processing on this image data, or send the obtained image to a remote operation terminal, among other processes.

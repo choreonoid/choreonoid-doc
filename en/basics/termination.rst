@@ -1,5 +1,4 @@
+How to Exit
+===========
 
-How to Exit Choreonoid 
-=======================
-
-When you want to exit Choreonoid, click the close button in the main window or select the main menu "File" - "Close". If you have started Choreonoid from a terminal, you can also exit it by inputting "Ctrl + C" on the terminal.
+To exit Choreonoid, you can either click the close button on the main window or execute "File" - "Exit" from the main menu. If you launched Choreonoid from a terminal, you can also exit by pressing "Ctrl + C" in the terminal.

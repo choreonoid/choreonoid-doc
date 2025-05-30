@@ -1,5 +1,5 @@
-競技ルール補足
-==============
+Competition Rules Supplement
+============================
 
 .. contents::
    :local:

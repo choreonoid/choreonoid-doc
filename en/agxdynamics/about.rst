@@ -1,11 +1,11 @@
+=====================
+What is AGX Dynamics?
+=====================
 
-About AGX Dynamics
-====================
-| AGX Dynamics is the physics engine that Algoryx Simulation AB develops and supports.
-| AGX Dynamics provides the ability of realtime simluation of a crawler, wire or other new functions on Choreonoid.
-| 
-| See below external link for detailed information about AGX Dynamics.
+AGX Dynamics is a commercial physics engine developed by Algoryx Simulation AB of Sweden.
+By using AGX Dynamics, you can achieve real-time simulation of crawlers, wires, and other previously difficult-to-realize simulations on Choreonoid.
 
+For details about AGX Dynamics, please see below.
+*Note: You will be redirected to an external page.
 
-* For Japanese `VMC Inc. "AGX Dynamicsとは" <http://www.vmc-motion.com/14416057938792>`_
-* For English `Algoryx Simulation AB "AGX Dynamics" <https://www.algoryx.se/products/agx-dynamics/>`_
+* `Algoryx Simulation AB "AGX Dynamics" <https://www.algoryx.se/products/agx-dynamics/>`_

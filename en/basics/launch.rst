@@ -1,51 +1,50 @@
-
-How to Start Up
-===============
+Launch Methods
+==============
 
 .. contents::
    :local:
    :depth: 1
 
-Start Up from Command Line
+.. highlight:: sh
+
+Launching from Command Line
 ---------------------------
 
-In case of starting up Choreonoid with command line operations from a general terminal on an OS like Linux, enter the command "choreonoid", which is the execution file of Choreonoid. (Similar operations are provided also on Windows by using a system tool called "command product".)
+To launch Choreonoid using command input from a terminal, which is common on operating systems like Linux, you enter the command "choreonoid", which is the executable file for Choreonoid. (On Windows, similar operations are possible using a system tool called "Command Prompt".)
 
-This command is located in "bin" directory of the installation destination. If there is a path established, simply enter ::
+This command is located in the "bin" directory of the installation destination. If the path is set to that directory, you can simply launch it by typing ::
 
  choreonoid
 
-then, the system starts up.
-
-Or in case Choreonoid is built from the source code, the execution file is generated in "bin" directory under the build directory. It is also possible to run that execution file directly. For example, in case of building directly under the source directory, start up Choreonoid through the operation as follows: ::
+Alternatively, when you build Choreonoid from source, the executable file is first generated in the bin directory of the build directory. You can also directly execute that executable file. For example, if you performed the build in a build directory called "build" within the source directory, you can launch Choreonoid by entering the following in the terminal: ::
 
  cd [source directory]
- bin/choreonoid
+ ./build/bin/choreonoid
 
-When it starts up, the Main Window of Choreonoid that looks like as follows is displayed.
+When launched, Choreonoid's main window as shown below will be displayed.
 
 .. figure:: images/default_mainwindow.png
 
 
-Start up from File Manager
-----------------------------
+Launching from File Manager
+---------------------------
 
-The operations as above using command lines are not so normal on an OS like Windows. In that case, you can also execute Choreonoid from a file manager software product like Windows Explorer. Open the folder to install Choreonoid in the file manager and start up like double-clicking the execution file ("choreonoid" in case of Linux and "choreonoid.exe" in case of Windows) contained in bin directory
+On operating systems like Windows, the command line operations described above may not be very common. In such cases, you can also run Choreonoid from file manager software like Windows Explorer. Open the Choreonoid installation folder with the file manager, and launch it by double-clicking the executable file in the bin directory (on Linux it's "choreonoid", on Windows it's "choreonoid.exe").
 
-Start up from Application Menu
-----------------------------------
+Launching from Application Menu
+-------------------------------
 
-In case of installing Choreonoid using the installer on Windows, Choreonoid is added as an item in Start menu. You can start Choreonoid from Start menu. Even if you use any other OS than Windows or you don't use the installer on Windows, you have only to register the above-mentioned Choreonoid execution file in the menu.
+When Choreonoid is installed using the installer on Windows, a Choreonoid item is added to the Start menu, so it's also possible to launch Choreonoid from the Start menu. Even on operating systems other than Windows or when not using an installer on Windows, you can register the Choreonoid executable file mentioned above in the menu.
 
 .. _basis_launch_projectfile:
 
-Specifying Project File using Command Line Argument
----------------------------------------------------
+Specifying Project Files with Command Line Arguments
+----------------------------------------------------
 
-It is also possible to read "Project" explained in :doc:`item` when Choreonoid starts up. To do this, specify "Project file" in the command line argument when starting up Choreonoid. For example, in case of reading the project file "project1.cnoid" located in the current directory: ::
+For "projects" described in :doc:`item`, it's also possible to have them loaded when Choreonoid starts up. To do this, you specify a "project file" as a command line argument when launching Choreonoid. For example, to load a project file called "project1.cnoid" in the current directory, you can specify it as follows: ::
 
  choreonoid project1.cnoid
 
-You can specify it in this way. If you are familiar with command line operations, it is possible to read project files effectively in this way.
+If you're familiar with the command line, this method allows you to efficiently load project files.
 
-If the files with the extension "cnoid" are associated with the execution file "choreonoid" using the file association function of the OS, it is possible to start Choreonoid in the project file just by double-clicking it. Such association is actually provided when installing in case of using Windows installer.
+Also, by using the OS file association feature to associate files with the ".cnoid" extension with the choreonoid executable file, it becomes possible to launch Choreonoid with that project file simply by double-clicking the project file from the file manager. The Windows installer performs such associations during installation.

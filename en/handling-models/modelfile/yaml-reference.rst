@@ -1,39 +1,56 @@
-
-Body file reference manual
-===================================
+Body File Reference Manual
+===========================
 
 .. contents::
    :local:
    :depth: 2
 
-Summary
+Overview
+--------
+
+This is a reference manual for Choreonoid's standard Body format model files (Body files).
+
+Model File Conventions
+~~~~~~~~~~~~~~~~~~~~~~
+Each model file describes one model of a robot or environment.
+The file extension should be ".body" to distinguish it from regular YAML format files (".yaml").
+
+.. _body-file-reference-key-style:
+
+Key Notation Style
+~~~~~~~~~~~~~~~~~~
+
+Regarding the notation style of keys in YAML files used in Choreonoid, we have traditionally used "lowerCamelCase" but are gradually switching to "snake_case". However, the transition is not complete, and some keys are still in camelCase. Therefore, YAML files used in Choreonoid may contain a mixture of camelCase and snake_case. This also applies to Body files.
+
+In this manual, keys that have been migrated to snake_case are written in snake_case. For keys that were previously defined in camelCase, the latest version can still read keys in the old format to maintain compatibility. However, this compatibility measure may be discontinued in the future, so please use the new format when creating new files.
+
+Angle Units
+~~~~~~~~~~~
+
+Basically, the degree unit is used. For details, please refer to the "angle_unit" item in :ref:`body-file-reference-header`.
+
+YAML Syntax
 -----------
 
-This is a reference manual on the Body format model files (Body files) used by Choreonoid by default.
+For YAML syntax, please refer to `The Official YAML Web Site <https://yaml.org>`_.
 
-Model file rules
-~~~~~~~~~~~~~~~~~~~~~~~
-Each model file defines rules for a single robot or environment model. In order to distinguish these files from normal YAML files (.yaml), the extension is set to .body.
+Node List
+---------
 
-YAML syntax
-------------------
-For details on YAML syntax, please refer to the `Programmer’s Guide to YAML (Beginner) <http://magazine.rubyist.net/?0009-YAML>`_.
+The following nodes are defined, and models are created by combining instances of these nodes.
+In the actual model definition part, these nodes are combined to create hierarchical structures, thereby creating models.
 
-node list
-------------
-
-The below types of nodes are defined in the specifications. By assembling these into instances, you can create models. By combining node instances into a hierarchical structure, you can define the format of the model.
-
-Nodes that define the link structure and dynamics/mechanisms parameters are as follows.
+The following nodes are defined for link structure and dynamics/mechanism parameters:
 
 * :ref:`body-file-reference-link-node`
 * :ref:`body-file-reference-rigid-body-node`
 * :ref:`body-file-reference-transform-node`
 
-The below nodes are defined as nodes used to define the shape and display of links.
+The following nodes are defined for link shape and appearance:
 
 * :ref:`body-file-reference-shape-node`
 * :ref:`body-file-reference-geometry-node`
+
  * :ref:`body-file-reference-box-node`
  * :ref:`body-file-reference-sphere-node`
  * :ref:`body-file-reference-cylinder-node`
@@ -41,11 +58,12 @@ The below nodes are defined as nodes used to define the shape and display of lin
  * :ref:`body-file-reference-cone-node`
  * :ref:`body-file-reference-extrusion-node`
  * :ref:`body-file-reference-elevation-grid-node`
+
 * :ref:`body-file-reference-appearance-node`
 * :ref:`body-file-reference-material-node`
 * :ref:`body-file-reference-resource-node`
 
-The below nodes are defined as nodes used to define sensors and devices.
+The following nodes are defined for various sensors and devices:
 
 * :ref:`body-file-reference-acceleration-sensor-node`
 * :ref:`body-file-reference-rate-gyro-sensor-node`
@@ -54,517 +72,549 @@ The below nodes are defined as nodes used to define sensors and devices.
 * :ref:`body-file-reference-range-sensor-node`
 * :ref:`body-file-reference-spot-light-node`
 
-The below node is defined as a node used to define closed link mechanisms.
+The following nodes are defined for closed-link mechanisms:
 
 * :ref:`body-file-reference-extra-joint-node`
 
-The below node is defined as a node used to group other nodes.
+The following nodes are defined for grouping nodes:
 
 * :ref:`body-file-reference-group-node`
 
-The following provides details on each node.
+The details of each node are explained below.
 
-Headers
-------------
+.. _body-file-reference-header:
 
-Placed at the beginning of a file and specifying the format of the model file.
+Header
+------
 
-.. list-table:: Header fields
+Placed at the beginning of the file to specify the format of the model file.
+
+.. list-table:: Header Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - format
-   - Set as “ChoreonoidBody.”
- * - formatVersion
-   - Specifies the version of the model file format. The current version is 1.0.
- * - angleUnit
-   - This is used to specify the units to use for joint angles in the model file. Set as “degree” or “radian.”
+   - Specify "ChoreonoidBody".
+ * - format_version
+   - Specify the version of the model file format. The current version is 2.0.
+ * - angle_unit
+   - Item to specify the unit of joint angles in the model file. Specify "degree" or "radian". Default is degree. ※ When format_version is 2.0, radian cannot be specified.
  * - name
-   - Set the model name.
- * - rootLink
-   - Set the root link name.
+   - Specify the name of the model.
+ * - root_link
+   - Specify the root link name.
 
 
-Link structure, nodes defining dynamics and mechanism parameters
------------------------------------------------------------------------------
+Nodes for Defining Link Structure and Dynamics/Mechanism Parameters
+-------------------------------------------------------------------
 
 .. _body-file-reference-link-node:
 
-Link nodes
-~~~~~~~~~~~~~~~~~~
+Link Node
+~~~~~~~~~
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: Link node fields
+.. list-table:: Link Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Link
  * - name
-   - The link name. You can specify any value so long as it does not overlap with another value in the model.
+   - Name of the link. Any string that is unique within the model can be specified
  * - parent
-   - The parent link. Specified by calling the name of the parent link (the string declared in the name field). This is not used for root links.
+   - Parent link. Specify by the name of the parent link (string written in name). Not used for the root link
  * - translation
-   - Location relative to the parent link for the link-local frame. For root links, used as the default position at import.
+   - Relative position of this link's local frame from the parent link. For the root link, used as the default position when loading the model
  * - rotation
-   - The orientation relative to the parent link of the link-local frame. The orientation is expressed as four values that correspond to angle of rotation (Axis-Angle format). For root links, used as the default position at import.
- * - jointId
-   - The joint ID. Specify an integer value greater than zero. You can specify any value so long as it does not overlap with another value in the model. This need not be specified if the link is not a joint (a root link or where the jointType is fixed), or where you do not intend to access it by ID.
- * - jointType
-   - The joint type. Select from fixed, **free** (applies only to root links),  **revolute** (rotating joint), **prismatic** (direct joint),  or **pseudoContinousTrack** (a caterpillar track). 
- * - jointAxis
-   - The joint axis. Specify the axis joint as a list containing the three elements of the 3D vector. Use unit vectors for the value here. Where the joint axis corresponds to any of the X, Y, or Z coordinates for the link-local coordinates, or the inverse, you can also declare this using the corresponding letter for that axis (X, Y, or Z, or -X, -Y, or -Z).
- * - jointAngle
-   - The initial angle of the joint. Specified in degrees.
- * - jointDisplacement
-   - The initial angle of the joint. Specified in radians.
- * - jointRange
-   - The range of motion of the joints. Give a list containing the two values of maximum and minimum. Declaring the value as “unlimited” allows for removing range of motion restrictions. Where the minimum and maximum absolute values are the same and they are respectively negative and positive, you can specify just one of these (as a scalar value).
- * - maxJointVelocity
-   - Specify the joint rotation/velocity range as a scalar value (>=0). This value defines a negative and positive range. If the jointType is revolute, sets the maximum angular velocity (degrees/sec); otherwise, sets the maximum velocity (m/sec).
- * - jointVelocityRange
-   - The range of the joint rotation/velocity. Give a list containing the two values of maximum and minimum. This is given precedence over maxJointVelocity.
- * - rotorInertia
-   - The rotor moment of inertia. By default, set to 0.0.
- * - gearRatio
-   - The gear ratio. By default, it is set to 1.0. The equivalent rotor moment of inertia is set as gearRatio*gearRatio*rotorInertia.
- * - centerOfMass
-   - The position of the center of gravity. Set using link-local coordinates
+   - Relative orientation of this link's local frame from the parent link. Orientation is expressed by four numerical values corresponding to rotation axis and rotation angle (Axis-Angle format). For the root link, used as the default position when loading the model
+ * - joint_id
+   - Joint ID value. Specify an integer value of 0 or greater. Any value that is unique within the model can be specified. When the link is not a joint (root link or when joint_type is fixed) or when access by ID value is not required, it does not need to be specified
+ * - joint_type
+   - Joint type. Specify one of **fixed** (fixed), **free** (non-fixed, can only be specified for root link), **revolute** (revolute joint), **prismatic** (prismatic joint), **pseudo_continuous_track** (simplified continuous track)
+ * - joint_axis
+   - Joint axis. Specify the direction of the joint axis as a list of 3 elements of a 3D vector. Values should be unit vectors. When the joint axis coincides with X, Y, Z axes or their opposite directions in the link's local coordinates, it can also be specified by the corresponding axis character (X, Y, Z, -X, -Y, -Z)
+ * - joint_angle
+   - Initial angle of the joint.
+ * - joint_displacement
+   - Initial angle of the joint. Specified in radians. Takes priority over joint_angle.
+ * - joint_range
+   - Joint range of motion. List minimum and maximum values as a list. By writing the value as unlimited, it is possible to remove the range limitation. When the absolute values of minimum and maximum values are the same with negative and positive signs respectively, only the absolute value may be written (as a scalar value)
+ * - max_joint_velocity
+   - Specify the range of joint rotation/movement speed as a scalar value (>=0). Set to the negative and positive range of this value. When joint_type is revolute, it is the maximum angular velocity, otherwise it is the maximum velocity (m/sec)
+ * - joint_velocity_range
+   - Range of joint rotation/movement speed. List minimum and maximum values as a list. Takes priority over max_joint_velocity.
+ * - rotor_inertia
+   - Rotor moment of inertia. Default value = 0.0.
+ * - gear_ratio
+   - Gear ratio. Default value = 1.0.
+     Equivalent rotor moment of inertia is set as gear_ratio*gear_ratio*rotor_inertia.
+ * - center_of_mass
+   - Center of mass position. Specified in link local coordinates
  * - mass
-   - The mass in kg.
+   - Mass [kg]
  * - inertia
-   - The moment of inertia. Given as a list of nine inertia tensors. Due to the symmetry of inertia tensors, you need only list the six elements of the upper triangle.
+   - Moment of inertia. List the 9 elements of the inertia tensor as a list. Due to the symmetry of the inertia tensor, only the 6 elements of the upper triangular part may be listed.
  * - import
-   - Import an aliased node here. import: *defined_alias
+   - Load a node with an alias at this location. import: \*defined_alias
  * - elements
-   - Give the child nodes that are constituent elements of the link.
+   - Describe child nodes that are components of the link
 
 
 .. note::
-	The first Link node is treated as the root node for the model.
+		The first Link node described is considered the root node of the model.
 
 .. note::
-	Rigid body parameters (centerOfMass, mass, inertia) can also be set using the RigidBody node (explained later). In that case, use elements to set the RigidBody node as a child node of the Link node.
+		Rigid body parameters (center_of_mass, mass, inertia) can also be described in the RigidBody node described next. In that case, use elements to place the RigidBody node as a child node of the Link node.
 
 .. _body-file-reference-rigid-body-node:
 
-RigidBody nodes
-~~~~~~~~~~~~~~~~~~~~~~~
+RigidBody Node
+~~~~~~~~~~~~~~
 
-RigidBody nodes define the rigid body parameters of a link.
+The RigidBody node defines the rigid body parameters of a link.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: RigidBody node items
+.. list-table:: RigidBody Node Items
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - RigidBody
- * - centerOfMass
-   - The position of the center of gravity. Set using link-local coordinates
+ * - center_of_mass
+   - Center of mass position. Specified in link local coordinates
  * - mass
-   - The mass in kg.
+   - Mass [kg]
  * - inertia
-   - The moment of inertia. Given as a list of nine inertia tensors. Due to the symmetry of inertia tensors, you need only list the six elements of the upper triangle.
+   - Moment of inertia. List the 9 elements of the inertia tensor as a list. Due to the symmetry of the inertia tensor, only the 6 elements of the upper triangular part may be listed.
  * - elements
-   - Specify the link shape and sensors using a child node.
+   - Describe the shape and sensors of the link with child nodes.
 
 .. _body-file-reference-transform-node:
 
-Transform nodes
-~~~~~~~~~~~~~~~~~~~~~~~
+Transform Node
+~~~~~~~~~~~~~~
 
-Control the translation, rotation, and scaling of nodes beneath it.
+Translates, rotates, and scales the nodes below.
 
-.. list-table:: Transform node fields
+.. list-table:: Transform Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Transform
  * - translation
-   - Location offset
+   - Position offset
  * - rotation
    - Orientation offset
  * - scale
-   - Increase/decrease size
+   - Size scaling
  * - elements
-   - Describes a child node subject to conversion.
+   - Describe child nodes that receive the transformation.
 
 
-Nodes used to define link shape and appearance
-------------------------------------------------------
+Nodes for Defining Link Shape and Appearance
+---------------------------------------------
 
 .. _body-file-reference-shape-node:
 
-Shape nodes
-~~~~~~~~~~~~~~
+Shape Node
+~~~~~~~~~~
 
-.. list-table:: Shape node fields
+.. list-table:: Shape Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Shape
  * - geometry
-   - Describes the link shape using any :ref:`body-file-reference-geometry-node` .
+   - Describe the shape of the link with one of the :ref:`body-file-reference-geometry-node`
  * - appearance
-   - Describes the link color and texture as an :ref:`body-file-reference-appearance-node` .
+   - Describe the color and texture of the link as :ref:`body-file-reference-appearance-node`
 
 .. _body-file-reference-geometry-node:
 
-Geometric shape nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Geometry Nodes
+~~~~~~~~~~~~~~
 
-Geometric shapes available are the following nodes: Box, Sphere, Cylinder, Capsule, Cone, Extrusion, ElevationGrid, and IndexedFaceSet.
+For describing geometric shapes, you can use any of the following nodes: Box, Sphere, Cylinder, Capsule, Cone, Extrusion, ElevationGrid, IndexedFaceSet.
 
 .. _body-file-reference-box-node:
 
-Box nodes
-'''''''''''''''
+Box Node
+''''''''
 
-Box nodes are geometric nodes which set the dimensions of a rectangular figure.
+The Box node is a geometry node that describes a rectangular parallelepiped.
 
-.. list-table:: Box node fields
+.. list-table:: Box Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
-   - Set as “Box.”
+   - Specify Box
  * - size
-   - The length, depth, and height of the box.
+   - Length, width, and depth of the rectangular parallelepiped
 
 .. _body-file-reference-sphere-node:
 
-Sphere nodes
-'''''''''''''''''
+Sphere Node
+'''''''''''
 
-The Sphere node is a geometric node used to describe spherical forms.
+The Sphere node is a geometry node that describes a sphere.
 
-.. list-table:: Sphere node fields
+.. list-table:: Sphere Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Sphere
  * - radius
-   - The radius of the sphere.
+   - Radius of the sphere
 
 .. _body-file-reference-cylinder-node:
 
-Cylinder nodes
-''''''''''''''''''''
+Cylinder Node
+'''''''''''''
 
-Cylinder nodes are geometric nodes which set the dimensions of a cylindrical figure.
+The Cylinder node is a geometry node that describes a cylinder.
 
-.. list-table:: Cylinder node fields
+.. list-table:: Cylinder Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Cylinder
  * - radius
-   - radius
+   - Radius
  * - height
-   - height
+   - Height
  * - bottom
-   - true: has base (default)  false: no base
+   - true: bottom surface present (default)  false: no bottom surface
  * - top
-   - true: has top (default)  false: no top
+   - true: top surface present (default)  false: no top surface
 
 .. _body-file-reference-capsule-node:
 
-Capsule nodes
-''''''''''''''''''''
+Capsule Node
+''''''''''''
 
-Capsule nodes are geometric nodes which set the dimensions of capsules (cylinder + 2 spheres).
+The Capsule node is a geometry node that describes a capsule (cylinder + two spheres).
 
-.. list-table:: Capsule node fields
+.. list-table:: Capsule Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Capsule
  * - radius
-   - radius
+   - Radius
  * - height
-   - height
+   - Height
 
 .. _body-file-reference-cone-node:
 
-Cone nodes
-''''''''''''''''
+Cone Node
+'''''''''
 
-Cone nodes are geometric nodes which specify the dimensions of conical figures.
+The Cone node is a geometry node that describes a cone.
 
-.. list-table:: Cone node fields
+.. list-table:: Cone Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Cone
  * - radius
-   - The radius of the bottom
+   - Radius of the base
  * - height
-   - height
+   - Height
  * - bottom
-   - true: has base (default)  false: no base
+   - true: bottom surface present (default)  false: no bottom surface
 
 .. _body-file-reference-extrusion-node:
 
-Extrusion nodes
-'''''''''''''''''''''
+Extrusion Node
+''''''''''''''
 
-Extrusion nodes are geometric nodes which are used to express the dimensions of an extruded form.
+The Extrusion node is a geometry node that describes an extruded shape.
 
-.. list-table:: Extrusion node fields
+.. list-table:: Extrusion Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Extrusion
- * - crossSection
-   - | Specified as coordinate points of the cross-section to extrude. Format as:
-     | crossSection: [ x0, z0, x1, z1, x2, z2, ・・・, xn, zn ]
-     | with X and Z coordinates given. You can include line breaks and spaces.
-     | crossSection: [ x0, z0,
+ * - cross_section
+   - | Specify the shape of the cross-section to be extruded by vertex coordinates (x-z plane).
+     | cross_section: [ x0, z0, x1, z1, x2, z2, ・・・, xn, zn ]
+     | Line up x-coordinates and z-coordinates like this. Line breaks and spaces are allowed.
+     | cross_section: [ x0, z0,
      |                 x1, z1,
-     |                  ：
+     |                  :
  * - spine
-   - | Specify, in terms of endpoint coordinates, the straight line section on which to move across the cross-section set with crossSection.
+   - | Specify the piecewise linear path along which the cross-section specified by cross_section moves, by endpoint coordinates.
      | spine: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
  * - orientation
-   - The crossSection rotation for each spine point is set using a list of axis-angle parameters (x, y, z, θ). If you specify only one set, the same rotation is applied to the entire spine. If the set is smaller than the number of spines, then no rotation is applied to the remainder; if the set is larger than the number of spines, it is ignored.
+   - Specify the rotation of cross_section at each point of spine by listing axis-angle format parameters (x, y, z, θ).
+     If only one set is specified, the same rotation is used for all spine points. If fewer than the number of spine points are specified, the missing ones will have no rotation, and if more than the number of spine points are specified, the excess will be ignored.
  * - scale
-   - The scaling factor for each point on the spine of the cross-section specified with crossSection. Set the X axis scaling factor and Z axis scaling factor to correspond to the number of spines. If you specify only one set, the same scaling factor is applied to the entire spine. If you specify fewer than the number of spines, the remainder will receive a scaling factor of 0 and be treated as 1. If you specify more than the number of spines, it will be ignored.
- * - creaseAngle
-   - The threshold value used to change the shading using the light source and angle of the normal vector. If the creaseAngle is smaller than zero, smooth shading is used. By default, this value is 0.
- * - beginCap
-   - true: cross-section exists for start edge (default) false: no cross-section for start edge
- * - endCap
-   - true: cross-section exists for end edge (default) false: no cross-section for end edge
+   - Scaling factor of the cross-section specified by cross_section at each point of spine. Specify x-axis scaling factor and z-axis scaling factor for the number of spine points. If only one set is specified, the same scaling factor is used for all spine points. If fewer specifications than the number of spine points, the unspecified ones are scaled to 0 times and become a single point. Specifications exceeding the number of spine points are ignored.
+ * - crease_angle
+   - Threshold for changing shading based on the angle between light source and normal vector. Smooth shading is applied when less than crease_angle. Default is 0.
+ * - begin_cap
+   - true: cross-section at start end present (default) false: no cross-section at start end
+ * - end_cap
+   - true: cross-section at end present (default) false: no cross-section at end
 
-*See: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion
+※Reference: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion
 
 
 .. _body-file-reference-elevation-grid-node:
 
-ElevationGrid nodes
-'''''''''''''''''''''''''''''
+ElevationGrid Node
+''''''''''''''''''
 
-The ElevationGrid node is a geometric node used to describe terrain forms with height applied for each lattice point on a grid.
+The ElevationGrid node is a geometry node that describes terrain-like shapes with heights given for each grid point.
 
-.. list-table:: ElevationGrid node fields
+.. list-table:: ElevationGrid Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - ElevationGrid
- * - xDimension
-   - The number of grids on the X axis
- * - zDimension
-   - The number of grids on the Z axis
- * - xSpacing
-   - The grid interval on the X axis
- * - zSpacing
-   - The grid interval on the Z axis
+ * - x_dimension
+   - Number of grids in x-axis direction
+ * - z_dimension
+   - Number of grids in z-axis direction
+ * - x_spacing
+   - Grid spacing in x-axis direction
+ * - z_spacing
+   - Grid spacing in z-axis direction
  * - ccw
    - true: vertex order is counterclockwise false: vertex order is clockwise
- * - creaseAngle
-   - The threshold value used to change the shading using the light source and angle of the normal vector. If the creaseAngle is smaller than zero, smooth shading is used. By default, this value is 0.
+ * - crease_angle
+   - Threshold for changing shading based on the angle between light source and normal vector. Smooth shading is applied when less than crease_angle. Default is 0.
  * - height
-   - Specifies an array indicating the height of each lattice point. Requires correspondence with the number of lattice points (xDimension*zDimension).
+   - Specify the height at each grid point as an array. Elements for the number of grid points (x_dimension*z_dimension) are required.
 
-*See: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#ElevationGrid
+.. TODO: Add description for tex_coord key
+
+※Reference: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#ElevationGrid
 
 
 .. _body-file-reference-IndexedFaceSet-node:
 
-IndexedFaceSet nodes
-''''''''''''''''''''''''
+IndexedFaceSet Node
+'''''''''''''''''''
 
-The IndexedFaceSet node is a geometric shape node that describes a shape based on polygons created from a list of vertices.
+The IndexedFaceSet node is a geometry node that describes shapes by creating faces (polygons) from listed vertices.
 
-.. list-table:: IndexedFaceSet node fields
+.. list-table:: IndexedFaceSet Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - IndexedFaceSet
- * - coordinate
-   - | Specifies vertex coordinates. coordinate: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
-     | Format as above, with a list of X, Y, and Z coordinates.
- * - coordIndex
-   - | Specified as a polygon face, with an index applied from 0 to N of the coordinates set with coord. An index of [-1] implies that the current face has ended.
-     | The index is given as a list, as: coordIndex: [ 0, 1, 2, 3, -1, 3, 2, 4, 5, -1, ...]. The order of vertices is counterclockwise.
- * - texCoord
-   - | Used when applying textures. Given as two-dimensional coordinates used to map a texture to a vertex. Used as:
-     | texCoord: [ s0, t0, s1, t1, ・・・, sm, tm ]
-     | The bottom left of the texture is (0.0, 0.0), and the upper right is (1.0, 1.0).
- * - texCoordIndex
-   - | As with coordIndex, used to select coordinates for textures for each vertex. Must include the same number of indexes as the coordIndex field and include a [-1] value for the surface ending in the same position.
-     | If nothing is given for this parameter, it inherits that used for coordIndex.
- * - creaseAngle
-   - The threshold value used to change the shading using the light source and angle of the normal vector. If the creaseAngle is smaller than zero, smooth shading is used. By default, this value is 0.
- 
-*See: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#IndexedFaceSet
+ * - vertices
+   - | Specify vertex coordinates. vertices: [ x0, y0, z0, x1, y1, z1, ・・・, xn, yn, zn ]
+     | Line up x-coordinates, y-coordinates, and z-coordinates like this.
+ * - faces
+   - | Specify polygon faces by indexing the coordinates specified in vertices from 0 to N. Index "-1" indicates that the current face is finished.
+     | faces: [ 0, 1, 2, 3, -1, 3, 2, 4, 5, -1, ・・・ ] Line up indices like this. Vertex order is counterclockwise.
+ * - tex_coords
+   - | Used when applying texture. Specify 2D coordinates for mapping texture to vertices.
+     | tex_coords: [ s0, t0, s1, t1, ・・・, sm, tm ]
+     | Line up coordinates with texture's bottom-left as (0.0, 0.0) and top-right as (1.0, 1.0).
+ * - tex_coord_indices
+   - | Similar to faces, used to select texture coordinates for each vertex. Must contain the same number of indices as the faces field and include the face end marker "-1" at the same positions.
+     | If not specified, faces is used.
+ * - crease_angle
+   - Threshold for changing shading based on the angle between light source and normal vector. Smooth shading is applied when less than crease_angle. Default is 0.
+
+.. TODO: Add description for normals key
+   TODO: Add description for normal_indices key
+
+※Reference: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#IndexedFaceSet
 
 
 .. _body-file-reference-appearance-node:
 
-Appearance nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Appearance Node
+~~~~~~~~~~~~~~~
 
-.. list-table:: Appearance node fields
+.. list-table:: Appearance Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - material
-   - Describes the material on the surface of an object as a :ref:`body-file-reference-material-node` .
+   - Describe the material of the object surface as :ref:`body-file-reference-material-node`
  * - texture
-   - Describes the texture of the surface of an object as a :ref:`body-file-reference-texture-node` .
- * - textureTransform
-   - Describes the translation, rotation, and scaling of a texture as a :ref:`body-file-reference-textureTransform-node` .
+   - Describe the texture of the object surface as :ref:`body-file-reference-texture-node`
+ * - texture_transform
+   - Describe texture translation, rotation, and scaling as :ref:`body-file-reference-textureTransform-node`
 
 .. _body-file-reference-material-node:
 
-Material nodes
-~~~~~~~~~~~~~~~~~~~~~
+Material Node
+~~~~~~~~~~~~~
 
-.. list-table:: Material node fields
+.. list-table:: material Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
- * - ambientIntensity
-   - The rate of refraction of ambient light (0.0-1.0)
- * - diffuseColor
-   - The diffusion rate (color of objects) per each RBG value (a list ranging from 0.0-1.0 for each RGB value).
- * - emissiveColor
-   - The emissive color of the object itself (a list ranging from 0.0-1.0 for each RGB value).
+   - Content
+ * - ambient
+   - Ambient light reflectance (0.0~1.0)
+ * - diffuse
+   - Diffuse reflectance for each RGB (object color) (list of 0.0~1.0 for each RGB)
+ * - emissive
+   - Color emitted by the object itself (list of 0.0~1.0 for each RGB)
+ * - specular_exponent
+   - Parameter that controls the sharpness of specular reflection. Higher values create smaller, sharper highlights, giving the appearance of metal or polished surfaces. Set values of 0 or greater. Default is 25. Values around 100 create a metallic appearance.
  * - shininess
-   - The gleam/shininess (0.0-1.0).
- * - specularColor
-   - The rate of specular reflection (highlight color of light) (given as a list ranging from 0.0-1.0 for each RGB value)
+   - Legacy parameter that controls the sharpness of specular reflection. Specify in the range 0-1. This parameter should not be used in the future; use specular_exponent instead.
+ * - specular
+   - Specular reflectance (color of light highlights) (list of 0.0~1.0 for each RGB)
  * - transparency
-   - Opacity (0: transparent - 1: opaque)
+   - Transparency (0: transparent ~ 1: opaque)
 
 .. _body-file-reference-texture-node:
 
-Texture nodes
-~~~~~~~~~~~~~~~~~~~
+Texture Node
+~~~~~~~~~~~~
 
-.. list-table:: Texture node fields
+.. list-table:: texture Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - url
-   - The texture file path.
- * - repeatS
-   - Given as a repeat horizontal texture.
- * - repeatT
-   - Given as a repeating perpendicular texture.
+   - Path to texture file
+ * - repeat_s
+   - Specify to repeat texture display horizontally
+ * - repeat_t
+   - Specify to repeat texture display vertically
    
 .. _body-file-reference-textureTransform-node:
 
-TextureTransform nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TextureTransform Node
+~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table:: TextureTransform node fields
+.. list-table:: textureTransform Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - translation
-   - Location offset
+   - Position offset
  * - rotation
    - Orientation offset
  * - scale
-   - Increase/decrease size
+   - Size scaling
  * - center
-   - The center point of rotation and scale.
+   - Center point for rotation and scale
 
-*See: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#TextureTransform
+※Reference: http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#TextureTransform
 
 .. _body-file-reference-resource-node:
 
-Resource nodes
-~~~~~~~~~~~~~~~~~~~~~
+Resource Node
+~~~~~~~~~~~~~
 
-Load a mesh created in a CAD or another modeling tool.
+Loads meshes created with CAD or modeling tools for link shapes.
 
-.. list-table:: Resource node fields
+.. list-table:: Resource Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Resource
  * - uri
-   - Link shape and mesh file path
+   - Path to mesh file for link shape
  * - node
-   - Give the node name when importing only a specific node from within a mesh file.
+   - Specify node name when loading only a specific node within the mesh file
 
 .. _body-file-reference-devices:
 
-Nodes defining sensors and devices
-----------------------------------------
+Nodes for Defining Various Sensors and Devices
+-----------------------------------------------
 
-Device nodes
-~~~~~~~~~~~~~~~~~~~~
+Device Node
+~~~~~~~~~~~
 
-Display common settings shared among devices.
+Shows common configuration items for various devices.
 
-.. list-table:: Device node common fields
+.. list-table:: Common Fields for Device Node
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
+ * - name
+   - Device name
  * - id
-   - The device ID.
+   - Device ID
  * - translation
-   - Give the local coordinate system position as an offset value from the parent node coordinate system.
+   - Specify the position of the local coordinate system as an offset value from the parent node coordinate system.
  * - rotation
-   - The orientation in the local coordinate system, given as an offset value from the parent node coordinate system ([x, y, z, θ]  vectors: θ rotation around [x, y, z]).
+   - Specify the orientation of the local coordinate system as an offset value from the parent node coordinate system ([x, y, z, θ] rotation by θ around vector [x, y, z]).
 
 .. note::
-  Each sensor node is added below the Link node to which that sensor is applied. For example, if you have attached an accelerometer to the wait of the sample model, you would use the following.
+  Various sensor nodes are attached under the Link node to which the sensor is attached. For example, when an acceleration sensor is attached to the waist (WAIST) of a sample model, it is described as follows:
 
 .. code-block:: yaml
 
@@ -578,245 +628,283 @@ Display common settings shared among devices.
 
 .. _body-file-reference-acceleration-sensor-node:
 
-AccelerationSensor nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+AccelerationSensor Node
+~~~~~~~~~~~~~~~~~~~~~~~
 
-AccelerationSensor nodes are defined as 3-axis accelerometers.
+The AccelerationSensor node defines a 3-axis acceleration sensor.
 
-.. list-table:: AccelerationSensor node fields
+.. list-table:: AccelerationSensor Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Field
-   - Details
+   - Content
  * - type
    - AccelerationSensor
- * - maxAcceleration
-   - The maximum measurable acceleration. Specify as a list containing the three elements of the 3D vector.
+ * - max_acceleration
+   - Maximum measurable acceleration. Specify as a list of 3 elements of a 3D vector.
 
 .. _body-file-reference-rate-gyro-sensor-node:
 
-RateGyroSensor nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RateGyroSensor Node
+~~~~~~~~~~~~~~~~~~~
 
-RateGyroSensor nodes are defined as 3-axis angular sensors.
+The RateGyroSensor node defines a 3-axis angular velocity sensor.
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: RateGyroSensor node fields
+.. list-table:: RateGyroSensor Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - RateGyroSensor
- * - maxAngularVelocity
-   - The maximum measurable angular velocity. Specify as a list containing the three elements of the 3D vector.
+ * - max_angular_velocity
+   - Maximum measurable angular velocity. Specify as a list of 3 elements of a 3D vector.
+
+.. _body-file-reference-imu-node:
+
+Imu Node
+~~~~~~~~
+
+The Imu node defines an IMU (Inertial Measurement Unit) that integrates a 3-axis acceleration sensor and a 3-axis angular velocity sensor.
+
+.. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
+
+.. list-table:: Imu Node Fields
+ :widths: 15,85
+ :header-rows: 1
+ :align: left
+
+ * - Key
+   - Content
+ * - type
+   - Imu
+ * - max_acceleration
+   - Maximum measurable acceleration. Specify as a list of 3 elements of a 3D vector.
+ * - max_angular_velocity
+   - Maximum measurable angular velocity. Specify as a list of 3 elements of a 3D vector.
 
 .. _body-file-reference-force-sensor-node:
 
-ForceSensor nodes
-~~~~~~~~~~~~~~~~~~~~~~~~
+ForceSensor Node
+~~~~~~~~~~~~~~~~
 
-ForceSensor nodes are defined as force/torque sensors.
+The ForceSensor node defines a force/torque sensor.
 
-.. list-table:: ForceSensor node fields
+.. list-table:: ForceSensor Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - ForceSensor
- * - maxForce
-   - The maximum measurable force. Specify as a list containing the three elements of the 3D vector.
- * - maxTorque
-   - The maximum measurable torque. Specify as a list containing the three elements of the 3D vector.
+ * - max_force
+   - Maximum measurable force. Specify as a list of 3 elements of a 3D vector.
+ * - max_torque
+   - Maximum measurable torque. Specify as a list of 3 elements of a 3D vector.
 
 .. _body-file-reference-camera-node:
 
-Camera nodes
-~~~~~~~~~~~~~~~~~~~~
+Camera Node
+~~~~~~~~~~~
 
-Camera nodes are defined as visual sensors.
+The Camera node defines a vision sensor.
 
-.. list-table:: Camera node fields
- :widths: 30,70
+.. list-table:: Camera Node Fields
+ :widths: 30,100
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - Camera
  * - format
-   - | Specify the type of data to be polled from the sensor.
-     | ・"COLOR"  polls color data
-     | ・"DEPTH"  polls depth data
-     | ・"COLOR_DEPTH"  polls color depth data
-     | ・"POINT_CLOUD"  polls the 3D point cloud
-     | ・"COLOR_POINT_CLOUD"  polls the color data’s 3D point cloud
+   - | Specify the type of information to be acquired from the sensor.
+     |   ・"COLOR"  Acquire color information
+     |   ・"DEPTH"  Acquire depth information
+     |   ・"COLOR_DEPTH"  Acquire color and depth information
+     |   ・"POINT_CLOUD"  Acquire 3D point cloud
+     |   ・"COLOR_POINT_CLOUD"  Acquire color information and 3D point cloud
+ * - lens_type
+   - | Specify the type of lens.
+     |   ・"NORMAL"  Normal lens (default value)
+     |   ・"FISHEYE"  Fisheye lens
+     |   ・"DUAL_FISHEYE"  Omnidirectional camera
  * - on
-   - Use true/false to turn the camera on/off
+   - Specify camera ON/OFF with true/false
  * - width
-   - The image width
+   - Image width
  * - height
-   - The image height
- * - fieldOfView
-   - The camera view angle
- * - nearClipDistance
-   - The distance to the nearest clip plane in view
- * - farClipDistance
-   - The distance to the furthest clip plane in view
- * - frameRate
-   - How many images the camera should output per second
+   - Image height (automatically determined from width value when lens_type="FISHEYE","DUAL_FISHEYE")
+ * - field_of_view
+   - Camera field of view angle (cannot be specified when lensType="DUAL_FISHEYE")
+ * - near_clip_distance
+   - Distance from viewpoint to near clipping plane
+ * - far_clip_distance
+   - Distance from viewpoint to far clipping plane
+ * - frame_rate
+   - How many images per second the camera outputs
 
 .. note::
-    The view orientation is defined as follows. Forward line of sight: negative Z axis position in the local coordinate system.Upward line of sight: positive Y axis position in the local coordinate system.
+    The viewpoint orientation is defined as follows. Forward viewing direction ・・・ Negative direction of Z-axis in local coordinate system   Upward viewing direction ・・・ Positive direction of Y-axis in local coordinate system.
 
 .. note::
-    Internally, when the format is set as COLOR, Camera is used. When set as anything other than COLOR, RangeCamera is used.
+    Internally, when format is "COLOR", it is treated as Camera, and when format is other than "COLOR", it is treated as RangeCamera. Lens type specification is only valid for Camera.
 
 .. _body-file-reference-range-sensor-node:
 
-RangeSensor nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~
+RangeSensor Node
+~~~~~~~~~~~~~~~~
 
-The RangeSensor node is used to define range sensors.
+The RangeSensor node defines a distance sensor.
 
-.. list-table:: RangeSensor node fields
+.. list-table:: RangeSensor Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - RangeSensor
  * - on
    - 
- * - yawRange
-   - The horizontal angle for the scan distance. Measured as the angle of yawRange, with 0 as a starting point and angles measured in multiples of the yawStep for either side. If there is no horizontal scan functionality in the sensor, this is treated as 0. Given as a multiple of yawStep in the range between 0 and 360.
- * - yawStep
-   - The steps (increments) of horizontal angular distance measured during a scan.
- * - pitchRange
-   - The perpendicular surface angle when scanning a distance. Measured as the angle of pitchRange, with 0 as a starting point and angles measured in multiples of the pitchStep for either side. If there is no perpendicular scan functionality in the sensor, this is treated as 0. Given as multiples of pitchStep in the range between 0 and 170. (If giving a large value, processing time lengthens and measurement fidelity worsens.)
- * - pitchStep
-   - The steps (increments) of perpendicular surface angle measured during a scan.
- * - scanRate
-   - The frequency of scans per second (Hz).
- * - minDistance
-   - The minimum measurable distance (meters).
- * - maxDistance
-   - The maximum measurable distance (meters).
+ * - yaw_range
+   - Horizontal plane angle for distance scanning. Centered on 0 degrees, angles within the yaw_range on both sides are measured at angles that are multiples of yaw_step. Set to 0 if the sensor has no horizontal scanning capability. Specify in multiples of yaw_step within the range of 0 to 360 degrees.
+ * - yaw_step
+   - Horizontal plane angle increment for distance measurement during scanning
+ * - pitch_range
+   - Vertical plane angle for distance scanning. Centered on 0 degrees, angles within the pitch_range on both sides are measured at angles that are multiples of pitch_step. Set to 0 if the sensor has no vertical scanning capability. Specify in multiples of pitch_step within the range of 0 to 170 degrees.
+     (Specifying large values increases processing time and reduces measurement accuracy.)
+ * - pitch_step
+   - Vertical plane angle increment for distance measurement during scanning
+ * - scan_rate
+   - Number of scans per second [Hz]
+ * - min_distance
+   - Minimum measurable distance [m]
+ * - max_distance
+   - Maximum measurable distance [m]
 
 .. note::
-   The orientation of the sensor with respect to the link on which it is installed. In the coordinate system, the negative direction on the Z axis is the front orientation of measurement. When scanning, the horizontal measurement plane is XZ, and the perpendicular measurement plane is YZ. This is the same as VisionSensor; if changing a model where this was substituted for VisionSensor, the position and orientation remain the same. The order of rotation when scanning the horizontal and perpendicular is yaw, then pitch.
+   Orientation of this sensor relative to the link to which this sensor is attached. In the sensor coordinate system, the negative Z-axis direction is the measurement front, the horizontal measurement plane when scanning is the XZ plane, and the vertical measurement plane is the YZ plane. This is the same as VisionSensor, so when changing a model that previously used VisionSensor as a substitute, the position and orientation can be used as is.
+   When scanning in both horizontal and vertical directions, the rotation order is yaw, pitch.
    
 .. _body-file-reference-spot-light-node:
 
-SpotLight nodes
-~~~~~~~~~~~~~~~~~~~~~~~
+SpotLight Node
+~~~~~~~~~~~~~~
 
-SpotLight nodes define lights.
+The SpotLight node defines a light.
 
-.. list-table:: SpotLight node fields
+.. list-table:: SpotLight Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - type
    - SpotLight
  * - on
-   - Give true or false to turn the light on or off.
+   - Specify light ON/OFF with true/false.
  * - color
-   - The light color (give as 0.0-1.0 for each RGB value).
+   - Light color (specify R, G, B values from 0.0 to 1.0)
  * - intensity
-   - The intensity of brightness (five as 0.0-1.0).
+   - Specify brightness from 0.0 to 1.0.
  * - direction
-   - The orientation of the light. Give orientation as a list of three elements (3D vectors).
- * - beamWidth
-   - The angle of beam width at maximum shininess. By default, this is 90 degrees.
- * - cutOffAngle
-   - The angle at which the light is fully shut out. By default, this is 45 degrees.
- * - cutOffExponent
-   - Given as a non-negative value. By default, set at 1.0.
+   - Light direction. Specify direction as a list of 3 elements of a 3D vector.
+ * - beam_width
+   - Angle of light spread at maximum brightness. Default is 90 degrees.
+ * - cut_off_angle
+   - Angle at which light is completely blocked. Default is 45 degrees.
+ * - cut_off_exponent
+   - Specify a non-negative value. Default is 1.0.
  * - attenuation
-   - The rate of attenuation. Specified as a list of three non-negative elements.
+   - Attenuation rate. Specify a list of 3 non-negative elements.
 
 
-Nodes defining closed link mechanisms
---------------------------------------------
+Nodes for Defining Closed-Link Mechanisms
+------------------------------------------
 
 .. _body-file-reference-extra-joint-node:
 
-ExtraJoint nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ExtraJoint Node
+~~~~~~~~~~~~~~~
 
-ExtraJoint nodes define the mechanism of closed links. They presume that one joint in a closed link is connected with a ball joint, and generate binding force to prevent the two links from separating.
+The ExtraJoint node is a node for adding additional constraints to the body. It defines closed-link mechanisms. It considers that one joint of the closed link is connected by a ball joint and generates a constraint force so that the two links do not separate.
+
+.. note:: The types of constraints realized by this node are currently very limited. Furthermore, the types of supported constraints also depend on the type of simulator item (physics engine).
 
 .. tabularcolumns:: |p{3.0cm}|p{12.0cm}|
 
-.. list-table:: ExtraJoint node fields
+.. list-table:: ExtraJoint Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Field
-   - Details
- * - link1Name
-   - The name of the joint that receives the ball joint.
- * - link2Name
-   - The name of the joint with the ball joint.
- * - link1LocalPos
-   - link1Name: gives binding position of a joint in terms of the local coordinates for that joint.
- * - link2LocalPos
-   - link2Name: gives binding position of a joint in terms of the local coordinates for that joint.
- * - jointType
-   - The type of joint binding. For ball, 1 fixed point of attachment. For piston, only acts on the axis given with jointAxis.
- * - jointAxis
-   - When the jointType is piston, the direction of motion is given in terms of local coordinates for the link1name joint.
+   - Content
+ * - link1_name
+   - Joint name receiving the ball joint
+ * - link2_name
+   - Joint name with the ball joint attached
+ * - link1_local_pos
+   - Specify the constraint position of link1_name joint in local coordinates of that joint
+ * - link2_local_pos
+   - Specify the constraint position of link2_name joint in local coordinates of that joint
+ * - joint_type
+   - Constraint type  ball: fixed at one point  hinge: revolute joint piston: translation (rotation around axis is not constrained)
+ * - axis
+   - When joint_type is hinge or piston, specify the constraint axis in local coordinates of link1_name link.
+
+This node is described as a list with the key "extra_joints" at the top level of the Body file.     
+There is a closed-link mechanism sample at "share/model/misc/ClosedLinkSample.body".
 
 
-A sample closed link mechanism can be found in share/model/misc/ClosedLinkSample.body.
-
-
-Nodes use to group other nodes
-----------------------------------------
+Nodes for Grouping Nodes
+-------------------------
 
 .. _body-file-reference-group-node:
 
-Group nodes
-~~~~~~~~~~~~~~~~~~
+Group Node
+~~~~~~~~~~
 
-This is used to group select nodes together.
+Used to group some nodes.
 
-.. list-table:: Group node fields
+.. list-table:: Group Node Fields
  :widths: 15,85
  :header-rows: 1
+ :align: left
 
  * - Key
-   - Details
+   - Content
  * - name
    - Group name
 
 .. code-block:: yaml
 
-  (Example)
+  (Usage example)
   elements:
     - &SUBSYSTEM
       type: Group
       name: SUBSYSTEM
       elements:
         -
-          (Group 1 element)
+          (One element of the group)
         -
-          (Group 1 element)
+          (One element of the group)
          :
 
-Adding an alias to the group node allows you to, when there is a layout the same as SUBSYSTEM in a separate location, invoke it with the below:
+By assigning an alias to the group node, when there is the same configuration as SUBSYSTEM in another location, it can be described as:
 
 .. code-block:: yaml
 
   elements: *SUBSYSTEM
-
-.

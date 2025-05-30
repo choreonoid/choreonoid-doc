@@ -1,7 +1,7 @@
-Step 2: Publish the JointState topic to output the state of Tank
-================================================================
+Step 2: Publishing Tank State Output via JointState Topics
+==========================================================
 
-In Step 2, we will explain how to output the robot's state externally by communicating using ROS, specifically, by publishing the ROS topic.
+In Step 2, we'll explain how to output the robot's state externally through ROS communication—specifically, by publishing ROS topics.
 
 .. contents::
    :local:
@@ -9,18 +9,17 @@ In Step 2, we will explain how to output the robot's state externally by communi
 Overview
 --------
 
-In Step 1, we explained how the controller can subscribe to and receive ROS topics that are being published externally.
-In step 2, we will learn the opposite process: how to publish and send a ROS topic from the controller side.
+In Step 1, we explained how a controller can subscribe to and receive ROS topics published externally. In Step 2, we'll learn the reverse process: how to publish and send ROS topics from the controller side.
 
-Specifically, we will enable publishing the state of each joint of the Tank as a JointState topic, and the published joint states of the robot can be subscribed to and used by other ROS nodes.
+Specifically, we'll enable publishing the state of each Tank joint as a JointState topic. The published joint states can then be subscribed to and used by other ROS nodes.
 
-Controller for state output
----------------------------
+State Output Controller
+-----------------------
 
 .. highlight:: c++
-   :linenothreshold: 15
+   :linenothreshold: 7
 
-In Choreonoid, the state output of the robot is basically implemented in the controller. Therefore, in this step, we will create a new controller called "RttJointStatePublisher" to publish the state of the joints. The source code is shown below. We will use this sample to explain how to publish the robot's state as a ROS topic. ::
+In Choreonoid, robot state output is typically implemented within the controller. Therefore, in this step, we'll create a new controller called "RttJointStatePublisher" to publish joint states. Below is the source code. We'll use this sample to explain how to publish the robot's state as a ROS topic. ::
 
  #include <cnoid/SimpleController>
  #include <ros/node_handle.h>
@@ -100,85 +99,77 @@ In Choreonoid, the state output of the robot is basically implemented in the con
  
  CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttJointStatePublisher)
 
-Basic structure of the controller for state output
---------------------------------------------------
 
-The controller will be implemented as SimpleController as in step 1.
+Basic Structure of the State Output Controller
+-----------------------------------------------
 
-The basic structure of the controller is as follows. First, ::
+The controller is implemented as a SimpleController, just like in Step 1.
 
- #include <cnoid/SimpleController>.
+The basic structure of the controller begins with: ::
 
-to include the definition of the underlying SimpleController class, and then define the target controller as a class that inherits from SimpleController. ::
+ #include <cnoid/SimpleController>
+
+to include the definition of the base SimpleController class. Then, define the target controller as a class that inherits from SimpleController: ::
 
  class RttJointStatePublisher : public SimpleController
 
-Then, among the virtual functions defined in SimpleController, override ::
+Next, among the virtual functions defined in SimpleController, override
 
- virtual bool configure(SimpleControllerConfig* config)
+* **virtual bool configure(SimpleControllerConfig* config)**
 
-to implement the process of creating the ROS publisher as the initialization process when introducing the controller.
-Then ::
+to implement the initialization process when introducing the controller, specifically creating the ROS publisher. Then override
 
- virtual bool initialize(SimpleControllerIO* io)
+* **virtual bool initialize(SimpleControllerIO* io)**
 
-to initialize the controller at the start of simulation. Then ::
+to perform initialization at the start of simulation. And override
 
- virtual bool control()
+* **virtual bool control()**
 
-to describe the process of state output using a publisher.
+to describe the state output process using the publisher.
 
-This structure is almost the same as the RttTankController created in Step 1, but the use of the "control" function may be slightly different. The "control" function usually used to implement the control process, and in RttTankController, it the control of the Tank robot is implemented. However, the essence of this function is to perform some kind of processing repeatedly in the control cycle of the controller, and the content of the cycle processing does not necessarily need to be the control of the robot. Therefore, this function can also be used to output the robot's status, as shown here.
+This structure is almost identical to the RttTankController created in Step 1, though the use of the "control" function differs slightly. While the "control" function typically implements control processes (as RttTankController does for Tank robot control), its essence is to perform some kind of processing repeatedly at the controller's control cycle. The cyclic processing content doesn't necessarily need to be robot control. Therefore, this function can also be used for outputting robot state, as demonstrated here.
 
-Creating a node handle
+Creating a Node Handle
 ----------------------
 
-First of all, a ROS node is required for ROS communication.
-For this reason, the necessary definitions must be included first. ::
+First, ROS communication requires a ROS node. Begin by including the necessary definitions: ::
 
  #include <ros/node_handle.h>
 
-Then define a variable corresponding to the node handle. ::
+Then define a variable for the node handle: ::
 
  ros::NodeHandle node;
 
-In the "configure" function, create the node handle by the following code. ::
+In the "configure" function, create the node handle with: ::
 
  node.reset(new ros::NodeHandle(config->body()->name()));
 
-This process itself is done in step 1, but here the name of the target robot is given to the node handle as a namespace.
-The namespace is not necessarily required, but it is provided here to make it easier to distinguish topics.
-This is because including the robot name in the namespace implies that the topic is related to the state of the robot.
+While this process was also performed in Step 1, here we provide the target robot's name as a namespace to the node handle. The namespace isn't strictly required, but it helps distinguish topics more easily. Including the robot name in the namespace indicates that the topic relates to that robot's state.
 
-Here, ::
+Here, we obtain the target robot name using: ::
 
  config->body()->name()
 
-is used to obtain the target robot name.
+For more information about the config object, see :ref:`simulation-implement-controller-simple-controller-class-supplement`.
 
-For more information on the config object, please refer to :ref:`simulation-implement-controller-simple-controller-class-supplement` .
+In this sample, the model name is "Tank", so all topic names created below will be prefixed with "/Tank".
 
-In this sample, the model name is "Tank", so all the topic names created below will be prefixed with "/Tank".
-
-Creating a publisher
+Creating a Publisher
 --------------------
 
-In ROS, topics are designed to be output by the corresponding publisher, and the Publisher class for this is defined in roscpp.
-In the sample controller, the following member variable corresponds to the publisher. ::
+In ROS, topics are output by corresponding publishers, and roscpp defines a Publisher class for this purpose. The member variable corresponding to the publisher is: ::
 
  ros::Publisher jointStatePublisher;
 
-In order to publish, you need to prepare a message (data) for the corresponding topic.
-To do this, you must first determine the message type.
-In this sample, we will use the sensor_msgs::JointState type defined in a standard ROS package.
+To publish, you need to prepare a message (data) for the corresponding topic. First, determine the message type. This sample uses the **"sensor_msgs::JointState"** type defined in a standard ROS package.
 
-To check the content of this type, execute the following command.
+To check this type's content, execute:
 
 .. code-block:: sh
 
  rosmsg show sensor_msgs/JointState
 
-You should see something like the following.
+You should see:
 
 .. code-block:: none
 
@@ -191,54 +182,52 @@ You should see something like the following.
  float64[] velocity
  float64[] effort
 
-Here, the "header" part is the header common to each ROS message, and is the same as the one included in the Joy topic used in step 1. The following part is the main body of the JointState type, where each member of name, position, velocity, and effot is defined. Each of them corresponds to the name of the joints, joint displacements, joint velocities, and joint efforts (torques or forces). All of these are arrays, and the number of elements will be stored for the number of joints the robot has. This message type can be used to output the state of the robot's joints.
+The "header" part is common to all ROS messages and identical to the one in the Joy topic used in Step 1. The remaining parts constitute the JointState type body, defining members for name, position, velocity, and effort. These correspond to joint names, joint displacements, joint velocities, and joint efforts (torques or forces), respectively. All are arrays that will store elements for each joint the robot has. This message type enables outputting the robot's joint states.
 
-In order to use this message type from C++ code, define a variable of the class corresponding to the message type. If the message type is already installed as a package, the header file for using it in C++ should also be installed. In that case, there will be a C++ class that corresponds directly to the name of the message type.
+To use this message type from C++ code, define a variable of the corresponding class. If the message type is already installed as a package, the C++ header file should also be installed, providing a C++ class that directly corresponds to the message type name.
 
-In order to use the JointState type here, include the corresponding header first. ::
+To use the JointState type, first include the corresponding header: ::
 
  #include <sensor_msgs/JointState.h>
 
-You can see that the file path of the header corresponds directly to the type name of the message registered in ROS.
+Note how the header file path directly corresponds to the ROS-registered message type name.
 
-Then, the variable corresponding to this type is defined. ::
+Then define the variable for this type: ::
 
  sensor_msgs::JointState jointState;
 
-This C++ type with the namespace also corresponds to the ROS message type name almost exactly.
+This C++ type name with namespace corresponds almost exactly to the ROS message type name.
 
-.. note:: Although this sample uses an existing message type, it is also possible to use a message type that you have defined yourself. Please refer to the manual of roscpp for how to do so.
+.. note:: While this sample uses an existing message type, you can also use custom message types. Refer to the roscpp manual for details.
 
-Now, let's create a publisher to output data of this message type.
-The following code in the "configure" function will do this. ::
+Now let's create a publisher to output this message type. In the "configure" function: ::
 
  jointStatePublisher = node->advertise<sensor_msgs::JointState>("joint_state", 1);
 
-In this way, the publisher can be created using the advertise function of the node handle. This function is a template function that takes a message type as an argument, and by specifying the JointState type in this way, you can generate a publisher that outputs a JointState message.
+This creates the publisher using the node handle's advertise function. This template function takes a message type as an argument. By specifying the JointState type, you generate a publisher that outputs JointState messages.
 
-The first argument of the function is the topic name. The actual topic name is concatenated with "Tank", which is set as the namespace of the node, to become "/Tank/joint_state".
+The function's first argument is the topic name. The actual topic name combines with "Tank" (set as the node's namespace) to become "/Tank/joint_state".
 
-The second argument specifies the size of the queue to be used for output. If you want to output a large number of messages in a short period of time, and you do not want to miss any messages, increase the size of the queue. If this is not necessary and the receiver of the messages only needs to get the latest message at each point in time, specifying a queue size of 1 may be appropriate. In this sample, we don't expect to miss anything, so we set the queue size to 1.
+The second argument specifies the output queue size. If you need to output many messages rapidly without missing any, increase the queue size. If receivers only need the latest message at each point, a queue size of 1 is appropriate. Since this sample doesn't require preventing message loss, we set the queue size to 1.
 
-Now, we have created a publisher that outputs messages of the JointState type.
+We've now created a publisher that outputs JointState type messages.
 
 .. _ros_tank_tutorial_publish_joint_state:
 
-Publishing a joint state
-------------------------
+Publishing Joint States
+-----------------------
 
-The flow of the process to output the joint state is as follows:
+The process flow for outputting joint states is:
 
-1. Get the state of the robot's joints
-2. Copy the state to a variable of the JointState type
-3. Output a message of the JointState type using a publisher
+1. Get the robot's joint states
+2. Copy the states to a JointState type variable
+3. Publish the JointState message using the publisher
 
-All of these are done in the "control" function of the simple controller, which makes it possible to output the state of the joints periodically and repeatedly while the robot is running.
+All these steps occur in the simple controller's "control" function, enabling periodic and repeated joint state output while the robot operates.
 
-Note that preparation for the above process is also necessary.
-It is implemented in the "initialize" function.
+Preparation for this process is necessary and is implemented in the "initialize" function.
 
-First, the following code is implemented. ::
+First: ::
 
  int n = ioBody->numJoints();
  jointState.name.resize(n);
@@ -246,23 +235,21 @@ First, the following code is implemented. ::
  jointState.velocity.resize(n);
  jointState.effort.resize(n);
 
-In this code, the number of joints of the robot is obtained, and the size of the array of each member of JointState is allocated for the number of joints.
-Since the number of joints of the robot does not change during the control, this process is done only once during initialization. Such a process is implemented in the initialize function. The number of joints of the Tank robot used in this sample is 2 axes: turret yaw axis and barrel pitch axis.
+This code gets the robot's joint count and allocates array sizes for each JointState member accordingly. Since the robot's joint count doesn't change during control, this process runs only once during initialization. Such processes belong in the initialize function. The Tank model used in this sample has 2 joints: turret yaw axis and barrel pitch axis.
 
-Next, configure the settings for inputting the robot's state to the simple controller.
-This is handled by the following code, which is also implemented in the initialize function. ::
+Next, configure the settings for inputting the robot's state to the simple controller. This is handled by the following code in the initialize function: ::
 
  for(int i=0; i < n; ++i) {
      auto joint = ioBody->joint(i);
      io->enableInput(joint, JointDisplacement | JointVelocity | JointEffort);
      jointState.name[i] = joint->name();
-  }
+ }
 
-This specifies the state values to be input from the robot to the simple controller using the enableInput function of SimpleController's ref:`simulation-implement-controller-simple-controller-io` . By specifying JointDisplacement, JointVelocity, and JointEffort, the joint displacements, joint velocities, and joint torques are input for the two axes of the turret and barrel. In addition, the joint name is obtained and copied to the name member of the JointState message. This allows the receiver of the topic to obtain the joint name as well.
+This uses the SimpleController's :ref:`simulation-implement-controller-simple-controller-io` enableInput function to specify which state values to input from the robot. By specifying JointDisplacement, JointVelocity, and JointEffort, we input joint displacements, velocities, and torques for both the turret and barrel axes. Additionally, we obtain and copy joint names to the JointState message's name member, allowing topic receivers to also get joint names.
 
-For details on input/output settings, see :ref:`simulation-implement-controller-io-by-body-object` .
+For details on input/output settings, see :ref:`simulation-implement-controller-io-by-body-object`.
 
-At the end of the initialization, the time-related variables are initialized as follows. ::
+Finally, initialize time-related variables: ::
 
  time = 0.0;
  timeStep = io->timeStep();
@@ -270,47 +257,46 @@ At the end of the initialization, the time-related variables are initialized as 
  cycleTime = 1.0 / frequency;
  timeCounter = 0.0;
 
-The values set here will be referenced in the control function.
+These values are referenced in the control function.
 
-The value set for frequency corresponds to the frame rate of publishing, which determines how often the publication made.
-Increasing this value will result in a state output with higher temporal resolution, but it will also increase the communication cost, so it is necessary to adjust it appropriately based on the network environment and the overall communication volume of the system.
+The frequency value corresponds to the publishing frame rate, determining publication frequency. Higher values yield higher temporal resolution state output but increase communication costs. Adjust appropriately based on network environment and overall system communication volume.
 
-This completes the preparation. The next step is to implement the above steps 1 to 3 in the control function.
+Preparation is now complete. Next, implement steps 1-3 in the control function.
 
-First of all, the control function is implemented in the following structure to adjust the cycle of the state output. ::
+The control function uses the following structure to adjust state output cycle: ::
 
  time += timeStep;
  timeCounter += timeStep;
  
  if(timeCounter >= cycleTime) {
             
-     // Create and publish the JointState message
-     ...     
+     // Create and publish JointState message
+     ...
 
      timeCounter -= cycleTime;
  }
 
-Here, the time variable contains the time in seconds counted from the start of the simulation.
-In order to adjust the cycle of the state output, timeCounter contains the elapsed time since the last output. ::
+Here, the time variable contains elapsed seconds since simulation start. To adjust state output cycle, timeCounter tracks elapsed time since the last output.
+
+The condition: ::
 
  if(timeCounter >= cycleTime) {
 
-is a condition to output the state only when the timeCounter reaches the cycleTime corresponding to the cycle.
-In general, the control function is executed in the control cycle of the robot, but that is often too short a cycle for state output. Therefore, in this sample, a separate cycle for the state output is set so that the state is output at an appropriate cycle. This kind of adjustment of the output cycle should be done for each topic based on its type and usage, so please keep this in mind.
+ensures state output only when timeCounter reaches the cycle time. Generally, the control function executes at the robot's control cycle, which is often too short for state output. Therefore, this sample sets a separate state output cycle to ensure appropriate timing. Adjust output cycles for each topic based on its type and usage.
 
-When timeCounter reaches the set cycle and outputs the state, reset the timeCounter by ::
+After state output when timeCounter reaches the set cycle, reset timeCounter with: ::
 
  timeCounter -= cycleTime;
 
-With the adjusted in this way, the actual state output is done by the code in this if block.
+With cycle adjustment in place, actual state output occurs within this if block.
 
-First of all ::
+First: ::
 
  jointState.header.stamp.fromSec(time);
 
-sets the current time to the stamp in the header of the JointState message.
+sets the current time in the JointState message header's stamp.
 
-Then, the joint angles, joint angular velocities, and joint torques of the turret and barrel axes are copied to the corresponding members of the JointState type by the following code.  ::
+Then copy the turret and barrel axes' joint angles, angular velocities, and torques to corresponding JointState type members: ::
 
  for(int i=0; i < ioBody->numJoints(); ++i) {
      auto joint = ioBody->joint(i);
@@ -319,32 +305,29 @@ Then, the joint angles, joint angular velocities, and joint torques of the turre
      jointState.effort[i] = joint->u();
  }
 
-The current joint state is now stored in the jointState variable. All that remains is to publish it. This is done by giving a message to the publish function of the publisher object and calling ::
+The current joint state is now stored in the jointState variable. Simply publish it by passing the message to the publisher object's publish function: ::
             
  jointStatePublisher.publish(jointState);
 
-and you are good to go.
+This publishes the "/Tank/joint_state" topic with a JointState message at each specified period.
 
-This will cause the topic "/Tank/joint_state" to be published with a message of the JointState type at each specified period.
+Introducing the State Output Controller
+----------------------------------------
 
-Introducing a controller for state output
------------------------------------------
+Let's build the controller from the above source code and introduce it into the simulation project. The procedure matches that for the RttTankController introduced in Step 1.
 
-Let's build the controller corresponding to the above source code and introduce it into the simulation project.
-The procedure is the same as the RttTankController introduced in Step 1.
-
-First, create the above source code in the src directory with the file name "RttJointStatePublisher.cpp". Then, add the following description to CMakeLists.txt in the same src directory to build this controller.
+First, create the source code in the src directory as "RttJointStatePublisher.cpp". Then add the following to CMakeLists.txt in the same directory:
 
 .. code-block:: cmake
 
  choreonoid_add_simple_controller(RttJointStatePublisher RttJointStatePublisher.cpp)
  target_link_libraries(RttJointStatePublisher ${roscpp_LIBRARIES})
 
-Doing this and catkin build again should build RttJointStatePublisher and make it available if there are no errors in the source code or CMakeLists.txt. If there are any errors in the build, please correct them accordingly.
+After this, run catkin build again. If there are no errors in the source code or CMakeLists.txt, RttJointStatePublisher will build and become available. Correct any build errors that occur.
 
-If the build is successful, add RttJointStatePublisher to the simulation project as :ref:`ros_tank_tutorial_step1_introduce_controller` in step 1.
+Once the build succeeds, add RttJointStatePublisher to the simulation project as described in :ref:`ros_tank_tutorial_step1_introduce_controller` from Step 1.
 
-Since the simple controller can be used in multiple combinations, you can configure the item tree as follows.
+Since simple controllers can be used in combination, configure the item tree as:
 
 .. code-block:: none
 
@@ -355,9 +338,9 @@ Since the simple controller can be used in multiple combinations, you can config
    - Labo1
    - AISTSimulator
 
-To add the RttJointStatePublisher, create a SimpleController item as a child item of the Tank item and select "RttJointStatePublisher.so" in its "Controller Module" property dialog.
+To add RttJointStatePublisher, create a SimpleController item as a child of the Tank item and select "RttJointStatePublisher.so" in its "Controller Module" property dialog.
 
-Let's save the project in this state. In this tutorial, we will save a separate project file for each step. So let's save this project as "step2.cnoid". Also, let's create a launch file for step 2. For now, create "step2.launch" by copying "step1.launch", which is the launch file created for step 1. Then, modify the part of "step1.cnoid" to "step2.cnoid". Then, "step2.launch" will look like the following.
+Save the project in this state. This tutorial saves separate project files for each step, so save this as "step2.cnoid". Also create a launch file for Step 2 by copying "step1.launch" to create "step2.launch", then modify "step1.cnoid" to "step2.cnoid". The resulting "step2.launch" will be:
 
 .. code-block:: xml
 
@@ -368,11 +351,13 @@ Let's save the project in this state. In this tutorial, we will save a separate 
    <node pkg="rqt_graph" name="rqt_graph" type="rqt_graph" />
  </launch>
 
-After this process, the package for this tutorial will have the following file structure.
+After completing this work, the tutorial package will have the following file structure:
 
 .. code-block:: none
 
  + choreonoid_ros_tank_tutorial
+   - CMakeLists.txt
+   - package.xml
    + launch
      - step1.launch
      - step2.launch
@@ -385,25 +370,24 @@ After this process, the package for this tutorial will have the following file s
      - RttJointStatePublisher.cpp
 
 
-Check the output topic
+Verifying Topic Output
 ----------------------
 
 .. highlight:: sh
 
-Let's run the simulation project and check if the topics of the joint states are output.
+Let's run the simulation project and verify that joint state topics are being output.
 
-First, launch the project in step 2 with the following command. ::
+First, launch the Step 2 project with: ::
 
  roslaunch choreonoid_ros_tank_tutorial step2.launch
 
-Then you will be able to control the Tank robot with the gamepad as in step 1.
+You should be able to control the Tank robot with the gamepad, just as in Step 1.
 
-Now, let's prepare a terminal for command input and check the topic from the terminal.
-First, run the following command to display the list of available topics. ::
+Now open a terminal for command input and check the topic. First, display available topics with: ::
 
  rostopic list
 
-You should see something like the following.
+You should see:
 
 .. code-block:: none
 
@@ -413,14 +397,13 @@ You should see something like the following.
  /rosout_agg
  /statistics
 
-Here, "/Tank/joint_state" corresponds to the topic we implemented.
-If you don't see this topic, there is a mistake somewhere in the source code or in your project, so please check it.
+Here, "/Tank/joint_state" corresponds to our implemented topic. If this topic doesn't appear, check your source code and project for errors.
 
-Next, let's check the information on this topic with the following command. ::
+Next, check this topic's information with: ::
 
  rostopic info /Tank/joint_state
 
-You should see something like the following.
+You should see:
 
 .. code-block:: none
 
@@ -431,19 +414,19 @@ You should see something like the following.
  
  Subscribers: None
 
-This will tell you the following:
+This tells us:
 
-* The message type is sensor_msgs/JointState.
-* The node that is the publisher of this topic is the node "/choreonoid" in the displayed host.
-* There is no subscriber for this topic.
+* The message type is sensor_msgs/JointState
+* The publisher node is "/choreonoid" on the displayed host
+* There are no subscribers yet
 
-As for the subscriber, we have not made any connections yet, so we get this result.
+The lack of subscribers is expected since we haven't connected anything yet.
 
-Let's also check the content of the published message. Enter the following command: ::
+Let's also check the published message content. Enter: ::
 
  rostopic echo /Tank/joint_state
 
-You will continue to see the following text output.
+You'll see continuous text output like:
 
 .. code-block:: none
 
@@ -461,37 +444,37 @@ You will continue to see the following text output.
  effort: [-3.091940828686953e-07, 1.9612950742218773]
  ---
 
-While continuing this output, try moving the gun barrel with the gamepad. You will see the values of position, velocity, and effort change. The units are [rad], [rad/sec], and [N・m], respectively.
+While this output continues, try moving the gun barrel with the gamepad. You'll see the position, velocity, and effort values change. The units are [rad], [rad/sec], and [N·m], respectively.
 
-By the way, if you execute ::
+Incidentally, if you run: ::
 
  rostopic info /Tank/joint_state
 
-again on another terminal without stopping rostopic echo, you will find that "Subscribers:" is no longer None. This subscriber corresponds to the "rostopic echo".
+again in another terminal without stopping rostopic echo, you'll find "Subscribers:" is no longer None. This subscriber corresponds to "rostopic echo".
 
-We can now confirm that the joint state is successfully output as a ROS topic.
+We've now confirmed that joint states are successfully output as ROS topics.
 
-Displaying joint angle graph
-----------------------------
 
-Now that the state of the joint can be output as a ROS topic, you can use this information in conjunction with various ROS nodes/tools. As a very simple example, let's use the rqt_plot tool to display a graph of joint angles.
+Displaying Joint Angle Graphs
+------------------------------
 
-With the previous simulation running, enter the following command from a terminal. ::
+Now that joint states are output as ROS topics, you can use this information with various ROS nodes and tools. As a simple example, let's use the rqt_plot tool to display joint angle graphs.
+
+With the simulation running, enter from a terminal: ::
 
  rosrun rqt_plot rqt_plot /Tank/joint_state/position[0] /Tank/joint_state/position[1]
 
-You will see a window like the one below.
+A window like this will appear:
 
 .. image:: images/rqt_plot1.png
 
-Now, check the "autoscroll" checkbox in the upper right corner, and move the gun barrel with the gamepad.
-You will see changes in the joint angles drawn as a graph.
+Check the "autoscroll" checkbox in the upper right corner, then move the gun barrel with the gamepad. You'll see joint angle changes drawn as graphs:
 
 .. image:: images/rqt_plot2.png
 
-In the above figure, the blue line corresponds to the yaw axis and the red axis to the pitch axis.
+In the figure above, the blue line represents the yaw axis and the red line the pitch axis.
 
-Finally, let's include the display of rqt_plot in the launch file by adding the corresponding item to step2.launch as follows:
+Finally, let's include rqt_plot display in the launch file. Add the following to step2.launch:
 
 .. code-block:: xml
 
@@ -504,6 +487,6 @@ Finally, let's include the display of rqt_plot in the launch file by adding the 
          args="/Tank/joint_state/position[0] /Tank/joint_state/position[1]" />
  </launch>
 
-Now, if you start the launch file, the graph will be displayed by rqt_graph.
+Now when you start the launch file, rqt_plot will display the graph automatically.
 
-This concludes step 2.
+This concludes Step 2.

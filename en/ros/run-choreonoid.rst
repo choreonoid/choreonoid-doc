@@ -1,4 +1,4 @@
-Running Choreonoid in the ROS environment
+Running Choreonoid in the ROS Environment
 =========================================
 
 .. contents::
@@ -8,10 +8,10 @@ Running Choreonoid in the ROS environment
 
 .. _choreonoid_ros_run_ros_master:
 
-Starting the ROS master
+Starting the ROS Master
 -----------------------
 
-If the ROS master has not been started, start it. Usually, open a new terminal for this purpose and execute the following command to start the ROS master there. ::
+If the ROS master is not running, start it first. (Usually, open a new terminal for this purpose and run it there.) ::
 
  roscore
 
@@ -20,97 +20,97 @@ If the ROS master has not been started, start it. Usually, open a new terminal f
 Starting Choreonoid
 -------------------
 
-In the ROS environment, Choreonoid is usually treated as a ROS node. This is called a Choreonoid node.
+In the ROS environment, Choreonoid is typically handled as a ROS node. This is called a Choreonoid node.
 
-The command to invoke the Choreonoid node is included in the choreonoid_ros package, and the command name is choreonoid.
-Thus, for example, you can use the rosrun command to invoke a Choreonoid node as follows. ::
+The command to start the Choreonoid node is included in the choreonoid_ros package, and the command name is choreonoid. Therefore, using the rosrun command, for example: ::
 
  rosrun choreonoid_ros choreonoid
 
-A terminal to run this command should also be prepared separately.
+will start Choreonoid as a ROS node. (Prepare a separate terminal for this as well.)
 
-The main window of Choreonoid appears when it is successfully started. This is basically the same as when Choreonoid is started in the usual way, and the operation is also the same.
+Upon successful startup, Choreonoid's main window will appear. This is basically the same as when Choreonoid is started normally, and the operations are the same.
 
-.. note:: By starting Choreonoid as a ROS node in this way, the ROS-related initialization and other operations are performed inside Choreonoid, and the ROS functions can be used on Choreonoid. Please note that if you run the choreonoid executable file as it is as a normal startup method, such ROS-related initialization will not be performed and you will not be able to use the ROS functions.
+.. note:: By starting Choreonoid as a ROS node this way, ROS-related initialization is performed internally in Choreonoid, enabling the use of ROS functionality within Choreonoid. Please note that if you execute the choreonoid executable directly as a normal startup method, such ROS-related initialization will not occur, and you will not be able to use ROS functionality.
 
-When the node is started, options related to ROS remapping can be given as in other ROS nodes. The options for Choreonoid itself can also be given.
+When starting the node, you can provide ROS remapping options just like with other ROS nodes.
 
-Note that if the ROS master is not running, the node stops with the following error message displayed on the console because it cannot initialize ROS-related operations.
+You can also provide Choreonoid's own options.
+
+If the ROS master is not running, ROS-related initialization cannot be performed, so the following error message will be displayed in the console and execution will stop:
 
 .. code-block:: none
 
  Choreonoid's ROS node cannot be invoked because the ROS master is not found.
 
-In this case, please try to start the ROS master first.
+In this case, please start the ROS master first.
 
-Running a sample project
+
+Running a Sample Project
 ------------------------
 
-Let's run the "ROS-Tank" project included in the choreonoid_ros_samples package as a sample project.
+Let's run the "ROS-Tank" project included in choreonoid_ros_samples as a sample project.
 
-If the choreonoid_ros_samples package has been installed, you can run the sample by the following command. ::
+If the choreonoid_ros_samples package is installed, you can launch the sample with the following command: ::
 
  roslaunch choreonoid_ros_samples tank.launch
 
-This sample uses the ROS communication functions to manually operate a tank-like "Tank" robot model using a gamepad.
-This sample is a minimal implementation of this, with a simple controller that subscribes to the ROS joy topic to control the Tank model.
+This sample demonstrates a simulation where a tank-like "Tank" model is manually controlled using a gamepad, implemented using ROS mechanisms. This sample provides a minimal implementation that controls the Tank model through a simple controller that subscribes to the ROS joy topic.
 
-In fact, **you need to have a gamepad (joystick) connected to your PC in order to run this sample.**
-Most gamepads that can be connected via USB can be used, so please connect the gamepad to the PC first, and then execute the above command. Once the project is launched, the simulation will start and you can move the Tank by manipulating the axes of the gamepad. If this sample works, the installation of Choreonoid in the ROS environment has been successful.
+While we've introduced how to launch the sample, **you must have a gamepad (joystick) connected to your PC to run this sample.** Most USB-connectable gamepads can be used, so please connect a gamepad to your PC before executing the above command. When the project starts, the simulation will also begin, and you can move the Tank by operating the gamepad axes. If this sample works, your installation of Choreonoid in the ROS environment is successful.
 
-Tip: What to do if the execution of roslaunch fails?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you try to run the above roslaunch command, the following error message may be shown and the program may not run properly.
+Troubleshooting: When roslaunch Fails to Execute
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When trying to execute the above roslaunch command, you might see an error message like:
 
 .. code-block:: none
 
  RLException: [tank.launch] is neither a launch file in package [choreonoid_ros_samples] nor is [choreonoid_ros_samples] a launch file name
  The traceback for the exception was written to the log file
 
-In this case, running :ref:`loading_catkin_workspace_setup_script` again may help.
-So you can execute ::
+and the execution may fail.
+
+In this case, re-executing :ref:`loading_catkin_workspace_setup_script` may resolve the issue. That is, execute: ::
 
  source ~/catkin_ws/devel/setup.bash
 
-on your terminal, or if this script is already in ~/.bashrc, start a new terminal and operate it there.
-This will update the information in the workspace, and the launch file may be recognized and ready to run.
+on your terminal, or if this script is already written in ~/.bashrc, open a new terminal and work there. This updates the workspace information, allowing the launch file to be recognized and executed.
 
-Apparently, in the ROS (Catkin) workspace, when a new package or a new element of a package is added, the contents loaded by setup.bash may be updated. And if the update is not fetched in the terminal, the operations for such additional elements may not work. You may need to be careful about this when introducing new packages or developing your own packages.
+It seems that in ROS (Catkin) workspaces, when new packages or new elements of packages are added, the content loaded by setup.bash may need to be updated. If these updates haven't been incorporated into the terminal, operations targeting such additions may not work properly. You need to be aware of this when introducing new packages or developing your own packages.
 
-Tip: About gamepad mapping
-~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The mapping of the gamepad axes and buttons varies from manufacturer to manufacturer and model to model,
-and some mappings may not match the operation interface of the above sample.
-The above sample tries to match the mapping as much as possible for the gamepads like followings:
+Note: About Gamepad Mapping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Gamepad axis and button mappings vary by manufacturer and model, and some mappings may not match the sample's control scheme. The above sample attempts to accommodate mappings for:
 
 * `Logitech F310 <http://gaming.logicool.co.jp/ja-jp/product/f310-gamepad>`_
 * `DUALSHOCK4 <http://www.jp.playstation.com/ps4/peripheral/cuhzct1j.html>`_
 * DUALSHOCK3
-* `Controller for Xbox <https://www.xbox.com/ja-JP/xbox-one/accessories/controllers/xbox-black-wireless-controller>`_
-* Controller for Xbox360
+* `Xbox Controller <https://www.xbox.com/ja-JP/xbox-one/accessories/controllers/xbox-black-wireless-controller>`_
+* Xbox 360 Controller
 
-If you use a gamepad other than these, you may not be able to control it as you wish.
+These gamepads will work with this functionality. Other gamepads may not operate as expected, please understand.
 
-What roslaunch does
-~~~~~~~~~~~~~~~~~~~
+roslaunch Execution Details
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This sample is achieved by using roslaunch to launch multiple ROS nodes.
+This sample is implemented by launching multiple ROS nodes using roslaunch. The launch file is as follows:
 
 .. code-block:: xml
 
- <launch>.
+ <launch>
    <node pkg="choreonoid_joy" name="choreonoid_joy" type="node" />
    <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
          args="$(find choreonoid_ros_samples)/project/ROS-Tank.cnoid --start-simulation" />
- </launch>.
+ </launch>
 
-This description starts the following two nodes.
+This description launches the following two nodes:
 
-* choreonoid_joy: A node that publishes the joystick (gamepad) status as a joy topic
-* choreonoid: Node of Choroenoid itself
+* choreonoid_joy: A node that publishes the joystick (gamepad) state as a joy topic
+* choreonoid: The Choreonoid main node
 
-There is a ROS standard joy node that does the same thing as choreonoid_joy, but that node does not have a function to adjust the gamepad mapping. The choreonoid_joy node uses the Choreonoid library to map the gamepad axes and buttons to the Choreonoid standard mapping, and the puslish information reflects this.
+While there is a standard ROS joy node that performs similar processing to choreonoid_joy, it doesn't have the functionality to match gamepad mappings. choreonoid_joy uses Choreonoid's library to match gamepad mappings to Choreonoid's standard mapping, and the published information reflects this.
 
-As for Choreonoid itself, the project named "ROS-Tank.cnoid" contained in the project directory of choreonoid_ros_samples is loaded. Also, the "--start-simulation" option is added to start the simulation at the same time when Choreonoid is started.
+For Choreonoid itself, it loads the "ROS-Tank.cnoid" project contained in the project directory of choreonoid_ros_samples. Additionally, by providing the "--start-simulation" option, the simulation starts simultaneously when Choreonoid launches.
