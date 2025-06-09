@@ -33,8 +33,9 @@ ROS2プラグインは chorenoid_ros パッケージに含まれています。R
 このように、ros2 run/launch コマンドによって、 choreonoid_ros パッケージの一部として起動されたChoreonoidでは、ROS2プラグインが自動で読み込まれます。その際、起動されたChoreonoidのメッセージビュー内に、 ::
 
    ROSプラグインが読み込まれました．
-   （もしくは）ROS2-plugin has been activated.
 
-とメッセージが出力されます。
+というメッセージが出力されます。
+
+..  もしくは）ROS2-plugin has been activated.
 
 もしこのメッセージが出力されていない場合、ROS2プラグインは読み込まれていません。このとき、Choreonoid上でのROS 2との連携機能は利用できなくなりますので、ご注意ください。（上記の方法以外でChoreonodiを起動する場合や、ROSとは独立してインストールしたChoreonoidを通常の方法で起動する場合は、そのようになります。）

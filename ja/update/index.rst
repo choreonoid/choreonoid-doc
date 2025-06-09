@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2025/6/9
+
+ * :doc:`../ros2/install-ros2` と :doc:`../ros2/build-choreonoid` をROS 2の最新のインストール方法にあわせて更新
+
 * 2025/4/15
 
  * :doc:`../ros2/ros2-control` を追加

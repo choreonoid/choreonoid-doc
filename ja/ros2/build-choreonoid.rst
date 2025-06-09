@@ -59,7 +59,11 @@ Choreonoid本体のビルドや実行に必要となる依存パッケージを�
 これについては、元々Ubuntu用の依存パッケージをインストールするためのスクリプトが用意されているので、そちらを利用します。
 この方法は、ROSにおける通常の依存パッケージインストール方法とは異なりますが、ご了承ください。
 
-Choreonoidのソースディレクトリに移動して、対応するスクリプトを実行します。Ubuntu 24.04であれば、 ::
+Choreonoidのソースディレクトリに移動して、 ::
+
+  cd choreonoid
+
+対応するスクリプトを実行します。Ubuntu 24.04であれば、 ::
 
    misc/script/install-requisites-ubuntu-24.04.sh
 
@@ -95,7 +99,7 @@ choreonoid_rosパッケージについては、ROSのいくつかのパッケー
    cd ~/ros2_ws
    colcon build --symlink-install
 
-ビルドオプションとして付けている `--symlink-install` は、インストール時に各種ファイルをシンボリックリンクを用いてインストールします。ファイルのコピーが生じない分、PCの記録容量の消費が少なく、またコンパイルが不要なファイルについては、編集した内容が直ちに反映されるという利点があります。例えば、Choreonoidでは .body ファイルや .project ファイル、ROS 2では .urdf ファイル や .yaml ファイルなどが、編集内容の即時反映の対象になります。
+ビルドオプションとして付けている `--symlink-install` は、インストール時に各種ファイルをシンボリックリンクを用いてインストールというものです。ファイルのコピーが生じない分、PCの記録容量の消費が少なく、またコンパイルが不要なファイルについては、編集した内容が直ちに反映されるという利点があります。例えば、Choreonoidでは .body ファイルや .project ファイル、ROS 2では .urdf ファイル や .yaml ファイルなどが、編集内容の即時反映の対象になります。
 
 このコマンドのオプションの詳細は `colconの公式ドキュメント <https://colcon.readthedocs.io/en/released/index.html>`_ の `build - Build Packages <https://colcon.readthedocs.io/en/released/reference/verb/build.html>`_ を参照ください。
 
@@ -153,7 +157,7 @@ choreonoid_rosパッケージについては、ROSのいくつかのパッケー
 
 ROS 2では、複数のパッケージをまとめて管理する標準ツールとして、 `vcstool <https://github.com/dirk-thomas/vcstool>`_  があります。これを使用することで、複数リポジトリのクローンや更新などを一括して行えます。
 
-vcstoolのインストールは以下のコマンドで行えます。 ::
+vcstoolのインストールは以下のコマンドで行えます（ :ref:`ros2_install_ros2_install_dev_tools` でインストールされます。） ::
 
    sudo apt install python3-vcstool
 
@@ -173,7 +177,7 @@ vcstoolのインストールは以下のコマンドで行えます。 ::
 例えば、以下のコマンドで、 :ref:`add_choreonoid_package_sources_for_ros2` で導入した choreonoid および choreonoid_ros を含む、 "src" ディレクトリ内の全てのクローンを最新版に更新できます。 ::
 
    cd ~/ros2_ws
-   vsc pull src
+   vcs pull src
 
 
 .. _ros2_build_choreonoid_cmake_options:
