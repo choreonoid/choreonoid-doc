@@ -130,6 +130,9 @@ html_theme = 'nature'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# Custom CSS files to fix table display issues
+html_css_files = ['css/table-fixes.css']
+
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
 # directly to the root of the documentation.

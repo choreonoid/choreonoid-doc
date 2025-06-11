@@ -1,0 +1,61 @@
+/*
+ * Table Fixes for Choreonoid Documentation
+ * ========================================
+ * 
+ * PROBLEM:
+ * Firefox automatically applies hyphenation to English text, causing YAML keys
+ * in reference tables to be broken across multiple lines. For example:
+ * "format_version" becomes "for-mat_ver-sion" (split into 3 lines).
+ * This makes the documentation hard to read and copy-paste unreliable.
+ * 
+ * SOLUTION:
+ * Disable hyphenation for the first column of all tables, where YAML keys
+ * and technical terms are typically displayed.
+ * 
+ * AFFECTED AREAS:
+ * - All Sphinx-generated tables (table.docutils)
+ * - All list-table directives
+ * - First column only (td:first-child, th:first-child)
+ * 
+ * SETUP REQUIRED:
+ * This CSS file must be loaded via conf.py configuration:
+ * 1. Add this file to: en/_static/css/table-fixes.css
+ * 2. Add to conf.py: html_css_files = ['css/table-fixes.css']
+ * 
+ * BROWSER COMPATIBILITY:
+ * - Chrome/Chromium: Works without this fix (no hyphenation by default)
+ * - Firefox: Requires this fix (aggressive hyphenation)
+ * - Safari: Similar behavior to Firefox
+ * 
+ * POTENTIAL SIDE EFFECTS:
+ * Long words in the first column may extend beyond table width on narrow screens.
+ * So far, this has not been observed in Choreonoid documentation.
+ * 
+ * MAINTENANCE:
+ * If issues arise, disable by commenting out html_css_files in conf.py
+ * or remove this CSS file entirely.
+ */
+
+/* Disable hyphenation for first column of all tables */
+table.docutils td:first-child,
+table.docutils td:first-child *,
+table.docutils th:first-child,
+table.docutils th:first-child *,
+.list-table td:first-child,
+.list-table td:first-child *,
+.list-table th:first-child,
+.list-table th:first-child * {
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -moz-hyphens: none !important;
+    -ms-hyphens: none !important;
+}
+
+/* Additional targeting for paragraph elements inside table cells */
+/* This is necessary because Sphinx often wraps cell content in <p> tags */
+table.docutils tbody tr td:first-child p {
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -moz-hyphens: none !important;
+    -ms-hyphens: none !important;
+}
