@@ -7,6 +7,7 @@
   eclipse/debug
   howto-check-backtrace
   VisualStudio/debug
+  vscode/debug
   howto-create-movingimage
   howto-use-commands
   body-sync-camera
