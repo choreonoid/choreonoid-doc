@@ -5,7 +5,7 @@
 
 * 2025/6/11
 
- * :doc:`../handling-models/models/index` を最新の仕様に準拠するよう修正
+ * :doc:`../handling-models/modelfile/index` を最新の仕様に準拠するよう修正
 
 * 2025/6/9
 
