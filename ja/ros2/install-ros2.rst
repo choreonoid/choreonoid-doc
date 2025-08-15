@@ -17,6 +17,11 @@ ROS 2ディストリビューションのインストール
 
 .. note:: 2025年6月1日より、ROS2の公式のインストール方法が変わりました。それに伴い、このページの記述も更新しています。インストール方法の変更に関する詳細は `ROS signing key migration guide <https://discourse.ros.org/t/ros-signing-key-migration-guide/43937>`_ を参照ください。
 
+    以前の方法でインストールしている場合は、以下のコマンドを実行して以前の情報をクリアするようにしてください。 ::
+
+      sudo rm /etc/apt/sources.list.d/ros2.list
+      sudo rm /usr/share/keyrings/ros-archive-keyring.gpg
+
 2025年6月時点では、以下のコマンド操作でROS 2ディストリビューションをインストールできます。
 
 **各バージョンに共通の準備**  ::

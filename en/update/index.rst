@@ -1,6 +1,10 @@
-Updates
-=======
+Update History
+==============
 
-* July 8, 2025
+* 2025/8/15
 
-  * Translated Japanese version as of July 8, 2025
+ * Added supplementary notes regarding the installation method migration for :doc:`../ros2/install-ros2`
+
+* 2025/7/8
+
+ * Translated the Japanese version as of 2025/7/8 to English

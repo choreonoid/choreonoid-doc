@@ -17,6 +17,11 @@ For the latest and detailed installation instructions, please refer to the follo
 
 .. note:: As of June 1, 2025, the official ROS 2 installation method has changed. Accordingly, the description on this page has been updated. For details on the installation method changes, please refer to the `ROS signing key migration guide <https://discourse.ros.org/t/ros-signing-key-migration-guide/43937>`_.
 
+    If you have installed using the previous method, please execute the following commands to clear the previous information: ::
+
+      sudo rm /etc/apt/sources.list.d/ros2.list
+      sudo rm /usr/share/keyrings/ros-archive-keyring.gpg
+
 As of June 2025, you can install a ROS 2 distribution with the following commands:
 
 **Common preparation for all versions**  ::
