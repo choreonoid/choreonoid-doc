@@ -727,17 +727,18 @@ The Camera node defines a vision sensor.
  * - type
    - Camera
  * - format
-   - | Specify the type of information to be acquired from the sensor.
-     |   ・"COLOR"  Acquire color information
-     |   ・"DEPTH"  Acquire depth information
-     |   ・"COLOR_DEPTH"  Acquire color and depth information
-     |   ・"POINT_CLOUD"  Acquire 3D point cloud
-     |   ・"COLOR_POINT_CLOUD"  Acquire color information and 3D point cloud
+   - | Specify the type of information to be acquired from the sensor
+     |  ・**COLOR** : Acquire color information
+     |  ・**DEPTH** : Acquire depth information
+     |  ・**COLOR_DEPTH** : Acquire color and depth information
+     |  ・**POINT_CLOUD** : Acquire 3D point cloud
+     |  ・**COLOR_POINT_CLOUD** : Acquire color information and 3D point cloud
+     | Note: Internally, when format is COLOR, it is treated as Camera, and when format is other than COLOR, it is treated as RangeCamera.
  * - lens_type
-   - | Specify the type of lens.
-     |   ・"NORMAL"  Normal lens (default value)
-     |   ・"FISHEYE"  Fisheye lens
-     |   ・"DUAL_FISHEYE"  Omnidirectional camera
+   - | Specify the type of lens (only valid when format is COLOR)
+     |  ・**NORMAL** : Normal lens (default)
+     |  ・**FISHEYE** : Fisheye lens
+     |  ・**DUAL_FISHEYE** : Omnidirectional camera
  * - on
    - Specify camera ON/OFF with true/false
  * - width
@@ -752,12 +753,18 @@ The Camera node defines a vision sensor.
    - Distance from viewpoint to far clipping plane
  * - frame_rate
    - How many images per second the camera outputs
+ * - optical_frame
+   - | Specify the camera coordinate system
+     |  ・**gl** : OpenGL coordinate system (default)
+     |  ・**cv** : OpenCV coordinate system
+     |  ・**robotics** : Robotics coordinate system
 
-.. note::
-    The viewpoint orientation is defined as follows. Forward viewing direction ・・・ Negative direction of Z-axis in local coordinate system   Upward viewing direction ・・・ Positive direction of Y-axis in local coordinate system.
+The details of each coordinate system for optical_frame are shown in the table below. In the default "gl" coordinate system, the negative Z-axis direction is the camera lens front direction, and the Y-axis is the camera upward direction. In the "robotics" coordinate system, the lens orientation matches the coordinate system commonly used in robotics with the forward X-axis and upward Z-axis, making it easier to handle when you want to point the lens forward.
 
-.. note::
-    Internally, when format is "COLOR", it is treated as Camera, and when format is other than "COLOR", it is treated as RangeCamera. Lens type specification is only valid for Camera.
+.. figure:: images/optical_frame.png
+	:align: center
+
+Note that the gl coordinate system is used in Choreonoid's internal implementation. When optical_frame is other than gl, coordinate transformation to the gl coordinate system is performed internally.
 
 .. _body-file-reference-range-sensor-node:
 
@@ -792,9 +799,14 @@ The RangeSensor node defines a distance sensor.
    - Minimum measurable distance [m]
  * - max_distance
    - Maximum measurable distance [m]
+ * - optical_frame
+   - | Specify the sensor coordinate system
+     |  ・**gl** : OpenGL coordinate system (default)
+     |  ・**cv** : OpenCV coordinate system
+     |  ・**robotics** : Robotics coordinate system
 
 .. note::
-   Orientation of this sensor relative to the link to which this sensor is attached. In the sensor coordinate system, the negative Z-axis direction is the measurement front, the horizontal measurement plane when scanning is the XZ plane, and the vertical measurement plane is the YZ plane. This is the same as VisionSensor, so when changing a model that previously used VisionSensor as a substitute, the position and orientation can be used as is.
+   The optical_frame is the same as for Camera node.
    When scanning in both horizontal and vertical directions, the rotation order is yaw, pitch.
    
 .. _body-file-reference-spot-light-node:

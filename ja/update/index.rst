@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2025/9/4
+
+ * :doc:`../handling-models/modelfile/yaml-reference` のCamera、RangeSensorノードに "optical_frame" パラメータの説明を追加
+
 * 2025/8/15
 
  * :doc:`../ros2/install-ros2` のインストール方法移行に関する補足を追加

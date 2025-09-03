@@ -732,17 +732,18 @@ Cameraノードは、視覚センサを定義します。
  * - type
    - Camera
  * - format
-   - | センサから取得する情報の種類を指定する。
-     |   ・"COLOR"  色情報を取得
-     |   ・"DEPTH"  深さ情報を取得
-     |   ・"COLOR_DEPTH"  色情報と深さ情報を取得
-     |   ・"POINT_CLOUD"  3次元点群を取得
-     |   ・"COLOR_POINT_CLOUD"  色情報と3次元点群を取得
+   - | センサから取得する情報の種類を以下から指定
+     |  ・**COLOR** : 色情報を取得
+     |  ・**DEPTH** : 深さ情報を取得
+     |  ・**COLOR_DEPTH** : 色情報と深さ情報を取得
+     |  ・**POINT_CLOUD** : 3次元点群を取得
+     |  ・**COLOR_POINT_CLOUD** : 色情報と3次元点群を取得
+     | ※ 内部的にはformatがCOLORのときCamera、COLOR以外のときRangeCameraとして扱われます。
  * - lens_type
-   - | レンズの種類を指定する。
-     |   ・"NORMAL"  通常レンズ　(デフォルト値）
-     |   ・"FISHEYE"  魚眼レンズ
-     |   ・"DUAL_FISHEYE"  全方位カメラ
+   - | レンズの種類を以下から指定 (formatがCOLORのときのみ有効)
+     |  ・**NORMAL** : 通常レンズ (デフォルト）
+     |  ・**FISHEYE** : 魚眼レンズ
+     |  ・**DUAL_FISHEYE** : 全方位カメラ
  * - on
    - true/falseでカメラのON/OFFを指定
  * - width
@@ -757,12 +758,18 @@ Cameraノードは、視覚センサを定義します。
    - 視点から後クリップ面までの距離
  * - frame_rate
    - カメラが毎秒何枚の画像を出力するか
+ * - optical_frame
+   - | カメラの撮影方向の座標系を以下から指定
+     |  ・**gl** : OpenGL座標系 (デフォルト)
+     |  ・**cv** : OpenCV座標系
+     |  ・**robotics** : ロボット工学座標系
 
-.. note::
-    視点の姿勢は以下のように定義されます。視線前方向 ・・・ ローカル座標系でZ軸の負の向き   視線上方向 ・・・ ローカル座標系でY軸の正の向き。
+optical_frameの各座標系の詳細を以下の表に示します。デフォルトの "gl" 座標系では、Z軸のマイナス方向がカメラレンズの正面方向となり、Y軸がカメラの上方向となります。"robotics" 座標系の場合は、ロボット工学で一般的な前方X軸、上方Z軸の座標系とレンズの向きが一致するので、レンズを前方向に向けたいときは扱いやすい座標系となります。
 
-.. note::
-    内部的にはformatが"COLOR"のときCamera、"COLOR"以外のときRangeCameraとして扱われます。レンズのタイプ指定はCameraのときのみ有効です。
+.. figure:: images/optical_frame.png
+	:align: center
+
+なお、Choreonoid内部の実装ではgl座標系が使われています。optical_frameがgl以外の場合は、内部でgl座標系への座標変換が行われるようになります。
 
 .. _body-file-reference-range-sensor-node:
 
@@ -797,9 +804,14 @@ RangeSensorノードは、距離センサを定義します。
    - 計測可能な最小距離[m]
  * - max_distance
    - 計測可能な最大距離[m]
+ * - optical_frame
+   - | センサの座標系を以下から指定
+     |  ・**gl** : OpenGL座標系 (デフォルト)
+     |  ・**cv** : OpenCV座標系
+     |  ・**robotics** : ロボット工学座標系
 
 .. note::
-   このセンサが取り付けられているリンクに対するこのセンサの姿勢。センサ座標系において、Z軸マイナス方向が計測正面、スキャンする場合の水平計測面はXZ平面、垂直計測面はYZ平面となります。 これはVisionSensorと同じですので、従来VisionSensorで代用していたモデルを変更する場合は 位置、姿勢はそのまま使えます。
+   optical_frameについてはCameraノードと同様です。
    水平、垂直の両方向にスキャンする場合の回転順は、yaw,pitchの順になります。
    
 .. _body-file-reference-spot-light-node:
