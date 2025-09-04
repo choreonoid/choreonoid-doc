@@ -4,6 +4,7 @@
 * 2025/9/4
 
  * :doc:`../handling-models/modelfile/yaml-reference` のCamera、RangeSensorノードに "optical_frame" パラメータの説明を追加
+ * :doc:`../tips/body-sync-camera` を更新 
 
 * 2025/8/15
 

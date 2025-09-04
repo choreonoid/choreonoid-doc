@@ -8,7 +8,7 @@ Tips
    eclipse/debug
    howto-check-backtrace
    VisualStudio/debug
-   body-tracking-camera
+   body-sync-camera
    body-motion
    jaxon2-sample
    gamepad/supported-gamepads

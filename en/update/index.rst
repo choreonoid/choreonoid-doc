@@ -4,6 +4,7 @@ Update History
 * 2025/9/4
 
  * Added description of "optical_frame" parameter to Camera and RangeSensor nodes in :doc:`../handling-models/modelfile/yaml-reference`
+ * Updated :doc:`../tips/body-sync-camera`
 
 * 2025/8/15
 

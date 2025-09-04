@@ -9,7 +9,7 @@
   VisualStudio/debug
   howto-create-movingimage
   howto-use-commands
-  body-tracking-camera
+  body-sync-camera
   body-motion
   jaxon2-sample
   gamepad/supported-gamepads
