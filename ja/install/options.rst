@@ -17,26 +17,6 @@
 
  ChoreonoidのGUI上で実現される機能を有効にします。デフォルトでONになっていて、Choreonoidをアプリケーションソフトとして使用する場合は必須のオプションです。GUIには依存しないライブラリの部分だけを利用したい場合は、これをOFFにすることでビルド時間を短縮することができます。
 
-* **BUILD_ASSIMP_PLUGIN**
-
- Assimpプラグインをビルドします。Assimpは各種3Dモデルファイルを読み込むためのライブラリで、このプラグインによりCOLLADA、Blender、X、DXF形式のファイルを読み込むことが可能となります。Windowsでこれをビルドする場合は :ref:`build-windows-options` をご参照ください。UbuntuではデフォルトでONになっています。
-
-* **ENABLE_FREE_TYPE**
-
-  FreeTypeライブラリを利用して、シーンビュー上へのテキストの描画をできるようにします。現状のChoreonoidではこのオプションがONになっていると、距離計測機能を利用する際にシーンビュー上に距離が数値表示されるようになります。UbuntuではデフォルトでONになっています。WindowsではデフォルトでOFFになっており、利用にあたっては別途FreeTypeライブラリをインストールしておく必要があります。
-
-* **BUILD_POSE_SEQ_PLUGIN**
-
- PoseSeqプラグインをビルドします。このプラグインはキーポーズによる振り付け機能を提供します。
-
-* **BUILD_BALANCER_PLUGIN**
-
- バランサープラグインをビルドします。このプラグインにより、振り付け機能において自動バランス補正を行うことが可能となります。二足歩行ロボットの振り付けを行う際にこの機能を使うことで（理論上）転倒しない動作を作成できます。
-
-* **BUILD_MOCAP_PLUGIN**
-
- モーションキャプチャの動作データを読み込んだり表示したりするためのプラグインです。現在BVH形式のモーションキャプチャデータに対応しています。
-
 * **ENABLE_PYTHON**
 
  ChoreonoidのPythonバインディグを有効にします。PythonバインディングによりC++で実装されているコレオノイドのライブラリをPythonで利用することが可能となります。例えばBodyライブラリのPythonバインディングである "cnoid.Body" モジュールをインポートすることで、Python上でBodyクラスを中心とした各種ロボティクス関連処理を記述することができます。
@@ -44,6 +24,22 @@
  また、ENABLE_GUIがONの場合、ChoreonoidのGUI上でPythonを利用するためのPythonプラグインとPythonSimScriptプラグインもあわせてビルドされます。
 
  UbuntuではデフォルトでONになっています。 Windowsでこれを有効にする場合は :ref:`build-windows-options` をご参照ください。
+
+* **BUILD_ASSIMP_PLUGIN**
+
+ Assimpプラグインをビルドします。Assimpは各種3Dモデルファイルを読み込むためのライブラリで、このプラグインによりCOLLADA、Blender、X、DXF形式のファイルを読み込むことが可能となります。Windowsでこれをビルドする場合は :ref:`build-windows-options` をご参照ください。UbuntuではデフォルトでONになっています。
+
+* **ENABLE_URDF**
+
+ URDF対応機能を有効にします。URDFBodyLoaderとURDFプラグインがビルドされ、URDFファイルの読み込みが可能となります。デフォルトでONになっています。
+
+* **ENABLE_FREE_TYPE**
+
+  FreeTypeライブラリを利用して、シーンビュー上へのテキストの描画をできるようにします。現状のChoreonoidではこのオプションがONになっていると、距離計測機能を利用する際にシーンビュー上に距離が数値表示されるようになります。UbuntuではデフォルトでONになっています。WindowsではデフォルトでOFFになっており、利用にあたっては別途FreeTypeライブラリをインストールしておく必要があります。
+
+* **BUILD_FCL_PLUGIN**
+
+ FCLプラグインをビルドします。このプラグインにより、オープンソースの干渉検出ライブラリである　 `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ を干渉検出に利用することが可能となります。UbuntuのパッケージインストールスクリプトではFCLもインストールされますので、このオプションをONにするだけでビルドできます。Windowsでは自前でFCLをインストールしておく必要があります。なお、FCLプラグインがなくても、組み込みの干渉検出機能が利用できますので、特に問題はありません。
 
 * **BUILD_ODE_PLUGIN**
 
@@ -57,22 +53,45 @@
 
  マルチコプタプラグインをビルドします。このプラグインによりマルチコプタのシミュレーションが可能となります。詳細は :doc:`../multicopter/index` を参照ください。
 
+* **BUILD_GL_VISION_SIMULATOR_PLUGIN**
+
+  視覚センサのシミュレーションを行うためのGLビジョンシミュレータプラグインをビルドします。デフォルトでONになっています。
+
+* **BUILD_GL_CAMERA_EFFECT_PLUGIN**
+
+  GLビジョンシミュレータプラグインを拡張し、シミュレートするカメラ画像に様々なエフェクトをかけられるようにするGLカメラエフェクトプラグインをビルドします。
+
+* **BUILD_LIVOX_MID360_PLUGIN**
+
+  Livox社のLiDARであるMID360に対応するためのLivoxMID360プラグインをビルドします。MID360をデバイスとして利用できるようにし、シミュレーションにも対応します。
+
 * **BUILD_SCENE_EFFECTS_PLUGIN**
 
  シーンエフェクトプラグインをビルドします。このプラグインにより、シーン上に炎や煙等のエフェクトを描画できるようになります。
+
+* **BUILD_POSE_SEQ_PLUGIN**
+
+ PoseSeqプラグインをビルドします。このプラグインはキーポーズによる振り付け機能を提供します。
+
+* **BUILD_BALANCER_PLUGIN**
+
+ バランサープラグインをビルドします。このプラグインにより、振り付け機能において自動バランス補正を行うことが可能となります。二足歩行ロボットの振り付けを行う際にこの機能を使うことで（理論上）転倒しない動作を作成できます。
+
+* **BUILD_MOCAP_PLUGIN**
+
+ モーションキャプチャの動作データを読み込んだり表示したりするためのプラグインです。現在BVH形式のモーションキャプチャデータに対応しています。
 
 * **BUILD_MEDIA_PLUGIN**
 
  メディアプラグインをビルドします。このプラグインによりChoreonoid上で動画や音声の各種メディアファイルを再生することが可能となります。
 
+* **BUILD_FFMPEG_PLUGIN**
+
+ FFMpegプラグインをビルドします。このプラグインにより動画レコーダ機能でMpeg形式でのファイル保存ができるようになります。
+
 * **BUILD_TRAFFIC_CONTROL_PLUGIN**
 
  TrafficControlプラグインをビルドします。このプラグインにより、通信遅延、帯域制限、パケットロス等の各種通信障害を模擬することが可能となります。詳細は :doc:`../trafficcontrol/index` を参照ください。
-
-* **BUILD_FCL_PLUGIN**
-
- FCLプラグインをビルドします。このプラグインにより、オープンソースの干渉検出ライブラリである　 `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ を干渉検出に利用することが可能となります。UbuntuのパッケージインストールスクリプトではFCLもインストールされますので、このオプションをONにするだけでビルドできます。Windowsでは自前でFCLをインストールしておく必要があります。なお、FCLプラグインがなくても、組み込みの干渉検出機能が利用できますので、特に問題はありません。
-
 
 サンプル関連オプション
 ----------------------
@@ -86,6 +105,10 @@
 * **BUILD_SIMPLE_CONTROLLER_SAMPLES**
 
  シンプルコントローラで実現される各種シミュレーションサンプルをビルドします。デフォルトでONになっています。
+
+* **BUILD_HRP4C_HANDLER**
+
+ HRP-4Cモデルの逆運動学解析解を計算するボディハンドラをビルドします。
 
 * **BUILD_SUBMERSIBLE_SAMPLE**
 
