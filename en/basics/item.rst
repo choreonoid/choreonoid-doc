@@ -25,7 +25,7 @@ When a project consists of multiple items, it becomes necessary to define relati
 Loading Projects
 ----------------
 
-Please execute "File" - "Load Project" from the main menu at the top of the main window. This will display the "Load Choreonoid Project File" dialog as shown below.
+Please execute "File" - "Open Project" from the main menu at the top of the main window. This will display the "Open a project" dialog as shown below.
 
 .. figure:: images/load_project_dialog.png
 

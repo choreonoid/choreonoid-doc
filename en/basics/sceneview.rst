@@ -90,8 +90,9 @@ The functions equipped in this bar are as follows from left to right:
 * Viewpoint operation mode switching
 * Rendering camera selection
 * Viewpoint recovery
-* Collision line display
 * Wireframe display
+* Flip model types
+* Collision line display
 * Configuration dialog
 		      
 The usage of these functions is explained below.
@@ -109,11 +110,11 @@ Edit mode is a mode that accepts editing of models and data displayed in the vie
 
 Choreonoid starts in view mode by default. Mode switching is performed by one of the following methods:
 
-* Press the "Edit Mode Toggle Button" in the Scene Bar. When this is OFF, it's in view mode, and when turned ON, it becomes edit mode.
+* Press the "Switch to the edit mode" Button in the Scene Bar. When this is OFF, it's in view mode, and when turned ON, it becomes edit mode.
 * Press the ESC key while the Scene View has focus. (The mode switches each time you press it.)
 * Double-click in the Scene View. (However, in edit mode, double-clicking may be assigned to other operations.)
 
-The current mode can be identified by whether the "Edit Mode Toggle Button" in the Scene Bar is pressed. Also, in edit mode, editing markers may be displayed on models, and you can also identify the mode by whether such displays are present.
+The current mode can be identified by whether the "Switch to the edit mode" Button in the Scene Bar is pressed. Also, in edit mode, editing markers may be displayed on models, and you can also identify the mode by whether such displays are present.
 
 Specific editing operations vary depending on the target models and data, so details are not explained here. (Operation methods for robot models are explained in :doc:`../handling-models/index` - :doc:`../handling-models/pose-editing`.) The following mainly explains operation methods in view mode.
 
@@ -138,7 +139,7 @@ For viewpoint zoom as well, when pointing to nearby objects, the zoom amount (fo
 
 Note that when the mouse cursor points to an empty area in the scene, the operation focuses on the area that was pointed to immediately before.
 
-Pressing the "Viewpoint Recovery Button" in the Scene Bar adjusts the translation position and zoom so that all objects in the scene are visible without changing the viewpoint direction. This is useful when you lose track of what you're looking at while performing viewpoint change operations.
+Pressing the "Fit view to all objects" Button in the Scene Bar adjusts the translation position and zoom so that all objects in the scene are visible without changing the viewpoint direction. This is useful when you lose track of what you're looking at while performing viewpoint change operations.
 
 
 Viewpoint Change Modifier Keys
@@ -156,9 +157,9 @@ Note that in environments without a middle button, the space key can be used ins
 First-Person Viewpoint Change Mode
 ----------------------
 
-The above viewpoint change operations were centered on objects in the Scene View, such as rotating around the object the mouse points to. In contrast, an operation system centered on the viewpoint is also provided, which is called "First-Person Viewpoint Change Mode". To switch to this mode, perform one of the following operations:
+The above viewpoint change operations were centered on objects in the Scene View, such as rotating around the object the mouse points to. In contrast, an operation system centered on the viewpoint is also provided, which is called "First-Person Viewpoint Control Mode". To switch to this mode, perform one of the following operations:
 
-* Turn ON the "Viewpoint Operation Mode Toggle Button" in the Scene Bar
+* Turn ON the "First-person viewpoint control mode" Button in the Scene Bar
 * Press the "1" key on the keyboard while the Scene View has focus (press the "3" key to return to the default mode)
 
 In this mode, viewpoint rotation and translation operations change as follows:
@@ -166,7 +167,7 @@ In this mode, viewpoint rotation and translation operations change as follows:
 * Rotation: Always rotates centered on the viewpoint, regardless of mouse cursor position
 * Translation: Moves in the direction the mouse is dragged
 
-Such "First-Person Viewpoint Change Mode" is useful in situations such as entering inside buildings and exploring the interior.
+Such "First-Person Viewpoint Control Mode" is useful in situations such as entering inside buildings and exploring the interior.
 
 .. _basics_sceneview_change_camera:
 
@@ -191,14 +192,14 @@ In addition to the two cameras provided by default above, if the scene contains 
 Wireframe Display
 ------------------
 
-When the "Wireframe Display Button" in the Scene Bar is turned ON, the scene is rendered in wireframe. This is convenient when you want to see the polygon structure of models or the overlapping details of objects. There are several other elements that change the scene rendering method, which can be set in the configuration dialog explained below.
+When the "Wireframe rendering" Button in the Scene Bar is turned ON, the scene is rendered in wireframe. This is convenient when you want to see the polygon structure of models or the overlapping details of objects. There are several other elements that change the scene rendering method, which can be set in the configuration dialog explained below.
 
 .. _basics_sceneview_config_dialog:
 
 Configuration Dialog
 --------------
 
-There are other configurable items for the Scene View's rendering method and behavior, which can be configured in detail in the dialog displayed by pressing the "Configuration Dialog Display Button" in the :ref:`basics_sceneview_scenebar`. An overview of the main configuration items accessible from this dialog is shown below.
+There are other configurable items for the Scene View's rendering method and behavior, which can be configured in detail in the dialog displayed by pressing the "Show the config dialog" Button in the :ref:`basics_sceneview_scenebar`. An overview of the main configuration items accessible from this dialog is shown below.
 
 .. tabularcolumns:: |p{4.0cm}|p{11.0cm}|
 
@@ -246,7 +247,7 @@ The following configuration items are also available:
 
 * Perform point rendering in wireframe mode
 
- When the "Wireframe Display" in the Scene Bar is turned ON, point rendering is performed.
+ When the "Wireframe rendering" in the Scene Bar is turned ON, point rendering is performed.
 
 * Perform double rendering when generating new display lists
 
