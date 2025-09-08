@@ -1,6 +1,13 @@
 Update History
 ==============
 
+* 2025/9/8
+
+ * Added :doc:`../install/install-package-ubuntu`
+ * Updated :ref:`build-ubuntu_install` in :doc:`../install/build-ubuntu`
+ * Updated :doc:`../install/options`
+ * Added :doc:`../ros2/install-choreonoid` to :doc:`../ros2/index` to explain how to use the Choreonoid main body installed by standard methods
+
 * 2025/9/4
 
  * Added description of "optical_frame" parameter to Camera and RangeSensor nodes in :doc:`../handling-models/modelfile/yaml-reference`

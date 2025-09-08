@@ -6,6 +6,7 @@ ROS 2 Integration
 
    about
    install-ros2
+   install-choreonoid
    build-choreonoid
    run-choreonoid
    ros2-plugin

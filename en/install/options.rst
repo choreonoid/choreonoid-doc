@@ -16,26 +16,6 @@ Main Options
 
  Enables features implemented on Choreonoid's GUI. This is ON by default and is an essential option when using Choreonoid as application software. If you want to use only the library parts that do not depend on the GUI, you can reduce build time by setting this to OFF.
 
-* **BUILD_ASSIMP_PLUGIN**
-
- Builds the Assimp plugin. Assimp is a library for loading various 3D model files, and this plugin enables loading of COLLADA, Blender, X, and DXF format files. For building this on Windows, please refer to :ref:`build-windows-options`. This is ON by default on Ubuntu.
-
-* **ENABLE_FREE_TYPE**
-
-  Enables text rendering on the scene view using the FreeType library. In the current version of Choreonoid, when this option is ON, distance values are displayed numerically on the scene view when using the distance measurement function. This is ON by default on Ubuntu. On Windows, this is OFF by default, and the FreeType library must be installed separately for use.
-
-* **BUILD_POSE_SEQ_PLUGIN**
-
- Builds the PoseSeq plugin. This plugin provides choreography functionality using key poses.
-
-* **BUILD_BALANCER_PLUGIN**
-
- Builds the Balancer plugin. This plugin enables automatic balance correction in the choreography functionality. When creating choreography for bipedal walking robots, this feature can be used to create motions that (theoretically) do not fall over.
-
-* **BUILD_MOCAP_PLUGIN**
-
- A plugin for loading and displaying motion capture data. Currently supports BVH format motion capture data.
-
 * **ENABLE_PYTHON**
 
  Enables Choreonoid's Python bindings. Python bindings make it possible to use Choreonoid libraries implemented in C++ from Python. For example, by importing the "cnoid.Body" module, which is the Python binding of the Body library, you can write various robotics-related processes centered on the Body class in Python.
@@ -43,6 +23,22 @@ Main Options
  Additionally, when ENABLE_GUI is ON, the Python plugin and PythonSimScript plugin for using Python on Choreonoid's GUI are also built together.
 
  This is ON by default on Ubuntu. For enabling this on Windows, please refer to :ref:`build-windows-options`.
+
+* **BUILD_ASSIMP_PLUGIN**
+
+ Builds the Assimp plugin. Assimp is a library for loading various 3D model files, and this plugin enables loading of COLLADA, Blender, X, and DXF format files. For building this on Windows, please refer to :ref:`build-windows-options`. This is ON by default on Ubuntu.
+
+* **ENABLE_URDF**
+
+ Enables URDF support functionality. URDFBodyLoader and URDF plugin are built, enabling loading of URDF files. This is ON by default.
+
+* **ENABLE_FREE_TYPE**
+
+  Enables text rendering on the scene view using the FreeType library. In the current version of Choreonoid, when this option is ON, distance values are displayed numerically on the scene view when using the distance measurement function. This is ON by default on Ubuntu. On Windows, this is OFF by default, and the FreeType library must be installed separately for use.
+
+* **BUILD_FCL_PLUGIN**
+
+ Builds the FCL plugin. This plugin enables the use of the open-source collision detection library `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ for collision detection. The Ubuntu package installation script also installs FCL, so you can build by simply turning this option ON. On Windows, you need to install FCL yourself. Note that even without the FCL plugin, the built-in collision detection functionality is available, so there are no particular issues.
 
 * **BUILD_ODE_PLUGIN**
 
@@ -56,21 +52,45 @@ Main Options
 
  Builds the Multicopter plugin. This plugin enables multicopter simulation. For details, please refer to :doc:`../multicopter/index`.
 
+* **BUILD_GL_VISION_SIMULATOR_PLUGIN**
+
+  Builds the GL Vision Simulator plugin for simulating visual sensors. This is ON by default.
+
+* **BUILD_GL_CAMERA_EFFECT_PLUGIN**
+
+  Builds the GL Camera Effect plugin that extends the GL Vision Simulator plugin and enables applying various effects to simulated camera images.
+
+* **BUILD_LIVOX_MID360_PLUGIN**
+
+  Builds the LivoxMID360 plugin for supporting Livox's MID360 LiDAR. This enables using MID360 as a device and also supports simulation.
+
 * **BUILD_SCENE_EFFECTS_PLUGIN**
 
  Builds the Scene Effects plugin. This plugin enables rendering of effects such as fire and smoke on scenes.
+
+* **BUILD_POSE_SEQ_PLUGIN**
+
+ Builds the PoseSeq plugin. This plugin provides choreography functionality using key poses.
+
+* **BUILD_BALANCER_PLUGIN**
+
+ Builds the Balancer plugin. This plugin enables automatic balance correction in the choreography functionality. When creating choreography for bipedal walking robots, this feature can be used to create motions that (theoretically) do not fall over.
+
+* **BUILD_MOCAP_PLUGIN**
+
+ A plugin for loading and displaying motion capture data. Currently supports BVH format motion capture data.
 
 * **BUILD_MEDIA_PLUGIN**
 
  Builds the Media plugin. This plugin enables playback of various media files including video and audio on Choreonoid.
 
+* **BUILD_FFMPEG_PLUGIN**
+
+ Builds the FFMpeg plugin. This plugin enables saving files in Mpeg format with the video recorder functionality.
+
 * **BUILD_TRAFFIC_CONTROL_PLUGIN**
 
  Builds the TrafficControl plugin. This plugin enables simulation of various communication failures such as communication delays, bandwidth limitations, and packet loss. For details, please refer to :doc:`../trafficcontrol/index`.
-
-* **BUILD_FCL_PLUGIN**
-
- Builds the FCL plugin. This plugin enables the use of the open-source collision detection library `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ for collision detection. The Ubuntu package installation script also installs FCL, so you can build by simply turning this option ON. On Windows, you need to install FCL yourself. Note that even without the FCL plugin, the built-in collision detection functionality is available, so there are no particular issues.
 
 
 Sample-Related Options
@@ -85,6 +105,10 @@ The following are options for building sample data and programs.
 * **BUILD_SIMPLE_CONTROLLER_SAMPLES**
 
  Builds various simulation samples implemented with Simple Controller. This is ON by default.
+
+* **BUILD_HRP4C_HANDLER**
+
+ Builds a body handler that calculates analytical inverse kinematics solutions for the HRP-4C model.
 
 * **BUILD_SUBMERSIBLE_SAMPLE**
 

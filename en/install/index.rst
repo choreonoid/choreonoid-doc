@@ -7,6 +7,7 @@ This section explains how to install Choreonoid.
    :maxdepth: 2
 
    platform
+   install-package-ubuntu
    build-ubuntu
    build-windows
    setup-gpu

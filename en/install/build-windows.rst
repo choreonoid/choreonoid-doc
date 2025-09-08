@@ -199,9 +199,9 @@ Release Version
 
 The source code for Choreonoid release versions can be downloaded from the `Downloads <http://choreonoid.org/en/downloads.html>`_ page. Download the appropriate version from the "Source Package" on this page. The file is in ZIP format, so extract it in an appropriate directory: ::
 
- unzip choreonoid-2.2.0.zip
+ unzip choreonoid-2.3.0.zip
 
-After extraction, a directory like choreonoid-2.2.0 will be created. This directory is also the **"source directory"** containing the source code.
+After extraction, a directory like choreonoid-2.3.0 will be created. This directory is also the **"source directory"** containing the source code.
 
 .. note:: For release versions, the procedures in this manual targeting the development version may differ. For example, versions 2.0.0 and earlier also require installation of Boost C++ Libraries. For installation methods for release versions, please refer to the `manuals for each release version <http://choreonoid.org/en/documents/index.html>`_.
 

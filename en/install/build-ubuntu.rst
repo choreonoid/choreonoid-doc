@@ -1,9 +1,8 @@
 Building and Installing from Source Code (Ubuntu Linux)
 ===================================================
 
-.. sectionauthor:: 中岡 慎一郎 <s.nakaoka@aist.go.jp>
-
-While there are various Linux distributions available, Ubuntu Linux is currently the officially supported distribution for Choreonoid. The latest development version of Choreonoid has been confirmed to build and run on Ubuntu versions 24.04, 22.04, and 20.04 with x64 architecture (64-bit). This document explains how to build Choreonoid from source code on Ubuntu Linux.
+While Choreonoid can be :doc:`installed via package <install-package-ubuntu>` on Ubuntu Linux, building from source code allows you to develop Choreonoid itself or achieve more flexible operation.
+This document explains how to build Choreonoid from source code on Ubuntu Linux.
 
 .. contents::
    :local:
@@ -41,9 +40,9 @@ Release Version
 
 The source code for Choreonoid release versions can be downloaded from the `Downloads <http://choreonoid.org/en/downloads.html>`_ page. Please download the appropriate version from the "Source Package" section on this page. The file is in ZIP format, so extract it in an appropriate directory with: ::
 
- unzip choreonoid-2.2.0.zip
+ unzip choreonoid-2.3.0.zip
 
-After extraction, a directory such as choreonoid-2.2.0 will be created. This directory also becomes the **"source directory"** containing the source code.
+After extraction, a directory such as choreonoid-2.3.0 will be created. This directory also becomes the **"source directory"** containing the source code.
 
 .. note:: For release versions, the procedures in this manual targeting the development version may differ. For example, versions 2.0.0 and earlier also require installation of Boost C++ Libraries. For installation methods for release versions, please refer to the `manual for each release version <http://choreonoid.org/en/documents/index.html>`_.
 
@@ -133,6 +132,22 @@ Clang can be installed as follows: ::
 
  sudo apt install clang
 
+To use C++, you also need the standard C++ library, but the above command alone may not install the clang-compatible standard C++ library. In that case, also install the standard C++ library package.
+
+First, run: ::
+
+ clang --verbose
+
+And check the display such as: ::
+
+ Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/14
+
+The last number shown here is the GCC version required for building with Clang. Install the standard C++ library corresponding to this version: ::
+
+ sudo apt install libstdc++-14-dev
+
+( `Reference page on stack overflow <https://stackoverflow.com/questions/74543715/usr-bin-ld-cannot-find-lstdc-no-such-file-or-directory-on-running-flutte>`_ )
+
 When setting Clang usage with environment variables, set them as follows:
 
  * CC: clang
@@ -150,22 +165,6 @@ Or you can set them in advance: ::
 Alternatively, since the above environment variables correspond to the CMake variables CMAKE_C_COMPILER and CMAKE_CXX_COMPILER: ::
 
  cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=gcc ..
-
-When NVIDIA drivers are installed, specific versions of GCC may be additionally installed for driver building. In such cases, the above methods may prevent Clang's standard C++ library from being used. To address this, first run: ::
-
- clang --verbose
-
-And check the display such as: ::
-
- Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/12
-
-The last number shown here is the GCC version required for building with Clang. Install the standard C++ library corresponding to this version: ::
-
- sudo apt install libstdc++-12-dev
-
-( `Reference page on stack overflow <https://stackoverflow.com/questions/74543715/usr-bin-ld-cannot-find-lstdc-no-such-file-or-directory-on-running-flutte>`_ )
-
-.. note:: When building with Clang, please note that depending on the environment and Clang version, bugs may occur where Range sensor simulation does not work properly. When building with Clang14 on Ubuntu 22.04, this bug does not seem to occur.
 
 .. _install_build-ubuntu_build:
 
@@ -223,6 +222,14 @@ To do this, execute: ::
 
 in the build directory. This will install the complete set of files necessary for execution to the designated directory.
 
+.. note:: Installation can also be executed with CMake commands: ::
+
+  cmake --install build_directory
+
+ This installs to the directory set in **CMAKE_INSTALL_PREFIX**. The installation destination can also be specified as: ::
+
+  cmake --install build_directory --prefix installation_destination
+
 On Ubuntu, the default installation destination is "/usr/local". Writing to this directory normally requires root privileges, so: ::
 
  sudo make install
@@ -235,19 +242,18 @@ For /usr/local, since the path is set by default to /usr/local/bin which stores 
 
 regardless of the current directory location.
 
-The installation destination can also be changed by configuring CMake's **CMAKE_INSTALL_PREFIX**. If multiple accounts do not need to use it, you can set somewhere in the home directory as the installation destination. In this case, there is no need to sudo during installation. However, if a path needs to be set similar to /usr/local/bin, you need to set the path to the installation destination's bin directory yourself.
-
 .. note:: Installing to the default installation destination /usr/local is **not recommended**. While this directory is common as a default installation destination, it should be considered as a convenience measure. When building and installing software from source code yourself, it is generally not managed by the OS package management system. This means you need to manage it yourself, but when such things are installed mixed together in the same directory /usr/local, it becomes very difficult to remove unnecessary files when upgrading specific software or to uninstall only specific software. Therefore, instead of installing to /usr/local, it is better to prepare dedicated directories for each software in the home directory and install there.
 
-.. note:: For software that includes shared libraries like Choreonoid, generally the shared library path needs to be set to the lib directory where shared libraries are installed. For /usr/local/lib, the path is set by default, but for other directories, you need to set the path yourself. However, Choreonoid uses a mechanism called RPATH so it works without setting the shared library path, so this setting is usually not necessary. When using Choreonoid's shared libraries as libraries from external software, this setting may be necessary. Note that RPATH can be disabled by setting the CMake Advanced option **ENABLE_INSTALL_RPATH** to OFF. This is ON by default, and should not be changed unless there is a specific reason to disable it.
 
-Installation operations can also be executed with CMake commands instead of Make: ::
+The installation destination can also be changed by configuring CMake's **CMAKE_INSTALL_PREFIX**. If multiple accounts do not need to use it, it might be good to set somewhere in the home directory as the installation destination. In this case, there is no need to sudo during installation.
 
- cmake --install build_directory
+However, in that case, the paths for executables and libraries will not be set. Also, CMake files for plugin development will not be in the search path. There is a shell script at the installation destination to solve this by setting up the necessary environment.
 
-This installs to the directory set in **CMAKE_INSTALL_PREFIX**. The installation destination can also be specified as: ::
+The script is a file called "setup.bash" at the installation destination. For example, if installed under "~/usr", it will be the file "~/usr/setup.bash". You can set it up by: ::
 
- cmake --install build_directory --prefix installation_destination
+ source ~/usr/setup.bash
+
+If you include the same line in your ".bashrc" file, this configuration will be set automatically.
 
 Building Optional Features
 ---------------------------
