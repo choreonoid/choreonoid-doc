@@ -1,4 +1,3 @@
-
 ROS 2との連携
 ============
 
@@ -7,6 +6,7 @@ ROS 2との連携
 
    about
    install-ros2
+   install-choreonoid
    build-choreonoid
    run-choreonoid
    ros2-plugin

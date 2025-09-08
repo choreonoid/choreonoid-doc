@@ -7,6 +7,7 @@
    :maxdepth: 2
 
    platform
+   install-package-ubuntu
    build-ubuntu
    build-windows
    setup-gpu

@@ -1,6 +1,12 @@
 更新履歴
 ========
 
+* 2025/9/8
+
+ * :doc:`../install/install-package-ubuntu` を追加
+ * :doc:`../install/build-ubuntu` の :ref:`build-ubuntu_install` を修正
+ * :doc:`../ros2/index` に :doc:`../ros2/install-choreonoid` を追加し、通常の方法でインストールしたChoreonoid本体を使用する方法を解説
+
 * 2025/9/4
 
  * :doc:`../handling-models/modelfile/yaml-reference` のCamera、RangeSensorノードに "optical_frame" パラメータの説明を追加
