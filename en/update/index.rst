@@ -1,6 +1,10 @@
 Update History
 ==============
 
+* 2025/10/17
+
+ * Updated :doc:`../ros2/ros2-control` to reflect the latest status
+
 * 2025/9/8
 
  * Added :doc:`../install/install-package-ubuntu`

@@ -1,6 +1,10 @@
 更新履歴
 ========
 
+* 2025/10/17
+
+ * :doc:`../ros2/ros2-control` を最新の状況にあうように更新
+
 * 2025/9/8
 
  * :doc:`../install/install-package-ubuntu` を追加
