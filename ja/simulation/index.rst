@@ -11,7 +11,6 @@
    howto-use-controller
    howto-implement-controller
    howto-build-controller
-   vision-simulation
    pseudo-continuous-track
    interaction
    sensor-visualization

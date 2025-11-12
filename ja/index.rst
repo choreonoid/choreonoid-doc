@@ -13,6 +13,7 @@ Choreonoidマニュアル
    basics/index
    handling-models/index
    simulation/index
+   vision-sensor/index
    ros/index
    ros2/index
    agxdynamics/index
