@@ -116,6 +116,11 @@ GLビジョンシミュレータの設定項目
 .. image:: images/sr1-camera-visualizer.png
     :scale: 70%
 
+または、画像ビューのタブを右クリックすることで、画像ビューバーを使わずにカメラを選択することもできます。
+
+.. image:: images/select-camera.png
+    :scale: 70%
+
 複数センサのシミュレーション
 ----------------------------
 
