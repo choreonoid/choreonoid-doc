@@ -1,6 +1,13 @@
 更新履歴
 ========
 
+* 2026/04/20
+
+ * :doc:`../basics/index` の図などを最新版に合うように更新
+ * :doc:`../vision-sensor/index` の章を分離
+ * :doc:`../vision-sensor/howto-use-cameraeffects` を追加
+ * :doc:`../tips/vscode/debug` を追加
+
 * 2025/10/20
 
  * :doc:`../install/install-package-ubuntu` に開発版のインストール方法を追記
