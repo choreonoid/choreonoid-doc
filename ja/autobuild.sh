@@ -1,2 +1,2 @@
 #!/bin/bash
-sphinx-autobuild . ../_build/html/ja/
+sphinx-autobuild -E . ../_build/html/ja/
