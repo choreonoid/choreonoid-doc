@@ -1,6 +1,11 @@
 Update History
 ==============
 
+* 2026/04/21
+
+ * Added :doc:`../physx/index`
+ * Added a build option for the PhysX plugin to :doc:`../install/options`
+
 * 2026/04/20
 
  * Updated figures in :doc:`../basics/index` to match the latest version

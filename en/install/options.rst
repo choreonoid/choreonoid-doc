@@ -40,6 +40,10 @@ Main Options
 
  Builds the FCL plugin. This plugin enables the use of the open-source collision detection library `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ for collision detection. The Ubuntu package installation script also installs FCL, so you can build by simply turning this option ON. On Windows, you need to install FCL yourself. Note that even without the FCL plugin, the built-in collision detection functionality is available, so there are no particular issues.
 
+* **ENABLE_PHYSX** / **BUILD_PHYSX_PLUGIN**
+
+ Builds the PhysX plugin, enabling the use of NVIDIA's physics engine `PhysX <https://github.com/NVIDIA-Omniverse/PhysX>`_ in simulations. The PhysX source code is bundled with the Choreonoid main body, and both options are ``ON`` by default, so the build normally proceeds as is. For details, please refer to :doc:`../physx/index`.
+
 * **BUILD_ODE_PLUGIN**
 
  Builds the ODE plugin. This plugin enables the use of the open-source dynamics calculation library "Open Dynamics Engine (ODE)" as a physics engine for simulation. To use this, `Open Dynamics Engine (ODE) <http://www.ode.org/>`_ must be installed. The Ubuntu package installation script also installs ODE, so you can build by simply turning this option ON. For Windows builds, please refer to :ref:`build-windows-options`. Note that even without the ODE plugin, simulation using the built-in AIST physics engine is possible.
@@ -143,10 +147,6 @@ The options introduced below are for features still in experimental/development 
 * **BUILD_BULLET_PLUGIN**
 
  Builds the Bullet plugin. This plugin enables the use of the open-source physics calculation library `Bullet Physics <https://github.com/bulletphysics/bullet3>`_ in Choreonoid's simulation functionality. For build methods, please refer to :doc:`build-bullet-plugin`.
- 
-* **BUILD_PHYSX_PLUGIN**
-
- Builds the PhysX plugin. This plugin enables the use of the physics calculation library `PhysX <https://developer.nvidia.com/gameworks-physx-overview>`_ in Choreonoid's simulation functionality. For build methods, please refer to :doc:`build-physx-plugin`.
 
 * **BUILD_ROKI_PLUGIN**
 
