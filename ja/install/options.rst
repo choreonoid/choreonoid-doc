@@ -41,6 +41,10 @@
 
  FCLプラグインをビルドします。このプラグインにより、オープンソースの干渉検出ライブラリである　 `Flexible Collision Library (FCL) <https://github.com/flexible-collision-library/fcl>`_ を干渉検出に利用することが可能となります。UbuntuのパッケージインストールスクリプトではFCLもインストールされますので、このオプションをONにするだけでビルドできます。Windowsでは自前でFCLをインストールしておく必要があります。なお、FCLプラグインがなくても、組み込みの干渉検出機能が利用できますので、特に問題はありません。
 
+* **ENABLE_PHYSX** / **BUILD_PHYSX_PLUGIN**
+
+ PhysXプラグインをビルドし、NVIDIA社の物理エンジンである `PhysX <https://github.com/NVIDIA-Omniverse/PhysX>`_ をシミュレーションで利用できるようにします。PhysXのソースコードはChoreonoid本体に同梱されており、両オプションともデフォルトで ``ON`` となっているため、通常はそのままでビルドできます。詳細は :doc:`../physx/index` を参照ください。
+
 * **BUILD_ODE_PLUGIN**
 
  ODEプラグインをビルドします。このプラグインにより、オープンソースの動力学計算ライブラリである "Open Dynamics Engine (ODE)" を、シミュレーションのための物理エンジンとして利用できるようになります。利用の際には、 `Open Dynamics Engine (ODE) <http://www.ode.org/>`_ をインストールしておく必要があります。UbuntuのパッケージインストールスクリプトではODEもインストールされますので、このオプションをONにするだけでビルドできます。Windowsでのビルドについては :ref:`build-windows-options` をご参照ください。なお、ODEプラグインがなくても、組み込みのAIST物理エンジンを用いたシミュレーションが可能です。
@@ -143,10 +147,6 @@
 * **BUILD_BULLET_PLUGIN**
 
  Bulletプラグインをビルドします。このプラグインにより、オープンソースの物理計算ライブラリである `Bullet Physics <https://github.com/bulletphysics/bullet3>`_ をコレオノイドのシミュレーション機能で利用できるようになります。ビルド方法については、 :doc:`build-bullet-plugin` を参照ください。
- 
-* **BUILD_PHYSX_PLUGIN**
-
- PhysXプラグインをビルドします。このプラグインにより、物理計算ライブラリ `PhysX <https://developer.nvidia.com/gameworks-physx-overview>`_ をコレオノイドのシミュレーション機能で利用できるようになります。ビルド方法については、 :doc:`build-physx-plugin` を参照ください。
 
 * **BUILD_ROKI_PLUGIN**
 

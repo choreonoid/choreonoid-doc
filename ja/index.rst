@@ -14,11 +14,12 @@ Choreonoidマニュアル
    handling-models/index
    simulation/index
    vision-sensor/index
-   ros/index
-   ros2/index
+   physx/index
    agxdynamics/index
    multicopter/index
    trafficcontrol/index
+   ros2/index
+   ros/index
    wrs2018/index
    plugin-development/index
    tips/index
