@@ -1,6 +1,13 @@
 Update History
 ==============
 
+* 2026/04/20
+
+ * Updated figures in :doc:`../basics/index` to match the latest version
+ * Separated :doc:`../vision-sensor/index` as its own chapter
+ * Added :doc:`../vision-sensor/howto-use-cameraeffects`
+ * Added :doc:`../tips/vscode/debug`
+
 * 2025/10/20
 
  * Added development version installation instructions to :doc:`../install/install-package-ubuntu`

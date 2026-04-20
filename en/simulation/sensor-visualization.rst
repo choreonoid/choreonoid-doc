@@ -66,14 +66,3 @@ The length of the markers can be adjusted with the "display ratio" property of t
 When visualizing range cameras and range sensors, they are displayed as point clouds in the scene view. Below are display examples from the sample project TankVisionSensors.
 
 .. image:: images/tank-range-visualizer.png
-
-Camera images can be displayed in the Image View. No item check is necessary.
-
-Generate an Image View by selecting "Image" from "View" - "Create View" in the main menu. Also, add it to the toolbar by selecting "Image View Bar" from "View" - "Show Toolbar".
-
-The combo box in the Image View Bar lists cameras that can be visualized by the sensor visualizer, so first select the Image View (clicking on the view screen selects it) and then select a camera from the combo box.
-The adjacent button allows you to scale the image to fit the view.
-
-You can create multiple Image Views, but there is only one Image View Bar, so be aware that operations in the Image View Bar affect the selected Image View. Below is an example of camera display with the Image View Bar and Image View.
-
-.. image:: images/tank-camera-visualizer.png

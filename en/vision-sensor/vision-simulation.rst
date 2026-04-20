@@ -43,6 +43,8 @@ Vision sensor simulation functionality is usually implemented as a :ref:`simulat
 
 The vision simulator functions by placing it as a child item of the simulator item. When using the GL Vision Simulator, you can generate its item from the main menu "File" - "New" - "GL Vision Simulator", and place it as a child item of the target simulator item.
 
+Next, select the generated GL Vision Simulator in the item tree view, and then set "Record vision data" to "True" in the property view.
+
 By doing so, vision sensor simulation will also be performed for the virtual world targeted by the simulator item. Specifically, the image data of Camera devices, depth maps of RangeCamera, and distance data of RangeSensor will be updated at the frame rate set for each device.
 
 .. _simulation-gl-vision-simulator-property:
@@ -86,6 +88,37 @@ In addition to the basic settings for vision sensor simulation explained so far,
    - Light sources (lights) included in body models are called "additional lights". This sets whether to enable these light sources in camera image generation. Set this to true if you want to simulate lights.
 
 Vision sensor simulation functions fully with the default settings, so it's OK to set the above items only as needed.
+
+Displaying Vision Sensors
+-------------------------
+
+The "Sensor Visualizer" item is available as a feature for displaying the state of vision sensors. You can use it to display camera images.
+
+To use it, first generate this item. As shown in the figure below, select "Sensor Visualizer" from the main menu "File" - "New", and place the generated item as a child item of the target body item.
+
+.. image:: images/sensorVisualizerItem.png
+
+Then the sensors that the body model has will be placed as child items of the sensor visualizer. Currently, the sensors supported by the sensor visualizer are force sensors and the cameras, range cameras, and range sensors described in :ref:`simulation-gl-vision-simulator-sensor`.
+The item name is assigned from the sensor name. In the case of a range camera, two items are generated: one for images (displayed with "_Image" appended to the sensor name) and one for depth images.
+
+When you check the child item for images, the vision sensor data can be visualized.
+
+Camera images can be displayed in the image view.
+
+Select "Image" from the main menu "View" - "Create View" to generate an image view. Also, select "Image View Bar" from "View" - "Show Toolbar" to add it to the toolbar.
+
+The combo box on the image view bar lists the cameras that can be visualized by the sensor visualizer, so first select an image view (clicking on the view makes it the selected one), and then choose a camera from the combo box.
+The button next to it lets you scale the image to fit the view.
+
+You can create multiple image views, but there is only one image view bar, so note that operations on the image view bar act on the currently selected image view. An example of camera display with the image view bar and image view is shown below.
+
+.. image:: images/sr1-camera-visualizer.png
+    :scale: 70%
+
+Alternatively, you can also select a camera without using the image view bar by right-clicking the image view tab.
+
+.. image:: images/select-camera.png
+    :scale: 70%
 
 Simulating Multiple Sensors
 ---------------------------
@@ -211,6 +244,7 @@ is displayed and each camera image is saved as a file. The save location is the 
 Try displaying the saved images with an appropriate image viewer. The saved images simulate the camera images corresponding to the robot's left and right eyes. Examples of each are shown below.
 
 .. image:: images/camera-simulation.png
+    :scale: 70%
 
 This shows that camera image simulation is working and that the controller can obtain them.
 
@@ -302,4 +336,4 @@ In the control function ::
 
 outputs the camera's image data to a file. Here we use the constImage() function because we don't edit the acquired image data.
 
-The above covers the parts related to Camera devices. For other parts, there are many commonalities with :doc:`howto-implement-controller`, so please refer to that explanation.
+The above covers the parts related to Camera devices. For other parts, there are many commonalities with :doc:`../simulation/howto-implement-controller`, so please refer to that explanation.
