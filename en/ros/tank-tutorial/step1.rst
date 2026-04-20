@@ -513,7 +513,7 @@ Let's run the simulation.
 
 If :ref:`ros_tank_tutorial_choreonoid_joy` is running, you should be able to control the Tank robot with the connected gamepad. This is achieved by the controller subscribing to the gamepad state that the Joy node publishes as a Joy topic.
 
-With a standard gamepad supported by Choreonoid, the left analog stick controls the chassis (crawler) forward/backward movement and left/right turning. The right analog stick controls turret and barrel rotation.
+With a standard gamepad supported by Choreonoid, the left analog stick controls the chassis (track) forward/backward movement and left/right turning. The right analog stick controls turret and barrel rotation.
 
 Checking Joy Topic Connection Status
 ------------------------------------
@@ -687,7 +687,7 @@ The configure function implemented here is one of the initialization functions d
 
 Usually initialization is done in the initialize function, but that's only processed when simulation starts, so initialization needed before simulation start must be written in the configure function. With ROS, node connections are important, and we may want to confirm or complete them before simulation starts. To achieve this, the NodeHandle must be created before simulation starts, so we do it in the configure function.
 
-Normal initialization processing is implemented in the initialize function. Most of it is preparation for crawler control and turret/barrel axis control, detailed in :doc:`../../simulation/tank-tutorial/index`, so we'll omit details here. For ROS-related parts, we write the following: ::
+Normal initialization processing is implemented in the initialize function. Most of it is preparation for track control and turret/barrel axis control, detailed in :doc:`../../simulation/tank-tutorial/index`, so we'll omit details here. For ROS-related parts, we write the following: ::
 
  subscriber = node->subscribe(
      "joy", 1, &RttTankController::joystickCallback, this);
@@ -738,7 +738,7 @@ Note that: ::
 
 isn't necessary when using the choreonoid_joy node. When using the ROS standard joy node, the number of axes and buttons varies depending on the connected joystick, so we include this processing just in case they're less than expected.
 
-After this, we get the current gamepad state from the copied joystick variable, calculate command values from it, and use them to command crawler drive speeds and perform PD control of the turret and barrel axes. The specific control content is the same as explained in :doc:`../../simulation/tank-tutorial/index`, so we'll omit details here.
+After this, we get the current gamepad state from the copied joystick variable, calculate command values from it, and use them to command track drive speeds and perform PD control of the turret and barrel axes. The specific control content is the same as explained in :doc:`../../simulation/tank-tutorial/index`, so we'll omit details here.
 
 Finally: ::
 

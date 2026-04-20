@@ -18,9 +18,9 @@ The model we will be working with is the "SimpleTank" model shown below.
 
 .. image:: images/tank.png
 
-This is a model composed of two rotational joints that move the turret and gun barrel, and two crawlers for movement, with a camera and light mounted as devices.
+This is a model composed of two rotational joints that move the turret and gun barrel, and two continuous tracks for movement, with a camera and light mounted as devices.
 
-SimpleTank is a simplified version of the "Tank" model, which is a standard sample of a crawler-type mobile robot, and has the same basic structure as the Tank model. Sample projects such as:
+SimpleTank is a simplified version of the "Tank" model, which is a standard sample of a tracked mobile robot, and has the same basic structure as the Tank model. Sample projects such as:
 
 * TankJoystick.cnoid
 * TankVisionSensors.cnoid
@@ -36,17 +36,17 @@ The SimpleTank model consists of five parts as shown in the figure below.
 
 .. image:: images/tank_decomposed.png
 
-The base part is the chassis. The upper part of the chassis is equipped with a turret and gun barrel. This part consists of two components: a base for the turret that performs yaw axis rotation, and a part mounted on top of it that performs pitch axis rotation along with the gun barrel. Crawler mechanisms for movement are attached to the left and right sides of the chassis.
+The base part is the chassis. The upper part of the chassis is equipped with a turret and gun barrel. This part consists of two components: a base for the turret that performs yaw axis rotation, and a part mounted on top of it that performs pitch axis rotation along with the gun barrel. Continuous track mechanisms for movement are attached to the left and right sides of the chassis.
 
-These five parts are modeled as "links." The chassis part is the central part of the model and is modeled as the "root link." Each model must have exactly one root link defined. The two turret links are each modeled as rotational joints. The crawler parts are modeled as links corresponding to :doc:`../../simulation/pseudo-continuous-track`.
+These five parts are modeled as "links." The chassis part is the central part of the model and is modeled as the "root link." Each model must have exactly one root link defined. The two turret links are each modeled as rotational joints. The track parts are modeled as links corresponding to :doc:`../../simulation/pseudo-continuous-track`.
 
 The hierarchical structure (parent-child relationships) between these links is as follows: ::
 
  - Chassis (root)
      + Turret yaw axis part (rotational joint)
             + Turret pitch axis part (rotational joint)
-     + Left crawler
-     + Right crawler
+     + Left track
+     + Right track
 
 In this tutorial, we will describe the shape of each link as text directly in the model file. This allows us to complete the modeling with just text files, without using shape data created with CAD or modeling tools. However, it is also possible to use shape data created with CAD or modeling tools. Please refer to :doc:`tank-blender` for more information on this.
 
@@ -206,7 +206,7 @@ which sets the initial position when loading the model. (To be precise, this is 
 
 translation is normally a parameter that represents the relative position from the parent link, but the root link has no parent link. Instead, it is considered as the relative position from the world coordinate origin when loading the model. Note that the initial orientation can also be set using rotation. If you don't care about the initial position, you don't need to set these parameters.
 
-Here, by setting the Z coordinate value to 0.1, we set the initial position of the root link to be raised 0.1[m] in the Z-axis direction. This allows the bottom surface of the crawlers to coincide exactly with the Z=0 plane when loaded, while keeping the root link origin at the center of the chassis. Since environmental models often use this as the floor surface, the above setting makes it easy to align with that.
+Here, by setting the Z coordinate value to 0.1, we set the initial position of the root link to be raised 0.1[m] in the Z-axis direction. This allows the bottom surface of the tracks to coincide exactly with the Z=0 plane when loaded, while keeping the root link origin at the center of the chassis. Since environmental models often use this as the floor surface, the above setting makes it easy to align with that.
 
 Next, with: ::
 
@@ -904,15 +904,15 @@ This shifts the range of the external world captured in the camera image slightl
 
 .. _modelfile_yaml_crawlers:
 
-Writing the Crawlers
---------------------
+Writing the Tracks
+------------------
 
-Finally, let's write the crawler parts.
+Finally, let's write the track parts.
 
-Writing the Left Crawler
-~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Left Track
+~~~~~~~~~~~~~~~~~~~~~~
 
-Let's start with the left crawler. Returning to the hierarchy (indentation) of :ref:`modelfile_yaml_links` mentioned earlier, add the following description:
+Let's start with the left track. Returning to the hierarchy (indentation) of :ref:`modelfile_yaml_links` mentioned earlier, add the following description:
 
 .. code-block:: yaml
  :dedent: 0
@@ -945,11 +945,11 @@ Let's start with the left crawler. Returning to the hierarchy (indentation) of :
            material:
              diffuse: [ 0.2, 0.2, 0.2 ]
 
-When you reload the model in this state, the left crawler should be added to the model as follows:
+When you reload the model in this state, the left track should be added to the model as follows:
 
 .. image:: images/tank_crawler_l.png
 
-Since crawlers are connected to the chassis, this link specifies CHASSIS as the parent link again.
+Since tracks are connected to the chassis, this link specifies CHASSIS as the parent link again.
 
 Also, as the relative position from the parent link, by writing: ::
 
@@ -957,23 +957,23 @@ Also, as the relative position from the parent link, by writing: ::
 
 we set this link's position to the left side of the chassis.
 
-Crawlers are originally mechanisms where belt-like tracks made of connected metal or rubber treads are driven by internal wheels. Simulating such complex mechanisms is generally a difficult task. Therefore, the crawler we model here will be a pseudo crawler represented by a single link. Since it's a single link, there's no belt-like track, and the entire crawler is represented as a single rigid body. While its traversability doesn't match that of accurate crawlers at all, by applying propulsive force to the contact area between the crawler and environment, it's possible to achieve movement somewhat similar to crawlers. For details, see :doc:`../../simulation/pseudo-continuous-track`.
+Continuous tracks are originally mechanisms where belt-like treads made of connected metal or rubber segments are driven by internal wheels. Simulating such complex mechanisms is generally a difficult task. Therefore, the track we model here will be a simplified track represented by a single link. Since it's a single link, there is no belt-like tread, and the entire track is represented as a single rigid body. While its traversability does not match that of an accurate continuous track at all, by applying propulsive force to the contact area between the track and the environment, it is possible to achieve movement somewhat similar to a real track. For details, see :doc:`../../simulation/pseudo-continuous-track`.
 
-To use a link as such a pseudo crawler (simple crawler), specify "pseudo_continuous_track" for joint_type.
+To use a link as such a simplified track, specify "pseudo_continuous_track" for joint_type.
 
 .. note:: Previously, this was set by specifying fixed for joint_type and setting the actuation_mode parameter to "jointSurfaceVelocity". While this notation still works, please use the joint_type setting as above going forward.
 
-For joint_axis, specify the assumed rotation axis direction of the crawler wheels. Forward motion is the positive right-hand screw direction relative to this axis. Here we set the Y-axis as the rotation axis.
+For joint_axis, specify the assumed rotation axis direction of the track wheels. Forward motion is the positive right-hand screw direction relative to this axis. Here we set the Y-axis as the rotation axis.
 
 
-The crawler shape is described using an "Extrusion" type geometric shape node. This is also called an extruded shape, where you first specify the cross-sectional shape with cross_section, then describe a 3D shape by extruding it according to the spine description. Here we make the crawler cross-section trapezoidal and extrude it in the Y-axis direction to give it width. This description method was originally defined in VRML97, and for details please refer to the `VRML97 Extrusion node specification <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_.
+The track shape is described using an "Extrusion" type geometric shape node. This is also called an extruded shape, where you first specify the cross-sectional shape with cross_section, then describe a 3D shape by extruding it according to the spine description. Here we make the track cross-section trapezoidal and extrude it in the Y-axis direction to give it width. This description method was originally defined in VRML97, and for details please refer to the `VRML97 Extrusion node specification <http://tecfa.unige.ch/guides/vrml/vrml97/spec/part1/nodesRef.html#Extrusion>`_.
 
-We also perform :ref:`modelfile_yaml_anchor` on the shape described here. We attach the anchor "TRACK" so it can be reused for the right crawler shape.
+We also perform :ref:`modelfile_yaml_anchor` on the shape described here. We attach the anchor "TRACK" so it can be reused for the right track shape.
 
-Writing the Right Crawler
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing the Right Track
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's also write the right crawler. Add the following to the links hierarchy as before:
+Let's also write the right track. Add the following to the links hierarchy as before:
 
 .. code-block:: yaml
  :dedent: 0
@@ -993,7 +993,7 @@ Let's also write the right crawler. Add the following to the links hierarchy as 
      elements:
        Shape: *TRACK 
 
-The content of this link is almost the same as the left crawler except for being left-right symmetric. For the shape, we reference the anchor set earlier with the name "CRAWLER" as an alias.
+The content of this link is almost the same as the left track except for being left-right symmetric. For the shape, we reference the anchor set earlier with the name "CRAWLER" as an alias.
 
 If you reload the model and see a model displayed like below, it's complete!
 

@@ -361,7 +361,7 @@ The Link class provides the following functions:
    * - int jointId()
      - Returns the joint id.
    * - JointType jointType()
-     - Returns the type of joint. There are rotational, translational, free, fixed, and (crawler).
+     - Returns the type of joint. There are rotational, translational, free, fixed, and (pseudo-continuous track).
    * - bool isFixedJoint()
      - Returns true for fixed joints.
    * - bool isFreeJoint()
@@ -597,7 +597,7 @@ Here's the source code for createLinkBody that sets ODE physical data:
                dJointSetFixed(jointID);
                if(link->jointType() == Link::CRAWLER_JOINT){
                    simImpl->crawlerLinks.insert(make_pair(bodyID, link));
-                   // Crawler joints are treated as fixed joints in ODE and handled as special cases in collision detection.
+                   // Pseudo-continuous track joints are treated as fixed joints in ODE and handled as special cases in collision detection.
                }
            } else {
                dBodySetKinematic(bodyID);
@@ -926,7 +926,7 @@ In the ODESimulatorItem::stepSimulation function, there is a line: ::
 
    dSpaceCollide(spaceID, (void*)this, &nearCallback);
 
-This is an ODE function that searches for objects that might collide and calls the nearCallback function specified in the third argument. The second argument is used for parameter passing. In ODE, collision detection is performed this way, and constraint forces are generated between contacting objects within the nearCallback function. We'll omit detailed explanation about ODE here, but will explain the handling of crawler links.
+This is an ODE function that searches for objects that might collide and calls the nearCallback function specified in the third argument. The second argument is used for parameter passing. In ODE, collision detection is performed this way, and constraint forces are generated between contacting objects within the nearCallback function. We'll omit detailed explanation about ODE here, but will explain the handling of pseudo-continuous track links.
 
 Here's the source code for the nearCallback function:
 
@@ -950,8 +950,8 @@ Here's the source code for the nearCallback function:
                if(p != impl->crawlerLinks.end()){
                    crawlerlink = p->second;
                }
-               // Check whether the contacted link is a crawler type.
-               // (Currently, contact between crawler links is not assumed.)
+               // Check whether the contacted link is a pseudo-continuous track.
+               // (Currently, contact between pseudo-continuous track links is not assumed.)
                ..............................
            }
            for(int i=0; i < numContacts; ++i){
@@ -959,12 +959,12 @@ Here's the source code for the nearCallback function:
                if(!crawlerlink){
                    surface.mode = dContactApprox1;
                    surface.mu = impl->friction;
-                   // For non-crawler links, set friction force.
+                   // For non-track links, set friction force.
                } else {
                    surface.mode = dContactFDir1 | dContactMotion1 | dContactMu2 | dContactApprox1_2;
-                   // For crawler links, set surface velocity in friction direction 1 and friction force in friction direction 2.
+                   // For track links, set surface velocity in friction direction 1 and friction force in friction direction 2.
                    const Vector3 axis = crawlerlink->R() * crawlerlink->a();
-                   // Calculate crawler link's rotation axis vector.
+                   // Calculate the track link's rotation axis vector.
                    const Vector3 n(contacts[i].geom.normal);
                    // Get contact point normal vector.
                    Vector3 dir = axis.cross(n);

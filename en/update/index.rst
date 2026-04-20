@@ -5,6 +5,7 @@ Update History
 
  * Added :doc:`../physx/index`
  * Added a build option for the PhysX plugin to :doc:`../install/options`
+ * Revised terminology throughout the documentation so that "crawler" is rendered as "track" or "continuous track" in accordance with standard English usage
 
 * 2026/04/20
 

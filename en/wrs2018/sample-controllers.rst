@@ -39,9 +39,9 @@ The vehicle body operation methods are as follows:
  :widths: 10, 10
 
  * - D-pad
-   - Crawlers
+   - Tracks
  * - Left stick
-   - Crawlers
+   - Tracks
  * - Right stick
    - All flipper elevation
  * - L2 button + Right stick
@@ -55,7 +55,7 @@ The vehicle body operation methods are as follows:
  * - Right stick button (press right stick)
    - Align all flipper positions
 
-| ※ The D-pad operates crawlers regardless of the selected operation target.
+| ※ The D-pad operates the tracks regardless of the selected operation target.
 | ※ L1, L2, R1, R2 can be used in any combination. For example, pressing both L1 and L2 while operating the right stick allows simultaneous operation of the two left flippers.
 
 The arm operation methods are as follows:
@@ -89,11 +89,11 @@ The gamepad operation methods for the double-arm construction robot (DoubleArmV7
  :widths: 10, 10
 
  * - D-pad
-   - Crawlers
+   - Tracks
  * - L1 button + Left stick
-   - Crawlers
+   - Tracks
  * - L1 button + Right stick
-   - Crawlers
+   - Tracks
  * - Left stick horizontal axis
    - Arm base yaw axis
  * - Right stick horizontal axis

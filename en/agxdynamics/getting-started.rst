@@ -27,7 +27,7 @@ Start the simulation by pressing the simulation execution button with AGXSimulat
 Specialized Models Available with AGX Dynamics Plugin
 -----------------------------------------------------
 
-With the AGX Dynamics plugin, you can use specialized models such as crawlers and wires.
+With the AGX Dynamics plugin, you can use specialized models such as continuous tracks and wires.
 Please check the details from the table of contents on the left.
 
 Samples

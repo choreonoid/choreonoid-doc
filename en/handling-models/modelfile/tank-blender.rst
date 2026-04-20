@@ -19,9 +19,9 @@ Here we will look at mesh import for the Tank model, which is an advanced versio
 .. image:: images/basic_structure.png
 
 The base part is the chassis. On top of the chassis are the turret and gun barrel. This part consists of two sections: one that serves as the foundation for the turret and performs yaw axis rotation, and another section that is mounted on top with the gun barrel and performs pitch axis rotation.
-Crawlers are attached to the left and right sides of the chassis respectively.
+Tracks are attached to the left and right sides of the chassis respectively.
 
-These five parts are modeled. The chassis part is the central part of the model and is modeled as the "parent object". The turret yaw axis part and crawler parts are modeled as child objects of the parent chassis,
+These five parts are modeled. The chassis part is the central part of the model and is modeled as the "parent object". The turret yaw axis part and track parts are modeled as child objects of the parent chassis,
 and the turret pitch axis part is modeled as a child object of the turret yaw axis part. In addition, the gun barrel mounted on the turret and devices such as cameras and lights are also modeled.
 
 The hierarchical structure (parent-child relationships) between these objects is as follows: ::
@@ -29,8 +29,8 @@ The hierarchical structure (parent-child relationships) between these objects is
  - Chassis
      + Turret yaw axis part
             + Turret pitch axis part
-     + Left crawler
-     + Right crawler
+     + Left track
+     + Right track
 
 First, create the shape of this model using CAD tools or 3D-CG tools such as Blender.
 

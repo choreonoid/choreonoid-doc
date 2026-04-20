@@ -155,7 +155,7 @@ First, the A button toggles the light on and off.
 
 Also, the X and Y buttons change the light's illumination range. Pressing the X button narrows the illumination range, and pressing the Y button widens it.
 
-The crawler and turret operations we've implemented so far are still available, so try illuminating various parts of Labo1 with the light while moving the Tank model.
+The track and turret operations we've implemented so far are still available, so try illuminating various parts of Labo1 with the light while moving the Tank model.
 
 Note that if the simulator item's property "Record device states" is set to true, light operations will also be recorded as simulation results and reproduced during :ref:`simulation-result-playback`. This property is true by default. To confirm this feature, after operating the light in various ways, stop the simulation and play it back.
 

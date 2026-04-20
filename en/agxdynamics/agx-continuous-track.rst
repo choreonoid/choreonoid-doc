@@ -1,8 +1,8 @@
 
-AGX Vehicle Continuous Track (AGX crawler)
-==========================================
+AGX Vehicle Continuous Track
+============================
 
-AGXVehicleContinuousTrack is a crawler model using AGX Dynamics.
+AGXVehicleContinuousTrack is a continuous track model using AGX Dynamics.
 agxVehicle modulus is used for implementation.
 
 .. image:: images/continuous-track.png
@@ -14,20 +14,20 @@ agxVehicle modulus is used for implementation.
 About AGXVehicleContinuousTrack
 --------------------------------
 
-* **Automatic tie of crawler belt**
+* **Automatic tie of track belt**
 
-  When simulation run, crawler belt is automatically tied around wheel.
+  When simulation run, track belt is automatically tied around wheel.
   User does not need to provide geometric information, but just need to set wheel and some parameters.
 
-* **Hard to come off a crawler belt from wheel**
+* **Hard to come off a track belt from wheel**
 
   To avoid departing a belt from wheel, wheel and belt is merged (constrained) internally.
 
 * **Optimization for better performance**
 
-  Crawler belt is presented by connecting plate nodes by hinges.
-  Contacting points are created when crawler belt contact a floor as each node is rigid body.
-  Using these contacting points, AGX Dynamics calculate the reaction force for crawler belt not to penetrate in a floor.
+  Track belt is presented by connecting plate nodes by hinges.
+  Contacting points are created when track belt contact a floor as each node is rigid body.
+  Using these contacting points, AGX Dynamics calculate the reaction force for track belt not to penetrate in a floor.
   More contact points causes the heavy load of calculation and may result into worse simulation performance.
   AGXVehicleContinuousTrack provides the function of temporary merge of some nodes to reduce contact points.
 
@@ -45,7 +45,7 @@ User can find models using in sample projectsin below directly.
 
 * chorenoid/Share/project/tank_agx.body
 
-| Once load sample project on Choreonoid and run the simulation by AGXSimulator, a crawler belt is set around the wheel of tank.
+| Once load sample project on Choreonoid and run the simulation by AGXSimulator, a track belt is set around the wheel of tank.
 | If user uses PS4 controller, the tank can be operated by left stick, if does not, by [E] [D] [S] [F] key.
 
 
@@ -64,7 +64,7 @@ Link composition of sample model is as below.
     -
       name: TURRET_P
     -
-      name: TRACK_L      # left crawler (with guides on inner and outer side of track)
+      name: TRACK_L      # left track (with guides on inner and outer side of track)
     -
       name: WHEEL_L0     # left front wheel (with motor)
     -
@@ -72,7 +72,7 @@ Link composition of sample model is as below.
     -
       name: WHEEL_L2     # left rear wheel (free rotation)
     -
-      name: TRACK_R      # right crawler (with guides on inner and outer side of track)
+      name: TRACK_R      # right track (with guides on inner and outer side of track)
     -
       name: WHEEL_R0     # right front wheel (with motor)
     -
@@ -130,13 +130,13 @@ Link composition of sample model is as below.
 
 1. AGXVehicleContinuousTrack is added on link elements as AGXVehicleContinuousTrackDevice. AGXVehicleContinuousTrackDevice can be added on arbitrary link.
 #. Set driving wheel as sprocketNames
-#. Set constrained wheel with a crawler belt as idlerNames.
+#. Set constrained wheel with a track belt as idlerNames.
 #. Set non-constrained wheel as rollerNames, if necessary.
-#. Set vertical unit vector against the moving direction of crawler as upAxis.
-#. Set number of nodes(numNodes), width(nodeWidth), and thickness(nodeThickness) of a crawler belt.
+#. Set vertical unit vector against the moving direction of the track as upAxis.
+#. Set number of nodes(numNodes), width(nodeWidth), and thickness(nodeThickness) of a track belt.
 #. Set thicker thickness of node(nodeThickerThickness) and set every how many nodes it is allocated, if necessary.
 #. Set material. Please refer :ref:`agx_continous_track_material` .
-#. Set parameters of crawler belt tie referring to :ref:`agx_continous_track_stabilize` .
+#. Set parameters of track belt tie referring to :ref:`agx_continous_track_stabilize` .
 
 .. image:: images/continuous-track-detail.png
 
@@ -180,7 +180,7 @@ Required
     - [ 0, 0, 1]
     - Unit Vector
     - Vec3d
-    - upward vector of model (against moving direction of crawler)
+    - upward vector of model (against moving direction of the track)
   * - numberOfNodes
     - 50
     - piece
@@ -210,7 +210,7 @@ Required
     - \-
     - \-
     - string
-    - material of crawler belt
+    - material of track belt
 
 Almost Required
 ~~~~~~~~~~~~~~~
@@ -238,7 +238,7 @@ Almost Required
     - N
     - double
     - | minimum normal force to calculate internal friction of hinge to connect nodes, which helps to stabilize the motion.
-      | Setting larger value for tention between hinges will prevent crawler belt high and sympathetic vibration by internal friction.
+      | Setting larger value for tention between hinges will prevent track belt high and sympathetic vibration by internal friction.
       | It may happen that the normal force is too small or even negative value, please use minimum value in such case.
   * - hingeCompliance
     - 1.0e-10
@@ -316,10 +316,10 @@ Hints to set parameters
 
 .. _agx_continous_track_material:
 
-Setting for crawler material
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Setting for track material
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| Actual crawler or tire case, the frictions on moving direction and crossing direction are different.
+| For actual tracks or tires, the frictions along the moving direction and the crossing direction are different.
 | To simulate the same phenomenon, user need to set the friction separately.
 | AGX Dynamics normally uses box model or cone model for friction calculation, so it does not provide the function to set the friction paramaeter separately between the direction.
 | So please use following way to set the friction.
@@ -333,7 +333,7 @@ Setting for crawler material
       roughness: 0.5
       viscosity: 0.0
     -
-      name: TankTracks         # material of crawler belt
+      name: TankTracks         # material of track belt
       youngsModulus: 1e10
       roughness: 1.0
       viscosity: 0.3
@@ -345,7 +345,7 @@ Setting for crawler material
 
   contactMaterials:
     -
-      materials: [ Ground, TankTracks]         # contact material between ground and crawler belt
+      materials: [ Ground, TankTracks]         # contact material between ground and track belt
       youngsModulus: 1e10
       friction: 0.7
       secondaryfriction: 0.5
@@ -357,37 +357,37 @@ Setting for crawler material
       referenceBodyName: Tank
       referenceLinkName: CHASSIS
     -
-      materials: [ TankWheel, TankTracks ]     # contact material between wheel and crawler belt
+      materials: [ TankWheel, TankTracks ]     # contact material between wheel and track belt
       youngsModulus: 1e10
       friction: 0.0
       restitution: 0.0
 
 
-1. Define the material of crawler belt and wheel in material file
-2. Set youngModulus(Young's modulus), roughness(roughness), and viscosity(viscosity) for the materials of crawler belt and wheel. The parameters here are to be used when ContactMaterial is not set.
+1. Define the material of track belt and wheel in material file
+2. Set youngModulus(Young's modulus), roughness(roughness), and viscosity(viscosity) for the materials of track belt and wheel. The parameters here are to be used when ContactMaterial is not set.
 
-  * youngModulus needs to be set larger not to cause the penetration of crawler belt into wheel as the force of winding around is very large.
-  * Set certain roughness and viscosity of crawler belt.
-  * Wheel basically contact only crawler belt. To stabilize the simulation set zero for roughness and viscosity.
-  * Crawler belt, sprocket, and idler wheel are constrained and won't slip even roughness is set to zero.
+  * youngModulus needs to be set larger not to cause the penetration of track belt into wheel as the force of winding around is very large.
+  * Set certain roughness and viscosity of track belt.
+  * Wheel basically contact only track belt. To stabilize the simulation set zero for roughness and viscosity.
+  * Track belt, sprocket, and idler wheel are constrained and won't slip even roughness is set to zero.
 
-3. ContactMaterial between ground and crawler belt should be set in material file as it should contact in the simulation.
+3. ContactMaterial between ground and track belt should be set in material file as it should contact in the simulation.
 
   * youngsModulus needs to be set larger.
   * friction and secondaryFriction are set as per material.
-  * Set surfaceViscosity and secondarySurfaceViscosity for crawler belt not to slip.
+  * Set surfaceViscosity and secondarySurfaceViscosity for track belt not to slip.
   * Set primaryDirection as moving direction.
   * Set frictionModel: [ orientedBox, direct ] as friction model.
-  * Set body name to attach to crawler belt in referenceBodyName.
-  * Set link name of body attached to crawler belt in referenceLinkName. It is set for main chassis or link with large mass.
-4. Define ContactMaterial of wheel and crawler belt.
+  * Set body name to attach to track belt in referenceBodyName.
+  * Set link name of body attached to track belt in referenceLinkName. It is set for main chassis or link with large mass.
+4. Define ContactMaterial of wheel and track belt.
 
   * youngsModulus needs to be set larger.
   * Set zero for friction(friction coefficient) and restitution(restitution).
 
 5. Lastly set material to the link of body file.
 
-  * Set crawler belt material to the material of AGXVehicleContinuousTrackDevice.
+  * Set track belt material to the material of AGXVehicleContinuousTrackDevice.
   * Set wheel material to link wheel.
 
 .. note::
@@ -404,7 +404,7 @@ Setting for crawler material
 
 .. _agx_continous_track_stabilize:
 
-Stabilization of crawler belt
+Stabilization of track belt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -425,7 +425,7 @@ Stabilization of crawler belt
     enableLockToReachMergeCondition: false
 
 3. As the result the parameters to be considered are as below.
-   Firstly comment out of allof the setting below and check the motion of crawler. (the below parameters are default value.)
+   Firstly comment out of allof the setting below and check the motion of the track. (the below parameters are default value.)
 
   .. code-block:: txt
 
@@ -437,21 +437,21 @@ Stabilization of crawler belt
     #nodesToWheelsMergeThreshold: -0.1
     #nodesToWheelsSplitThreshold: -0.05
 
-4. Crawler belt moves hard and looks like hard wire. Then reduce the friction coefficient because the rfiction of hige is too large.
+4. Track belt moves hard and looks like hard wire. Then reduce the friction coefficient because the rfiction of hige is too large.
 
   .. code-block:: txt
 
     nodeDistanceTension: 0.0                  # Set zero to the distance of initial node(then tention is zero), which helps to tune easier.
-    stabilizingHingeFrictionParameter: 1e-6   # Set friction coefficient small. If less than 1e-1, tune by index, and set as the crawler does not look like hard wire.
+    stabilizingHingeFrictionParameter: 1e-6   # Set friction coefficient small. If less than 1e-1, tune by index, and set as the track does not look like hard wire.
 
-5. Crawler belt seems to have a bit loose if set above.
+5. Track belt seems to have a bit loose if set above.
    To tighten flexure, tune the tension.
    Tension can be set by setting distance of initial node (nodeDistanceTension).
    If the value of nodeDistanceTension is large, the tention will be large as hinge tries to connect nodes by stronger force.
    If tension is too large the belt is goint to penetrate into wheel. (see below picture)
    The belt starts to vibrate because of too strong tention.
    Then set nodeDistanceTension smaller not to vibrate.
-   In case the value is 5.0E-4, the belt penetrates into wheel, and in case 5.0E-5 the crawler belt looks loose.
+   In case the value is 5.0E-4, the belt penetrates into wheel, and in case 5.0E-5 the track belt looks loose.
    Tune as below.
 
   .. code-block:: txt
@@ -460,8 +460,8 @@ Stabilization of crawler belt
 
 .. image:: images/continuous-track-hinge.png
 
-6. Throughout above processes the crawler could move smooth back and forth.
-   However the vibration may happen if user tries to pivot turn or spin turn, the crawler belt may start to vibrate.
+6. Throughout above processes the track could move smooth back and forth.
+   However the vibration may happen if user tries to pivot turn or spin turn, the track belt may start to vibrate.
    Compliance and damping of the hinge needs to be tune to avoid the vibration.
    Tune comliance by index, then find the value not to vibrate.
    In below case, vibration happens when 1.0e-10, then not when 1.0e-9.
@@ -471,7 +471,7 @@ Stabilization of crawler belt
     hingeCompliance: 9.0e-10
     hingeSpookDamping: 0.01
 
-7. If the crawler belts get crossed or the belt penetrates into wheel when moving, set smaller value for minStabilizingHingeNormalForce.
+7. If the track belts get crossed or the belt penetrates into wheel when moving, set smaller value for minStabilizingHingeNormalForce.
    If vibrate or not stable, set the larger value.
 
   .. code-block:: txt
@@ -480,9 +480,9 @@ Stabilization of crawler belt
 
 8. Lastly set below.
    It the belt set wrongly on the wheel, tune nodesToWheelsMergeThreshold and nodesToWheelsSplitThreshold.
-   These threshold values decide the timing of merge and unmerge between crawler belt and wheel, which is inner product between crawler belt moving direction and the direction to center of wheel (see below).
+   These threshold values decide the timing of merge and unmerge between track belt and wheel, which is inner product between track belt moving direction and the direction to center of wheel (see below).
    If this value is nearly zero, they are merged or unmerged when the two vectors cross vertically.
-   Actual crawler case wheel has gear and it drives belt.
+   In an actual track mechanism, the wheel has a gear that drives the belt.
    This value can be caluculated as the angle to pull the belt out from the wheel or the angle that the belt departs from the gear.
 
   .. code-block:: txt
@@ -501,8 +501,8 @@ If the performance of simulation is not good or not stable, please see below set
 Simplify the model
 ~~~~~~~~~~~~~~~~~
 
-| The crawler belf by AGXVehicleContinuousTrack is consist of some nodes connected by hinge joints.
-| This means that the crawler belt has more bodies and more joints, which will result in increasing the calculation quantity.
+| The track belt by AGXVehicleContinuousTrack is consist of some nodes connected by hinge joints.
+| This means that the track belt has more bodies and more joints, which will result in increasing the calculation quantity.
 | The performance may be improved if simplify the model referring below.
 
 Improving the speed of simulation
@@ -571,11 +571,11 @@ Follow the setup steps below.
 Specification
 ---------------
 
-* The crawlers are automatically generated when the simulation started. The crawlers are not visualized when the body file loaded into Choreonoid.
+* The tracks are automatically generated when the simulation started. The tracks are not visualized when the body file loaded into Choreonoid.
 * AGXVehicleContinuousTrack is automatically set self collision settings as below table
 
-  * This is because the crawler belt and the wheel must be collide
-  * Setting collision off between the crawlers and the robot who have the crawlers for performance
+  * This is because the track belt and the wheel must be collide
+  * Setting collision off between the tracks and the robot that has the tracks for performance
 
 
   .. list-table::
@@ -585,7 +585,7 @@ Specification
 
      * -
        - Wheels
-       - Crawaler belt
+       - Track belt
      * - Wheels
        - \-
        - Collision on

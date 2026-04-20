@@ -40,7 +40,7 @@ The World item corresponds to one virtual world and must be generated when runni
 Loading the Tank Model
 ----------------------
 
-Let's load the :ref:`tank_model`, which will be the target of this simulation. As the name suggests, the Tank model is a tank-like model consisting of a two-axis gun turret and left and right crawlers. It also includes a light (light source) and camera.
+Let's load the :ref:`tank_model`, which will be the target of this simulation. As the name suggests, the Tank model is a tank-like model consisting of a two-axis gun turret and left and right tracks. It also includes a light (light source) and camera.
 
 First, click on the World item created earlier in the Item Tree View to select it. By doing this, newly loaded items will become child items of World.
 

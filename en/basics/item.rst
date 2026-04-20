@@ -63,9 +63,9 @@ The following shows an overview of the main samples, so please try loading and t
  * - PA10Pickup.cnoid
    - Simulation of the Mitsubishi Heavy Industries manipulator "PA10" grasping and moving a box
  * - SampleCrawler.coid
-   - Simulation of driving a mobile robot with crawler mechanism
+   - Simulation of driving a tracked mobile robot
  * - SampleCrawlerJoystick.coid
-   - Simulation of operating a mobile robot with crawler mechanism using a joystick. When a USB joystick is connected (operation confirmed with Logicool gamepad F310), you can operate it by tilting the stick
+   - Simulation of operating a tracked mobile robot using a joystick. When a USB joystick is connected (operation confirmed with Logicool gamepad F310), you can operate it by tilting the stick
  * - TankJoystick.coid
    - Simulation of operating a tank-style mobile robot with a joystick. The setting involves exploring inside a dark plant by illuminating with the robot's light. In addition to movement operations, you can change the direction of the turret (light) and turn the light ON/OFF
  * - GR001Sample.cnoid

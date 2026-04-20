@@ -34,28 +34,28 @@ Double-Arm Construction Robot
 
 The double-arm construction robot model is stored in a directory called "DoubleArmV7" under the standard model directory.
 
-This model uses crawlers, and we provide both a version that performs simplified crawler simulation and a version that performs more realistic simulation using AGX Dynamics. The base model name "DoubleArmV7" is suffixed with "S" for "Simplified" or "A" for "AGX":
+This model uses continuous tracks, and we provide both a version that performs simplified track simulation and a version that performs more realistic simulation using AGX Dynamics. The base model name "DoubleArmV7" is suffixed with "S" for "Simplified" or "A" for "AGX":
 
-* Simplified crawler version: DoubleArmV7S.body
-* AGX crawler version: DoubleArmV7A.body
+* Simplified track version: DoubleArmV7S.body
+* AGX track version: DoubleArmV7A.body
 
-The simplified crawler version can be used with Choreonoid's standard features, and WRS2018 samples are also available. This allows those without an AGX Dynamics license to try WRS2018 simulations. However, please note that the crawler behavior differs from the actual machine.
+The simplified track version can be used with Choreonoid's standard features, and WRS2018 samples are also available. This allows those without an AGX Dynamics license to try WRS2018 simulations. However, please note that the track behavior differs from the actual machine.
 
-The AGX crawler version provides crawler behavior closer to the actual machine. If you have an AGX Dynamics license, please use this version. This version is also used in the competition.
+The AGX track version provides track behavior closer to the actual machine. If you have an AGX Dynamics license, please use this version. This version is also used in the competition.
 
 Aizu Spider
 -----------
 
 The Aizu Spider model is stored in a directory called "AizuSpider" under the standard model directory.
 
-This model comes in six variations. First, regarding the arms mounted on the robot, we provide three variations: no arms (N), single arm (S), and dual arms (D). Additionally, this model is equipped with crawlers, which come in simplified (S) and AGX (A) versions. These combinations result in the following six models:
+This model comes in six variations. First, regarding the arms mounted on the robot, we provide three variations: no arms (N), single arm (S), and dual arms (D). Additionally, this model is equipped with continuous tracks, which come in simplified (S) and AGX (A) versions. These combinations result in the following six models:
 
-* No arms, simplified crawler version: AizuSpiderNS.body
-* No arms, AGX crawler version: AizuSpiderNA.body
-* Single arm, simplified crawler version: AizuSpiderSS.body
-* Single arm, AGX crawler version: AizuSpiderSA.body
-* Dual arms, simplified crawler version: AizuSpiderDS.body
-* Dual arms, AGX crawler version: AizuSpiderDA.body
+* No arms, simplified track version: AizuSpiderNS.body
+* No arms, AGX track version: AizuSpiderNA.body
+* Single arm, simplified track version: AizuSpiderSS.body
+* Single arm, AGX track version: AizuSpiderSA.body
+* Dual arms, simplified track version: AizuSpiderDS.body
+* Dual arms, AGX track version: AizuSpiderDA.body
 
 Note that the arms mounted on this robot are commercial JACO2 arms from Kinova.
 
@@ -71,6 +71,6 @@ Notes on Model Creation/Modification
 
 When adjusting parameters or modifying standard robot models, or creating new robot models, please note the following:
 
-* When using AGX crawlers, appropriate material settings for the crawlers must be configured. For details, please see :ref:`agx_continous_track_material`. There's no problem if you use the sample models as-is, but if you change model or link names or create new crawlers, you need to prepare corresponding :ref:`agx_material_file`. AGX crawlers without appropriate material settings will not operate as expected.
+* When using AGX tracks, appropriate material settings for the tracks must be configured. For details, please see :ref:`agx_continous_track_material`. There's no problem if you use the sample models as-is, but if you change model or link names or create new tracks, you need to prepare corresponding :ref:`agx_material_file`. AGX tracks without appropriate material settings will not operate as expected.
 
 * When mounting/adding sensors such as cameras and range sensors, or devices such as lights, be careful about their quantity. Mounting numerous sensors and devices will slow down simulation and rendering accordingly. You need to keep the scale to a level that allows real-time simulation in the PC environment with the specifications expected at the competition.

@@ -61,10 +61,10 @@ The elements constituting projects include the following, stored under "WRS2018/
 
 * Robot models and related settings
 
- * AizuSpiderSS (single-arm simplified crawler version): AizuSpiderSS.cnoid
- * AizuSpiderSA (single-arm AGX crawler version): AizuSpiderSA.cnoid
- * DoubleArmV7S (simplified crawler version): DoubleArmV7S.cnoid
- * DoubleArmV7A (AGX crawler version): DoubleArmV7A.cnoid
+ * AizuSpiderSS (single-arm simplified track version): AizuSpiderSS.cnoid
+ * AizuSpiderSA (single-arm AGX track version): AizuSpiderSA.cnoid
+ * DoubleArmV7S (simplified track version): DoubleArmV7S.cnoid
+ * DoubleArmV7A (AGX track version): DoubleArmV7A.cnoid
  * WAREC-1: WAREC1.cnoid
  * Quadcopter: Quadcopter.cnoid
 
@@ -82,7 +82,7 @@ We've prepared Python scripts with the following filename format as scripts to b
 
 * Task-RobotModel.py
 
-For example, the project for using the simplified crawler version AizuSpider robot in task T1 has the filename:
+For example, the project for using the simplified track version AizuSpider robot in task T1 has the filename:
 
 * T1M-AizuSpiderSS.py
 
@@ -133,7 +133,7 @@ Skillfully operate the robot to traverse the rough terrain, avoid obstacles, and
 
 The center of the screen displays the camera image mounted on the robot. This sample is configured for remote robot operation while viewing this camera image. On the right side of the screen is a view from diagonally behind the robot. However, this is not from a camera mounted on the robot, so it cannot be used for remote operation. In the competition, such views are displayed only on the simulation PC and used for audience presentation and referee judgment.
 
-The robot model "AizuSpiderSS" used here has simplified crawlers. This can be simulated with Choreonoid's standard :ref:`simulation_simulator_item` "AIST Simulator," and this sample is configured accordingly. However, as you'll notice when operating it, the belt-like parts (tracks) of the crawlers don't rotate; they proceed forcibly without the tracks moving. This applies :doc:`../simulation/pseudo-continuous-track`. In this case, the crawler behavior isn't very close to the actual machine, and operation may become unstable depending on environmental contact conditions, but please understand this is a limitation of this simulation method. One reason for using AGX Dynamics in this competition is to overcome this limitation.
+The robot model "AizuSpiderSS" used here has simplified tracks. This can be simulated with Choreonoid's standard :ref:`simulation_simulator_item` "AIST Simulator," and this sample is configured accordingly. However, as you'll notice when operating it, the belt-like parts of the tracks don't rotate; the robot proceeds forcibly without the tracks moving. This applies :doc:`../simulation/pseudo-continuous-track`. In this case, the track behavior isn't very close to the actual machine, and operation may become unstable depending on environmental contact conditions, but please understand this is a limitation of this simulation method. One reason for using AGX Dynamics in this competition is to overcome this limitation.
 
 In samples using AIST Simulator, two settings are prepared for testing. One is the "AISTSimulator-Torque" simulator item, where command values are torque values. We've also prepared "AISTSimulator-Position" simulator item, where robot joint command values are position (joint angle) commands. The control software description method and simulation behavior differ slightly between these. We won't detail this here, but since AIST Simulator isn't used in the competition, you needn't worry much about it. However, note that you need to select one of these items when running the simulation. Torque is selected by default.
 
@@ -170,7 +170,7 @@ The AGX-compatible version of the single-arm Aizu Spider model is "AizuSpiderSA"
 
 The robot operation method is the same as the simplified version, so please try operating the robot with the gamepad.
 
-In the AGX version, the track parts actually rotate around the wheels while propelling. If you actually try running on rough terrain with this, you'll find the crawler behavior is much closer to the real thing.
+In the AGX version, the track parts actually rotate around the wheels while propelling. If you actually try running on rough terrain with this, you'll find the track behavior is much closer to the real thing.
 
 Running the DoubleArmV7 Version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,7 +197,7 @@ The sample for the WAREC-1 model is:
 
 We haven't prepared a sample controller for this model yet.
 
-While AizuSpider and DoubleArmV7 can move by simply giving commands to the crawlers, WAREC requires integrated control of its legs for walking motions, making even basic movement require a complex controller. For these reasons, we haven't been able to provide a sample controller at present. Please understand.
+While AizuSpider and DoubleArmV7 can move by simply giving commands to the tracks, WAREC requires integrated control of its legs for walking motions, making even basic movement require a complex controller. For these reasons, we haven't been able to provide a sample controller at present. Please understand.
 
 Since no controller is configured, when you start simulation with this sample, the robot collapses due to gravity.
 

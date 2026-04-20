@@ -84,11 +84,11 @@ Here's an overview of each robot:
 
 * Double-Arm Robot
 
- A robot developed primarily by Osaka University as part of ImPACT-TRC. This is a construction equipment-type robot equipped with two arms. Using these two arms and their attached end effectors, it can perform various tasks. Being construction equipment, it can handle tasks requiring significant force. It features crawlers for mobility, enabling movement on rough terrain. Furthermore, by utilizing both arms, it can enhance its rough terrain traversal capabilities and perform stable work on unstable footing.
+ A robot developed primarily by Osaka University as part of ImPACT-TRC. This is a construction equipment-type robot equipped with two arms. Using these two arms and their attached end effectors, it can perform various tasks. Being construction equipment, it can handle tasks requiring significant force. It features continuous tracks for mobility, enabling movement on rough terrain. Furthermore, by utilizing both arms, it can enhance its rough terrain traversal capabilities and perform stable work on unstable footing.
 
 * Aizu Spider
 
- A robot jointly developed by the University of Aizu and AISAC Corporation. This crawler-type robot features main crawlers plus auxiliary crawlers called flippers at the front and rear. It also includes a working arm. Robots of this form have seen increasing use as disaster response robots in recent years, holding great potential for investigation and work at disaster sites. This robot comes in three arm configurations: no arm, single arm, and dual arm. For tackling WRS tasks, the dual-arm type is the most practical choice.
+ A robot jointly developed by the University of Aizu and AISAC Corporation. This tracked robot features main tracks plus auxiliary tracks called flippers at the front and rear. It also includes a working arm. Robots of this form have seen increasing use as disaster response robots in recent years, holding great potential for investigation and work at disaster sites. This robot comes in three arm configurations: no arm, single arm, and dual arm. For tackling WRS tasks, the dual-arm type is the most practical choice.
 
 WAREC-1 and Double-Arm Robot are official WRS :download:`platform robots <platformrobots.pdf>`. While Aizu Spider is not officially WRS-sanctioned, it was originally provided as a Choreonoid sample model and can be utilized in this competition. All these robots have actual physical counterparts that have been developed and are operational.
 
