@@ -1,177 +1,110 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは、Claude Code (claude.ai/code) がこのリポジトリで作業する際のガイドラインです。
 
-## Repository Overview
+## リポジトリ概要
 
-This is the official documentation repository for Choreonoid, a robot simulation software. The documentation is written in reStructuredText format and built using Sphinx.
+ロボットシミュレータ Choreonoid の公式ドキュメントリポジトリです。ドキュメントは reStructuredText (RST) 形式で書かれており、Sphinx で整形します。
 
-## Build Commands
+英語版 (`en/`) と日本語版 (`ja/`) の並行構造を持ち、両ディレクトリのサブディレクトリ・ファイル構成は一致させます。
 
-### Building Documentation
-```bash
-# Build English documentation
-cd en/
-make html
+## ドキュメント構成
 
-# Build Japanese documentation  
-cd ja/
-make html
+`en/` と `ja/` の直下にあるトピック別ディレクトリ：
 
-# Alternative build method (outputs to external directory)
-cd en/
-./make.sh
+- `basics/` — Choreonoid の基本操作
+- `install/` — 各プラットフォーム向けインストールガイド
+- `handling-models/` — ロボットモデルとキネマティクス
+- `simulation/` — 物理シミュレーション
+- `plugin-development/` — プラグイン開発
+- `ros/`, `ros2/` — ROS 連携
+- `agxdynamics/` — AGX Dynamics 物理エンジン連携
+- `tips/` — 応用的な Tips とトラブルシューティング
 
-cd ja/
-./make.sh
-```
+画像は各トピックディレクトリ内の `images/` サブディレクトリに置きます (PNG / SVG / JPG)。画像ファイルは `en/` と `ja/` で**共有せず、それぞれのディレクトリに個別に置きます**。
 
-### Clean Build
-```bash
-cd en/  # or ja/
-make clean
-make html
-```
+## 編集時の注意
 
-## Documentation Structure
+- 内容の変更は、原則として英語版・日本語版の両方に反映する
+- 新規ページを追加する場合は、対応する言語側にも同じパスで作成し、そのセクションの `index.rst` の toctree に追加する
+- ディレクトリ構造は `en/` と `ja/` で常に一致させる
 
-The repository maintains parallel English (`en/`) and Japanese (`ja/`) documentation with identical directory structures:
+## 翻訳ガイドライン（日本語 → 英語）
 
-- **basics/** - Getting started with Choreonoid interface
-- **install/** - Installation guides for various platforms
-- **handling-models/** - Working with robot models and kinematics
-- **simulation/** - Physics simulation tutorials and concepts
-- **plugin-development/** - Creating Choreonoid plugins
-- **ros/** and **ros2/** - ROS integration guides
-- **agxdynamics/** - AGX Dynamics physics engine integration
-- **tips/** - Advanced usage tips and troubleshooting
+このリポジトリでは、日本語版 (`ja/`) を原本として英語版 (`en/`) への翻訳作業を行います。以下のガイドラインに従ってください。
 
-## Key Technical Details
+### 基本方針
 
-### Sphinx Configuration
-- Configuration file: `en/conf.py` and `ja/conf.py`
-- Theme: "nature"
-- Version tracking: "master" branch
-- Custom templates in `_templates/` for navigation and search
+- 自然言語の内容（段落、説明、見出しテキスト）のみを翻訳する
+- RST の構造・書式・インデントはソースと完全に一致させる
+- **RST の書式スタイルを改変しない**。例えば、日本語版で関数説明に箇条書きを使っていたら、それをコードブロックや他の書式に変えない
+- 文体は標準的なソフトウェアユーザマニュアルに準拠する：
+  - 明瞭・簡潔な技術英語
+  - 用語の一貫性
+  - 技術文書にふさわしい適度なフォーマルさ
+  - 文法的な正確さ
+- 直訳すると英文として不自然になる場合は、自然で理解しやすい英語を優先する
+- 括弧内の補足説明も省略せずに翻訳する
 
-### Image Management
-- Images stored in `images/` subdirectories within each topic folder
-- Formats: PNG, SVG, JPG
-- SVG source files often included for diagrams
+### 翻訳しない／触らないもの
 
-### Cross-Language Consistency
-When updating documentation:
-1. Changes should typically be made to both English and Japanese versions
-2. Image files are duplicated between languages (not shared)
-3. File structure must remain identical between `en/` and `ja/`
+- RST ディレクティブ（`.. toctree::`, `.. code-block::`, `.. image::` など）
+- RST ロール（`:doc:`, `:ref:`, `:class:` など）
+- URL とファイルパス（ただし choreonoid.org の URL は後述のルールで言語コードを置換する）
+- コード例そのもの（ただしコードブロック内の日本語コメントは翻訳する）
+- コマンドライン命令
+- オプション名・パラメータ名
 
-### Deployment
-- Japanese docs have an upload script: `upload-ja.sh`
-- Uses rsync to deploy to web server
-- Built documentation goes to `_build/html/`
+### RST コメントの扱い
 
-## Common Tasks
+- 通常の RST コメント（`.. ` の後にディレクティブではないテキストが続く行）は**翻訳する**
+  - 例：`.. これはコメントです` → `.. This is a comment`
+- `.. 英訳指示：` で始まるコメントは**翻訳指示**であり、以下のように扱う：
+  - UI メッセージ、エラーメッセージ、ソフトウェアが出力するテキストの正確な英語表記
+  - 好ましい英語表現・用語の指定
+  - その他の翻訳に関する指示
+  - 例：`.. 英訳指示：上のメッセージは Loading Body model "/usr/local/share/choreonoid-1.6/PA10/PA10.body" -> Completed! としてください。`
+  - このような指示があれば、自前で翻訳を作らずに指示通りの英文を使う
+  - **`.. 英訳指示：` コメント自体は英訳の成果物に含めない**（指示文であって本文ではない）
 
-### Adding a New Page
-1. Create `.rst` file in appropriate section directory
-2. Add to `index.rst` toctree in that section
-3. Create corresponding file in other language directory
-4. Add any images to the section's `images/` folder
+### URL・用語・既訳の品質
 
-### Updating Existing Content
-1. Edit the `.rst` file directly
-2. If adding images, place them in the section's `images/` directory
-3. Remember to update both language versions
+- **choreonoid.org の URL は `/ja/` を `/en/` に置換する**
+  - 例：`https://choreonoid.org/ja/documents/` → `https://choreonoid.org/en/documents/`
+  - パスのどの位置にある `/ja/` でも置換対象
+- リポジトリルートに `choreonoid_terminology.yaml` がある場合は、用語の一貫性のためこれを参照する
+- 既存の英訳が不自然・不適切な場合は、その場で改善してよい。劣った訳文との一貫性維持よりも、自然な英語を優先する
 
-### Testing Changes Locally
-```bash
-cd en/  # or ja/
-make html
-# Open _build/html/index.html in a browser
-```
+### 画像ファイルの扱い
 
-## Translation Guidelines
+RST ファイルを翻訳する際、`.. image::` や `.. figure::` で参照されている画像を以下のルールで扱う：
 
-### Japanese to English Translation Instructions
+1. 画像パスを抽出する
+2. 対応する英語側ディレクトリ（例：`en/handling-models/images/`）に同名のファイルがあるか確認する
+3. **既に存在する場合はそのまま**。英語版ディレクトリの画像が優先される
+4. **存在しない場合は、日本語版から英語版の同じ相対パスへコピーする**（`cp` コマンドを使用）
+5. 対象とする画像フォーマット：.png, .jpg, .jpeg, .gif, .svg, .bmp, .webp
 
-When translating Choreonoid documentation from Japanese to English, follow these guidelines:
+### 他の箇所との統一感
 
-1. **This is reStructuredText (RST) format documentation**
-2. **Translate ONLY the natural language content** (paragraphs, descriptions, explanations)
-3. **Do NOT translate**:
-   - RST directives (like `.. toctree::`, `.. code-block::`, `.. image::`, etc.)
-   - RST roles (like `:doc:`, `:ref:`, `:class:`, etc.)
-   - URLs and file paths (EXCEPT for Choreonoid documentation URLs - see point 7)
-   - Code examples themselves (but DO translate Japanese comments within code blocks)
-   - Command-line instructions
-   - Option names and parameter names
-4. **IMPORTANT: DO translate RST comments** (lines starting with `.. ` followed by text that is not a directive)
-   - For example: `.. これはコメントです` should be translated to `.. This is a comment`
-   - Comments are different from directives - they contain explanatory text that should be translated
-   - **Special translation instructions**: Comments starting with `.. 英訳指示：` contain specific translation instructions that must be followed
-     - These instructions can specify:
-       - Exact English text for UI messages, error messages, or software-generated text
-       - Preferred English expressions or terminology
-       - Any other translation-related guidance
-     - Example: `.. 英訳指示：上のメッセージはLoading Body model "/usr/local/share/choreonoid-1.6/PA10/PA10.body" -> Completed!としてください。`
-     - When encountering these instructions, follow them precisely instead of creating your own translation
-     - **IMPORTANT: Do NOT include the `.. 英訳指示：` comments themselves in the translated output** - they are instructions only
-5. **Maintain the exact RST structure, indentation, and formatting**
-   - **CRITICAL: Never change RST formatting styles** (e.g., if the Japanese version uses bullet points for function descriptions, do NOT change them to code blocks or any other format)
-   - Preserve RST structural elements (headers, lists, code blocks, directives) exactly as they appear in the source
-   - This applies to RST markup structure only - the actual English text content should still be written naturally
-6. **Follow standard software user manual writing style**:
-   - Clear and concise technical language
-   - Consistent terminology throughout
-   - Appropriate level of formality for technical documentation
-   - Ensure grammatical accuracy
-   - When direct translation would make English sentences unclear, prioritize natural and comprehensible English over literal translation
-7. **Translate explanations in parentheses without omitting them**
-8. **IMPORTANT: For URLs pointing to choreonoid.org, change language codes**:
-   - Replace `/ja/` with `/en/` in all choreonoid.org URLs
-   - For example: `https://choreonoid.org/ja/documents/` → `https://choreonoid.org/en/documents/`
-   - This applies to any path component, not just at the beginning
-9. **Quality of existing translations**: If existing English translations are not natural or appropriate, you should improve them rather than maintaining consistency with poor translations. Prioritize clear, natural English that follows standard technical documentation conventions
+一つのファイル（またはその一部）を翻訳する際は、他の箇所や他のファイルとの間で、書き方・文体・用語に統一感が出るように配慮する：
 
-### Image File Handling
+- 原則として、**同じセクション（ディレクトリ）内の兄弟ファイル**、**`:doc:` などで参照されているリンク先の既訳**、および **`choreonoid_terminology.yaml`** を参照して、用語や言い回しを揃える
+- ドキュメント全体を毎回読むのは現実的でないので、参照範囲はケースバイケースで判断してよい。迷う用語があれば `en/` 配下を grep して既訳を確認する
+- 統一感を出すにあたって、**既存の英訳の側を変更した方が良いと判断した場合は、勝手に既存ファイルを書き換えず、その旨をユーザに説明して確認を取る**。今回の翻訳対象だけを変えるのか、既存の訳も合わせて修正するのか、ユーザの判断を仰ぐ
+- 完全な統一は保証できないので、明らかな不整合に気付いたときに是正するスタンスでよい
 
-When translating RST files, images referenced in the source file need to be properly handled:
+### 作業の進め方
 
-1. **Extract image references** from RST directives like `.. image::` and `.. figure::`
-2. **Check if the image already exists** in the target directory (e.g., `en/handling-models/images/`)
-3. **If the image exists** in the target directory, keep the image path as-is (the English version takes precedence)
-4. **If the image doesn't exist** in the target directory:
-   - Copy the image file from the Japanese source directory to the English target directory
-   - Maintain the same relative path structure
-   - Use the Bash tool with `cp` command to copy image files
-5. **Image formats to handle**: .png, .jpg, .jpeg, .gif, .svg, .bmp, .webp
+1. ソースファイル全体を先に読んで文脈を把握する
+2. `choreonoid_terminology.yaml` があれば参照する
+3. 必要に応じて関連ファイル（兄弟ファイル、参照先）の既訳を確認する
+4. 画像ファイルを上記ルールで処理してから、翻訳したファイルを保存する
+5. RST マークアップをそのまま保持する
+6. 一部を省略せず、全体を漏れなく翻訳する
 
-### Translation Process
+## Git コミット
 
-1. **Read the entire source file first** to understand context
-2. **Check if choreonoid_terminology.yaml exists** in the repository root - if it does, use it for consistent terminology
-3. **Extract and handle images** as described above before saving the translated content
-4. **Preserve all RST markup** exactly as it appears
-5. **Validate RST structure** after translation
-6. **Ensure completeness** - translate the entire content without truncation
-
-### Example Translation Request
-
-To request translation, use phrases like:
-- "ja/basics/index.rstを英語に翻訳してください"
-- "このファイルを翻訳して、en/ディレクトリに保存してください"
-- "ja/install/ディレクトリのすべてのファイルを翻訳"
-
-## Git Commit Guidelines
-
-When creating git commits:
-- Use simple, concise commit messages
-- Do not include Claude Code attribution or co-author information
-- Focus on what was changed, not how it was done
-- Keep messages brief but descriptive enough to understand the change
-
-## Important Notes
-
-- This is documentation only - no Choreonoid source code
-- Git status shows some untracked files for new/incomplete pages
-- Current branch: master (primary branch for PRs)
+- 簡潔で分かりやすいメッセージを書く
+- Claude Code の attribution や co-author 情報は含めない
+- 「どう変更したか」より「何を変更したか」に焦点を当てる
