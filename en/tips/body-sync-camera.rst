@@ -110,12 +110,6 @@ Properties
 
 The BodySyncCamera can also be configured with the following properties.
 
-.. tabularcolumns:: |p{3.5cm}|p{11.5cm}|
-
-.. list-table::
- :widths: 25,75
- :header-rows: 1
-
 * Camera type
 * Field of View
 * Near clip distance
