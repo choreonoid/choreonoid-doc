@@ -6,7 +6,7 @@ Building and Installing from Source Code (Windows)
 
 This document explains how to build Choreonoid from source code on Windows.
 
-This document is written based on the latest information as of March 2024 and has been tested on Windows 11. Depending on your environment, some procedures described here may not work properly. If your environment is old or you want to use older versions of compilers or libraries, please also refer to the :doc:`previous documentation <build-windows-old>`.
+This document is written based on the latest information as of March 2024 and has been tested on Windows 11. Depending on your environment, some procedures described here may not work properly.
 
 
 Preparation
