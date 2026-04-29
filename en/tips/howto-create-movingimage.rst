@@ -1,129 +1,133 @@
 
-Creating videos from sequential image files
+Creating a Movie File from a Sequence of Images
 ===============================================
 
-Here we discuss how to create video files depicting control of the Choreonoid interface. While it is not possible to directly generate a video file of the Choreonoid window, you can export sequential still images and then use a video encoder to convert these into a video file. Below, we discuss how to use FFmpeg on Ubuntu and TMPGEnc on Windows to convert these files. We describe examples using FFmpeg and TMPGEnc, but you are free to use other conversion software of your choice. Note that TMPGEnc is commercial software that requires purchasing.
+This page explains how to turn screen operations in Choreonoid into a movie file. Choreonoid cannot generate a movie file directly from screen operations, but a sequence of images that Choreonoid outputs can be converted into a movie file by using a video encoder that supports image sequences.
+The following describes how to perform the conversion using FFmpeg on Ubuntu and TMPGEnc on Windows. FFmpeg and TMPGEnc are used here only as examples; you may use any other conversion software. Note that TMPGEnc is commercial software, so a purchase is required to use it.
 
 .. contents::
    :local:
 
-Displaying the video recorder bar
---------------------------------------
+Showing the Movie Recorder Bar
+------------------------------
 
-From the Choreonoid menu, select View > Show Toolbar > Video Recorder Bar to display the video recorder bar as seen in the image.
+When you select "View" - "Show Toolbar" - "MovieRecorderBar" from the Choreonoid menu, the movie recorder bar shown in the figure below appears.
 
 .. image:: images/recorder_bar.png
 
 
-Recording with the video recorder
--------------------------------------
+Recording with the Movie Recorder
+---------------------------------
 
-Clicking the wrench icon on the Video Recorder Bar will spawn the Video Recorder window.
+When you click the wrench icon on the movie recorder bar, the "Movie Recorder" window appears.
 
 .. image:: images/recorder_window.png
 
-Fill in the fields below to enable recording.
+By configuring the items listed below, you can record in a variety of ways.
 
 .. list-table::
   :widths: 20, 80
   :header-rows: 1
 
   * - Item
-    - Details
+    - Description
   * - Target view
-    - Select the view to record.
-  * - Display markers
-    - Enables markers for the currently selected view.
-  * - Recording modes
-    - | Offline: after the simulation, clicking the Record button records the results of the simulation.
-      | Online: clicking the Record button triggers a wait mode; when the simulation begins, recording begins. Once the simulation concludes, recording ends.
-      | Direct: clicking the Record button immediately initiates recording. Clicking the Record button again stops recording. *You can also record if a simulation is not in progress.
+    - Selects the view to record.
+  * - Show marker
+    - Displays a marker on the selected view.
+  * - Recording mode
+    - | Offline: When you press the "Record" button after a simulation has finished, the simulation result is recorded.
+      | Online: When you press the "Record" button, the recorder enters a standby state. Recording starts when the simulation begins and ends when the simulation stops.
+      | Direct: When you press the "Record" button, recording starts immediately, and pressing it again stops the recording. Recording takes place even when no simulation is running.
   * - Directory
-    - The directory in which to output sequential images.
-  * - Base filename
-    - The base filename to used for output. *Filenames are output in the format of basefilename + 8 digit sequential number + .png.
-  * - Framerate
-    - The number of frames per second. By default, this is set to 30fps.
-  * - Start/stop time
-    - Recording begins at the start time you set, and recording ends at the end time you set.
+    - Specifies the directory where the image sequence is output.
+  * - Base file name
+    - Specifies the base file name. The actual output file name is "base file name" + "8-digit sequence number" + ".png".
+  * - Frame rate
+    - Sets the number of frames per second. The default is 30 fps.
+  * - Start/end time
+    - Recording starts at the specified start time and ends at the specified end time.
   * - Image size
-    - Sets the image size. By default, 640x480.
-  * - Capture mouse cursor
-    - Captures the onscreen mouse cursor.
+    - Sets the image size. The default is 640 x 480.
+  * - Capture the mouse cursor
+    - The mouse cursor is also captured.
 
-View recording
-----------------
+How to Record a View
+--------------------
 
-Launch Choreonoid and import the desired project. In this case, we will import SR1LiftUp.cnoid.
+Launch Choreonoid and load the target project. Here, we load SR1LiftUp.cnoid.
 
 .. image:: images/SR1LiftUp.png
 
-From the Choreonoid menu, select View > Show Toolbar > Video Recorder Bar to display the video recorder. Next, select the wrench icon on the video recorder bar to display the video recorder. We will set the record target as the Scene View. Set the target view to “Scene,” the recording mode to “Offline,” and the directory to a directory of your choice. Leave the other fields at their default.
+From the Choreonoid menu, select "View" - "Show Toolbar" - "MovieRecorderBar" to display the movie recorder bar. Then click the wrench icon on the movie recorder bar to open the "Movie Recorder" window.
+Since the recording target here is the scene view, set the target view to "Scene", the recording mode to "Offline", and the directory to any directory of your choice; leave the other items at their default settings.
 
 .. image:: images/SR1LiftUp_recorder.png
 
-Run a simulation to enable animation. Next, click the Record button on the Video Recorder window.
+Run the simulation once so that the animation is ready to be played back. Then press the "Record" button in the "Movie Recorder" window.
 
 .. image:: images/SR1LiftUp_simulation.png
 
-Once a message indicating that recording is complete appears in the Message window, the output of sequential images is complete.
+When a message indicating that recording has finished is displayed in the "Message" view, the output of the image sequence is complete.
 
 .. image:: images/messageview.png
 
 Installing FFmpeg (Ubuntu Linux)
-----------------------------------
+--------------------------------
 
-Issue the below command to install FFmpeg. :: 
+Run the following command to install FFmpeg. ::
 
  sudo apt-get install ffmpeg
 
-Converting sequential images to video (Ubuntu Linux)
-------------------------------------------------------------
+Converting an Image Sequence to a Movie (Ubuntu Linux)
+------------------------------------------------------
 
-Navigate to the directory containing the sequential images and execute the following command. ::
+Move to the directory that contains the image sequence and run the following command. ::
 
  ffmpeg -r 30 -i scene%08d.png -r 30 movie.mp4
 
-* Use -r <framerate> to change the framerate interval. If not value is set, it will inherit the values of the input file.
+* "-r <framerate>" converts the frame rate to the specified value. If not specified, the value of the input file is inherited.
 
-* Use -i <filename> to set the input file path.
+* "-i <filename>" specifies the input file path.
 
 Installing TMPGEnc (Windows)
------------------------------------
+----------------------------
 
-Open Internet Explorer or another browser and navigate to the URL below.
+Open a web browser such as Internet Explorer and access the following URL.
 
-`http://www.pegasys-inc.com/ja/ <http://www.pegasys-inc.com/ja/>`_
- 
-From Home, select Products, then Downloads. Then click download for the TMPGEnc Video Mastering Works6 product. Click Download next to the Product Version field, and then click the Agree button to commence the download. Once the download is complete, execute the .exe file to launch the installation process.
+`http://www.pegasys-inc.com/en/ <http://www.pegasys-inc.com/en/>`_
 
-Converting sequential images to video (Windows)
--------------------------------------------------------
+Select "Home" - "Products" - "Download", and click the "Download" button for "TMPGEnc Video Mastering Works 6".
+Click "Download" for the "Retail Version" and press the "Agree" button to start the download.
+Once the download is complete, run the .exe file to install it.
 
-From the Start Menu, click TMPGEnc > TMPGEnc Video Mastering Works 6.
+Converting an Image Sequence to a Movie (Windows)
+-------------------------------------------------
+
+From the Start menu, click "TMPGEnc" - "TMPGEnc Video Mastering Works 6".
 
 .. image:: images/tmpgenc.png
 
-Once TMPGEnc Video Mastering Works6 launches, click Environment Settings.
+When TMPGEnc Video Mastering Works 6 starts, click "Preferences".
 
 .. image:: images/tmpgenc_activation.png
 
-Select Folder Settings > Output File, and set your desired folder path. Conclude by clicking OK.
+Set any folder path under "Folder Settings" - "Output File" and press the "OK" button.
 
 .. image:: images/tmpgenc_configuration.png
 
-Next, click Start New Project: Normal Mode. Once the Add Wizard window appears, select Add from File.
+Next, click "Start a New Project - Normal Mode". When the "Add Wizard" window appears, select "Add from a file".
 
 .. image:: images/tmpgenc_addwizard.png
 
-Select, from the folder containing the sequential images, one image with the smallest sequential number. Once the Add Clip window appears, click the arrow adjacent to the Reference button, accessed via Video > Input File Name.
+From the folder containing the image sequence, select the image with the smallest sequence number. When the "Add Clip" window appears, click the arrow next to the "Browse" button under "Video" - "Input file name".
 
 .. image:: images/tmpgenc_cutediting.png
 
-When you see a list displayed, select Set Image File Reader to Load Sequential Images, and click the OK button.
+When the list appears, select "Make the image file reader read image sequences" and press the "OK" button.
 
 .. image:: images/tmpgenc_cutediting_list.png
 
-From Encode > Output File Name, change the filename to one of your choice, and click the Begin Export button to create the video.
+Change "Encode" - "Output file name" to any name you like, and press the "Start Output" button to complete the movie creation.
 
 .. image:: images/tmpgenc_output.png

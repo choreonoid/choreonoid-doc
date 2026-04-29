@@ -172,7 +172,7 @@
 
 * 2021/4/28
 
-  * :doc:`../install/setup-qt` について最新の状況を踏まえた内容に更新（ :doc:`../install/high-dpi-displays` も統合）
+  * :doc:`../install/setup-qt` について最新の状況を踏まえた内容に更新（高DPIディスプレイへの対応に関するドキュメントも統合）
 
 * 2021/4/12
 

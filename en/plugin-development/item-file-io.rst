@@ -42,7 +42,7 @@ Here "AISTSimulator-PA10" is the Body Motion Item containing the simulation resu
 .. image:: images/save-bodymotion.png
     :scale: 70%
 
-Select an appropriate directory and press the "Save" button. The motion trajectory data will be saved to a file. In this case, the default file name is "AISTSimulator-PA10.seq". The file format is :doc:`../reference/body-motion`.
+Select an appropriate directory and press the "Save" button. The motion trajectory data will be saved to a file. In this case, the default file name is "AISTSimulator-PA10.seq". The file format is :doc:`../tips/body-motion`.
 
 Next, let's load the saved motion file. Delete the Body Motion Item or reload the project to get to a state without the Body Motion Item. Then select the PA10 or SimpleController item and execute "File" - "Load" - "Body Motion" from the main menu. The following file load dialog will be displayed:
 

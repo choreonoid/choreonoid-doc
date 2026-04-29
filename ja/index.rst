@@ -24,7 +24,3 @@ Choreonoidマニュアル
    plugin-development/index
    tips/index
    update/index
-
-..   python/index
-..   plugins/index
-..   teleoperation/index

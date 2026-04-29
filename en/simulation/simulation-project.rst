@@ -108,8 +108,6 @@ You can configure the simulation through the simulator item's properties. When y
 
 For this example, we'll run the simulation with these properties at their default settings. (However, if "Sync to actual time" is set to "false", change it to "true".)
 
-For details about the properties, see :doc:`simulator-items`.
-
 
 .. With AIST Simulator item, collision detection follows the specification of "detecting all collisions between different body objects and not detecting self-collisions within body objects". By excluding self-collisions, simulation speed can be improved. However, this specification is provisional, as self-collision detection may be necessary in some cases, so we plan to improve this to allow switching to such configuration in the future.
 

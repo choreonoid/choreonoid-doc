@@ -1,88 +1,88 @@
 
-About the basic usage of Linux
-==============================
+Basic Usage of Linux
+====================
 
-Here we will explain how to launch the terminal and how to use the command line when using the standard Unity desktop environment with Ubuntu Linux 16.04.
+This page explains how to launch the terminal and how to use the command line on Ubuntu Linux 16.04 with the standard Unity desktop environment.
 
 .. contents::
    :local:
-   
-How to launch the terminal
---------------------------
+
+Launching the Terminal
+----------------------
 
 .. |search_computer| image:: images/search_computer.png
 
-Click **Search your computer** |search_computer| on the launcher displayed on the left of the home screen.
+Click "Search your computer" |search_computer| in the launcher displayed at the left edge of the home screen.
 
-A search box and list of applications, etc. will be displayed, so enter “term” or “terminal” in the search box.
+A search box and a list of applications appear. Type "term" or "terminal" into the search box.
 
 .. image:: images/search_computer_window.png
 
-The input result “terminal” will be displayed, so when you click “terminal”, this will launch the “terminal”.
+"Terminal" appears as a result of the search. Click "Terminal" to launch it.
 
 .. image:: images/commandline_window.png
 
 
-Basic command usage and how to launch Choreonoid
-------------------------------------------------
+Basic Commands and How to Launch Choreonoid
+-------------------------------------------
 
-This section explains how to use the minimum commands used in this manual and how to launch Choreonoid.
+This section describes the minimum set of commands used in this manual, along with how to launch Choreonoid.
 
 .. list-table::
   :widths: 20, 80
   :header-rows: 1
 
   * - Command
-    - Details
+    - Description
   * - cd
-    - | cd is an abbreviation of “change directory” and this command changes the current working directory.
-      | You can move to the specified directory with **cd <directory name>**.　*Either the relative path or the absolute path can be specified for <directory name>.
-      | Symbols can be included in <directory name>,  and each symbol has a meaning, as follows:
-      | /                          … the root directory
-      | .                          … the current directory
-      | ..                         … the parent directory
-      | ~/                         … the home directory
-      | no directory specified   … home directory
+    - | "cd" stands for "change directory" and is the command for changing the current working directory.
+      | **cd <directory>** moves to the specified directory. <directory> can be either a relative or an absolute path.
+      | The following symbols can be used as <directory>, each with the meaning shown below:
+      | /                          ... root directory
+      | .                          ... current directory
+      | ..                         ... parent directory
+      | ~/                         ... home directory
+      | (no directory specified)   ... home directory
   * - ls
-    - | ls is an abbreviation of “list” and this command displays information on files and directories.
-      | **ls [option]** displays file or directory information.　*Specifying the option is optional.
-      | For example, if you type ls - l on the command line, it will also display the details of the file, such as file size, at the same time.
+    - | "ls" stands for "list" and is the command for displaying information about files and directories.
+      | **ls [options]** displays file and directory information. The options are optional.
+      | For example, typing "ls -l" on the command line also displays detailed file information such as file size.
   * - pwd
-    - pwd is an abbreviation of “print working directory” and this command checks the current directory location.
+    - "pwd" stands for "print working directory" and is the command for checking the location of the current directory.
   * - mkdir
-    - | mkdir is an abbreviation of “make directory” and it creates a directory.
-      | You can create a directory using **mkdir [option] <creation directory name>**.
+    - | "mkdir" stands for "make directory" and is the command for creating a directory.
+      | **mkdir [options] <directory to create>** creates a directory.
   * - cp
-    - | cp is an abbreviation of “copy” and this command copies files or directories.
-      | You can copy files and directories using **cp [option] <copy source file name/directory name> <copy destination file name/directory name>**.
-      | However, when copying directories, you need to specify the -r option.
+    - | "cp" stands for "copy" and is the command for copying files and directories.
+      | **cp [options] <source file/directory> <destination file/directory>** copies files and directories.
+      | Note that to copy a directory, you must specify the "-r" option.
   * - mv
-    - | mv is an abbreviation of “move”, which is a command to move or rename a file or directory.
-      | You can move files and directories or change file names using **mv [option] <pre-change file name/directory name> <change file name/directory name>**.
-      | To change a file name, you can change the file name from “file1” to “file2” by entering mv file1 file2 on the command line.
-      | Also, when moving files, you can move “file2” to the “test” directory directly under the home directory by entering mv file2 ~/test.
+    - | "mv" stands for "move" and is the command for moving files and directories or for renaming them.
+      | **mv [options] <old file/directory> <new file/directory>** moves files and directories or renames them.
+      | To rename a file, type "mv file1 file2" on the command line to change the file name from "file1" to "file2".
+      | To move a file, typing "mv file2 ~/test" moves "file2" into the "test" directory directly under the home directory.
   * - rm
-    - | rm is an abbreviation of “remove” and this command deletes files or directories.
-      | You can delete files or directories specified by **rm [option] Y <file name/directory name>**.
-      | However, when deleting a directory, you need to specify the -r option.
-      | You can also use wild cards for files or directories to be deleted. By entering rm *.txt on the command line, you can delete all the files in the current directory with the extension txt.
+    - | "rm" stands for "remove" and is the command for deleting files and directories.
+      | **rm [options] <file/directory>** deletes the specified file or directory.
+      | Note that to delete a directory, you must specify the "-r" option.
+      | Wildcards can also be used for the files and directories to delete. Typing "rm \*.txt" on the command line deletes all files with the extension ".txt" in the current directory.
   * - gedit
-    - | gedit is a command to launch the standard text editor.
-      | gedit supports highlighting in multiple programming languages.
-      | For example, we use YAML and C++ in this manual, but by default the highlight setting is turned off and it is hard to see. So, if you select **Display - Highlight Mode** in the gedit menu and select YAML or C++, highlighting becomes possible.
+    - | "gedit" is the command that launches the standard text editor.
+      | gedit can highlight syntax for several programming languages.
+      | For example, this manual uses YAML and C++. Highlighting is off by default and the source can be hard to read, so select "View" - "Highlight Mode" from the gedit menu and choose YAML or C++ to enable highlighting.
   * - choreonoid
-    - | The choreonoid command is used to launch Choreonoid.
-      | You can launch Choreonoid using **bin/choreonoid [project name(extension:cnoid)]**.　*Specifying the project name is optional.
-      | As a precondition, when launching Choreonoid, you first need to move to the “Choreonoid” directory using the cd command.
-      | For example, if the “Choreonoid” directory exists directly below the home directory, you can move to the “Choreonoid” directory by entering **cd ~/Choreonoid**.
-      | Once you have moved to the “Choreonoid” directory, you can launch Choreonoid by entering **bin/choreonoid** on the command line.
-      | Also, when specifying and starting a project, you can launch the target project by entering **bin/choreonoid share/project/SR1Liftup.cnoid** on the command line.
-      | *Here we are launching a project named SR1Liftup, which is a sample.
+    - | "choreonoid" is the command used to launch Choreonoid.
+      | **bin/choreonoid [project name (extension: .cnoid)]** launches Choreonoid. Specifying a project name is optional.
+      | As a prerequisite, you must first use the cd command to move to the "Choreonoid" directory before launching Choreonoid.
+      | For example, if a "Choreonoid" directory exists directly under your home directory, typing **cd ~/Choreonoid** moves you into the "Choreonoid" directory.
+      | Once you are in the "Choreonoid" directory, typing **"bin/choreonoid"** on the command line launches Choreonoid.
+      | To launch Choreonoid with a specific project, type **"bin/choreonoid share/project/SR1Liftup.cnoid"** on the command line to start the target project.
+      | Here we are launching the sample project named SR1Liftup.
 
-How to use File Manager
------------------------
+Using the File Manager
+----------------------
 
-This section explains how to copy files using File Manager and how to open files using a text editor.
+This section explains how to copy files using the file manager and how to open files with the text editor.
 
 .. |file_manager| image:: images/file_manager.png
 .. |directory| image:: images/directory.png
@@ -92,15 +92,15 @@ This section explains how to copy files using File Manager and how to open files
 .. |gedit_open| image:: images/gedit_open.png
 .. |choreonoid_activation| image:: images/choreonoid_activation.png
 
-- | Click the Files |file_manager| launcher displayed on the left of the home screen to launch File Manager.
-- | Moving between directories can be done by clicking the directory mark |directory| to move to the target directory.
-- | To copy a file or directory, select the file or directory you want to copy, right-click and select **Copy** from the menu that appears. Alternatively, you can select the file or directory you want to copy and copy it with the Ctrl+C keys.
+- | Click "Files" |file_manager| in the launcher at the left edge of the home screen to start the file manager.
+- | To navigate between directories, click the directory mark |directory| to move to the target directory.
+- | To copy a file or directory, select the file or directory you want to copy and right-click to display a menu, then select "Copy". Alternatively, you can copy by selecting the file or directory and pressing "Ctrl+C".
   | |right_menu_copy|
-- | To paste the copied file or directory, move to the directory where you want to paste it, right-click and select **Paste** from the menu that appears. Alternatively, you can move to the file or directory where you want to paste and paste it with the Ctrl+V keys.
+- | To paste the copied file or directory, move to the directory where you want to paste it and right-click to display a menu, then select "Paste". Alternatively, after moving to the destination directory, you can paste by pressing "Ctrl+V".
   | |right_menu_paste|
-- | To launch gedit, which is the standard text editor, enter “text editor” from “Search your computer” and click on the displayed text editor to launch it.
+- | To launch gedit, the standard text editor, type "Text Editor" in "Search your computer" and click the Text Editor that appears.
   | |gedit_activation|
-- | To open a file with gedit, right-click on the file you want to open and select Open With gedit.
+- | To open a file in gedit, right-click the file you want to open and select "Open With gedit".
   | |gedit_open|
-- | You can launch Choreonoid by double clicking on choreonoid under the choreonoid/bin/ directory.
+- | To launch Choreonoid, double-click "choreonoid" located directly under the choreonoid/bin/ directory.
   | |choreonoid_activation|

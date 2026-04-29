@@ -1,3 +1,5 @@
+:orphan:
+
 Build Method Using CMake and Visual Studio GUI
 ==============================================
 
