@@ -30,7 +30,7 @@ AGX Dynamicsのバージョン2.30以降では、デフォルトで c:\Users\ユ
 
 AGX Dynamicsのサンプルを実行して動作確認をします。コマンドプロンプトを開いて、以下のコマンドを順番に実行します。
 
-.. code-block:: txt
+.. code-block:: text
 
    cd <AGX Dynamicsインストールディレクトリ>
    setup_env.bat

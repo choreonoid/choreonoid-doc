@@ -93,7 +93,7 @@ Open the following file in a text editor.
 
 Change the value of ``PX_BUILDSNIPPETS`` from ``"True"`` to ``"False"``.
 
-.. code-block:: xml
+.. code-block:: text
 
   Before: <cmakeSwitch name="PX_BUILDSNIPPETS" value="True" .../>
   After:  <cmakeSwitch name="PX_BUILDSNIPPETS" value="False" .../>

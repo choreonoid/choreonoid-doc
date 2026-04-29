@@ -361,7 +361,9 @@ Here, since we're building the plugin simultaneously in the Choreonoid build env
 Its name is "CnoidBodyPlugin", so by specifying it this way, it links to the Body plugin.
 
 
-When building independently from Choreonoid, we're doing the same thing. However, the target name is specified as: ::
+When building independently from Choreonoid, we're doing the same thing. However, the target name is specified as:
+
+.. code-block:: text
 
  Choreonoid::CnoidBodyPlugin
 

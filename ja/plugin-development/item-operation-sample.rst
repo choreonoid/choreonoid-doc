@@ -367,7 +367,9 @@ CMakeLists.txtにおける依存ライブラリの追加
 その名前が"CnoidBodyPlugin"なので、このように指定することで、Bodyプラグインにリンクされるようになります。
 
 
-Choreonoid本体とは独立してビルドする場合もやっていることは同じです。ただしターゲット名が ::
+Choreonoid本体とは独立してビルドする場合もやっていることは同じです。ただしターゲット名が
+
+.. code-block:: text
 
  Choreonoid::CnoidBodyPlugin
 

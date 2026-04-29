@@ -93,7 +93,7 @@ GitHubからPhysX SDKのソースコードを取得します。
 
 ``PX_BUILDSNIPPETS`` の value を ``"True"`` から ``"False"`` に変更します。
 
-.. code-block:: xml
+.. code-block:: text
 
   変更前: <cmakeSwitch name="PX_BUILDSNIPPETS" value="True" .../>
   変更後: <cmakeSwitch name="PX_BUILDSNIPPETS" value="False" .../>

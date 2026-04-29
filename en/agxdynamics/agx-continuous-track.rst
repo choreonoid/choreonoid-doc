@@ -412,14 +412,14 @@ Stabilization of track belt
    Because some parameters like compliance or damping are to be flactuated according to length of time step.
    Please see below.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     dt = 0.005 (200Hz)
 
 
 2. Set OFF of node merge function, which reduce the parameters to be tuned.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     enableMerge: false
     enableLockToReachMergeCondition: false
@@ -427,7 +427,7 @@ Stabilization of track belt
 3. As the result the parameters to be considered are as below.
    Firstly comment out of allof the setting below and check the motion of the track. (the below parameters are default value.)
 
-  .. code-block:: txt
+  .. code-block:: text
 
     #nodeDistanceTension: 5.03-3
     #stabilizingHingeFrictionParameter: 1.5
@@ -439,7 +439,7 @@ Stabilization of track belt
 
 4. Track belt moves hard and looks like hard wire. Then reduce the friction coefficient because the rfiction of hige is too large.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     nodeDistanceTension: 0.0                  # Set zero to the distance of initial node(then tention is zero), which helps to tune easier.
     stabilizingHingeFrictionParameter: 1e-6   # Set friction coefficient small. If less than 1e-1, tune by index, and set as the track does not look like hard wire.
@@ -454,7 +454,7 @@ Stabilization of track belt
    In case the value is 5.0E-4, the belt penetrates into wheel, and in case 5.0E-5 the track belt looks loose.
    Tune as below.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     nodeDistanceTension: 2.0e-4
 
@@ -466,7 +466,7 @@ Stabilization of track belt
    Tune comliance by index, then find the value not to vibrate.
    In below case, vibration happens when 1.0e-10, then not when 1.0e-9.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     hingeCompliance: 9.0e-10
     hingeSpookDamping: 0.01
@@ -474,7 +474,7 @@ Stabilization of track belt
 7. If the track belts get crossed or the belt penetrates into wheel when moving, set smaller value for minStabilizingHingeNormalForce.
    If vibrate or not stable, set the larger value.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     minStabilizingHingeNormalForce: 100
 
@@ -485,7 +485,7 @@ Stabilization of track belt
    In an actual track mechanism, the wheel has a gear that drives the belt.
    This value can be caluculated as the angle to pull the belt out from the wheel or the angle that the belt departs from the gear.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     nodesToWheelsMergeThreshold: -0.1    # Merge when the angle of two vetor is larger than 1.67rad(95.7deg)
     nodesToWheelsSplitThreshold: -0.05   # Unmerge when the angle of two vector is larger than 1.62rad(92.7deg)
@@ -533,36 +533,36 @@ Follow the setup steps below.
 
 1. Enable node merging function
 
-  .. code-block:: txt
+  .. code-block:: text
 
     enableMerge: false
 
 2. Next, specify the number of nodes to be merged. It is recommended to increase from 3 or more. Also, it is a good idea to find the number of nodes not wrapped around the wheel and specify the number of nodes to be grouped together.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     numNodesPerMergeSegment: 3
 
 3. Next, set the threshold to determine the timing to merge nodes. This threshold is the angle of the hinge joint connecting the nodes. Merge nodes if angle is less than threshold. This value varies greatly depending on the scale of the robot.
-  .. code-block:: txt
+  .. code-block:: text
 
      maxAngleMergeCondition: 1.0e-5
 
 4. Specify the contact point reduction level. Sets how much to leave the contact point after merging nodes. If it is 0, nothing to change the number of contact points before merging, so we recommend specifying about 2.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     contactReduction: 2
 
 5. In addition, to make it easier to merge nodes, enable the function to lock hinges connecting nodes.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     enableLockToReachMergeCondition: true
 
 6. Finally, set the compliance and damper of the locked hinges. This value also varies greatly depending on the scale of the robot. Also, if you make it too hard, be careful as it will not be able to deform the belt along the step.
 
-  .. code-block:: txt
+  .. code-block:: text
 
     lockToReachMergeConditionCompliance: 1.0e-11
     lockToReachMergeConditionSpookDamping: 0.001

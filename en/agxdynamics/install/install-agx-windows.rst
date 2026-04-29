@@ -29,7 +29,7 @@ Operation Verification
 
 Run the AGX Dynamics sample to verify operation. Open a command prompt and execute the following commands in order:
 
-.. code-block:: txt
+.. code-block:: text
 
    cd <AGX Dynamics installation directory>
    setup_env.bat

@@ -297,7 +297,7 @@ JoystickクラスのオブジェクトはTurretController2のメンバ変数 ::
 
 あとは ::
 
- joystick.getPosition(軸ID）
+ joystick.getPosition(軸ID)
 
 によって、軸の状態（どれだけ倒しているか）を -1.0 〜 +1.0 の値として取得できますし、 ::
 
