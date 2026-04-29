@@ -669,7 +669,7 @@ For output to devices, please refer to the "TankJoystickLight.cnoid" sample that
 
 
 .. * **void enableInput(Device\* device)**
-..........................................
+.. ..........................................
 .. Enables input of the state and data of the device specified by device to the controller.
 
 .. _simulation-implement-controller-link-position:

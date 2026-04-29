@@ -6,6 +6,6 @@ AGX Dynamics is a commercial physics engine developed by Algoryx Simulation AB o
 By using AGX Dynamics, you can achieve real-time simulation of continuous tracks, wires, and other previously difficult-to-realize simulations on Choreonoid.
 
 For details about AGX Dynamics, please see below.
-*Note: You will be redirected to an external page.
+\*Note: You will be redirected to an external page.
 
 * `Algoryx Simulation AB "AGX Dynamics" <https://www.algoryx.se/products/agx-dynamics/>`_

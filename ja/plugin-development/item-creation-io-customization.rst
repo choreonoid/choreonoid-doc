@@ -132,9 +132,6 @@ ItemFileIOはBaseモジュールで定義されており、同名のヘッダが
 この場合、対象アイテムを引数にとるvirtual関数について、引数の型が対象アイテム型へのポインタとなります。
 通常はこちらの方法を用いるのがおすすめです。
 
-少し特殊なケースになりますが、既存のItemFileIOを拡張したものを作成することも可能です。
-この場合は `ItemFileIoExtenderテンプレート <https://choreonoid.org/ja/documents/reference/latest/classcnoid_1_1ItemFileIoExtender.html>`_ を用いて以下のようにします。 ::
-
 基本属性の設定
 ~~~~~~~~~~~~~~
 

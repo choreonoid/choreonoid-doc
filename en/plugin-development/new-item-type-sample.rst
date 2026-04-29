@@ -349,9 +349,11 @@ Specify the item type you want to find as a template parameter.
 Here we're looking for a BodyItem placed above this BodyPositionItem.
 If found, it returns that item; if not found, it returns nullptr. 
 
-.. note:: Since findOwnerItem traverses parent items up to the root, it targets upper items that are not necessarily the immediate parent, such as parent's parent. If you want to limit the target to the immediate parent, you can do: ::
-	  
-       auto newBodyItem = dynamic_cast<BodyItem>(parentItem());
+.. note:: Since findOwnerItem traverses parent items up to the root, it targets upper items that are not necessarily the immediate parent, such as parent's parent. If you want to limit the target to the immediate parent, you can write:
+
+          .. code-block:: cpp
+
+             auto newBodyItem = dynamic_cast<BodyItem>(parentItem());
 
 ::
   

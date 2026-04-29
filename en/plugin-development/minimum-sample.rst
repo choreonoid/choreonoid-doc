@@ -205,8 +205,7 @@ choreonoid_add_plugin is a command defined in the Choreonoid main body's CMakeLi
 
 By writing it like this, you can build the plugin binary from the specified source file. You can specify multiple source files here.
 
-We're setting the plugin name. The plugin name should start with "Cnoid" and end with "Plugin" like this. Here we set this name in a variable called target so it can be used in subsequent commands. While it's not necessary to set it in a variable, doing so centralizes the plugin name setting. ::
-
+We're setting the plugin name. The plugin name should start with "Cnoid" and end with "Plugin" like this. Here we set this name in a variable called target so it can be used in subsequent commands. While it's not necessary to set it in a variable, doing so centralizes the plugin name setting.
 
 This command is a customized version of CMake's built-in add_library command. Plugins are created as shared libraries (dynamic link libraries) and are a type of library. Therefore, you can also build plugins using the add_library command for creating libraries.
 

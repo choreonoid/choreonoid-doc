@@ -130,9 +130,6 @@ Using the `ItemFileIoBase template <https://choreonoid.org/en/documents/referenc
 In this case, for virtual functions that take target items as arguments, the argument type becomes a pointer to the target item type.
 Usually, this method is recommended.
 
-As a somewhat special case, it's also possible to create extensions of existing ItemFileIO.
-In this case, use the `ItemFileIoExtender template <https://choreonoid.org/en/documents/reference/latest/classcnoid_1_1ItemFileIoExtender.html>`_ as follows: ::
-
 Setting Basic Attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
