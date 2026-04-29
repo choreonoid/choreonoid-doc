@@ -146,6 +146,7 @@ Link composition of sample model is as below.
   * Set enable or disable self collision between the wire and the links which has the wire to **selfCollision**
   * Set the material of the wire to **materialName**. Check the reference :doc:`agx-material`.
   * It is recommend to use the material file. Though, you can set parameters such as wireYoungsModulusStretch directly into the body file.
+
 3. In order to pull out the wire from the winch, set the following
 
   * Set the link name, which to be used as a winch, to **linkName**. You can specify any link.
@@ -153,16 +154,20 @@ Link composition of sample model is as below.
   * Set the pulled out direction of the wire to **normal**  relative from the link coordinate of the link
   * Set the length of the wire which stock into the winch to **pulledInLength**
   * Set the required force to pull out the wire from the winch or put in to **haulForceRange**
+
 4. Next, use the Node hash to route the wire in space
+
   1. Wires can be routed in three ways. The way of routing is specified as **type**:
 
-    * type: free     Route the wire to the specified position. Not fixed.
-    * type: fixed    Fix the wire at the specified position. The fixed point can rotate freely(balljoint).
-    * type: link     Connect the wire to the link. The connecting point has twisting stiffness and bending stiffness.
+     * type: free     Route the wire to the specified position. Not fixed.
+     * type: fixed    Fix the wire at the specified position. The fixed point can rotate freely(balljoint).
+     * type: link     Connect the wire to the link. The connecting point has twisting stiffness and bending stiffness.
+
   2. Set the **linkName** in which coordinate system to route the wire
 
-    * When the link exist in which name is the linkName: Link coordinate
-    * When the linkName is empty or not exist link: World coordinate
+     * When the link exist in which name is the linkName: Link coordinate
+     * When the linkName is empty or not exist link: World coordinate
+
   3. Set the routing position to **position**
 
 

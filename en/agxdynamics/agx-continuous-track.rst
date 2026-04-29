@@ -380,6 +380,7 @@ Setting for track material
   * Set frictionModel: [ orientedBox, direct ] as friction model.
   * Set body name to attach to track belt in referenceBodyName.
   * Set link name of body attached to track belt in referenceLinkName. It is set for main chassis or link with large mass.
+
 4. Define ContactMaterial of wheel and track belt.
 
   * youngsModulus needs to be set larger.
@@ -544,6 +545,7 @@ Follow the setup steps below.
     numNodesPerMergeSegment: 3
 
 3. Next, set the threshold to determine the timing to merge nodes. This threshold is the angle of the hinge joint connecting the nodes. Merge nodes if angle is less than threshold. This value varies greatly depending on the scale of the robot.
+
   .. code-block:: text
 
      maxAngleMergeCondition: 1.0e-5

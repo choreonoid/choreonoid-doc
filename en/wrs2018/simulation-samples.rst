@@ -49,8 +49,10 @@ The elements constituting projects include the following, stored under "WRS2018/
 * Task environment models
 
  * Task T1:
-  * T1L.cnoid (for large robots)
-  * T1M.cnoid (for medium robots)
+
+   * T1L.cnoid (for large robots)
+   * T1M.cnoid (for medium robots)
+
  * Task T2: T2.cnoid
  * Task T3: T3.cnoid
  * Task T4: T4.cnoid

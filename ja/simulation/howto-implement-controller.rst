@@ -116,7 +116,7 @@ SimpleControllerクラス
  public:
      virtual bool initialize(SimpleControllerIO* io);
      virtual bool control();
-};
+ };
 
 
 このクラスのvirtual関数を継承先のクラスでオーバーライドすることにより、コントローラの処理内容を記述します。各関数の内容は以下のようになっています。

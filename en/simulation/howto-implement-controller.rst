@@ -115,7 +115,7 @@ This class basically has the following definition: ::
  public:
      virtual bool initialize(SimpleControllerIO* io);
      virtual bool control();
-};
+ };
 
 
 By overriding the virtual functions of this class in the derived class, you describe the controller's processing content. The content of each function is as follows:

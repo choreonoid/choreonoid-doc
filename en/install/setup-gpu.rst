@@ -39,6 +39,7 @@ GPU types can be broadly distinguished by manufacturer. The situation may also d
  * When using with Ubuntu, proprietary drivers must be separately installed to achieve full performance. GUI tools are also provided for this purpose, so driver installation is not particularly difficult.
 
 * AMD GPUs (Radeon)
+
  * Previously there were issues with using Choreonoid, but these have been improved in the latest version.
  * Previously Linux support was insufficient, but this has improved since several years ago. Specifically, GPUs from the "GCN architecture" generation onwards operate without problems on Linux.
  * The GCN architecture corresponds to specific model numbers including Radeon HD 7700-7900, HD 8000, RX 240-290, RX 300, RX 400, RX 500, and Vega series. Please avoid using older model numbers than these.

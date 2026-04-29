@@ -14,8 +14,10 @@ Choreonoid Main Body Installation Methods
 For installing Choreonoid main body that integrates with ROS 2, you have the following options:
 
 1. Install independently of ROS 2, using the standard installation method
-  A. Install from packages
-  B. Build and install from source code
+
+   A. Install from packages
+   B. Build and install from source code
+
 2. Install as a ROS 2 package
 
 .. _ros2_install_choreonoid_standard_method:

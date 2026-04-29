@@ -421,15 +421,15 @@ We obtain the acceleration sensor with:
 
  accelSensor = body->findDevice<AccelerationSensor>();
 
-If an acceleration sensor is found, we prepare for the model vibration process:
+If an acceleration sensor is found, we prepare for the model vibration process: ::
 
-  if(accelSensor){
-      auto sigTimeout = bodyShakeTimer.sigTimeout();
-      if(!sigTimeout.hasConnections()){
-	  sigTimeout.connect([this](){ onBodyShakeTimerTimeout(); });
-	  bodyShakeTimer.setInterval(20);
-      }
-  }
+ if(accelSensor){
+     auto sigTimeout = bodyShakeTimer.sigTimeout();
+     if(!sigTimeout.hasConnections()){
+         sigTimeout.connect([this](){ onBodyShakeTimerTimeout(); });
+         bodyShakeTimer.setInterval(20);
+     }
+ }
 
 bodyShakeTimer is a Timer type object.
 This extends Qt's QTimer class to work with Choreonoid's signal types.
@@ -440,7 +440,7 @@ We set the timer interval to 20 milliseconds.
 This timer creates an animation showing model collision by vibrating the model at regular intervals.
 
 Note that this initialization only needs to occur once after controller creation, so we skip it if already initialized.
-We check initialization status with:
+We check initialization status with: ::
 
  if(!sigTimeout.hasConnections()){
      ...
@@ -448,11 +448,11 @@ We check initialization status with:
 
 This check is necessary because the configure function may be called multiple times when controller items are moved.
 
-We also obtain the rate gyro:
+We also obtain the rate gyro: ::
 
  gyro = body->findDevice<RateGyroSensor>();
 
-We create a node handle and then create a subscriber:
+We create a node handle and then create a subscriber: ::
 
  node.reset(new ros::NodeHandle(bodyItem->name()));
  subscriber = node->subscriber(
@@ -465,7 +465,7 @@ This process matches Step 3.
 The topic name is "/(model name)/imu", which becomes "/Tank/imu".
 This matches the topic name published by the controller created in Step 4.
 
-The callback function for topic subscription is:
+The callback function for topic subscription is: ::
 
  void imuStateCallback(const sensor_msgs::Imu& state)
  {
@@ -501,28 +501,28 @@ The Body State View and Sensor Visualizer Item are connected to this signal and 
 
 If the horizontal (X, Y) acceleration vector magnitude exceeds 20.0 [m/s²], we assume the Tank robot has collided and start the visualization model shaking animation.
 
-We apply the same update process to the rate gyro:
+We apply the same update process to the rate gyro: ::
 
-  if(gyro){
-      auto& w = state.angular_velocity;
-      gyro->w() << w.x, w.y, w.z;
-      gyro->notifyStateChange();
-  }
+ if(gyro){
+     auto& w = state.angular_velocity;
+     gyro->w() << w.x, w.y, w.z;
+     gyro->notifyStateChange();
+ }
 
 Unlike the acceleration sensor, there's no additional processing here.
 
 Model Vibration Animation
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The model vibration animation starts by executing this function:
+The model vibration animation starts by executing this function: ::
 
  void startBodyShake()
  {
      bodyShakeDuration = 0.5;
      if(!bodyShakeTimer.isActive()){
-	 bodyPosition = bodyItem->body()->rootLink()->position();
-	 rand.param(uniform_real_distribution<>::param_type(-0.02, 0.02));
-	 bodyShakeTimer.start();
+         bodyPosition = bodyItem->body()->rootLink()->position();
+         rand.param(uniform_real_distribution<>::param_type(-0.02, 0.02));
+         bodyShakeTimer.start();
      }
  }
 
@@ -539,7 +539,7 @@ If isActive returns false, the timer isn't running yet, so we execute the timer'
      ...
  }
 
-This function is called periodically by the animation timer and actually shakes the model:
+This function is called periodically by the animation timer and actually shakes the model: ::
 
  if(bodyShakeDuration > 0.0){
      auto T = bodyPosition;
@@ -577,7 +577,7 @@ When this reaches 0 or below, the animation ends as described above.
 Termination Processing
 ~~~~~~~~~~~~~~~~~~~~~~
 
-As in Step 3, we handle controller termination in the unconfigure function:
+As in Step 3, we handle controller termination in the unconfigure function: ::
 
  virtual void unconfigure() override
  {

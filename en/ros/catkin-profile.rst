@@ -83,9 +83,12 @@ If you haven't set suffixes for profiles, the directories storing build outputs 
 Differently, if you've specified different suffixes for profiles, outputs for each profile can exist simultaneously in the workspace. For example, if the debug profile has the suffix "_debug", outputs for each profile are stored in:
 
 * Default profile (release version)
- * workspace_directory/devel
+
+  * workspace_directory/devel
+
 * Debug profile (debug version)
- * workspace_directory/devel_debug
+
+  * workspace_directory/devel_debug
 
 .. note:: As shown in :ref:`ros_catkin_profile_operations`, you can specify suffixes with the "-x" option of the catkin config command. To set the suffix as debug, use "catkin config -x debug".
 
