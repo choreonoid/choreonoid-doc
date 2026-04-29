@@ -33,6 +33,7 @@ Plugin Development Guide
    item-creation-io-customization-sample
    create-view
    create-view-sample
+   plugin-class
    ode-plugin
 
 .. location-view

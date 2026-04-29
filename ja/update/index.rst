@@ -1,6 +1,12 @@
 更新履歴
 ========
 
+.. 英訳指示： 各エントリの日付は英語版では "Month Day, Year" の形式（例: April 29, 2026）に変換してください。月名は短縮せずフルスペルで書きます。
+
+* 2026/04/29
+
+ * :doc:`../plugin-development/plugin-class` を追加
+
 * 2026/04/22
 
  * :doc:`../install/build-ubuntu` に最適化オプションの説明を追加
