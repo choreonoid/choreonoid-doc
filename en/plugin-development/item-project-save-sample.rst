@@ -375,7 +375,7 @@ This is the store function for saving item state to project files. It overrides 
 
  write(archive, "translation", Vector3(position_.translation()));
 
-The position recorded in BodyPositionItem is stored in the member variable position_. This is of Eigen's Isometry3 type, equivalent to a 4x4 homogeneous transformation matrix. Here we write its translation component to archive with the key "translation". The write function used here is a template function defined in the EigenArchive header, defined as follows: ::
+The position recorded in BodyPositionItem is stored in the member variable ``position_``. This is of Eigen's Isometry3 type, equivalent to a 4x4 homogeneous transformation matrix. Here we write its translation component to archive with the key "translation". The write function used here is a template function defined in the EigenArchive header, defined as follows: ::
 
  template<typename Derived>
  Listing& write(Mapping& mapping, const std::string& key, const Eigen::MatrixBase<Derived>& x);
@@ -405,7 +405,7 @@ rpyFromRot is a function defined in the EigenUtil header that takes a 3x3 rotati
 
  archive.write("flag_height", flagHeight_);
 
-Using the normal functions of the Mapping type that Archive inherits, we output the value of member variable flagHeight_ with the key "flag_height". ::
+Using the normal functions of the Mapping type that Archive inherits, we output the value of member variable ``flagHeight_`` with the key "flag_height". ::
 
  archive.write("flag_color", flagColorSelection.selectedSymbol());
 
@@ -443,7 +443,7 @@ Here we just need to be able to read the data output by store. First, ::
      position_.translation() = v;
  }
 
-reads the translation component of the recorded position. The read function used here is also a template function defined in EigenArchive that reads the value of the specified key as a vector value, opposite to write. If reading succeeds, it returns true, and in that case, we assign the value read into variable v to the translation component of member variable position_.
+reads the translation component of the recorded position. The read function used here is also a template function defined in EigenArchive that reads the value of the specified key as a vector value, opposite to write. If reading succeeds, it returns true, and in that case, we assign the value read into variable v to the translation component of member variable ``position_``.
 
 Without using the EigenArchive function, this would require somewhat complex code like the following: ::
 
@@ -460,7 +460,7 @@ Next, we read the rotation component with the following code: ::
      position_.linear() = rotFromRpy(radian(v));
  }
 
-Here, as the reverse process of store, we first convert the read RPY values to radians, obtain the rotation matrix from the RPY values using the rotFromRpy function, and assign it to the rotation component of member variable position_. The radian and rotFromRpy used here are also functions defined in EigenUtil. ::
+Here, as the reverse process of store, we first convert the read RPY values to radians, obtain the rotation matrix from the RPY values using the rotFromRpy function, and assign it to the rotation component of member variable ``position_``. The radian and rotFromRpy used here are also functions defined in EigenUtil. ::
 
  archive.read("flag_height", flagHeight_);
 

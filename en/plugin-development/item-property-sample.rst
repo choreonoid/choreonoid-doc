@@ -692,11 +692,11 @@ When regenerating the model, we remove all child nodes of flag so they can be re
 
 Code to generate the flag model. This is also basically the same as the corresponding code in :doc:`item-scene-sample`, but supports property changes with the following modifications:
 
-* Set flag height with member variable flagHeight_
+* Set flag height with member variable ``flagHeight_``
 
 * Set member variable flagMaterial as the material for the banner part
 
-This way, when you change the value of flagHeight_ and regenerate, that value is reflected. Also, changing flagMaterial attributes reflects them in the flag's appearance. ::
+This way, when you change the value of ``flagHeight_`` and regenerate, that value is reflected. Also, changing flagMaterial attributes reflects them in the flag's appearance. ::
 
  void BodyPositionItem::updateFlagMaterial()
  {
@@ -730,7 +730,7 @@ By executing notifyUpdate on this material, we notify the scene graph of color c
  }
   
 Function to set the recorded position.
-The argument is an Isometry3 type (reference) same as member variable position_, a transformation type value (equivalent to 4x4 homogeneous transformation matrix) containing both translation and rotation components.
+The argument is an Isometry3 type (reference) same as member variable ``position_``, a transformation type value (equivalent to 4x4 homogeneous transformation matrix) containing both translation and rotation components.
 After updating the member variable position corresponding to the recorded position, we update the flag display position with updateFlagPosition.
 Furthermore, we execute the notifyUpdate function to indicate that the item itself has been updated.
 This emits the sigUpdated signal introduced in :ref:`plugin-dev-item-operations-signals`.
@@ -751,9 +751,9 @@ If you want to detect updates to this item from outside, use this signal. ::
      return true;
  }
 
-Function to change flag height. We reset the value of flagHeight_ and regenerate the model with createFlag function.
+Function to change flag height. We reset the value of ``flagHeight_`` and regenerate the model with createFlag function.
 After generation, we execute notifyUpdate function on the model's top node to notify the scene graph of changes.
-Also, since changing flagHeight_ updates the item's state, we also execute the item's notifyUpdate function to notify item updates.
+Also, since changing ``flagHeight_`` updates the item's state, we also execute the item's notifyUpdate function to notify item updates.
 Note that this function returns a bool value indicating whether the input value is valid.
 If the specified height is invalid (0 or less), it returns false and doesn't accept the change.
 With this form, this function can be used as-is as a property update function. ::
@@ -806,7 +806,7 @@ And to accept editing operations, we also provide an update function.
 
 In the update function, since the input is a string, we first convert it to a 3D vector type Vector3 value using the toVector3 function.
 This function is defined in EigenUtil.
-If conversion succeeds, true is returned, so in that case we update the translation component of the position_ variable recording the position with this value and give it to the aforementioned setPosition function. Since the setPosition function ultimately updates the position_ variable, looking at just that part, there's no need to execute this function. However, the setPosition function also updates the flag display position and notifies item updates with signals, which are also necessary, so we execute it here.
+If conversion succeeds, true is returned, so in that case we update the translation component of the ``position_`` variable recording the position with this value and give it to the aforementioned setPosition function. Since the setPosition function ultimately updates the ``position_`` variable, looking at just that part, there's no need to execute this function. However, the setPosition function also updates the flag display position and notifies item updates with signals, which are also necessary, so we execute it here.
 
 
 When the translation position update ultimately succeeds, the update function returns true, but if the user's input string cannot be converted to a 3D vector value, it returns false. ::
@@ -824,11 +824,11 @@ When the translation position update ultimately succeeds, the update function re
              });
 
 Outputting the rotation component of the recorded position as a property.
-The rotation component is expressed in roll-pitch-yaw (RPY), calculating values from the rotation component of the position_ variable.
+The rotation component is expressed in roll-pitch-yaw (RPY), calculating values from the rotation component of the ``position_`` variable.
 At that time, we convert radian values to degree values.
 This is to make property values easier for users to understand.
 Since RPY also becomes a 3D vector, its output and update are processed similarly to the translation component.
-In the update function, after converting RPY values back to radians, we calculate the rotation matrix with rotFromRpy function and assign it to the rotation component of the position_ variable.
+In the update function, after converting RPY values back to radians, we calculate the rotation matrix with rotFromRpy function and assign it to the rotation component of the ``position_`` variable.
 Here too, we perform necessary processing for position updates with the setPosition function. ::
 
  putProperty.min(0.1)("Flag height", flagHeight_,

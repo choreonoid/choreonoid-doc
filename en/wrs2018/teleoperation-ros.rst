@@ -194,7 +194,7 @@ In that case, launch the Choreonoid simulation project on the simulation PC and 
 
 In order that the ROS node can communicate between the two PCs, you need to use a shared ROS Master.
 
-Briefly, decide the host (PC) where you will install the ROS Master and launch roscore there. Then on the other PC, set your own IP address as the ROS_IP environment variable and the master address as ROS_ MASTER_URI.
+Briefly, decide the host (PC) where you will install the ROS Master and launch roscore there. Then on the other PC, set your own IP address as the ROS_IP environment variable and the master address as ROS_MASTER_URI.
 
 For example, if the configuration is as follows:
 

@@ -339,7 +339,7 @@ In this case, you can connect via SignalProxy, but you cannot emit signals. That
 
  object.sigUpdate()();
 
-Since the signal body sigUpdated_ is defined as a private member of class B, the emission of this signal can be managed by the implementation of class B. By introducing SignalProxy in this way, you can separate what can be done between the signal definition source and the connection side. That is, the connection side can only connect, and the emission method can be managed by the signal definition source.
+Since the signal body ``sigUpdated_`` is defined as a private member of class B, the emission of this signal can be managed by the implementation of class B. By introducing SignalProxy in this way, you can separate what can be done between the signal definition source and the connection side. That is, the connection side can only connect, and the emission method can be managed by the signal definition source.
 
 In fact, signals defined in Choreonoid SDK classes return SignalProxy in most cases, and signal emission is done by other means.
 
