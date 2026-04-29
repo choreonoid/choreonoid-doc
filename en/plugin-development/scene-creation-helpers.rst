@@ -1,6 +1,6 @@
-====================
+======================
 Scene Creation Helpers
-====================
+======================
 
 .. contents:: Table of Contents
    :local:

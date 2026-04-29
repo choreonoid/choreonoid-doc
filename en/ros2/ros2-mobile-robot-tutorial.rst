@@ -1,5 +1,5 @@
 ROS 2 Mobile Robot Tutorial
-==========================
+===========================
 
 We have prepared a "ROS 2 Mobile Robot Tutorial" where you can learn how to perform mobile robot simulations by integrating Choreonoid and ROS 2.
 

@@ -1,5 +1,5 @@
 Projects and Items
-==============
+==================
 
 .. contents::
    :local:

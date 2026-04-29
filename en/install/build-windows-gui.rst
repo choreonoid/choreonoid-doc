@@ -1,5 +1,5 @@
 Build Method Using CMake and Visual Studio GUI
-==========================================
+==============================================
 
 .. contents:: Table of Contents
    :local:
@@ -10,7 +10,7 @@ This section explains how to build Choreonoid on Windows using the CMake and Vis
 .. _build-windows-cmake:
 
 Build Configuration with CMake
----------------------
+------------------------------
 
 First, launch CMake from the Start menu or desktop icon. The CMake window will appear as shown below.
 
@@ -90,7 +90,7 @@ After completing the necessary settings, press "Generate".
 .. _build-windows-visualstudio:
 
 Launching Visual Studio and Loading the Solution
-----------------------------------------------
+------------------------------------------------
 
 Next, we will build Choreonoid. 
 
@@ -103,7 +103,7 @@ If Visual Studio does not start, there may have been an issue during installatio
 Since the build operations are the same for Visual Studio 2017 and 2019, the following explanation does not specify which version is being used. Therefore, the screen design may differ.
 
 Compilation
-----------
+-----------
 
 Once the solution has finished loading, you should see a screen like the one shown below.
 Here, change the red-boxed section to **"Release"** and confirm that **x64** is displayed.

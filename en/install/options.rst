@@ -1,5 +1,5 @@
 Optional Features
-=============
+=================
 
 .. sectionauthor:: Shin'ichiro Nakaoka <s.nakaoka@aist.go.jp>
 

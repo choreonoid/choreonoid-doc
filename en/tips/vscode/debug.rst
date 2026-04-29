@@ -254,7 +254,7 @@ Example of displaying what ``std::shared_ptr`` or ``std::unique_ptr`` points to 
  ptr.get()
 
 Members of Classes Implemented with the Pimpl Idiom
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some classes in Choreonoid adopt the Pimpl idiom to hide implementation details, separating member variables into an ``Impl`` class. Because the ``Impl`` class is only forward-declared in the header file and defined in the ``.cpp`` file, its type information is not visible from other translation units, and the variables panel cannot show the contents even if you expand the ``impl`` pointer.
 

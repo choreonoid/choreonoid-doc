@@ -1,8 +1,8 @@
 :orphan:
 
-======================================
+=======================================
 Constraint Compliance and Spook Damping
-======================================
+=======================================
 
 AGX Dynamics performs numerical calculations by solving equations of motion and constraint conditions simultaneously.
 When constraint conditions are not satisfied, they must be satisfied through some method.

@@ -1,5 +1,5 @@
 Building the RoKi Plugin
-===================
+========================
 
 .. contents:: Table of Contents
    :local:
@@ -155,7 +155,7 @@ The joint parameters are as follows.
    - Maximum static friction torque
 
 Fracture Simulation
-------------------
+-------------------
 
 RoKi enables fracture simulation by describing the locations where fractures occur as joints in the model file. The sample project for this is RokiBreakWall.cnoid.
 

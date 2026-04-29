@@ -1,5 +1,5 @@
 Qt-related Settings
-==============
+===================
 
 .. contents::
    :local:
@@ -48,7 +48,7 @@ Once you find an appropriate value, executing: ::
 will eliminate the need to include this description every time you start choreonoid thereafter. However, in this case, it will also affect other applications that use Qt, so please be careful. If this is not a problem, you may want to write it in .profile or similar.
 
 Font Configuration Using qt5ct
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When using Qt5 on Ubuntu Linux 20.04 and later, a tool called qt5ct is provided for Qt configuration, and you can use this to configure fonts. In this case, you can change not only the font size but also the font type.
 

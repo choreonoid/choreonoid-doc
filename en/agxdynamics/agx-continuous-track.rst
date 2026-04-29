@@ -499,7 +499,7 @@ Performance Tuning
 If the performance of simulation is not good or not stable, please see below setting.
 
 Simplify the model
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 | The track belt by AGXVehicleContinuousTrack is consist of some nodes connected by hinge joints.
 | This means that the track belt has more bodies and more joints, which will result in increasing the calculation quantity.

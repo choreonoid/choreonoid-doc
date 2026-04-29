@@ -46,7 +46,7 @@ When you set parent-child relationships, they will be displayed in a hierarchica
 .. image:: images/Parent.png
 
 Setting object names
--------------------
+--------------------
 
 To import the shape of each link from Choreonoid, assign names to each shape in the modeling tool in advance.
 

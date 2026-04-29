@@ -1,6 +1,6 @@
-========================
+==========================
 Scene Display Sample (S06)
-========================
+==========================
 
 .. contents:: Table of Contents
    :local:
@@ -239,7 +239,7 @@ Also, when you change the recorded position of a BodyPosition item, the flag pos
 The flag models displayed here are provided by the BodyPosition items using the method explained in :doc:`item-scene`.
 
 Source Code Explanation
-----------------------
+-----------------------
 
 Let's explain the parts added to the above source code from :doc:`new-item-type-sample`.
 

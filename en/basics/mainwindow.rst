@@ -1,5 +1,5 @@
 Screen Configuration
-==================
+====================
 
 In Choreonoid, various "toolbars" and "views" are basically arranged on the "main window," and their layout can be freely configured. This section explains the configuration and operation methods.
 

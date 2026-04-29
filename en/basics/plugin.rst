@@ -6,14 +6,14 @@ Plugin System
    :depth: 1
 
 What is a Plugin
---------------
+----------------
 
 Choreonoid allows you to add new functions by introducing additional program modules, which are called "plugins". In fact, many of the standard features that Choreonoid provides are also implemented as plugins.
 
 The functions that plugins add can take various forms. Generally, you can think of them as adding new types of items, views, and toolbars, which enable you to handle new data or use new operation and editing interfaces.
 
 Plugin Examples
---------------
+---------------
 
 Below are some of the plugins that Choreonoid provides as standard. As you can see, various functions from basic to specialized features are provided as plugins.
 
@@ -80,7 +80,7 @@ For plugins included with the Choreonoid main body, please refer to :doc:`../ins
 For plugins distributed separately from the main body, please follow their instructions for building and installation.
 
 Plugin Development
-----------------
+------------------
 
 By developing plugins, you can add new functions to Choreonoid. For information on how to develop plugins, please refer to :doc:`../plugin-development/index` in this manual.
 

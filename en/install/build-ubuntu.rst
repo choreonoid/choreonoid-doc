@@ -1,5 +1,5 @@
 Building and Installing from Source Code (Ubuntu Linux)
-===================================================
+=======================================================
 
 While Choreonoid can be :doc:`installed via package <install-package-ubuntu>` on Ubuntu Linux, building from source code allows you to develop Choreonoid itself or achieve more flexible operation.
 This document explains how to build Choreonoid from source code on Ubuntu Linux.

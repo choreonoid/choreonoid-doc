@@ -1,5 +1,5 @@
 Directory Structure
-==================
+===================
 
 Choreonoid is generally installed with the following directory structure: ::
 

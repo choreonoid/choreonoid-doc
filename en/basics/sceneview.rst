@@ -1,5 +1,5 @@
 Scene Display
-============
+=============
 
 .. contents::
    :local:
@@ -22,7 +22,7 @@ The following explains the basic operation methods of the Scene View.
 
 
 Empty Scene and Coordinate System
-------------------
+---------------------------------
 
 The Scene View displays as follows by default:
 
@@ -36,7 +36,7 @@ The ON/OFF settings for the above displays can be switched in the configuration 
 
 
 Supported Items
-------------
+---------------
 
 In Choreonoid, much of the information that can be treated as scenes is also defined as items. Such items include the following:
 
@@ -61,7 +61,7 @@ In addition to these, items added by plugins may include items that can be displ
 
 
 Displaying Supported Items
-------------------
+--------------------------
 
 For scene display-compatible items, they are basically displayed in the Scene View by checking them in the Item Tree View.
 
@@ -100,7 +100,7 @@ The usage of these functions is explained below.
 .. _sceneview_editmode:
 
 View Mode and Edit Mode
-----------------------
+-----------------------
 
 The Scene View has two overall operation modes: "View Mode" and "Edit Mode".
 
@@ -121,7 +121,7 @@ Specific editing operations vary depending on the target models and data, so det
 .. _basics_sceneview_viewpoint:
 
 Changing Viewpoint
-----------
+------------------
 
 In view mode, you can change the viewpoint by operating the mouse in the Scene View. The correspondence between viewpoint elements to change and mouse operations is as follows:
 
@@ -143,7 +143,7 @@ Pressing the "Fit view to all objects" Button in the Scene Bar adjusts the trans
 
 
 Viewpoint Change Modifier Keys
-------------------
+------------------------------
 
 The following modifier key operations are possible for viewpoint changes:
 
@@ -155,7 +155,7 @@ Note that in environments without a middle button, the space key can be used ins
 
 
 First-Person Viewpoint Change Mode
-----------------------
+----------------------------------
 
 The above viewpoint change operations were centered on objects in the Scene View, such as rotating around the object the mouse points to. In contrast, an operation system centered on the viewpoint is also provided, which is called "First-Person Viewpoint Control Mode". To switch to this mode, perform one of the following operations:
 
@@ -172,7 +172,7 @@ Such "First-Person Viewpoint Control Mode" is useful in situations such as enter
 .. _basics_sceneview_change_camera:
 
 Changing Rendering Camera
-------------------
+-------------------------
 
 Scene image rendering in the Scene View is performed using virtual cameras. By switching these cameras, you can obtain images with different perspectives or viewpoints than the default.
 
@@ -197,7 +197,7 @@ When the "Wireframe rendering" Button in the Scene Bar is turned ON, the scene i
 .. _basics_sceneview_config_dialog:
 
 Configuration Dialog
---------------
+--------------------
 
 There are other configurable items for the Scene View's rendering method and behavior, which can be configured in detail in the dialog displayed by pressing the "Show the config dialog" Button in the :ref:`basics_sceneview_scenebar`. An overview of the main configuration items accessible from this dialog is shown below.
 
@@ -263,6 +263,6 @@ The following configuration items are also available:
 
 
 Saving Scene View State and Configuration
-----------------------------------
+-----------------------------------------
 
 As mentioned in :ref:`basics_project_save`, view states and settings are saved to the project file when saving projects. The Scene View's viewpoint position and various settings are also saved simultaneously when saving projects, and will return to the same state when loaded next time.

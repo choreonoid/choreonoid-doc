@@ -1,5 +1,5 @@
 Building the Bullet Plugin
-=====================
+==========================
 
 .. contents:: Table of Contents
    :local:

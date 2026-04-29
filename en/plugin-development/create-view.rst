@@ -1,6 +1,6 @@
-============
+==============
 Creating Views
-============
+==============
 
 .. contents:: Table of Contents
    :local:

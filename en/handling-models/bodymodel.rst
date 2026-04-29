@@ -98,7 +98,7 @@ By checking it again, the display in the scene view will return to normal, so pl
 .. _model_structure:
 
 Model Structure
-------------
+---------------
 
 In robotics, individual parts (rigid bodies) that constitute a model are generally called "links". Models can consist of either a single link or multiple links (multi-link model).
 

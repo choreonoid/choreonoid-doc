@@ -1,6 +1,6 @@
-================
+=================
 Creating Toolbars
-================
+=================
 
 .. contents:: Table of Contents
    :local:

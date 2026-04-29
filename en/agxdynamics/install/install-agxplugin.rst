@@ -27,7 +27,7 @@ When you build Choreonoid with this CMake configuration, the AGX Dynamics plugin
 .. _agxdynamics-plugin-build-ubuntu-option-for-library-reference-resolution:
 
 Option for AGX Dynamics Shared Library Reference Resolution
-----------------------------------------------------------
+-----------------------------------------------------------
 
 The :ref:`agxdynamics-plugin-install-ubuntu-library-reference-resolution-problem` can also be resolved using CMake options when building Choreonoid.
 
