@@ -574,7 +574,7 @@ Here we override the onConnectedToRoot function as one of the Item class virtual
      sigItemsInProjectChanged_();
  }
 
-This is also a :ref:`virtual function related to the item tree`, called when an item is disconnected from the root item. At this time, the item is removed from the project. We emit the signal at this timing to notify that an item has been removed.
+This is also a :ref:`plugin-dev-item-virtual-function-on-item-tree`, called when an item is disconnected from the root item. At this time, the item is removed from the project. We emit the signal at this timing to notify that an item has been removed.
 
 .. note:: Even without using this signal, you can detect changes in items existing in the project using the sigItemAdded and sigItemRemoved signals of the RootItem class introduced in :ref:`plugin-dev-item-operations-signals`. However, those signals target all item types, so slot functions are called even for items other than BodyPosition items. In contrast, the signal we implemented this time only targets BodyPositionItems, so it can be processed more efficiently.
 

@@ -661,7 +661,7 @@ you can obtain it in this form.
 
 Similarly, for ForceSensor, RateGyroSensor, and Imu, you can perform state input using the corresponding member functions.
 
-When using visual sensors such as cameras and range sensors, preparation is required. This is explained in :doc:`vision-simulation`.
+When using visual sensors such as cameras and range sensors, preparation is required. This is explained in :doc:`../vision-sensor/vision-simulation`.
 
 For output to devices, please refer to the "TankJoystickLight.cnoid" sample that turns lights on and off.
 

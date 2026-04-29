@@ -183,7 +183,7 @@ Choreonoid関連のROSパッケージはデフォルトでReleaseが設定され
 ビルド
 ------
 
-ここまで :ref:`ros_build_choreonoid_cmake_options` や :ref:`ros_catkin_build_type` について説明しました。
+ここまで :ref:`ros_build_choreonoid_cmake_options` や :ref:`ros_catkin_config_cmake_build_type` について説明しました。
 細かいオプションについてよく分からない場合はとりあえず以下の設定としておきましょう。
 
 **Ubuntu 20.04 (ROS Noetic Ninjemys) の場合** ::

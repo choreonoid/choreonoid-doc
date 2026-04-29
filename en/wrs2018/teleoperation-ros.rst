@@ -183,7 +183,7 @@ This completes the preparations. Launch the simulation in Choreonoid. If that go
 
 You can also execute the DoubleArmV7 sample in the same way. For the DoubleArmV7, select /DoubleArmV7/FRAME_FRONT_CAMERA/image as the camera image topic.
 
-.. note:: With this sample, only the camera image corresponding to the above topic is simulated. if you want to also simulate other camera images, refer to the :doc:`../simulation/vision-simulation` section and configure the GLVisionSimulator item. However, if you increase the number of target cameras for simulation, it may cause the overall simulation to slow down.
+.. note:: With this sample, only the camera image corresponding to the above topic is simulated. if you want to also simulate other camera images, refer to the :doc:`../vision-sensor/vision-simulation` section and configure the GLVisionSimulator item. However, if you increase the number of target cameras for simulation, it may cause the overall simulation to slow down.
 
 Remote communication using two PCs
 ----------------------------------

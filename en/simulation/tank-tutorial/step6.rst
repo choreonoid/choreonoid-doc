@@ -65,7 +65,7 @@ To do this, you need to introduce a "GL Vision Simulator Item" to the project. G
 
 When you run the simulation in this state, camera images are simulated inside the simulator, making it possible to obtain them from the controller.
 
-For details on the GL Vision Simulator Item, please refer to :doc:`../vision-simulation`.
+For details on the GL Vision Simulator Item, please refer to :doc:`../../vision-sensor/vision-simulation`.
 
 
 Controller Source Code

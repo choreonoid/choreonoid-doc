@@ -39,7 +39,7 @@ Setting the plugin name in the variable target. ::
 
 Since plugins become shared libraries, they can be built with CMake's standard add_library command.
 
-In :ref:`hello-world-build-together`, we built the plugin with the choreonoid_add_plugin command which extends add_library, but when building a plugin standalone, we use add_library directly. ::
+When building the plugin together with the Choreonoid main body, we built the plugin with the choreonoid_add_plugin command which extends add_library, but when building a plugin standalone, we use add_library directly. ::
 
  target_link_libraries(${target} ${CHOREONOID_BASE_LIBRARIES})
 

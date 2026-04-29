@@ -39,7 +39,7 @@ CMakeの記述方法
 
 プラグインは共有ライブラリになりますので、CMake標準のadd_libraryコマンドでビルドを行うことができます。
 
-:ref:`hello-world-build-together` では、add_libraryを拡張したchoreonoid_add_pluginというコマンドでプラグインをビルドしましたが、プラグインを単体でビルドする場合は直接add_libaryを使用するようにします。 ::
+Choreonoid本体のビルド環境でビルドする場合は、add_libraryを拡張したchoreonoid_add_pluginというコマンドでプラグインをビルドしましたが、プラグインを単体でビルドする場合は直接add_libaryを使用するようにします。 ::
 
  target_link_libraries(${target} ${CHOREONOID_BASE_LIBRARIES})
 
