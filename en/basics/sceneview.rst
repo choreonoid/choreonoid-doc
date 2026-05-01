@@ -199,9 +199,12 @@ When the "Wireframe rendering" Button in the Scene Bar is turned ON, the scene i
 Configuration Dialog
 --------------------
 
-There are other configurable items for the Scene View's rendering method and behavior, which can be configured in detail in the dialog displayed by pressing the "Show the config dialog" Button in the :ref:`basics_sceneview_scenebar`. An overview of the main configuration items accessible from this dialog is shown below.
+There are other configurable items for the Scene View's rendering method and behavior, which can be configured in detail in the dialog displayed by pressing the "Show the config dialog" Button in the :ref:`basics_sceneview_scenebar`. The dialog consists of four panels — "Camera", "Lighting", "Background", and "Drawing" — together with an options area below them. An overview of the main configuration items accessible from each panel is shown below.
 
-.. tabularcolumns:: |p{4.0cm}|p{11.0cm}|
+Camera panel
+~~~~~~~~~~~~
+
+.. tabularcolumns:: |p{4.5cm}|p{10.5cm}|
 
 .. list-table::
  :widths: 35,65
@@ -209,57 +212,105 @@ There are other configurable items for the Scene View's rendering method and beh
 
  * - Item
    - Content
- * - Field of View
+ * - Field of view
    - Sets the field of view angle for the Perspective camera. Larger values result in wider angles.
- * - Clipping Depth
-   - Sets the front and back rendering range as seen from the viewpoint. No specific setting is needed if there are no rendering problems.
- * - Lighting
-   - Toggles ON/OFF for lighting-based shading.
- * - Smooth Shading
-   - Turns ON smooth shading. When OFF, it becomes flat shading.
- * - Head Light
-   - Turns ON a light that is always emitted from the viewpoint position.
- * - World Light
-   - Toggles ON/OFF for lights fixed in the scene (normally emitted from above).
- * - Additional Lights
-   - When models loaded in the scene have lights, toggles their ON/OFF.
- * - Background Color
-   - Sets the color for areas in the scene where no objects exist.
- * - Floor Grid Line Display
-   - Toggles floor grid line display and sets grid size, color, etc.
+ * - Direction
+   - Selects the reference direction of the field of view from "Auto", "Vertical", or "Horizontal". With "Auto", the direction is determined automatically according to the aspect ratio of the view.
+ * - Near / Far
+   - Sets the rendering range (clipping distances) as seen from the viewpoint. No specific setting is needed if there are no rendering problems.
+ * - Use infinite far clip distance for all cameras (OpenGL 4.5 or later)
+   - Treats the far clipping distance of all cameras as effectively infinite. This is available in environments with OpenGL 4.5 or later.
+ * - Restrict camera roll
+   - Suppresses the roll (rotation around the optical axis) during viewpoint rotation, so that the up direction of the screen is preserved.
+ * - Vertical axis
+   - Selects the axis to be regarded as the vertical upward direction from X, Y, or Z. In Choreonoid, Z is normally used as the upward direction.
+ * - Upside down
+   - Displays the scene view image flipped upside down.
+
+Lighting panel
+~~~~~~~~~~~~~~
+
+.. tabularcolumns:: |p{4.5cm}|p{10.5cm}|
+
+.. list-table::
+ :widths: 35,65
+ :header-rows: 1
+
+ * - Item
+   - Content
+ * - Lighting mode
+   - Selects the lighting process used for rendering from "Normal", "Minimum", or "Solid color". "Minimum" is a lightweight lighting mode, and "Solid color" is a mode that renders only with material colors.
+ * - Smooth shading
+   - Toggles smooth shading ON/OFF. When OFF, it becomes flat shading.
+ * - Back face culling
+   - Selects culling of polygon back faces from "Enabled", "Disabled", or "Forced". With "Forced", culling is always performed regardless of the model's specification.
+ * - World light
+   - Toggles ON/OFF for lights fixed in the scene (normally emitted from above). The "Intensity" sets the brightness, and "Shadow" controls whether this light generates shadows.
+ * - Head light
+   - Toggles ON/OFF for the light that is always emitted from the viewpoint position. The "Intensity" sets the brightness.
+ * - Ambient light
+   - Toggles ambient light ON/OFF. The "Intensity" sets its strength. When "Normalize material ambient" is ON, the ambient light components of each material are uniformized for rendering.
+ * - Additional lights
+   - When models loaded in the scene have lights, toggles their ON/OFF. When the "Shadow for light" check is turned ON, shadows are rendered using the light with the specified number (up to two lights).
  * - Texture
    - Toggles ON/OFF for texture display.
- * - Default Color
-   - Sets the color for rendering objects without color specification.
- * - Default Line Width
-   - Sets the default line width for line rendering.
- * - Default Point Size
-   - Sets the default point size for point rendering.
- * - Normal Display
-   - Displays normals for each point of polygons. Normal length can also be set.
- * - Coordinate Axes
+ * - Fog
+   - Toggles ON/OFF for fog effects defined in the scene.
+ * - Anti-aliasing of shadows
+   - Applies anti-aliasing to the outlines of shadows.
+
+Background panel
+~~~~~~~~~~~~~~~~
+
+.. tabularcolumns:: |p{4.5cm}|p{10.5cm}|
+
+.. list-table::
+ :widths: 35,65
+ :header-rows: 1
+
+ * - Item
+   - Content
+ * - Background color
+   - Sets the color for areas in the scene where no objects exist.
+ * - Coordinate axes
    - Toggles ON/OFF for the coordinate axes displayed in the lower left of the Scene View.
- * - Frame Rate Display
-   - When ON, the rendering frame rate is displayed in the upper left of the Scene View. Pressing the "Test" button performs a test of what frame rate the current scene can be displayed at.
+ * - XY (Floor) Grid / XZ Grid / YZ Grid
+   - Toggles ON/OFF the display of grid lines on each plane, and sets the overall "Span" (size of the range), the "Interval" between lines, and the "Color" of the lines.
 
+Drawing panel
+~~~~~~~~~~~~~
 
-The following configuration items are also available:
+.. tabularcolumns:: |p{4.5cm}|p{10.5cm}|
 
-* Perform point rendering in wireframe mode
+.. list-table::
+ :widths: 35,65
+ :header-rows: 1
 
- When the "Wireframe rendering" in the Scene Bar is turned ON, point rendering is performed.
+ * - Item
+   - Content
+ * - Default color
+   - Sets the color for rendering objects without color specification.
+ * - Default line width
+   - Sets the default line width for line rendering.
+ * - Default point size
+   - Sets the default point size for point rendering.
+ * - Collision highlight color
+   - Sets the color used to highlight interference areas between models.
+ * - Collision line color
+   - Sets the color of collision lines.
+ * - Anti-Aliasing (MSAA)
+   - Selects the level of multi-sample anti-aliasing from "System Default", "Off", "2x", "4x", "8x", or "16x". When "System Default" is selected, the level configured in the main menu "Options" - "OpenGL" - "MSAA Level (System Default)" is used.
+ * - Normal Visualization
+   - Displays normals for each point of polygons. Normal length can also be set.
+ * - Lightweight view change
+   - While the viewpoint is being manipulated with the mouse, the rendering is temporarily switched to a simplified display (bounding box display) to improve responsiveness. However, this switching is only applied to models in the scene that support lightweight rendering (for example, models whose Scene Item property "Lightweight rendering" is turned ON), and only those parts are shown in simplified form. This is useful when you want to browse a heavy scene smoothly.
+ * - FPS Test
+   - Pressing the "FPS Test" button measures the frame rate at which the current scene can be rendered. The number of trials can also be specified.
 
-* Perform double rendering when generating new display lists
+Other options
+~~~~~~~~~~~~~
 
- This is an option to work around video driver bugs. If newly added objects are not displayed immediately, turning this check ON may resolve the issue.
-
-* Use OpenGL pixel buffer for picking
-
- This is a debugging option.
-
-* Add dedicated checks for target item selection to Item Tree View
- 
- Multiple Scene Views can be created to display different objects in each view. In such cases, if this check is ON, dedicated checks for the target Scene View are displayed on the right side of the Item Tree View, which can be used to toggle display ON/OFF in the Scene View. Note that when there are multiple Scene Views, the target view for the configuration dialog is the Scene View that had focus last when the dialog was displayed.
+At the bottom of the dialog there is a check box "Use dedicated item tree view checks to select the target items". Multiple Scene Views can be created to display different objects in each view. In such cases, if this check is ON, dedicated checks for the target Scene View are displayed on the right side of the Item Tree View, which can be used to toggle display ON/OFF in the Scene View. Note that when there are multiple Scene Views, the target view for the configuration dialog is the Scene View that had focus last when the dialog was displayed.
 
 
 Saving Scene View State and Configuration

@@ -1,6 +1,10 @@
 Update History
 ==============
 
+* May 1, 2026
+
+ * Updated the description of the configuration dialog in :doc:`../basics/sceneview` to match the latest version
+
 * April 29, 2026
 
  * Added :doc:`../plugin-development/plugin-class`
