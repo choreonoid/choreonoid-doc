@@ -85,31 +85,34 @@ The repository name is ppa:choreonoid.org/testing for the development version, o
 
 If you have another Choreonoid binary on the same PC installed by :doc:`building from source code <build-ubuntu>` or other means, conflicts may occur. To operate normally, you need to configure to avoid conflicts, so please be careful. If you're unsure about this, it's safer to uninstall the package-installed Choreonoid when building and installing from source code.
 
-Supplement: Specifying the Version to Install
-----------------------------------------------
+Supplement: Specifying the Development Version or Release Version
+------------------------------------------------------------------
 
-When installing with apt, the latest version registered in the repository is basically installed, but if you want to install an older version, do the following.
+The development version and release version repositories above can be registered at the same time. In that case, when you run ``sudo apt install choreonoid``, the package with the newer version number among the two repositories will be installed. Since the development version usually has a newer version number than the release version, the development version will normally be installed.
+
+If you want to explicitly specify either the release version or the development version after registering both repositories, do the following.
 
 First, check the available versions with the following command: ::
 
  apt-cache policy choreonoid
 
-For example, suppose this command produces the following output:
+For example, you may get output like the following:
 
 .. code-block:: text
 
    choreonoid:
      Installed: (none)
-     Candidate: 2.4.0~git20251020.1758.4e4a671b7-1~noble
+     Candidate: 2.5.0~git20260514.2131.8ad62ee1b-1~noble
      Version table:
-        2.4.0~git20251020.1758.4e4a671b7-1~noble 500
+        2.5.0~git20260514.2131.8ad62ee1b-1~noble 500
            500 https://ppa.launchpadcontent.net/choreonoid.org/testing/ubuntu noble/main amd64 Packages
-        2.3.0-1~noble 500
+        2.4.0-1~noble 500
            500 https://ppa.launchpadcontent.net/choreonoid.org/stable/ubuntu noble/main amd64 Packages
 
-Here, "2.4.0~git20251020.1758.4e4a671b7-1~noble" in the "Version table" is the detailed version name.
-By specifying this version name as: ::
+The "Version table" shows the latest packages available in each registered repository. "2.5.0~git20260514.2131.8ad62ee1b-1~noble" is the package in the testing (development version) repository, and "2.4.0-1~noble" is the package in the stable (release version) repository.
 
-  sudo apt install choreonoid=2.4.0~git20251020.1758.4e4a671b7-1~noble
+To install a specific one of these, specify the version name as follows: ::
 
-you can install a specific version.
+ sudo apt install choreonoid=2.4.0-1~noble
+
+In the example above, both the development version and the release version are registered, and the release version (2.4.0) is explicitly installed for stability.
